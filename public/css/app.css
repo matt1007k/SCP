@@ -1,0 +1,67 @@
+.router-animate-enter-active {
+  -webkit-animation: coming 1s;
+          animation: coming 1s;
+  -webkit-animation-delay: 0.5s;
+          animation-delay: 0.5s;
+  opacity: 0;
+}
+
+.router-animate-leave-active {
+  -webkit-animation: going 1s;
+          animation: going 1s;
+}
+
+@-webkit-keyframes going {
+  from {
+    -webkit-transform: translateX(0);
+            transform: translateX(0);
+  }
+
+  to {
+    -webkit-transform: translateX(50px);
+            transform: translateX(50px);
+    opacity: 0;
+  }
+}
+
+@keyframes going {
+  from {
+    -webkit-transform: translateX(0);
+            transform: translateX(0);
+  }
+
+  to {
+    -webkit-transform: translateX(50px);
+            transform: translateX(50px);
+    opacity: 0;
+  }
+}
+
+@-webkit-keyframes coming {
+  from {
+    -webkit-transform: translateX(50);
+            transform: translateX(50);
+    opacity: 0;
+  }
+
+  to {
+    -webkit-transform: translateX(0px);
+            transform: translateX(0px);
+    opacity: 1;
+  }
+}
+
+@keyframes coming {
+  from {
+    -webkit-transform: translateX(50);
+            transform: translateX(50);
+    opacity: 0;
+  }
+
+  to {
+    -webkit-transform: translateX(0px);
+            transform: translateX(0px);
+    opacity: 1;
+  }
+}
+
