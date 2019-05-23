@@ -10,8 +10,12 @@ class HaberDescuentoController extends Controller
 {
     public function index(Request $request)
     {
-       
+        $tipo = $request->get('tipo') ?? $request->get('tipo');
         $descuentos = HaberDescuento::all();
+        if ($tipo !== 'Todos') {
+            $descuentos = HaberDescuento::where('tipo', $tipo)->get();
+
+        }
 
         return response()->json(['descuentos' => $descuentos], 200);
     }
@@ -64,7 +68,7 @@ class HaberDescuentoController extends Controller
         ]);
         $haberDescuento = HaberDescuento::findOrFail($id);
         $haberDescuento->nombre = $request->nombre;
-        // $haberDescuento->codigo = $request->codigo;
+        $haberDescuento->codigo = $request->codigo;
         $haberDescuento->tipo = $request->tipo;
         $haberDescuento->descripcion = $request->descripcion;
         $haberDescuento->descripcion_simple = $request->descripcion_simple;

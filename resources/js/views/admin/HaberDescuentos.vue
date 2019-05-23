@@ -9,7 +9,7 @@
                 <span class="headline">Lista de Haberes y Descuentos</span>
               </v-flex>
               <v-flex xs12 sm4 md3 justify-end flexbox>
-                <v-btn color="primary">
+                <v-btn color="primary" @click="modalAgregar">
                   <v-icon>$vuetify.icons.add</v-icon>Agregar hab. o desct.
                 </v-btn>
               </v-flex>
@@ -26,6 +26,15 @@
                 </v-fade-transition>
               </template>
             </v-text-field>
+            <span class="mb-2">
+              <v-tooltip bottom>
+                <v-icon slot="activator">$vuetify.icons.filter</v-icon>
+                <span>Filtar por tipo</span>
+              </v-tooltip>
+              <v-btn flat @click="filterBy('Todos')">Todos</v-btn>
+              <v-btn flat color="success" @click="filterBy('haber')">Haberes</v-btn>
+              <v-btn flat color="info" @click="filterBy('descuento')">Descuentos</v-btn>
+            </span>
           </v-container>
         </v-card>
       </v-flex>
@@ -69,7 +78,7 @@
             <td class="text-xs-center">{{props.item.descripcion_simple}}</td>
             <td>
               <v-tooltip bottom>
-                <v-btn color="info" fab small slot="activator">
+                <v-btn color="info" fab small slot="activator" @click="modalEditar(props.item)">
                   <v-icon>$vuetify.icons.edit</v-icon>
                 </v-btn>
                 <span>Editar registro</span>
@@ -88,13 +97,19 @@
         </div>
       </v-flex>
     </v-layout>
+    <modal-agregar ref="agregarDescuento"></modal-agregar>
+    <modal-editar ref="editarDescuento"></modal-editar>
   </v-container>
 </template>
 
 <script>
+import ModalAgregar from "../../components/descuentos/ModalAgregar";
+import ModalEditar from "../../components/descuentos/ModalEditar";
 export default {
+  components: { ModalAgregar, ModalEditar },
   data() {
     return {
+      tipo: "Todos",
       search: "",
       loading: false,
       pagination: {},
@@ -118,21 +133,38 @@ export default {
   created() {
     document.title = "Lista de Haberes y Descuentos";
     this.getData();
-    console.log(this.$root.$agregar.go());
+  },
+  mounted() {
+    this.$root.agregarDescuento = this.$refs.agregarDescuento;
+    this.$root.editarDescuento = this.$refs.editarDescuento;
   },
   methods: {
     getData(url = "/descuentos") {
       axios
-        .get(url)
+        .get(url, { params: { tipo: this.tipo } })
         .then(res => {
-          this.personas = res.data.descuentos;
+          this.descuentos = res.data.descuentos;
         })
         .catch(err => {
           console.log(err);
         });
     },
-    sortBy(prop) {
-      this.personas.sort((a, b) => (a[prop] < b[prop] ? -1 : 1));
+    filterBy(prop) {
+      this.tipo = prop;
+      this.getData();
+    },
+    modalAgregar() {
+      this.$root.agregarDescuento.show();
+    },
+    modalEditar(persona) {
+      this.$root.editarDescuento.show();
+      this.$root.editarDescuento.form.id = persona.id;
+      this.$root.editarDescuento.form.codigo = persona.codigo;
+      this.$root.editarDescuento.form.nombre = persona.nombre;
+      this.$root.editarDescuento.form.tipo = persona.tipo;
+      this.$root.editarDescuento.form.descripcion = persona.descripcion;
+      this.$root.editarDescuento.form.descripcion_simple =
+        persona.descripcion_simple;
     }
   },
   computed: {

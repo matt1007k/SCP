@@ -9,11 +9,9 @@
                 <span class="headline">Lista de personas</span>
               </v-flex>
               <v-flex xs12 sm3 md3 justify-end flexbox>
-                <v-btn color="primary" @click.stop="showModalEdit=true">
+                <v-btn color="primary" @click.stop="modalAgregar">
                   <v-icon>$vuetify.icons.add</v-icon>Agregar persona
                 </v-btn>
-
-                <modal-agregar ref="agregar"></modal-agregar>
               </v-flex>
             </v-layout>
           </v-container>
@@ -28,6 +26,16 @@
                 </v-fade-transition>
               </template>
             </v-text-field>
+            <span class="mb-2">
+              <v-tooltip bottom>
+                <v-icon slot="activator">$vuetify.icons.filter</v-icon>
+                <span>Filtar por estado</span>
+              </v-tooltip>
+              <v-btn flat @click="filterBy('Todos')">Todos</v-btn>
+              <v-btn flat color="success" @click="filterBy('activo')">Activos</v-btn>
+              <v-btn flat color="info" @click="filterBy('sobreviviente')">Sobrevivientes</v-btn>
+              <v-btn flat color="censante" @click="filterBy('cesante')">Censantes</v-btn>
+            </span>
           </v-container>
         </v-card>
       </v-flex>
@@ -79,7 +87,7 @@
             </td>
             <td>
               <v-tooltip bottom>
-                <v-btn color="info" fab small slot="activator">
+                <v-btn color="info" fab small slot="activator" @click="modalEditar(props.item)">
                   <v-icon>$vuetify.icons.edit</v-icon>
                 </v-btn>
                 <span>Editar registro</span>
@@ -98,7 +106,9 @@
         </div>
       </v-flex>
     </v-layout>
-    <modal-editar v-model="showModalEdit"></modal-editar>
+    <modal-agregar ref="agregarPersona"></modal-agregar>
+    <modal-editar ref="editarPersona"></modal-editar>
+    <!-- <modal-editar v-model="showModalEdit"></modal-editar> -->
   </v-container>
 </template>
 
@@ -110,6 +120,7 @@ export default {
   data() {
     return {
       search: "",
+      tipo: "Todos",
       loading: false,
       pagination: {},
       RowsPerPageItems: [9, 15, 25, { text: "Todos", value: -1 }],
@@ -135,12 +146,13 @@ export default {
     this.getData();
   },
   mounted() {
-    this.$root.$agregar = this.$refs.agregar;
+    this.$root.agregarPersona = this.$refs.agregarPersona;
+    this.$root.editarPersona = this.$refs.editarPersona;
   },
   methods: {
     getData(url = "/personas") {
       axios
-        .get(url)
+        .get(url, { params: { tipo: this.tipo } })
         .then(res => {
           this.personas = res.data.personas;
         })
@@ -148,8 +160,23 @@ export default {
           console.log(err);
         });
     },
-    sortBy(prop) {
-      this.personas.sort((a, b) => (a[prop] < b[prop] ? -1 : 1));
+    filterBy(prop) {
+      this.tipo = prop;
+      this.getData();
+    },
+    modalAgregar() {
+      this.$root.agregarPersona.show();
+    },
+    modalEditar(persona) {
+      this.$root.editarPersona.show();
+      this.$root.editarPersona.form.id = persona.id;
+      this.$root.editarPersona.form.nombre = persona.nombre;
+      this.$root.editarPersona.form.apellido_paterno = persona.apellido_paterno;
+      this.$root.editarPersona.form.apellido_materno = persona.apellido_materno;
+      this.$root.editarPersona.form.dni = persona.dni;
+      this.$root.editarPersona.form.codigo_modular = persona.codigo_modular;
+      this.$root.editarPersona.form.cargo = persona.cargo;
+      this.$root.editarPersona.form.estado = persona.estado;
     }
   },
   computed: {

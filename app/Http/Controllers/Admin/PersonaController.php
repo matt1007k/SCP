@@ -18,9 +18,15 @@ class PersonaController extends Controller
         // $this->middleware('permission:personas.destroy')->only(['destroy']);
     }
 
-    public function index()
+    public function index(Request $request)
     {
+        $tipo = $request->get('tipo') ?? $request->get('tipo');
         $personas = Persona::all();
+        if ($tipo !== 'Todos') {
+            $personas = Persona::where('estado', $tipo)->get();
+
+        }
+
         return response()->json(['personas' => $personas], 200);
     }
 

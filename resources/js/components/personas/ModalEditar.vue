@@ -1,6 +1,6 @@
 <template>
   <v-layout row justify-center>
-    <v-dialog v-model="show" persistent small width="800px">
+    <v-dialog v-model="open" persistent small width="800px">
       <v-card>
         <form @submit.prevent="Submit">
           <v-card-title wrap>
@@ -8,7 +8,7 @@
               <span class="headline">Editar persona</span>
             </v-flex>
             <v-flex xs1 class="d-flex justify-end">
-              <v-btn flat color="error" @click="show = false">
+              <v-btn flat color="error" @click="open = false">
                 <v-icon>$vuetify.icons.close</v-icon>
               </v-btn>
             </v-flex>
@@ -79,7 +79,7 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="error" @click="show = false">Cancelar</v-btn>
+            <v-btn color="error" @click="open = false">Cancelar</v-btn>
             <v-btn color="success" type="submit">Guardar</v-btn>
           </v-card-actions>
         </form>
@@ -94,7 +94,9 @@ export default {
     value: Boolean
   },
   data: () => ({
+    open: false,
     form: {
+      id: "",
       nombre: "",
       apellido_paterno: "",
       apellido_materno: "",
@@ -108,28 +110,32 @@ export default {
   methods: {
     Submit() {
       axios
-        .post("/personas", this.form)
+        .put(`/personas/${this.form.id}`, this.form)
         .then(res => {
           this.$parent.getData();
-          this.show = false;
+          this.open = false;
+          this.$root.$snackbar.show("Datos editados correctamente.");
         })
         .catch(err => {
           this.errors = err.response.data.errors;
         });
+    },
+    show() {
+      this.open = true;
     }
   },
   computed: {
     getCodigoModular() {
       return (this.form.codigo_modular = "10" + this.form.dni);
-    },
-    show: {
-      get() {
-        return this.value;
-      },
-      set(value) {
-        this.$emit("input", value);
-      }
     }
+    // show: {
+    //   get() {
+    //     return this.value;
+    //   },
+    //   set(value) {
+    //     this.$emit("input", value);
+    //   }
+    // }
   }
 };
 </script>

@@ -1,66 +1,88 @@
 <template>
   <v-layout row justify-center>
-    <v-dialog v-model="dialog" fullscreen hide-overlay transition="dialog-bottom-transition">
-      <template v-slot:activator="{ on }">
-        <v-btn color="primary" dark v-on="on">Open Dialog</v-btn>
-      </template>
+    <v-dialog v-model="open" persistent small width="800px">
       <v-card>
-        <v-toolbar dark color="primary">
-          <v-btn icon dark @click="dialog = false">
-            <v-icon>$vuetify.icons.close</v-icon>
-          </v-btn>
-          <v-toolbar-title>Registrar nueva persona</v-toolbar-title>
-          <v-spacer></v-spacer>
-          <v-toolbar-items>
-            <v-btn dark flat @click="dialog = false">Save</v-btn>
-          </v-toolbar-items>
-        </v-toolbar>
-        <v-list three-line subheader>
-          <v-subheader>User Controls</v-subheader>
-          <v-list-tile avatar>
-            <v-list-tile-content>
-              <v-list-tile-title>Content filtering</v-list-tile-title>
-              <v-list-tile-sub-title>Set the content filtering level to restrict apps that can be downloaded</v-list-tile-sub-title>
-            </v-list-tile-content>
-          </v-list-tile>
-          <v-list-tile avatar>
-            <v-list-tile-content>
-              <v-list-tile-title>Password</v-list-tile-title>
-              <v-list-tile-sub-title>Require password for purchase or use password to restrict purchase</v-list-tile-sub-title>
-            </v-list-tile-content>
-          </v-list-tile>
-        </v-list>
-        <v-divider></v-divider>
-        <v-list three-line subheader>
-          <v-subheader>General</v-subheader>
-          <v-list-tile avatar>
-            <v-list-tile-action>
-              <v-checkbox v-model="notifications"></v-checkbox>
-            </v-list-tile-action>
-            <v-list-tile-content>
-              <v-list-tile-title>Notifications</v-list-tile-title>
-              <v-list-tile-sub-title>Notify me about updates to apps or games that I downloaded</v-list-tile-sub-title>
-            </v-list-tile-content>
-          </v-list-tile>
-          <v-list-tile avatar>
-            <v-list-tile-action>
-              <v-checkbox v-model="sound"></v-checkbox>
-            </v-list-tile-action>
-            <v-list-tile-content>
-              <v-list-tile-title>Sound</v-list-tile-title>
-              <v-list-tile-sub-title>Auto-update apps at any time. Data charges may apply</v-list-tile-sub-title>
-            </v-list-tile-content>
-          </v-list-tile>
-          <v-list-tile avatar>
-            <v-list-tile-action>
-              <v-checkbox v-model="widgets"></v-checkbox>
-            </v-list-tile-action>
-            <v-list-tile-content>
-              <v-list-tile-title>Auto-add widgets</v-list-tile-title>
-              <v-list-tile-sub-title>Automatically add home screen widgets</v-list-tile-sub-title>
-            </v-list-tile-content>
-          </v-list-tile>
-        </v-list>
+        <form @submit.prevent="Submit">
+          <v-card-title wrap>
+            <v-flex xs11>
+              <span class="headline">Registrar persona</span>
+            </v-flex>
+            <v-flex xs1 class="d-flex justify-end">
+              <v-btn flat color="error" @click="open = false">
+                <v-icon>$vuetify.icons.close</v-icon>
+              </v-btn>
+            </v-flex>
+          </v-card-title>
+          <v-card-text>
+            <v-container grid-list-md>
+              <v-layout wrap>
+                <v-flex xs12 sm6>
+                  <v-text-field
+                    label="Nombre"
+                    required
+                    v-model="form.nombre"
+                    :error-messages="errors.nombre"
+                  ></v-text-field>
+                </v-flex>
+                <v-flex xs12 sm6>
+                  <v-text-field
+                    label="Apellido Paterno"
+                    required
+                    v-model="form.apellido_paterno"
+                    :error-messages="errors.apellido_paterno"
+                  ></v-text-field>
+                </v-flex>
+                <v-flex xs12 sm6>
+                  <v-text-field
+                    label="Apellido Materno"
+                    required
+                    v-model="form.apellido_materno"
+                    :error-messages="errors.apellido_materno"
+                  ></v-text-field>
+                </v-flex>
+                <v-flex xs12 sm6>
+                  <v-text-field
+                    label="El DNI"
+                    required
+                    v-model="form.dni"
+                    maxlength="8"
+                    :error-messages="errors.dni"
+                  ></v-text-field>
+                </v-flex>
+                <v-flex xs12 sm6>
+                  <v-text-field
+                    label="Código Modular"
+                    required
+                    v-model="getCodigoModular"
+                    maxlength="10"
+                    :error-messages="errors.codigo_modular"
+                  ></v-text-field>
+                </v-flex>
+                <v-flex xs12 sm6>
+                  <v-text-field
+                    label="Cargo"
+                    required
+                    v-model="form.cargo"
+                    :error-messages="errors.cargo"
+                  ></v-text-field>
+                </v-flex>
+                <v-flex xs12>
+                  <v-radio-group v-model="form.estado" row :error-messages="errors.estado">
+                    <v-radio label="Activo" value="activo" color="success"></v-radio>
+                    <v-radio label="Sobreviviente" value="sobreviviente" color="info"></v-radio>
+                    <v-radio label="Cesante" value="cesante" color="error"></v-radio>
+                  </v-radio-group>
+                </v-flex>
+              </v-layout>
+            </v-container>
+            <small>*indicado todos los campos son obligatorios.</small>
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="error" @click="open = false">Cancelar</v-btn>
+            <v-btn color="success" type="submit">Guardar</v-btn>
+          </v-card-actions>
+        </form>
       </v-card>
     </v-dialog>
   </v-layout>
@@ -68,18 +90,61 @@
 
 <script>
 export default {
-  data() {
-    return {
-      dialog: false,
-      notifications: false,
-      sound: true,
-      widgets: false
-    };
+  props: {
+    value: Boolean
   },
+  data: () => ({
+    open: false,
+    form: {
+      nombre: "",
+      apellido_paterno: "",
+      apellido_materno: "",
+      dni: "",
+      codigo_modular: "10",
+      cargo: "",
+      estado: "activo"
+    },
+    errors: {}
+  }),
   methods: {
-    go() {
-      console.log("Click");
+    Submit() {
+      axios
+        .post("/personas", this.form)
+        .then(res => {
+          this.$parent.getData();
+          this.open = false;
+          this.$root.$snackbar.show("Datos registrados correctamente.");
+          this.resetInputs();
+        })
+        .catch(err => {
+          this.errors = err.response.data.errors;
+        });
+    },
+    resetInputs() {
+      this.form.nombre = "";
+      this.form.apellido_paterno = "";
+      this.form.apellido_materno = "";
+      this.form.dni = "";
+      this.form.codigo_modular = "10";
+      this.form.cargo = "";
+      this.form.estado = "activo";
+    },
+    show() {
+      this.open = true;
     }
+  },
+  computed: {
+    getCodigoModular() {
+      return (this.form.codigo_modular = "10" + this.form.dni);
+    }
+    // show: {
+    //   get() {
+    //     return this.value;
+    //   },
+    //   set(value) {
+    //     this.$emit("input", value);
+    //   }
+    // }
   }
 };
 </script>

@@ -1,9 +1,7 @@
 <template>
   <v-app>
-    <v-snackbar model="snackbar" color="success" :timeout="timeout" bottom>
-      {{ text }}
-      <v-btn dark flat @click="snackbar = false">Close</v-btn>
-    </v-snackbar>
+    <snackbar ref="snackbar"></snackbar>
+
     <sidebar-admin-left :toggle="drawer"></sidebar-admin-left>
     <v-toolbar dark color="primary" app>
       <v-toolbar-side-icon @click.stop="OpenSidebar"></v-toolbar-side-icon>
@@ -38,12 +36,13 @@
 
 <script>
 import SidebarAdminLeft from "./SidebarAdminLeft";
+import Snackbar from "../messages/Snackbar";
 export default {
-  components: { SidebarAdminLeft },
+  components: { SidebarAdminLeft, Snackbar },
   name: "LayoutAdmin",
   data: () => ({
     drawer: true,
-    snackbar: false,
+    snackbar: true,
     timeout: 6000,
     text: "Hello, I'm a snackbar"
   }),
@@ -68,6 +67,9 @@ export default {
           console.log(err);
         });
     }
+  },
+  mounted() {
+    this.$root.$snackbar = this.$refs.snackbar;
   }
 };
 </script>

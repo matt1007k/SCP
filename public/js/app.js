@@ -44515,7 +44515,7 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_router__WEBPACK_IMPORTED_MODU
   }, {
     path: "/auth",
     component: function component() {
-      return __webpack_require__.e(/*! import() */ 4).then(__webpack_require__.bind(null, /*! ./components/layout/LayoutClient.vue */ "./resources/js/components/layout/LayoutClient.vue"));
+      return __webpack_require__.e(/*! import() */ 2).then(__webpack_require__.bind(null, /*! ./components/layout/LayoutClient.vue */ "./resources/js/components/layout/LayoutClient.vue"));
     },
     children: [{
       path: "login",
@@ -44526,13 +44526,13 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_router__WEBPACK_IMPORTED_MODU
   }, {
     path: "/admin",
     component: function component() {
-      return __webpack_require__.e(/*! import() */ 0).then(__webpack_require__.bind(null, /*! ./components/layout/LayoutAdmin.vue */ "./resources/js/components/layout/LayoutAdmin.vue"));
+      return __webpack_require__.e(/*! import() */ 1).then(__webpack_require__.bind(null, /*! ./components/layout/LayoutAdmin.vue */ "./resources/js/components/layout/LayoutAdmin.vue"));
     },
     children: [{
       path: "",
       name: "admin",
       component: function component() {
-        return __webpack_require__.e(/*! import() */ 1).then(__webpack_require__.bind(null, /*! ./views/admin/Dashboard.vue */ "./resources/js/views/admin/Dashboard.vue"));
+        return __webpack_require__.e(/*! import() */ 3).then(__webpack_require__.bind(null, /*! ./views/admin/Dashboard.vue */ "./resources/js/views/admin/Dashboard.vue"));
       }
     }, {
       path: "personas",
@@ -44541,13 +44541,13 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_router__WEBPACK_IMPORTED_MODU
         titulo: "Personas"
       },
       component: function component() {
-        return __webpack_require__.e(/*! import() */ 2).then(__webpack_require__.bind(null, /*! ./views/admin/Personas.vue */ "./resources/js/views/admin/Personas.vue"));
+        return __webpack_require__.e(/*! import() */ 0).then(__webpack_require__.bind(null, /*! ./views/admin/Personas.vue */ "./resources/js/views/admin/Personas.vue"));
       }
     }, {
       path: "haberes-descuentos",
       name: "descuentos",
       component: function component() {
-        return __webpack_require__.e(/*! import() */ 3).then(__webpack_require__.bind(null, /*! ./views/admin/HaberDescuentos.vue */ "./resources/js/views/admin/HaberDescuentos.vue"));
+        return __webpack_require__.e(/*! import() */ 4).then(__webpack_require__.bind(null, /*! ./views/admin/HaberDescuentos.vue */ "./resources/js/views/admin/HaberDescuentos.vue"));
       }
     }, {
       path: "**",
