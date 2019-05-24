@@ -44507,7 +44507,7 @@ __webpack_require__.r(__webpack_exports__);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]);
 /* harmony default export */ __webpack_exports__["default"] = (new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
   mode: "history",
-  base: Object({"MIX_PUSHER_APP_KEY":"","MIX_PUSHER_APP_CLUSTER":"mt1","NODE_ENV":"development"}).BASE_URL,
+  base: Object({"MIX_PUSHER_APP_CLUSTER":"mt1","MIX_PUSHER_APP_KEY":"","NODE_ENV":"development"}).BASE_URL,
   // linkExactActiveClass: "active",
   routes: [{
     path: "/",
@@ -44515,7 +44515,7 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_router__WEBPACK_IMPORTED_MODU
   }, {
     path: "/auth",
     component: function component() {
-      return __webpack_require__.e(/*! import() */ 2).then(__webpack_require__.bind(null, /*! ./components/layout/LayoutClient.vue */ "./resources/js/components/layout/LayoutClient.vue"));
+      return __webpack_require__.e(/*! import() */ 3).then(__webpack_require__.bind(null, /*! ./components/layout/LayoutClient.vue */ "./resources/js/components/layout/LayoutClient.vue"));
     },
     children: [{
       path: "login",
@@ -44526,13 +44526,13 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_router__WEBPACK_IMPORTED_MODU
   }, {
     path: "/admin",
     component: function component() {
-      return __webpack_require__.e(/*! import() */ 1).then(__webpack_require__.bind(null, /*! ./components/layout/LayoutAdmin.vue */ "./resources/js/components/layout/LayoutAdmin.vue"));
+      return __webpack_require__.e(/*! import() */ 0).then(__webpack_require__.bind(null, /*! ./components/layout/LayoutAdmin.vue */ "./resources/js/components/layout/LayoutAdmin.vue"));
     },
     children: [{
       path: "",
       name: "admin",
       component: function component() {
-        return __webpack_require__.e(/*! import() */ 3).then(__webpack_require__.bind(null, /*! ./views/admin/Dashboard.vue */ "./resources/js/views/admin/Dashboard.vue"));
+        return __webpack_require__.e(/*! import() */ 4).then(__webpack_require__.bind(null, /*! ./views/admin/Dashboard.vue */ "./resources/js/views/admin/Dashboard.vue"));
       }
     }, {
       path: "personas",
@@ -44541,13 +44541,39 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_router__WEBPACK_IMPORTED_MODU
         titulo: "Personas"
       },
       component: function component() {
-        return __webpack_require__.e(/*! import() */ 0).then(__webpack_require__.bind(null, /*! ./views/admin/Personas.vue */ "./resources/js/views/admin/Personas.vue"));
+        return Promise.all(/*! import() */[__webpack_require__.e(13), __webpack_require__.e(12)]).then(__webpack_require__.bind(null, /*! ./views/admin/Personas.vue */ "./resources/js/views/admin/Personas.vue"));
       }
     }, {
       path: "haberes-descuentos",
       name: "descuentos",
       component: function component() {
-        return __webpack_require__.e(/*! import() */ 4).then(__webpack_require__.bind(null, /*! ./views/admin/HaberDescuentos.vue */ "./resources/js/views/admin/HaberDescuentos.vue"));
+        return __webpack_require__.e(/*! import() */ 1).then(__webpack_require__.bind(null, /*! ./views/admin/HaberDescuentos.vue */ "./resources/js/views/admin/HaberDescuentos.vue"));
+      }
+    }, {
+      path: "pagos",
+      name: "pagos",
+      meta: {
+        titulo: "Pagos"
+      },
+      component: function component() {
+        return Promise.all(/*! import() */[__webpack_require__.e(13), __webpack_require__.e(11)]).then(__webpack_require__.bind(null, /*! ./views/admin/Pagos.vue */ "./resources/js/views/admin/Pagos.vue"));
+      }
+    }, {
+      path: "importar/haberes-descuentos",
+      name: "importar.descuentos",
+      component: function component() {
+        return Promise.all(/*! import() */[__webpack_require__.e(10), __webpack_require__.e(9)]).then(__webpack_require__.bind(null, /*! ./views/admin/importar/ImportarDescuentos.vue */ "./resources/js/views/admin/importar/ImportarDescuentos.vue"));
+      }
+    }, {
+      path: "importar/personas-pagos",
+      name: "importar.personas",
+      component: function component() {
+        return Promise.all(/*! import() */[__webpack_require__.e(10), __webpack_require__.e(8)]).then(__webpack_require__.bind(null, /*! ./views/admin/importar/ImportarPersonas.vue */ "./resources/js/views/admin/importar/ImportarPersonas.vue"));
+      }
+    }, {
+      path: "403",
+      component: function component() {
+        return __webpack_require__.e(/*! import() */ 7).then(__webpack_require__.bind(null, /*! ./views/errors/Unauthorize.vue */ "./resources/js/views/errors/Unauthorize.vue"));
       }
     }, {
       path: "**",
@@ -44578,8 +44604,8 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_router__WEBPACK_IMPORTED_MODU
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /home/max/Documentos/web/DREA_SCP/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /home/max/Documentos/web/DREA_SCP/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! D:\Code\SCP\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! D:\Code\SCP\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

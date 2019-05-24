@@ -2,13 +2,13 @@
 
 namespace App\Models;
 
-// use Caffeinated\Shinobi\Traits\ShinobiTrait;
+use Caffeinated\Shinobi\Traits\ShinobiTrait;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
-    use Notifiable;
+    use Notifiable, ShinobiTrait;
 
     /**
      * The attributes that are mass assignable.
@@ -30,17 +30,17 @@ class User extends Authenticatable
 
     public function personas()
     {
-        return $this->hasMany('App\Persona');
+        return $this->hasMany('App\Models\Persona');
     }
 
     public function haberDescuentos()
     {
-        return $this->hasMany('App\HaberDescuento');
+        return $this->hasMany('App\Models\HaberDescuento');
     }
 
     public function pagos()
     {
-        return $this->hasMany('App\Pago');
+        return $this->hasMany('App\Models\Pago');
     }
 
 }

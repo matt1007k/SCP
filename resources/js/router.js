@@ -43,6 +43,28 @@ export default new Router({
                     component: () => import("./views/admin/HaberDescuentos.vue")
                 },
                 {
+                    path: "pagos",
+                    name: "pagos",
+                    meta: { titulo: "Pagos" },
+                    component: () => import("./views/admin/Pagos.vue")
+                },
+                {
+                    path: "importar/haberes-descuentos",
+                    name: "importar.descuentos",
+                    component: () =>
+                        import("./views/admin/importar/ImportarDescuentos.vue")
+                },
+                {
+                    path: "importar/personas-pagos",
+                    name: "importar.personas",
+                    component: () =>
+                        import("./views/admin/importar/ImportarPersonas.vue")
+                },
+                {
+                    path: "403",
+                    component: () => import("./views/errors/Unauthorize.vue")
+                },
+                {
                     path: "**",
                     component: () => import("./views/errors/NotFoundPage.vue")
                 }

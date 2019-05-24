@@ -1,0 +1,22 @@
+.dropzone {
+    min-height: 200px;
+    padding: 10px 10px;
+    width: 100%;
+    position: relative;
+    cursor: pointer;
+    border: 1px solid #cecece;
+    border-radius: 3px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.dropzone .input-file {
+    opacity: 0;
+    position: absolute;
+    width: 100%;
+    height: 200px;
+}
+.dropzone .call-to-action {
+    font-size: 1.2rem;
+    text-align: center;
+}

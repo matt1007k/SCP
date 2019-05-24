@@ -10,11 +10,11 @@ class Detalle extends Model
 
     public function pago()
     {
-        return $this->belongsTo('App\Pago');
+        return $this->belongsTo('App\Models\Pago');
     }
 
     public function haber_descuento()
     {
-        return $this->belongsTo('App\HaberDescuento');
+        return $this->belongsTo('App\Models\HaberDescuento');
     }
 }

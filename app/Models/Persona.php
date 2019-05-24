@@ -17,11 +17,11 @@ class Persona extends Model
 
     public function user()
     {
-        return $this->belongsTo('App\User');
+        return $this->belongsTo('App\Models\User');
     }
 
     public function pagos()
     {
-        return $this->hasMany('App\Pago');
+        return $this->hasMany('App\Models\Pago');
     }
 }

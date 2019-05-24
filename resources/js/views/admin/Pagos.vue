@@ -5,12 +5,12 @@
         <v-card>
           <v-container fill-height fluid>
             <v-layout row wrap>
-              <v-flex xs12 sm8 md9>
-                <span class="headline">Lista de Haberes y Descuentos</span>
+              <v-flex xs12 sm9 md9>
+                <span class="headline">Lista de pagos</span>
               </v-flex>
-              <v-flex xs12 sm4 md3 justify-end flexbox>
-                <v-btn color="primary" @click="modalAgregar">
-                  <v-icon>$vuetify.icons.add</v-icon>Agregar hab. o desct.
+              <v-flex xs12 sm3 md3 justify-end flexbox>
+                <v-btn color="primary" @click.stop="modalAgregar">
+                  <v-icon>$vuetify.icons.add</v-icon>Realizar pago
                 </v-btn>
               </v-flex>
             </v-layout>
@@ -29,11 +29,12 @@
             <span class="mb-2">
               <v-tooltip bottom>
                 <v-icon slot="activator">$vuetify.icons.filter</v-icon>
-                <span>Filtar por tipo</span>
+                <span>Filtar por estado</span>
               </v-tooltip>
               <v-btn flat @click="filterBy('Todos')">Todos</v-btn>
-              <v-btn flat color="success" @click="filterBy('haber')">Haberes</v-btn>
-              <v-btn flat color="info" @click="filterBy('descuento')">Descuentos</v-btn>
+              <v-btn flat color="success" @click="filterBy('activo')">Activos</v-btn>
+              <v-btn flat color="info" @click="filterBy('sobreviviente')">Sobrevivientes</v-btn>
+              <v-btn flat color="error" @click="filterBy('cesante')">Censantes</v-btn>
             </span>
           </v-container>
         </v-card>
@@ -43,7 +44,7 @@
       <v-flex xs12>
         <v-data-table
           :headers="headers"
-          :items="descuentos"
+          :items="pagos"
           :search="search"
           rows-per-page-text="Mostrar"
           no-data-text="No hay registros"
@@ -53,28 +54,12 @@
           :rows-per-page-items="RowsPerPageItems"
         >
           <template v-slot:items="props">
-            <td class="text-xs-center">{{ props.item.codigo }}</td>
-            <td>{{ props.item.nombre }}</td>
-            <td>
-              <template v-if="props.item.tipo === 'descuento'">
-                <v-chip
-                  text-color="white"
-                  color="success"
-                  class="text-capitalize"
-                  small
-                >{{ props.item.tipo }}</v-chip>
-              </template>
-              <template v-if="props.item.tipo === 'haber'">
-                <v-chip
-                  text-color="white"
-                  color="info"
-                  class="text-capitalize"
-                  small
-                >{{ props.item.tipo }}</v-chip>
-              </template>
-            </td>
-            <td class="text-xs-center">{{ props.item.descripcion }}</td>
-            <td class="text-xs-center">{{props.item.descripcion_simple}}</td>
+            <td class="text-xs-center">{{ props.item.periodo }}</td>
+            <td>{{ props.item.persona.apellido_paterno }} {{ props.item.persona.apellido_materno }}, {{ props.item.persona.nombre }}</td>
+            <td class="text-xs-center">{{ props.item.total_haber }}</td>
+            <td class="text-xs-center">{{ props.item.total_descuento }}</td>
+            <td class="text-xs-center">{{ props.item.monto_liquido }}</td>
+            <td class="text-xs-center">{{ props.item.monto_imponible }}</td>
             <td>
               <v-tooltip bottom>
                 <v-btn color="info" fab small slot="activator" @click="modalEditar(props.item)">
@@ -96,53 +81,59 @@
         </div>
       </v-flex>
     </v-layout>
-    <modal-agregar ref="agregarDescuento"></modal-agregar>
-    <modal-editar ref="editarDescuento"></modal-editar>
+    <!-- <modal-agregar ref="agregarPersona"></modal-agregar>
+    <modal-editar ref="editarPersona"></modal-editar>-->
+    <!-- <modal-editar v-model="showModalEdit"></modal-editar> -->
   </v-container>
 </template>
 
 <script>
-import ModalAgregar from "../../components/descuentos/ModalAgregar";
-import ModalEditar from "../../components/descuentos/ModalEditar";
+import ModalAgregar from "../../components/personas/ModalAgregar";
+import ModalEditar from "../../components/personas/ModalEditar";
 export default {
-  components: { ModalAgregar, ModalEditar },
+  components: {},
   data() {
     return {
-      tipo: "Todos",
       search: "",
+      tipo: "Todos",
       loading: false,
       pagination: {},
       RowsPerPageItems: [9, 15, 25, { text: "Todos", value: -1 }],
       selected: [],
       headers: [
         {
-          text: "Codigo",
+          text: "Periodo",
           align: "left",
-          sortable: true,
-          value: "codigo"
+          sortable: false,
+          value: "periodo"
         },
-        { text: "Nombre", value: "nombre" },
-        { text: "Tipo", value: "tipo" },
-        { text: "Descripcion", value: "descripcion" },
-        { text: "Descripcion simple", value: "descripcion_simple" }
+        {
+          text: "Nombre persona",
+          value: "persona.apellido_paterno"
+        },
+        { text: "Total Haber", value: "total_haber" },
+        { text: "Total Descuento", value: "total_descuento" },
+        { text: "Monto Liquido", value: "monto_liquido" },
+        { text: "Monto Imponible", value: "monto_Total" }
       ],
-      descuentos: []
+      pagos: [],
+      showModalEdit: false
     };
   },
   created() {
-    document.title = "Lista de Haberes y Descuentos";
+    document.title = "Lista de Pagos";
     this.getData();
   },
-  mounted() {
-    this.$root.agregarDescuento = this.$refs.agregarDescuento;
-    this.$root.editarDescuento = this.$refs.editarDescuento;
-  },
+  // mounted() {
+  //   this.$root.agregarPersona = this.$refs.agregarPersona;
+  //   this.$root.editarPersona = this.$refs.editarPersona;
+  // },
   methods: {
-    getData(url = "/descuentos") {
+    getData(url = "/pagos") {
       axios
         .get(url, { params: { tipo: this.tipo } })
         .then(res => {
-          this.descuentos = res.data.descuentos;
+          this.pagos = res.data.pagos;
         })
         .catch(err => {
           console.log(err);
@@ -152,21 +143,22 @@ export default {
         });
     },
     filterBy(prop) {
-      this.tipo = prop;
-      this.getData();
+      // this.tipo = prop;
+      // this.getData();
     },
     modalAgregar() {
-      this.$root.agregarDescuento.show();
+      // this.$root.agregarPersona.show();
     },
     modalEditar(persona) {
-      this.$root.editarDescuento.show();
-      this.$root.editarDescuento.form.id = persona.id;
-      this.$root.editarDescuento.form.codigo = persona.codigo;
-      this.$root.editarDescuento.form.nombre = persona.nombre;
-      this.$root.editarDescuento.form.tipo = persona.tipo;
-      this.$root.editarDescuento.form.descripcion = persona.descripcion;
-      this.$root.editarDescuento.form.descripcion_simple =
-        persona.descripcion_simple;
+      // this.$root.editarPersona.show();
+      // this.$root.editarPersona.form.id = persona.id;
+      // this.$root.editarPersona.form.nombre = persona.nombre;
+      // this.$root.editarPersona.form.apellido_paterno = persona.apellido_paterno;
+      // this.$root.editarPersona.form.apellido_materno = persona.apellido_materno;
+      // this.$root.editarPersona.form.dni = persona.dni;
+      // this.$root.editarPersona.form.codigo_modular = persona.codigo_modular;
+      // this.$root.editarPersona.form.cargo = persona.cargo;
+      // this.$root.editarPersona.form.estado = persona.estado;
     }
   },
   computed: {

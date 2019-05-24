@@ -34,7 +34,7 @@
               <v-btn flat @click="filterBy('Todos')">Todos</v-btn>
               <v-btn flat color="success" @click="filterBy('activo')">Activos</v-btn>
               <v-btn flat color="info" @click="filterBy('sobreviviente')">Sobrevivientes</v-btn>
-              <v-btn flat color="censante" @click="filterBy('cesante')">Censantes</v-btn>
+              <v-btn flat color="error" @click="filterBy('cesante')">Censantes</v-btn>
             </span>
           </v-container>
         </v-card>
@@ -46,7 +46,6 @@
           :headers="headers"
           :items="personas"
           :search="search"
-          hide-actions
           rows-per-page-text="Mostrar"
           no-data-text="No hay registros"
           no-results-text="No hay registros encontrados"
@@ -132,7 +131,10 @@ export default {
           sortable: false,
           value: "codigo_modular"
         },
-        { text: "Nombre completo", value: "nombre" },
+        {
+          text: "Nombre completo",
+          value: "apellido_paterno"
+        },
         { text: "DNI", value: "dni" },
         { text: "Cargo", value: "cargo" },
         { text: "Estado", value: "estado" }
@@ -158,6 +160,9 @@ export default {
         })
         .catch(err => {
           console.log(err);
+          if (err.response.status == 403) {
+            this.$router.push("/admin/403");
+          }
         });
     },
     filterBy(prop) {

@@ -17,11 +17,11 @@ class Pago extends Model
 
     public function persona()
     {
-        return $this->belongsTo('App\Persona');
+        return $this->belongsTo('App\Models\Persona');
     }
 
     public function detalles()
     {
-        return $this->hasMany('App\Detalle');
+        return $this->hasMany('App\Models\Detalle');
     }
 }

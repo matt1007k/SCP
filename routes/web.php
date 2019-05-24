@@ -13,13 +13,11 @@
 
 Auth::routes();
 
-// Route::get('/', function () {
-//     return redirect()->route('login');
-// });
+Route::get('/', function () {
+    return redirect()->route('login');
+});
 
 Route::namespace ('Admin')->group(function () {
-    // Route::get('/{any?}', 'DashboardController@index')
-    //     ->where('any', '.*');
     Route::redirect('/home', '/admin', 302);
 
     Route::middleware(['auth'])->group(function () {

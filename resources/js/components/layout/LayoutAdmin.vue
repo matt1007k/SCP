@@ -6,7 +6,7 @@
     <v-toolbar dark color="primary" app>
       <v-toolbar-side-icon @click.stop="OpenSidebar"></v-toolbar-side-icon>
 
-      <v-toolbar-title class="white--text">Admin</v-toolbar-title>
+      <v-toolbar-title class="white--text">Sistema de Constancia de Pagos</v-toolbar-title>
 
       <v-spacer></v-spacer>
 
