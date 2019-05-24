@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -17,35 +18,34 @@ class UserController extends Controller
     }
     public function index()
     {
-        $columns = ['name', 'dni', 'email'];
-        $length = $request->input('length');
-        $column = $request->input('column'); //Index
-        $dir = $request->input('dir');
-        $searchValue = $request->input('search');
-        $query = User::select('id', 'name', 'slug', 'description')->
-            orderBy($columns[$column], $dir)->with(['roles', 'permissions']);
-        if ($searchValue) {
-            $query->where(function ($query) use ($searchValue) {
-                $query->where('name', 'like', '%' . $searchValue . '%')
-                    ->orWhere('dni', 'like', '%' . $searchValue . '%')
-                    ->orWhere('email', 'like', '%' . $searchValue . '%');
-            });
-        }
-        $roles = $query->paginate($length);
+        $usuarios = User::With(['roles'])->get();
 
-        return response()->json(['roles' => $roles, 'draw' => $request->input('draw')], 200);
+        return response()->json(['usuarios' => $usuarios], 200);
     }
-    // public function show($id)
-    // {
-    //     $user = User::findOrFail($id);
-    //     return view('admin.usuarios.show', ['user' => $user]);
-    // }
-    // public function edit($id)
-    // {
-    //     $user = User::findOrFail($id);
-    //     $roles = Role::all();
-    //     return view('admin.usuarios.edit', ['user' => $user, 'roles' => $roles]);
-    // }
+    public function store(Request $request)
+    {
+        $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'dni' => 'required|numeric|min:8|unique:users',
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'password' => ['required', 'string', 'min:8'],
+        ]);
+        $user = new User();
+        $user->name = $request->name;
+        $user->dni = $request->dni;
+        $user->email = $request->email;
+        $user->password = Hash::make($request->password);
+        if ($user->save()) {
+            $user->roles()->sync($request->get('roles'));
+            return response()->json([
+                'updated' => true,
+            ], 200);
+        } else {
+            return response()->json([
+                'updated' => false,
+            ], 200);
+        }
+    }
     public function update(Request $request, $id)
     {
         $user = User::findOrFail($id);

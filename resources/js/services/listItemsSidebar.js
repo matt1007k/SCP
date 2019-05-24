@@ -6,6 +6,13 @@ export const listItemsSidebar = [
         exact: true
     },
     {
+        title: "Usuarios",
+        url: "/admin/usuarios",
+        icon: "mdi mdi-account-multiple",
+        exact: false,
+        permission: "usuarios.index"
+    },
+    {
         title: "Personas",
         url: "/admin/personas",
         icon: "mdi mdi-account-group",
