@@ -27,9 +27,9 @@ class RolesTableSeeder extends Seeder
             'special' => 'no-access',
         ]);
         Role::create([
-            'name' => 'Cajero',
+            'name' => 'Tesoreria',
             'description' => 'Acceso a los módulos de pagos, personas, Haberes y Descuentos del sistemas',
-            'slug' => 'jefe',
+            'slug' => 'tesoreria',
         ]);
         Role::create([
             'name' => 'Personal',

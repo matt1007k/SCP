@@ -1,30 +1,16 @@
-(window["webpackJsonp"] = window["webpackJsonp"] || []).push([[7],{
+(window["webpackJsonp"] = window["webpackJsonp"] || []).push([[16],{
 
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/admin/Pagos.vue?vue&type=script&lang=js&":
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/admin/Roles.vue?vue&type=script&lang=js&":
 /*!*****************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/admin/Pagos.vue?vue&type=script&lang=js& ***!
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/admin/Roles.vue?vue&type=script&lang=js& ***!
   \*****************************************************************************************************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _components_personas_ModalAgregar__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../components/personas/ModalAgregar */ "./resources/js/components/personas/ModalAgregar.vue");
-/* harmony import */ var _components_personas_ModalEditar__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../components/personas/ModalEditar */ "./resources/js/components/personas/ModalEditar.vue");
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
+/* harmony import */ var _components_roles_ModalAgregar__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../components/roles/ModalAgregar */ "./resources/js/components/roles/ModalAgregar.vue");
+/* harmony import */ var _components_roles_ModalEditar__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../components/roles/ModalEditar */ "./resources/js/components/roles/ModalEditar.vue");
 //
 //
 //
@@ -103,11 +89,13 @@ __webpack_require__.r(__webpack_exports__);
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  components: {},
+  components: {
+    ModalAgregar: _components_roles_ModalAgregar__WEBPACK_IMPORTED_MODULE_0__["default"],
+    ModalEditar: _components_roles_ModalEditar__WEBPACK_IMPORTED_MODULE_1__["default"]
+  },
   data: function data() {
     return {
       search: "",
-      tipo: "Todos",
       loading: false,
       pagination: {},
       RowsPerPageItems: [9, 15, 25, {
@@ -116,49 +104,35 @@ __webpack_require__.r(__webpack_exports__);
       }],
       selected: [],
       headers: [{
-        text: "Periodo",
+        text: "Identificador",
         align: "left",
         sortable: false,
-        value: "periodo"
+        value: "slug"
       }, {
-        text: "Nombre persona",
-        value: "persona.apellido_paterno"
+        text: "Nombre del rol",
+        value: "name"
       }, {
-        text: "Total Haber",
-        value: "total_haber"
-      }, {
-        text: "Total Descuento",
-        value: "total_descuento"
-      }, {
-        text: "Monto Liquido",
-        value: "monto_liquido"
-      }, {
-        text: "Monto Imponible",
-        value: "monto_Total"
+        text: "Descripción",
+        value: "description"
       }],
-      pagos: [],
-      showModalEdit: false
+      roles: []
     };
   },
   created: function created() {
-    document.title = "Lista de Pagos";
+    document.title = "Lista de Roles";
     this.getData();
   },
-  // mounted() {
-  //   this.$root.agregarPersona = this.$refs.agregarPersona;
-  //   this.$root.editarPersona = this.$refs.editarPersona;
-  // },
+  mounted: function mounted() {
+    this.$root.agregarRol = this.$refs.agregarRol;
+    this.$root.editarRol = this.$refs.editarRol;
+  },
   methods: {
     getData: function getData() {
       var _this = this;
 
-      var url = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "/pagos";
-      axios.get(url, {
-        params: {
-          tipo: this.tipo
-        }
-      }).then(function (res) {
-        _this.pagos = res.data.pagos;
+      var url = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "/roles";
+      axios.get(url).then(function (res) {
+        _this.roles = res.data.roles;
       })["catch"](function (err) {
         console.log(err);
 
@@ -167,22 +141,18 @@ __webpack_require__.r(__webpack_exports__);
         }
       });
     },
-    filterBy: function filterBy(prop) {// this.tipo = prop;
-      // this.getData();
+    modalAgregar: function modalAgregar() {
+      this.$root.agregarRol.show();
     },
-    modalAgregar: function modalAgregar() {// this.$root.agregarPersona.show();
+    modalEditar: function modalEditar(persona) {
+      this.$root.editarRol.show();
+      this.$root.editarRol.form.id = persona.id;
+      this.$root.editarRol.form.identificador = persona.slug;
+      this.$root.editarRol.form.nombre = persona.name;
+      this.$root.editarRol.form.descripcion = persona.description;
+      this.$root.editarRol.form.permissions = persona.permissions;
     },
-    modalEditar: function modalEditar(persona) {// this.$root.editarPersona.show();
-      // this.$root.editarPersona.form.id = persona.id;
-      // this.$root.editarPersona.form.nombre = persona.nombre;
-      // this.$root.editarPersona.form.apellido_paterno = persona.apellido_paterno;
-      // this.$root.editarPersona.form.apellido_materno = persona.apellido_materno;
-      // this.$root.editarPersona.form.dni = persona.dni;
-      // this.$root.editarPersona.form.codigo_modular = persona.codigo_modular;
-      // this.$root.editarPersona.form.cargo = persona.cargo;
-      // this.$root.editarPersona.form.estado = persona.estado;
-    },
-    deleteData: function deleteData(pago) {
+    deleteData: function deleteData(usuario) {
       var _this2 = this;
 
       this.$swal({
@@ -196,14 +166,14 @@ __webpack_require__.r(__webpack_exports__);
         confirmButtonText: "Si, eliminar"
       }).then(function (result) {
         if (result.value) {
-          axios["delete"]("/pagos/".concat(pago.id)).then(function (res) {
+          axios["delete"]("/roles/".concat(usuario.id)).then(function (res) {
             _this2.$swal("Mensaje de operación", "Rol eliminado correctamente", "success");
 
             _this2.getData();
           })["catch"](function (err) {
             console.log(err);
 
-            if (err.response.status == 403) {
+            if (errors.response.status == 403) {
               _this2.$router.push("/403");
             }
           });
@@ -221,9 +191,9 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/admin/Pagos.vue?vue&type=template&id=670c9ceb&":
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/admin/Roles.vue?vue&type=template&id=3554a12e&":
 /*!*********************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/admin/Pagos.vue?vue&type=template&id=670c9ceb& ***!
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/admin/Roles.vue?vue&type=template&id=3554a12e& ***!
   \*********************************************************************************************************************************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -263,7 +233,7 @@ var render = function() {
                             { attrs: { xs12: "", sm9: "", md9: "" } },
                             [
                               _c("span", { staticClass: "headline" }, [
-                                _vm._v("Lista de pagos")
+                                _vm._v("Lista de roles")
                               ])
                             ]
                           ),
@@ -293,7 +263,7 @@ var render = function() {
                                 },
                                 [
                                   _c("v-icon", [_vm._v("$vuetify.icons.add")]),
-                                  _vm._v("Realizar pago\n              ")
+                                  _vm._v("Agregar rol\n              ")
                                 ],
                                 1
                               )
@@ -361,84 +331,7 @@ var render = function() {
                           },
                           expression: "search"
                         }
-                      }),
-                      _vm._v(" "),
-                      _c(
-                        "span",
-                        { staticClass: "mb-2" },
-                        [
-                          _c(
-                            "v-tooltip",
-                            { attrs: { bottom: "" } },
-                            [
-                              _c(
-                                "v-icon",
-                                {
-                                  attrs: { slot: "activator" },
-                                  slot: "activator"
-                                },
-                                [_vm._v("$vuetify.icons.filter")]
-                              ),
-                              _vm._v(" "),
-                              _c("span", [_vm._v("Filtar por estado")])
-                            ],
-                            1
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "v-btn",
-                            {
-                              attrs: { flat: "" },
-                              on: {
-                                click: function($event) {
-                                  return _vm.filterBy("Todos")
-                                }
-                              }
-                            },
-                            [_vm._v("Todos")]
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "v-btn",
-                            {
-                              attrs: { flat: "", color: "success" },
-                              on: {
-                                click: function($event) {
-                                  return _vm.filterBy("activo")
-                                }
-                              }
-                            },
-                            [_vm._v("Activos")]
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "v-btn",
-                            {
-                              attrs: { flat: "", color: "info" },
-                              on: {
-                                click: function($event) {
-                                  return _vm.filterBy("sobreviviente")
-                                }
-                              }
-                            },
-                            [_vm._v("Sobrevivientes")]
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "v-btn",
-                            {
-                              attrs: { flat: "", color: "error" },
-                              on: {
-                                click: function($event) {
-                                  return _vm.filterBy("cesante")
-                                }
-                              }
-                            },
-                            [_vm._v("Censantes")]
-                          )
-                        ],
-                        1
-                      )
+                      })
                     ],
                     1
                   )
@@ -464,7 +357,7 @@ var render = function() {
                 staticClass: "elevation-1",
                 attrs: {
                   headers: _vm.headers,
-                  items: _vm.pagos,
+                  items: _vm.roles,
                   search: _vm.search,
                   "rows-per-page-text": "Mostrar",
                   "no-data-text": "No hay registros",
@@ -483,34 +376,12 @@ var render = function() {
                     fn: function(props) {
                       return [
                         _c("td", { staticClass: "text-xs-center" }, [
-                          _vm._v(_vm._s(props.item.periodo))
+                          _vm._v(_vm._s(props.item.slug))
                         ]),
                         _vm._v(" "),
-                        _c("td", [
-                          _vm._v(
-                            _vm._s(props.item.persona.apellido_paterno) +
-                              " " +
-                              _vm._s(props.item.persona.apellido_materno) +
-                              ", " +
-                              _vm._s(props.item.persona.nombre)
-                          )
-                        ]),
+                        _c("td", [_vm._v(_vm._s(props.item.name))]),
                         _vm._v(" "),
-                        _c("td", { staticClass: "text-xs-center" }, [
-                          _vm._v(_vm._s(props.item.total_haber))
-                        ]),
-                        _vm._v(" "),
-                        _c("td", { staticClass: "text-xs-center" }, [
-                          _vm._v(_vm._s(props.item.total_descuento))
-                        ]),
-                        _vm._v(" "),
-                        _c("td", { staticClass: "text-xs-center" }, [
-                          _vm._v(_vm._s(props.item.monto_liquido))
-                        ]),
-                        _vm._v(" "),
-                        _c("td", { staticClass: "text-xs-center" }, [
-                          _vm._v(_vm._s(props.item.monto_imponible))
-                        ]),
+                        _c("td", [_vm._v(_vm._s(props.item.description))]),
                         _vm._v(" "),
                         _c(
                           "td",
@@ -561,6 +432,11 @@ var render = function() {
                                       fab: "",
                                       small: ""
                                     },
+                                    on: {
+                                      click: function($event) {
+                                        return _vm.deleteData(props.item)
+                                      }
+                                    },
                                     slot: "activator"
                                   },
                                   [
@@ -571,7 +447,7 @@ var render = function() {
                                   1
                                 ),
                                 _vm._v(" "),
-                                _c("span", [_vm._v("Cambiar estado")])
+                                _c("span", [_vm._v("Eliminar registro")])
                               ],
                               1
                             )
@@ -606,7 +482,11 @@ var render = function() {
           )
         ],
         1
-      )
+      ),
+      _vm._v(" "),
+      _c("modal-agregar", { ref: "agregarRol" }),
+      _vm._v(" "),
+      _c("modal-editar", { ref: "editarRol" })
     ],
     1
   )
@@ -618,17 +498,17 @@ render._withStripped = true
 
 /***/ }),
 
-/***/ "./resources/js/views/admin/Pagos.vue":
+/***/ "./resources/js/views/admin/Roles.vue":
 /*!********************************************!*\
-  !*** ./resources/js/views/admin/Pagos.vue ***!
+  !*** ./resources/js/views/admin/Roles.vue ***!
   \********************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _Pagos_vue_vue_type_template_id_670c9ceb___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Pagos.vue?vue&type=template&id=670c9ceb& */ "./resources/js/views/admin/Pagos.vue?vue&type=template&id=670c9ceb&");
-/* harmony import */ var _Pagos_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Pagos.vue?vue&type=script&lang=js& */ "./resources/js/views/admin/Pagos.vue?vue&type=script&lang=js&");
+/* harmony import */ var _Roles_vue_vue_type_template_id_3554a12e___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Roles.vue?vue&type=template&id=3554a12e& */ "./resources/js/views/admin/Roles.vue?vue&type=template&id=3554a12e&");
+/* harmony import */ var _Roles_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Roles.vue?vue&type=script&lang=js& */ "./resources/js/views/admin/Roles.vue?vue&type=script&lang=js&");
 /* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
@@ -638,9 +518,9 @@ __webpack_require__.r(__webpack_exports__);
 /* normalize component */
 
 var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
-  _Pagos_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _Pagos_vue_vue_type_template_id_670c9ceb___WEBPACK_IMPORTED_MODULE_0__["render"],
-  _Pagos_vue_vue_type_template_id_670c9ceb___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  _Roles_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _Roles_vue_vue_type_template_id_3554a12e___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _Roles_vue_vue_type_template_id_3554a12e___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
   false,
   null,
   null,
@@ -650,38 +530,38 @@ var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_
 
 /* hot reload */
 if (false) { var api; }
-component.options.__file = "resources/js/views/admin/Pagos.vue"
+component.options.__file = "resources/js/views/admin/Roles.vue"
 /* harmony default export */ __webpack_exports__["default"] = (component.exports);
 
 /***/ }),
 
-/***/ "./resources/js/views/admin/Pagos.vue?vue&type=script&lang=js&":
+/***/ "./resources/js/views/admin/Roles.vue?vue&type=script&lang=js&":
 /*!*********************************************************************!*\
-  !*** ./resources/js/views/admin/Pagos.vue?vue&type=script&lang=js& ***!
+  !*** ./resources/js/views/admin/Roles.vue?vue&type=script&lang=js& ***!
   \*********************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Pagos_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./Pagos.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/admin/Pagos.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Pagos_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Roles_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./Roles.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/admin/Roles.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Roles_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 
-/***/ "./resources/js/views/admin/Pagos.vue?vue&type=template&id=670c9ceb&":
+/***/ "./resources/js/views/admin/Roles.vue?vue&type=template&id=3554a12e&":
 /*!***************************************************************************!*\
-  !*** ./resources/js/views/admin/Pagos.vue?vue&type=template&id=670c9ceb& ***!
+  !*** ./resources/js/views/admin/Roles.vue?vue&type=template&id=3554a12e& ***!
   \***************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Pagos_vue_vue_type_template_id_670c9ceb___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./Pagos.vue?vue&type=template&id=670c9ceb& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/admin/Pagos.vue?vue&type=template&id=670c9ceb&");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Pagos_vue_vue_type_template_id_670c9ceb___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Roles_vue_vue_type_template_id_3554a12e___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./Roles.vue?vue&type=template&id=3554a12e& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/admin/Roles.vue?vue&type=template&id=3554a12e&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Roles_vue_vue_type_template_id_3554a12e___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Pagos_vue_vue_type_template_id_670c9ceb___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Roles_vue_vue_type_template_id_3554a12e___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

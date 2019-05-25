@@ -38,6 +38,18 @@ export default new Router({
                     component: () => import("./views/admin/Usuarios.vue")
                 },
                 {
+                    path: "roles",
+                    name: "roles",
+                    meta: { titulo: "Roles" },
+                    component: () => import("./views/admin/Roles.vue")
+                },
+                {
+                    path: "permisos",
+                    name: "permisos",
+                    meta: { titulo: "Permisos" },
+                    component: () => import("./views/admin/Permisos.vue")
+                },
+                {
                     path: "personas",
                     name: "personas",
                     meta: { titulo: "Personas" },

@@ -1,7 +1,6 @@
 <template>
   <v-app>
     <snackbar ref="snackbar"></snackbar>
-
     <sidebar-admin-left :toggle="drawer"></sidebar-admin-left>
     <v-toolbar dark color="primary" app>
       <v-toolbar-side-icon @click.stop="OpenSidebar"></v-toolbar-side-icon>
@@ -27,7 +26,7 @@
     </v-toolbar>
 
     <v-content>
-      <transition name="router-animate">
+      <transition name="slide-fade" mode="out-in">
         <router-view/>
       </transition>
     </v-content>
@@ -41,10 +40,7 @@ export default {
   components: { SidebarAdminLeft, Snackbar },
   name: "LayoutAdmin",
   data: () => ({
-    drawer: true,
-    snackbar: true,
-    timeout: 6000,
-    text: "Hello, I'm a snackbar"
+    drawer: true
   }),
   methods: {
     OpenSidebar() {

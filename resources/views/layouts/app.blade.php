@@ -10,8 +10,6 @@
 
     <title>Sistema de Constancia de Pago | @yield('title')</title>
 
-    
-    <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     
 </head>

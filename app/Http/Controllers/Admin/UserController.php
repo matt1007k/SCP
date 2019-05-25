@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
@@ -18,7 +19,7 @@ class UserController extends Controller
     }
     public function index()
     {
-        $usuarios = User::With(['roles'])->get();
+        $usuarios = User::With(['roles', 'permissions'])->get();
 
         return response()->json(['usuarios' => $usuarios], 200);
     }
@@ -28,15 +29,23 @@ class UserController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'dni' => 'required|numeric|min:8|unique:users',
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8'],
+            'estado' => ['required'],
         ]);
         $user = new User();
         $user->name = $request->name;
         $user->dni = $request->dni;
         $user->email = $request->email;
-        $user->password = Hash::make($request->password);
+        $user->estado = $request->estado;
+        if ($request->has('password')) {
+            $user->password = Hash::make($request->password);
+        }
         if ($user->save()) {
-            $user->roles()->sync($request->get('roles'));
+            if ($request->has('roles')) {
+                $user->roles()->sync(collect($request->roles)->pluck('id')->toArray());
+            }
+            if ($request->has('permissions')) {
+                $user->permissions()->sync(collect($request->permissions)->pluck('id')->toArray());
+            }
             return response()->json([
                 'updated' => true,
             ], 200);
@@ -49,10 +58,22 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         $user = User::findOrFail($id);
+
+        $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'dni' => ['required', 'numeric', 'min:8', Rule::unique('users')->ignore($user->id)],
+            'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
+            'estado' => ['required'],
+        ]);
         $user->name = $request->name;
         $user->dni = $request->dni;
         if ($user->save()) {
-            $user->roles()->sync($request->get('roles'));
+            if ($request->has('roles')) {
+                $user->roles()->sync(collect($request->roles)->pluck('id')->toArray());
+            }
+            if ($request->has('permissions')) {
+                $user->permissions()->sync(collect($request->permissions)->pluck('id')->toArray());
+            }
             return response()->json([
                 'updated' => true,
             ], 200);

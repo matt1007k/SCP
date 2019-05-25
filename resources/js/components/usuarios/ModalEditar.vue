@@ -37,26 +37,55 @@
                   <v-text-field
                     label="Correo Electrónico"
                     required
+                    type="email"
                     v-model="form.email"
                     :error-messages="errors.email"
                   ></v-text-field>
                 </v-flex>
                 <v-flex xs12 sm6>
-                  <v-text-field
-                    label="Constraseña"
-                    required
-                    v-model="form.password"
-                    type="password"
-                    :error-messages="errors.password"
-                  ></v-text-field>
+                  <v-btn color="primary" @click="showPassword">Cambiar Contraseña</v-btn>
+                  <div :class="{'d-none': hidePassword}">
+                    <v-text-field
+                      label="Contraseña"
+                      v-model="form.password"
+                      type="password"
+                      :error-messages="errors.password"
+                    ></v-text-field>
+                  </div>
                 </v-flex>
 
-                <!-- <v-flex xs12>
+                <v-flex xs12>
                   <v-radio-group v-model="form.estado" row :error-messages="errors.estado">
                     <v-radio label="Activo" value="activo" color="success"></v-radio>
                     <v-radio label="Inactivo" value="inactivo" color="error"></v-radio>
                   </v-radio-group>
-                </v-flex>-->
+                </v-flex>
+              </v-layout>
+              <v-layout wrap>
+                <v-flex xs12>
+                  <h4>Asignar Roles</h4>
+                  <v-select
+                    v-model="form.roles"
+                    :items="items_roles"
+                    item-text="name"
+                    return-object
+                    chips
+                    label="Roles"
+                    multiple
+                  ></v-select>
+                </v-flex>
+                <v-flex xs12>
+                  <h4>Asignar Permisos</h4>
+                  <v-select
+                    v-model="form.permissions"
+                    :items="items_permissions"
+                    item-text="name"
+                    return-object
+                    chips
+                    label="Permisos"
+                    multiple
+                  ></v-select>
+                </v-flex>
               </v-layout>
             </v-container>
             <small>*indicado todos los campos son obligatorios.</small>
@@ -76,20 +105,29 @@
 export default {
   data: () => ({
     open: false,
+    hidePassword: true,
     form: {
       id: "",
       name: "",
       dni: "",
       email: "",
       password: "",
-      estado: "activo"
+      estado: "activo",
+      roles: [],
+      permissions: []
     },
-    errors: {}
+    errors: {},
+    items_roles: [],
+    items_permissions: []
   }),
+  created() {
+    this.getRoles();
+    this.getPermissions();
+  },
   methods: {
     Submit() {
       axios
-        .post(`/usuarios/${this.form.id}`, this.form)
+        .put(`/usuarios/${this.form.id}`, this.form)
         .then(res => {
           this.$parent.getData();
           this.open = false;
@@ -101,6 +139,26 @@ export default {
     },
     show() {
       this.open = true;
+      this.errors = {};
+    },
+    getRoles() {
+      axios
+        .get("/getRoles")
+        .then(res => {
+          this.items_roles = res.data.roles;
+        })
+        .catch(err => console.log(err));
+    },
+    getPermissions() {
+      axios
+        .get("/getPermissions")
+        .then(res => {
+          this.items_permissions = res.data.permissions;
+        })
+        .catch(err => console.log(err));
+    },
+    showPassword() {
+      this.hidePassword = !this.hidePassword;
     }
   }
 };

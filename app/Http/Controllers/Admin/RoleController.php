@@ -17,22 +17,16 @@ class RoleController extends Controller
     }
     public function index(Request $request)
     {
-        $columns = ['slug', 'name', 'description'];
-        $length = $request->input('length');
-        $column = $request->input('column'); //Index
-        $dir = $request->input('dir');
-        $searchValue = $request->input('search');
-        $query = Role::select('id', 'name', 'slug', 'description')->
-            orderBy($columns[$column], $dir)->with(['permissions']);
-        if ($searchValue) {
-            $query->where(function ($query) use ($searchValue) {
-                $query->where('name', 'like', '%' . $searchValue . '%')
-                    ->orWhere('description', 'like', '%' . $searchValue . '%');
-            });
-        }
-        $roles = $query->paginate($length);
+        $roles = Role::With(['permissions'])->orderBy('name', 'ASC')->get();
 
-        return response()->json(['roles' => $roles, 'draw' => $request->input('draw')], 200);
+        return response()->json(['roles' => $roles], 200);
+    }
+
+    public function getRoles(Request $request)
+    {
+        $roles = Role::orderBy('name', 'ASC')->get();
+
+        return response()->json(['roles' => $roles], 200);
     }
     // public function show($id)
     // {
@@ -56,7 +50,7 @@ class RoleController extends Controller
         $role->slug = $request->identificador;
         $role->description = $request->descripcion;
         if ($role->save()) {
-            $role->permissions()->sync($request->get('permissions'));
+            $role->permissions()->sync(collect($request->permissions)->pluck('id')->toArray());
             return response()->json([
                 'created' => true,
             ], 200);
@@ -84,7 +78,7 @@ class RoleController extends Controller
         $role->slug = $request->identificador;
         $role->description = $request->descripcion;
         if ($role->save()) {
-            $role->permissions()->sync($request->get('permissions'));
+            $role->permissions()->sync(collect($request->permissions)->pluck('id')->toArray());
             return response()->json([
                 'updated' => true,
             ], 200);

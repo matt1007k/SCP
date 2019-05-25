@@ -1,5 +1,7 @@
 <template>
-  <router-view :key="$route.path"></router-view>
+  <transition>
+    <router-view :key="$route.fullPath"/>
+  </transition>
 </template>
 
 <script>

@@ -5,7 +5,7 @@
         <form @submit.prevent="Submit">
           <v-card-title wrap>
             <v-flex xs11>
-              <span class="headline">Registrar usuario</span>
+              <span class="headline">Registrar rol</span>
             </v-flex>
             <v-flex xs1 class="d-flex justify-end">
               <v-btn flat color="error" @click="open = false">
@@ -18,59 +18,31 @@
               <v-layout wrap>
                 <v-flex xs12 sm6>
                   <v-text-field
-                    label="Nombre completo"
+                    label="El Identificador"
                     required
-                    v-model="form.name"
-                    :error-messages="errors.name"
+                    v-model="form.identificador"
+                    :error-messages="errors.identificador"
                   ></v-text-field>
                 </v-flex>
                 <v-flex xs12 sm6>
                   <v-text-field
-                    label="El DNI"
+                    label="Nombre del rol"
                     required
-                    maxlength="8"
-                    v-model="form.dni"
-                    :error-messages="errors.dni"
-                  ></v-text-field>
-                </v-flex>
-                <v-flex xs12 sm6>
-                  <v-text-field
-                    label="Correo Electrónico"
-                    required
-                    v-model="form.email"
-                    :error-messages="errors.email"
-                  ></v-text-field>
-                </v-flex>
-                <v-flex xs12 sm6>
-                  <v-text-field
-                    label="Contraseña"
-                    required
-                    v-model="form.password"
-                    type="password"
-                    :error-messages="errors.password"
+                    v-model="form.nombre"
+                    :error-messages="errors.nombre"
                   ></v-text-field>
                 </v-flex>
 
-                <v-flex xs12>
-                  <v-radio-group v-model="form.estado" row :error-messages="errors.estado">
-                    <v-radio label="Activo" value="activo" color="success"></v-radio>
-                    <v-radio label="Inactivo" value="inactivo" color="error"></v-radio>
-                  </v-radio-group>
+                <v-flex xs12 sm6>
+                  <v-textarea
+                    label="Descripción"
+                    required
+                    v-model="form.descripcion"
+                    :error-messages="errors.descripcion"
+                  ></v-textarea>
                 </v-flex>
               </v-layout>
               <v-layout wrap>
-                <v-flex xs12>
-                  <h4>Asignar Roles</h4>
-                  <v-select
-                    v-model="form.roles"
-                    :items="items_roles"
-                    item-text="name"
-                    return-object
-                    chips
-                    label="Roles"
-                    multiple
-                  ></v-select>
-                </v-flex>
                 <v-flex xs12>
                   <h4>Asignar Permisos Especiales</h4>
                   <v-select
@@ -106,26 +78,21 @@ export default {
   data: () => ({
     open: false,
     form: {
-      name: "",
-      dni: "",
-      email: "",
-      password: "",
-      estado: "activo",
-      roles: [],
+      nombre: "",
+      identificador: "",
+      descripcion: "",
       permissions: []
     },
     errors: {},
-    items_roles: [],
     items_permissions: []
   }),
   created() {
-    this.getRoles();
     this.getPermissions();
   },
   methods: {
     Submit() {
       axios
-        .post("/usuarios", this.form)
+        .post("/roles", this.form)
         .then(res => {
           this.$parent.getData();
           this.open = false;
@@ -136,14 +103,6 @@ export default {
           this.errors = err.response.data.errors;
         });
     },
-    getRoles() {
-      axios
-        .get("/getRoles")
-        .then(res => {
-          this.items_roles = res.data.roles;
-        })
-        .catch(err => console.log(err));
-    },
     getPermissions() {
       axios
         .get("/getPermissions")
@@ -153,12 +112,9 @@ export default {
         .catch(err => console.log(err));
     },
     resetInputs() {
-      this.form.name = "";
-      this.form.dni = "";
-      this.form.email = "";
-      this.form.password = "";
-      this.form.estado = "activo";
-      this.form.roles = [];
+      this.form.nombre = "";
+      this.form.identificador = "";
+      this.form.descripcion = "";
       this.form.permissions = [];
     },
     show() {

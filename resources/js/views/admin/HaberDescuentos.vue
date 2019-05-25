@@ -83,7 +83,7 @@
                 <span>Editar registro</span>
               </v-tooltip>
               <v-tooltip bottom>
-                <v-btn color="error" fab small slot="activator">
+                <v-btn color="error" fab small slot="activator" @click="deleteData(props.item)">
                   <v-icon>$vuetify.icons.delete</v-icon>
                 </v-btn>
                 <span>Cambiar estado</span>
@@ -167,6 +167,37 @@ export default {
       this.$root.editarDescuento.form.descripcion = persona.descripcion;
       this.$root.editarDescuento.form.descripcion_simple =
         persona.descripcion_simple;
+    },
+    deleteData(descuento) {
+      this.$swal({
+        title: "Esta seguro de eliminar el registro?",
+        text: "Esta operación va ha cambiar el estado del registro",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        cancelButtonText: "Cancelar",
+        confirmButtonText: "Si, eliminar"
+      }).then(result => {
+        if (result.value) {
+          axios
+            .delete(`/descuentos/${descuento.id}`)
+            .then(res => {
+              this.$swal(
+                "Mensaje de operación",
+                "Elimino correctamente",
+                "success"
+              );
+              this.getData();
+            })
+            .catch(err => {
+              console.log(err);
+              if (errors.response.status == 403) {
+                this.$router.push("/403");
+              }
+            });
+        }
+      });
     }
   },
   computed: {

@@ -6,11 +6,11 @@
           <v-container fill-height fluid>
             <v-layout row wrap>
               <v-flex xs12 sm9 md9>
-                <span class="headline">Lista de usuarios</span>
+                <span class="headline">Lista de permisos</span>
               </v-flex>
               <v-flex xs12 sm3 md3 justify-end flexbox>
                 <v-btn color="primary" @click.stop="modalAgregar">
-                  <v-icon>$vuetify.icons.add</v-icon>Agregar usuario
+                  <v-icon>$vuetify.icons.add</v-icon>Agregar permiso
                 </v-btn>
               </v-flex>
             </v-layout>
@@ -34,7 +34,7 @@
       <v-flex xs12>
         <v-data-table
           :headers="headers"
-          :items="usuarios"
+          :items="permisos"
           :search="search"
           rows-per-page-text="Mostrar"
           no-data-text="No hay registros"
@@ -44,44 +44,9 @@
           :rows-per-page-items="RowsPerPageItems"
         >
           <template v-slot:items="props">
-            <td class="text-xs-center">{{ props.item.dni }}</td>
+            <td class="text-xs-center">{{ props.item.slug }}</td>
             <td>{{ props.item.name }}</td>
-            <td>{{ props.item.email }}</td>
-            <template v-if="props.item.roles.length > 0">
-              <td>
-                <v-chip
-                  v-for="(rol, index) in props.item.roles"
-                  :key="index"
-                  text-color="white"
-                  color="info"
-                  class="text-capitalize"
-                  small
-                >{{ rol.name }}</v-chip>
-              </td>
-            </template>
-            <template v-else>
-              <td class="text-xs-center">N/A</td>
-            </template>
-            <template v-if="props.item.estado === 'activo'">
-              <td>
-                <v-chip
-                  text-color="white"
-                  color="success"
-                  class="text-capitalize"
-                  small
-                >{{ props.item.estado }}</v-chip>
-              </td>
-            </template>
-            <template v-if="props.item.estado === 'inactivo'">
-              <td>
-                <v-chip
-                  text-color="white"
-                  color="error"
-                  class="text-capitalize"
-                  small
-                >{{ props.item.estado }}</v-chip>
-              </td>
-            </template>
+            <td>{{ props.item.description }}</td>
             <td>
               <v-tooltip bottom>
                 <v-btn color="info" fab small slot="activator" @click="modalEditar(props.item)">
@@ -93,7 +58,7 @@
                 <v-btn color="error" fab small slot="activator" @click="deleteData(props.item)">
                   <v-icon>$vuetify.icons.delete</v-icon>
                 </v-btn>
-                <span>Cambiar estado</span>
+                <span>Eliminar registro</span>
               </v-tooltip>
             </td>
           </template>
@@ -103,14 +68,14 @@
         </div>
       </v-flex>
     </v-layout>
-    <modal-agregar ref="agregarUsuario"></modal-agregar>
-    <modal-editar ref="editarUsuario"></modal-editar>
+    <modal-agregar ref="agregarPermiso"></modal-agregar>
+    <modal-editar ref="editarPermiso"></modal-editar>
   </v-container>
 </template>
 
 <script>
-import ModalAgregar from "../../components/usuarios/ModalAgregar";
-import ModalEditar from "../../components/usuarios/ModalEditar";
+import ModalAgregar from "../../components/permisos/ModalAgregar";
+import ModalEditar from "../../components/permisos/ModalEditar";
 export default {
   components: { ModalAgregar, ModalEditar },
   data() {
@@ -122,36 +87,34 @@ export default {
       selected: [],
       headers: [
         {
-          text: "DNI",
+          text: "Identificador",
           align: "left",
           sortable: false,
-          value: "dni"
+          value: "slug"
         },
         {
-          text: "Nombre completo",
+          text: "Nombre del rol",
           value: "name"
         },
-        { text: "Correo Electrónico", value: "email" },
-        { text: "Roles", value: "roles.name" },
-        { text: "Estado", value: "estado" }
+        { text: "Descripción", value: "description" }
       ],
-      usuarios: []
+      permisos: []
     };
   },
   created() {
-    document.title = "Lista de Usuarios";
+    document.title = "Lista de Permisos";
     this.getData();
   },
   mounted() {
-    this.$root.agregarUsuario = this.$refs.agregarUsuario;
-    this.$root.editarUsuario = this.$refs.editarUsuario;
+    this.$root.agregarPermiso = this.$refs.agregarPermiso;
+    this.$root.editarPermiso = this.$refs.editarPermiso;
   },
   methods: {
-    getData(url = "/usuarios") {
+    getData(url = "/permisos") {
       axios
         .get(url)
         .then(res => {
-          this.usuarios = res.data.usuarios;
+          this.permisos = res.data.permissions;
         })
         .catch(err => {
           console.log(err);
@@ -161,36 +124,33 @@ export default {
         });
     },
     modalAgregar() {
-      this.$root.agregarUsuario.show();
+      this.$root.agregarPermiso.show();
     },
-    modalEditar(persona) {
-      this.$root.editarUsuario.show();
-      this.$root.editarUsuario.form.id = persona.id;
-      this.$root.editarUsuario.form.dni = persona.dni;
-      this.$root.editarUsuario.form.name = persona.name;
-      this.$root.editarUsuario.form.email = persona.email;
-      this.$root.editarUsuario.form.roles = persona.roles;
-      this.$root.editarUsuario.form.permissions = persona.permissions;
-      this.$root.editarUsuario.form.estado = persona.estado;
+    modalEditar(permiso) {
+      this.$root.editarPermiso.show();
+      this.$root.editarPermiso.form.id = permiso.id;
+      this.$root.editarPermiso.form.identificador = permiso.slug;
+      this.$root.editarPermiso.form.nombre = permiso.name;
+      this.$root.editarPermiso.form.descripcion = permiso.description;
     },
-    deleteData(usuario) {
+    deleteData(permiso) {
       this.$swal({
-        title: "Esta seguro de cambiar el estado?",
+        title: "Esta seguro de eliminar el registro?",
         text: "Esta operación va ha cambiar el estado del registro",
         type: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
         cancelButtonText: "Cancelar",
-        confirmButtonText: "Si, cambiar"
+        confirmButtonText: "Si, eliminar"
       }).then(result => {
         if (result.value) {
           axios
-            .delete(`/usuarios/${usuario.id}`)
+            .delete(`/permisos/${permiso.id}`)
             .then(res => {
               this.$swal(
                 "Mensaje de operación",
-                "Estado cambiado correctamente",
+                "Permiso eliminado correctamente",
                 "success"
               );
               this.getData();

@@ -159,6 +159,37 @@ export default {
       // this.$root.editarPersona.form.codigo_modular = persona.codigo_modular;
       // this.$root.editarPersona.form.cargo = persona.cargo;
       // this.$root.editarPersona.form.estado = persona.estado;
+    },
+    deleteData(pago) {
+      this.$swal({
+        title: "Esta seguro de eliminar el registro?",
+        text: "Esta operación va ha cambiar el estado del registro",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        cancelButtonText: "Cancelar",
+        confirmButtonText: "Si, eliminar"
+      }).then(result => {
+        if (result.value) {
+          axios
+            .delete(`/pagos/${pago.id}`)
+            .then(res => {
+              this.$swal(
+                "Mensaje de operación",
+                "Rol eliminado correctamente",
+                "success"
+              );
+              this.getData();
+            })
+            .catch(err => {
+              console.log(err);
+              if (err.response.status == 403) {
+                this.$router.push("/403");
+              }
+            });
+        }
+      });
     }
   },
   computed: {
