@@ -45,12 +45,13 @@
           :headers="headers"
           :items="descuentos"
           :search="search"
+          :loading="loadingData"
+          :pagination.sync="pagination"
+          :rows-per-page-items="RowsPerPageItems"
           rows-per-page-text="Mostrar"
           no-data-text="No hay registros"
           no-results-text="No hay registros encontrados"
-          :pagination.sync="pagination"
           class="elevation-1"
-          :rows-per-page-items="RowsPerPageItems"
         >
           <template v-slot:items="props">
             <td class="text-xs-center">{{ props.item.codigo }}</td>
@@ -111,6 +112,7 @@ export default {
       tipo: "Todos",
       search: "",
       loading: false,
+      loadingData: false,
       pagination: {},
       RowsPerPageItems: [9, 15, 25, { text: "Todos", value: -1 }],
       selected: [],
@@ -139,9 +141,11 @@ export default {
   },
   methods: {
     getData(url = "/descuentos") {
+      this.loadingData = true;
       axios
         .get(url, { params: { tipo: this.tipo } })
         .then(res => {
+          this.loadingData = false;
           this.descuentos = res.data.descuentos;
         })
         .catch(err => {

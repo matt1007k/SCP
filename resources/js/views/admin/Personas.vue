@@ -46,6 +46,7 @@
           :headers="headers"
           :items="personas"
           :search="search"
+          :loading="loadingData"
           rows-per-page-text="Mostrar"
           no-data-text="No hay registros"
           no-results-text="No hay registros encontrados"
@@ -121,6 +122,7 @@ export default {
       search: "",
       tipo: "Todos",
       loading: false,
+      loadingData: false,
       pagination: {},
       RowsPerPageItems: [9, 15, 25, { text: "Todos", value: -1 }],
       selected: [],
@@ -153,9 +155,11 @@ export default {
   },
   methods: {
     getData(url = "/personas") {
+      this.loadingData = true;
       axios
         .get(url, { params: { tipo: this.tipo } })
         .then(res => {
+          this.loadingData = false;
           this.personas = res.data.personas;
         })
         .catch(err => {

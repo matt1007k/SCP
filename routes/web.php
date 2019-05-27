@@ -38,6 +38,9 @@ Route::namespace ('Admin')->group(function () {
         Route::resource('pagos', 'PagoController')
             ->except(['show', 'create', 'edit']);
 
+        Route::get('/search-personas', 'PersonaController@search')->name('personas.search');
+        Route::get('/search-descuentos', 'HaberDescuentoController@search')->name('descuentos.search');
+
         Route::get('/getRoles', 'RoleController@getRoles')->name('getRoles');
         Route::get('/getPermissions', 'PermissionController@getPermissions')->name('getPermissions');
 

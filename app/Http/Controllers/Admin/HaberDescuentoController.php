@@ -8,6 +8,22 @@ use Illuminate\Http\Request;
 
 class HaberDescuentoController extends Controller
 {
+    public function search(Request $request)
+    {
+        $tipo = $request->get('tipo') ?? $request->get('tipo');
+        $descuentos = HaberDescuento::orderBy('nombre', 'DESC')
+            ->where('tipo', $tipo)
+            ->when($request->get('q'), function ($query) {
+                $query->where('nombre', 'LIKE', '%' . $request->get('q') . '%')
+                    ->orWhere('descripcion', 'LIKE', '%' . $request->get('q') . '%')
+                    ->orWhere('descripcion_simple', 'LIKE', '%' . $request->get('q') . '%');
+            })
+            ->limit(6)
+            ->get();
+
+        return response()->json(['descuentos' => $descuentos], 200);
+    }
+
     public function index(Request $request)
     {
         $tipo = $request->get('tipo') ?? $request->get('tipo');
@@ -90,14 +106,14 @@ class HaberDescuentoController extends Controller
         $haberDescuento = HaberDescuento::findOrFail($id);
 
         if ($haberDescuento->estado === 'activo') {
-            $persona->estado = 'inactivo';
-        } else if ($persona->estado === 'inactivo') {
-            $persona->estado = 'activo';
+            $haberDescuento->estado = 'inactivo';
+        } else if ($haberDescuento->estado === 'inactivo') {
+            $haberDescuento->estado = 'activo';
         }
 
-        if ($persona->save()) {
+        if ($haberDescuento->save()) {
             return response()->json([
-                'persona' => $persona,
+                'descuento' => $haberDescuento,
             ]);
         }
     }

@@ -36,6 +36,7 @@
           :headers="headers"
           :items="usuarios"
           :search="search"
+          :loading="loadingData"
           rows-per-page-text="Mostrar"
           no-data-text="No hay registros"
           no-results-text="No hay registros encontrados"
@@ -43,6 +44,7 @@
           class="elevation-1"
           :rows-per-page-items="RowsPerPageItems"
         >
+          <v-progress-linear v-slot:progress color="error" indeterminate></v-progress-linear>
           <template v-slot:items="props">
             <td class="text-xs-center">{{ props.item.dni }}</td>
             <td>{{ props.item.name }}</td>
@@ -117,6 +119,7 @@ export default {
     return {
       search: "",
       loading: false,
+      loadingData: false,
       pagination: {},
       RowsPerPageItems: [9, 15, 25, { text: "Todos", value: -1 }],
       selected: [],
@@ -148,10 +151,12 @@ export default {
   },
   methods: {
     getData(url = "/usuarios") {
+      this.loadingData = true;
       axios
         .get(url)
         .then(res => {
           this.usuarios = res.data.usuarios;
+          this.loadingData = false;
         })
         .catch(err => {
           console.log(err);

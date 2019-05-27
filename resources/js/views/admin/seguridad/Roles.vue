@@ -6,11 +6,11 @@
           <v-container fill-height fluid>
             <v-layout row wrap>
               <v-flex xs12 sm9 md9>
-                <span class="headline">Lista de pagos</span>
+                <span class="headline">Lista de roles</span>
               </v-flex>
               <v-flex xs12 sm3 md3 justify-end flexbox>
                 <v-btn color="primary" @click.stop="modalAgregar">
-                  <v-icon>$vuetify.icons.add</v-icon>Realizar pago
+                  <v-icon>$vuetify.icons.add</v-icon>Agregar rol
                 </v-btn>
               </v-flex>
             </v-layout>
@@ -26,16 +26,6 @@
                 </v-fade-transition>
               </template>
             </v-text-field>
-            <span class="mb-2">
-              <v-tooltip bottom>
-                <v-icon slot="activator">$vuetify.icons.filter</v-icon>
-                <span>Filtar por estado</span>
-              </v-tooltip>
-              <v-btn flat @click="filterBy('Todos')">Todos</v-btn>
-              <v-btn flat color="success" @click="filterBy('activo')">Activos</v-btn>
-              <v-btn flat color="info" @click="filterBy('sobreviviente')">Sobrevivientes</v-btn>
-              <v-btn flat color="error" @click="filterBy('cesante')">Censantes</v-btn>
-            </span>
           </v-container>
         </v-card>
       </v-flex>
@@ -44,8 +34,9 @@
       <v-flex xs12>
         <v-data-table
           :headers="headers"
-          :items="pagos"
+          :items="roles"
           :search="search"
+          :loading="loadingData"
           rows-per-page-text="Mostrar"
           no-data-text="No hay registros"
           no-results-text="No hay registros encontrados"
@@ -54,12 +45,9 @@
           :rows-per-page-items="RowsPerPageItems"
         >
           <template v-slot:items="props">
-            <td class="text-xs-center">{{ props.item.periodo }}</td>
-            <td>{{ props.item.persona.apellido_paterno }} {{ props.item.persona.apellido_materno }}, {{ props.item.persona.nombre }}</td>
-            <td class="text-xs-center">{{ props.item.total_haber }}</td>
-            <td class="text-xs-center">{{ props.item.total_descuento }}</td>
-            <td class="text-xs-center">{{ props.item.monto_liquido }}</td>
-            <td class="text-xs-center">{{ props.item.monto_imponible }}</td>
+            <td class="text-xs-center">{{ props.item.slug }}</td>
+            <td>{{ props.item.name }}</td>
+            <td>{{ props.item.description }}</td>
             <td>
               <v-tooltip bottom>
                 <v-btn color="info" fab small slot="activator" @click="modalEditar(props.item)">
@@ -68,10 +56,10 @@
                 <span>Editar registro</span>
               </v-tooltip>
               <v-tooltip bottom>
-                <v-btn color="error" fab small slot="activator">
+                <v-btn color="error" fab small slot="activator" @click="deleteData(props.item)">
                   <v-icon>$vuetify.icons.delete</v-icon>
                 </v-btn>
-                <span>Cambiar estado</span>
+                <span>Eliminar registro</span>
               </v-tooltip>
             </td>
           </template>
@@ -81,59 +69,56 @@
         </div>
       </v-flex>
     </v-layout>
-    <!-- <modal-agregar ref="agregarPersona"></modal-agregar>
-    <modal-editar ref="editarPersona"></modal-editar>-->
-    <!-- <modal-editar v-model="showModalEdit"></modal-editar> -->
+    <modal-agregar ref="agregarRol"></modal-agregar>
+    <modal-editar ref="editarRol"></modal-editar>
   </v-container>
 </template>
 
 <script>
-import ModalAgregar from "../../components/personas/ModalAgregar";
-import ModalEditar from "../../components/personas/ModalEditar";
+import ModalAgregar from "../../../components/roles/ModalAgregar";
+import ModalEditar from "../../../components/roles/ModalEditar";
 export default {
-  components: {},
+  components: { ModalAgregar, ModalEditar },
   data() {
     return {
       search: "",
-      tipo: "Todos",
       loading: false,
+      loadingData: false,
       pagination: {},
       RowsPerPageItems: [9, 15, 25, { text: "Todos", value: -1 }],
       selected: [],
       headers: [
         {
-          text: "Periodo",
+          text: "Identificador",
           align: "left",
           sortable: false,
-          value: "periodo"
+          value: "slug"
         },
         {
-          text: "Nombre persona",
-          value: "persona.apellido_paterno"
+          text: "Nombre del rol",
+          value: "name"
         },
-        { text: "Total Haber", value: "total_haber" },
-        { text: "Total Descuento", value: "total_descuento" },
-        { text: "Monto Liquido", value: "monto_liquido" },
-        { text: "Monto Imponible", value: "monto_Total" }
+        { text: "Descripción", value: "description" }
       ],
-      pagos: [],
-      showModalEdit: false
+      roles: []
     };
   },
   created() {
-    document.title = "Lista de Pagos";
+    document.title = "Lista de Roles";
     this.getData();
   },
-  // mounted() {
-  //   this.$root.agregarPersona = this.$refs.agregarPersona;
-  //   this.$root.editarPersona = this.$refs.editarPersona;
-  // },
+  mounted() {
+    this.$root.agregarRol = this.$refs.agregarRol;
+    this.$root.editarRol = this.$refs.editarRol;
+  },
   methods: {
-    getData(url = "/pagos") {
+    getData(url = "/roles") {
+      this.loadingData = true;
       axios
-        .get(url, { params: { tipo: this.tipo } })
+        .get(url)
         .then(res => {
-          this.pagos = res.data.pagos;
+          this.loadingData = false;
+          this.roles = res.data.roles;
         })
         .catch(err => {
           console.log(err);
@@ -142,25 +127,18 @@ export default {
           }
         });
     },
-    filterBy(prop) {
-      // this.tipo = prop;
-      // this.getData();
-    },
     modalAgregar() {
-      // this.$root.agregarPersona.show();
+      this.$root.agregarRol.show();
     },
     modalEditar(persona) {
-      // this.$root.editarPersona.show();
-      // this.$root.editarPersona.form.id = persona.id;
-      // this.$root.editarPersona.form.nombre = persona.nombre;
-      // this.$root.editarPersona.form.apellido_paterno = persona.apellido_paterno;
-      // this.$root.editarPersona.form.apellido_materno = persona.apellido_materno;
-      // this.$root.editarPersona.form.dni = persona.dni;
-      // this.$root.editarPersona.form.codigo_modular = persona.codigo_modular;
-      // this.$root.editarPersona.form.cargo = persona.cargo;
-      // this.$root.editarPersona.form.estado = persona.estado;
+      this.$root.editarRol.show();
+      this.$root.editarRol.form.id = persona.id;
+      this.$root.editarRol.form.identificador = persona.slug;
+      this.$root.editarRol.form.nombre = persona.name;
+      this.$root.editarRol.form.descripcion = persona.description;
+      this.$root.editarRol.form.permissions = persona.permissions;
     },
-    deleteData(pago) {
+    deleteData(rol) {
       this.$swal({
         title: "Esta seguro de eliminar el registro?",
         text: "Esta operación va ha cambiar el estado del registro",
@@ -173,7 +151,7 @@ export default {
       }).then(result => {
         if (result.value) {
           axios
-            .delete(`/pagos/${pago.id}`)
+            .delete(`/roles/${rol.id}`)
             .then(res => {
               this.$swal(
                 "Mensaje de operación",

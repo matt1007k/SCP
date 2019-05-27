@@ -2,7 +2,7 @@
   <v-app>
     <snackbar ref="snackbar"></snackbar>
     <sidebar-admin-left :toggle="drawer"></sidebar-admin-left>
-    <v-toolbar dark color="primary" app>
+    <v-toolbar dark color="info" app>
       <v-toolbar-side-icon @click.stop="OpenSidebar"></v-toolbar-side-icon>
 
       <v-toolbar-title class="white--text">Sistema de Constancia de Pagos</v-toolbar-title>
@@ -26,9 +26,7 @@
     </v-toolbar>
 
     <v-content>
-      <transition name="slide-fade" mode="out-in">
-        <router-view/>
-      </transition>
+      <router-view :key="$route.fullPath"/>
     </v-content>
   </v-app>
 </template>

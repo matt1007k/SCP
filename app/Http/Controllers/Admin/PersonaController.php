@@ -18,6 +18,22 @@ class PersonaController extends Controller
         // $this->middleware('permission:personas.destroy')->only(['destroy']);
     }
 
+    public function search(Request $request)
+    {
+        $personas = Persona::orderBy('apellido_paterno', 'DESC')
+            ->when(request('q'), function ($query, $request) {
+                $query->where('codigo_modular', 'LIKE', '%' . request('q') . '%')
+                    ->orWhere('dni', 'LIKE', '%' . request('q') . '%')
+                    ->orWhere('nombre', 'LIKE', '%' . request('q') . '%')
+                    ->orWhere('apellido_paterno', 'LIKE', '%' . request('q') . '%')
+                    ->orWhere('apellido_materno', 'LIKE', '%' . request('q') . '%');
+            })
+            ->limit(6)
+            ->get();
+
+        return response()->json(['personas' => $personas], 200);
+    }
+
     public function index(Request $request)
     {
         $tipo = $request->get('tipo') ?? $request->get('tipo');

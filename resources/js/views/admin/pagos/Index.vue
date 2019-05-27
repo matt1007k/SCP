@@ -6,11 +6,12 @@
           <v-container fill-height fluid>
             <v-layout row wrap>
               <v-flex xs12 sm9 md9>
-                <span class="headline">Lista de permisos</span>
+                <span class="headline">Lista de pagos</span>
               </v-flex>
-              <v-flex xs12 sm3 md3 justify-end flexbox>
-                <v-btn color="primary" @click.stop="modalAgregar">
-                  <v-icon>$vuetify.icons.add</v-icon>Agregar permiso
+              <v-flex xs12 sm3 md3>
+                <v-spacer></v-spacer>
+                <v-btn color="primary" router to="/admin/pagos/crear">
+                  <v-icon>$vuetify.icons.add</v-icon>Realizar pago
                 </v-btn>
               </v-flex>
             </v-layout>
@@ -26,6 +27,14 @@
                 </v-fade-transition>
               </template>
             </v-text-field>
+            <span class="mb-2">
+              <v-tooltip bottom>
+                <v-icon slot="activator">$vuetify.icons.filter</v-icon>
+                <span>Filtar por periodo</span>
+              </v-tooltip>
+              <v-btn flat @click="filterBy('Todos')">Todos</v-btn>
+              <v-btn flat color="success" @click="filterBy('activo')">Activos</v-btn>
+            </span>
           </v-container>
         </v-card>
       </v-flex>
@@ -34,8 +43,9 @@
       <v-flex xs12>
         <v-data-table
           :headers="headers"
-          :items="permisos"
+          :items="pagos"
           :search="search"
+          :loading="loadingData"
           rows-per-page-text="Mostrar"
           no-data-text="No hay registros"
           no-results-text="No hay registros encontrados"
@@ -44,9 +54,12 @@
           :rows-per-page-items="RowsPerPageItems"
         >
           <template v-slot:items="props">
-            <td class="text-xs-center">{{ props.item.slug }}</td>
-            <td>{{ props.item.name }}</td>
-            <td>{{ props.item.description }}</td>
+            <td class="text-xs-center">{{ props.item.periodo }}</td>
+            <td>{{ props.item.persona.apellido_paterno }} {{ props.item.persona.apellido_materno }}, {{ props.item.persona.nombre }}</td>
+            <td class="text-xs-center">{{ props.item.total_haber }}</td>
+            <td class="text-xs-center">{{ props.item.total_descuento }}</td>
+            <td class="text-xs-center">{{ props.item.monto_liquido }}</td>
+            <td class="text-xs-center">{{ props.item.monto_imponible }}</td>
             <td>
               <v-tooltip bottom>
                 <v-btn color="info" fab small slot="activator" @click="modalEditar(props.item)">
@@ -55,10 +68,10 @@
                 <span>Editar registro</span>
               </v-tooltip>
               <v-tooltip bottom>
-                <v-btn color="error" fab small slot="activator" @click="deleteData(props.item)">
+                <v-btn color="error" fab small slot="activator">
                   <v-icon>$vuetify.icons.delete</v-icon>
                 </v-btn>
-                <span>Eliminar registro</span>
+                <span>Cambiar estado</span>
               </v-tooltip>
             </td>
           </template>
@@ -68,53 +81,58 @@
         </div>
       </v-flex>
     </v-layout>
-    <modal-agregar ref="agregarPermiso"></modal-agregar>
-    <modal-editar ref="editarPermiso"></modal-editar>
   </v-container>
 </template>
 
 <script>
-import ModalAgregar from "../../components/permisos/ModalAgregar";
-import ModalEditar from "../../components/permisos/ModalEditar";
+import modal from "./modal";
 export default {
-  components: { ModalAgregar, ModalEditar },
+  components: { modal },
   data() {
     return {
       search: "",
+      tipo: "Todos",
       loading: false,
+      loadingData: false,
       pagination: {},
       RowsPerPageItems: [9, 15, 25, { text: "Todos", value: -1 }],
       selected: [],
       headers: [
         {
-          text: "Identificador",
+          text: "Periodo",
           align: "left",
-          sortable: false,
-          value: "slug"
+          sortable: true,
+          value: "periodo"
         },
         {
-          text: "Nombre del rol",
-          value: "name"
+          text: "Nombre persona",
+          value: "persona.apellido_paterno"
         },
-        { text: "Descripción", value: "description" }
+        { text: "Total Haber", value: "total_haber" },
+        { text: "Total Descuento", value: "total_descuento" },
+        { text: "Monto Liquido", value: "monto_liquido" },
+        { text: "Monto Imponible", value: "monto_Total" }
       ],
-      permisos: []
+      pagos: [],
+      showModalEdit: false
     };
   },
   created() {
-    document.title = "Lista de Permisos";
+    document.title = "Lista de Pagos";
     this.getData();
   },
-  mounted() {
-    this.$root.agregarPermiso = this.$refs.agregarPermiso;
-    this.$root.editarPermiso = this.$refs.editarPermiso;
-  },
+  // mounted() {
+  //   this.$root.agregarPersona = this.$refs.agregarPersona;
+  //   this.$root.editarPersona = this.$refs.editarPersona;
+  // },
   methods: {
-    getData(url = "/permisos") {
+    getData(url = "/pagos") {
+      this.loadingData = true;
       axios
-        .get(url)
+        .get(url, { params: { tipo: this.tipo } })
         .then(res => {
-          this.permisos = res.data.permissions;
+          this.loadingData = false;
+          this.pagos = res.data.pagos;
         })
         .catch(err => {
           console.log(err);
@@ -123,17 +141,25 @@ export default {
           }
         });
     },
+    filterBy(prop) {
+      // this.tipo = prop;
+      // this.getData();
+    },
     modalAgregar() {
-      this.$root.agregarPermiso.show();
+      // this.$root.agregarPersona.show();
     },
-    modalEditar(permiso) {
-      this.$root.editarPermiso.show();
-      this.$root.editarPermiso.form.id = permiso.id;
-      this.$root.editarPermiso.form.identificador = permiso.slug;
-      this.$root.editarPermiso.form.nombre = permiso.name;
-      this.$root.editarPermiso.form.descripcion = permiso.description;
+    modalEditar(persona) {
+      // this.$root.editarPersona.show();
+      // this.$root.editarPersona.form.id = persona.id;
+      // this.$root.editarPersona.form.nombre = persona.nombre;
+      // this.$root.editarPersona.form.apellido_paterno = persona.apellido_paterno;
+      // this.$root.editarPersona.form.apellido_materno = persona.apellido_materno;
+      // this.$root.editarPersona.form.dni = persona.dni;
+      // this.$root.editarPersona.form.codigo_modular = persona.codigo_modular;
+      // this.$root.editarPersona.form.cargo = persona.cargo;
+      // this.$root.editarPersona.form.estado = persona.estado;
     },
-    deleteData(permiso) {
+    deleteData(pago) {
       this.$swal({
         title: "Esta seguro de eliminar el registro?",
         text: "Esta operación va ha cambiar el estado del registro",
@@ -146,11 +172,11 @@ export default {
       }).then(result => {
         if (result.value) {
           axios
-            .delete(`/permisos/${permiso.id}`)
+            .delete(`/pagos/${pago.id}`)
             .then(res => {
               this.$swal(
                 "Mensaje de operación",
-                "Permiso eliminado correctamente",
+                "Rol eliminado correctamente",
                 "success"
               );
               this.getData();

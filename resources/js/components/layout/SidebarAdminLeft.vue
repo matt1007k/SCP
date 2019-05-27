@@ -30,7 +30,7 @@
         <v-list-tile-title>{{item.title}}</v-list-tile-title>
       </v-list-tile>
 
-      <v-list-group v-if="item.group" :prepend-icon="item.icon">
+      <v-list-group v-if="item.group" :prepend-icon="item.icon" :value="subIsActive([item.url])">
         <template v-slot:activator>
           <v-list-tile>
             <v-list-tile-title>{{item.title}}</v-list-tile-title>
@@ -61,6 +61,12 @@ export default {
   methods: {
     goTo(url) {
       this.$router.push(url);
+    },
+    subIsActive(input) {
+      const paths = Array.isArray(input) ? input : [input];
+      return paths.some(path => {
+        return this.$route.path.indexOf(path) === 0; // current path starts with this path string
+      });
     }
   }
 };

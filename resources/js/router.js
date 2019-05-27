@@ -3,6 +3,10 @@ import Router from "vue-router";
 
 Vue.use(Router);
 
+const ParentComponent = {
+    template: `<router-view :key='$route.fullPath'></router-view>`
+};
+
 export default new Router({
     mode: "history",
     base: process.env.BASE_URL,
@@ -38,18 +42,6 @@ export default new Router({
                     component: () => import("./views/admin/Usuarios.vue")
                 },
                 {
-                    path: "roles",
-                    name: "roles",
-                    meta: { titulo: "Roles" },
-                    component: () => import("./views/admin/Roles.vue")
-                },
-                {
-                    path: "permisos",
-                    name: "permisos",
-                    meta: { titulo: "Permisos" },
-                    component: () => import("./views/admin/Permisos.vue")
-                },
-                {
                     path: "personas",
                     name: "personas",
                     meta: { titulo: "Personas" },
@@ -64,19 +56,84 @@ export default new Router({
                     path: "pagos",
                     name: "pagos",
                     meta: { titulo: "Pagos" },
-                    component: () => import("./views/admin/Pagos.vue")
+                    component: ParentComponent,
+                    children: [
+                        {
+                            path: "lista",
+                            component: () =>
+                                import("./views/admin/pagos/Index.vue")
+                        },
+                        {
+                            path: "crear",
+                            component: () =>
+                                import("./views/admin/pagos/Crear.vue")
+                        },
+                        {
+                            path: "editar/:id",
+                            component: () =>
+                                import("./views/admin/pagos/Editar.vue")
+                        }
+                    ]
                 },
                 {
-                    path: "importar/haberes-descuentos",
-                    name: "importar.descuentos",
-                    component: () =>
-                        import("./views/admin/importar/ImportarDescuentos.vue")
+                    path: "seguridad",
+                    component: ParentComponent,
+                    children: [
+                        {
+                            path: "roles",
+                            name: "roles",
+                            meta: { titulo: "Roles" },
+                            component: () =>
+                                import("./views/admin/seguridad/Roles.vue")
+                        },
+                        {
+                            path: "permisos",
+                            name: "permisos",
+                            meta: { titulo: "Permisos" },
+                            component: () =>
+                                import("./views/admin/seguridad/Permisos.vue")
+                        }
+                    ]
                 },
                 {
-                    path: "importar/personas-pagos",
-                    name: "importar.personas",
-                    component: () =>
-                        import("./views/admin/importar/ImportarPersonas.vue")
+                    path: "importar",
+                    component: ParentComponent,
+                    children: [
+                        {
+                            path: "haberes-descuentos",
+                            name: "importar.descuentos",
+                            component: () =>
+                                import(
+                                    "./views/admin/importar/ImportarDescuentos.vue"
+                                )
+                        },
+                        {
+                            path: "personas-pagos",
+                            name: "importar.personas",
+                            component: () =>
+                                import(
+                                    "./views/admin/importar/ImportarPersonas.vue"
+                                )
+                        }
+                    ]
+                },
+                {
+                    path: "reporte",
+                    component: ParentComponent,
+                    children: [
+                        {
+                            path: "anual",
+                            name: "reporte.anual",
+                            component: () =>
+                                import("./views/admin/reportes/Anual.vue")
+                        },
+                        {
+                            path: "mensual",
+                            name: "reporte.mensual",
+                            component: () =>
+                                import("./views/admin/reportes/Mensual.vue")
+                        }
+                    ]
                 },
                 {
                     path: "403",

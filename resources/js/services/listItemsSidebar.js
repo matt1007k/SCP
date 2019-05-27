@@ -27,24 +27,36 @@ export const listItemsSidebar = [
     },
     {
         title: "Pagos",
-        url: "/admin/pagos",
         icon: "mdi mdi-credit-card",
-        exact: false,
-        permission: "pagos.index"
+        url: "/admin/pagos",
+        group: true,
+        submenu: [
+            {
+                title: "Lista de pagos",
+                url: "/admin/pagos/lista",
+                permission: "pagos.index"
+            },
+            {
+                title: "Registrar pago",
+                url: "/admin/pagos/crear",
+                permission: "pagos.create"
+            }
+        ]
     },
     {
         title: "Roles y Permisos",
         icon: "mdi mdi-security",
+        url: "/admin/seguridad",
         group: true,
         submenu: [
             {
                 title: "Permisos",
-                url: "/admin/permisos",
+                url: "/admin/seguridad/permisos",
                 permission: "permisos.index"
             },
             {
                 title: "Roles",
-                url: "/admin/roles",
+                url: "/admin/seguridad/roles",
                 permission: "roles.index"
             }
         ]
@@ -52,7 +64,9 @@ export const listItemsSidebar = [
     {
         title: "Importar",
         icon: "mdi mdi-upload",
+        url: "/admin/importar",
         group: true,
+        permission: "importar.todos",
         submenu: [
             {
                 title: "Importar Habs. o Descts.",
@@ -63,6 +77,23 @@ export const listItemsSidebar = [
                 title: "Importar Personas o Pagos",
                 url: "/admin/importar/personas-pagos",
                 permission: "importar.personas"
+            }
+        ]
+    },
+    {
+        title: "Reportes",
+        icon: "mdi mdi-file-chart",
+        url: "/admin/reporte",
+        group: true,
+        permission: "pagos.consultar",
+        submenu: [
+            {
+                title: "Por año",
+                url: "/admin/reporte/anual"
+            },
+            {
+                title: "Por mes",
+                url: "/admin/reporte/mensual"
             }
         ]
     }

@@ -6,11 +6,11 @@
           <v-container fill-height fluid>
             <v-layout row wrap>
               <v-flex xs12 sm9 md9>
-                <span class="headline">Lista de roles</span>
+                <span class="headline">Lista de permisos</span>
               </v-flex>
               <v-flex xs12 sm3 md3 justify-end flexbox>
                 <v-btn color="primary" @click.stop="modalAgregar">
-                  <v-icon>$vuetify.icons.add</v-icon>Agregar rol
+                  <v-icon>$vuetify.icons.add</v-icon>Agregar permiso
                 </v-btn>
               </v-flex>
             </v-layout>
@@ -34,8 +34,9 @@
       <v-flex xs12>
         <v-data-table
           :headers="headers"
-          :items="roles"
+          :items="permisos"
           :search="search"
+          :loading="loadingData"
           rows-per-page-text="Mostrar"
           no-data-text="No hay registros"
           no-results-text="No hay registros encontrados"
@@ -68,20 +69,21 @@
         </div>
       </v-flex>
     </v-layout>
-    <modal-agregar ref="agregarRol"></modal-agregar>
-    <modal-editar ref="editarRol"></modal-editar>
+    <modal-agregar ref="agregarPermiso"></modal-agregar>
+    <modal-editar ref="editarPermiso"></modal-editar>
   </v-container>
 </template>
 
 <script>
-import ModalAgregar from "../../components/roles/ModalAgregar";
-import ModalEditar from "../../components/roles/ModalEditar";
+import ModalAgregar from "../../../components/permisos/ModalAgregar";
+import ModalEditar from "../../../components/permisos/ModalEditar";
 export default {
   components: { ModalAgregar, ModalEditar },
   data() {
     return {
       search: "",
       loading: false,
+      loadingData: false,
       pagination: {},
       RowsPerPageItems: [9, 15, 25, { text: "Todos", value: -1 }],
       selected: [],
@@ -98,23 +100,25 @@ export default {
         },
         { text: "Descripción", value: "description" }
       ],
-      roles: []
+      permisos: []
     };
   },
   created() {
-    document.title = "Lista de Roles";
+    document.title = "Lista de Permisos";
     this.getData();
   },
   mounted() {
-    this.$root.agregarRol = this.$refs.agregarRol;
-    this.$root.editarRol = this.$refs.editarRol;
+    this.$root.agregarPermiso = this.$refs.agregarPermiso;
+    this.$root.editarPermiso = this.$refs.editarPermiso;
   },
   methods: {
-    getData(url = "/roles") {
+    getData(url = "/permisos") {
+      this.loadingData = true;
       axios
         .get(url)
         .then(res => {
-          this.roles = res.data.roles;
+          this.loadingData = false;
+          this.permisos = res.data.permissions;
         })
         .catch(err => {
           console.log(err);
@@ -124,17 +128,16 @@ export default {
         });
     },
     modalAgregar() {
-      this.$root.agregarRol.show();
+      this.$root.agregarPermiso.show();
     },
-    modalEditar(persona) {
-      this.$root.editarRol.show();
-      this.$root.editarRol.form.id = persona.id;
-      this.$root.editarRol.form.identificador = persona.slug;
-      this.$root.editarRol.form.nombre = persona.name;
-      this.$root.editarRol.form.descripcion = persona.description;
-      this.$root.editarRol.form.permissions = persona.permissions;
+    modalEditar(permiso) {
+      this.$root.editarPermiso.show();
+      this.$root.editarPermiso.form.id = permiso.id;
+      this.$root.editarPermiso.form.identificador = permiso.slug;
+      this.$root.editarPermiso.form.nombre = permiso.name;
+      this.$root.editarPermiso.form.descripcion = permiso.description;
     },
-    deleteData(rol) {
+    deleteData(permiso) {
       this.$swal({
         title: "Esta seguro de eliminar el registro?",
         text: "Esta operación va ha cambiar el estado del registro",
@@ -147,11 +150,11 @@ export default {
       }).then(result => {
         if (result.value) {
           axios
-            .delete(`/roles/${rol.id}`)
+            .delete(`/permisos/${permiso.id}`)
             .then(res => {
               this.$swal(
                 "Mensaje de operación",
-                "Rol eliminado correctamente",
+                "Permiso eliminado correctamente",
                 "success"
               );
               this.getData();
