@@ -34,7 +34,7 @@
               <v-btn flat @click="filterBy('Todos')">Todos</v-btn>
               <v-btn flat color="success" @click="filterBy('activo')">Activos</v-btn>
               <v-btn flat color="info" @click="filterBy('sobreviviente')">Sobrevivientes</v-btn>
-              <v-btn flat color="error" @click="filterBy('cesante')">Censantes</v-btn>
+              <v-btn flat color="error" @click="filterBy('cesante')">Cesantes</v-btn>
             </span>
           </v-container>
         </v-card>

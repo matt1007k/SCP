@@ -28,7 +28,6 @@ class PersonaController extends Controller
                     ->orWhere('apellido_paterno', 'LIKE', '%' . request('q') . '%')
                     ->orWhere('apellido_materno', 'LIKE', '%' . request('q') . '%');
             })
-            ->limit(6)
             ->get();
 
         return response()->json(['personas' => $personas], 200);

@@ -15,4 +15,13 @@ class HaberDescuento extends Model
     {
         return $this->belongsTo('App\Models\User');
     }
+
+    public function scopeSearch($query, $text)
+    {
+        if ($text) {
+            return $query->where('nombre', 'LIKE', '%' . $text . '%')
+                ->orWhere('descripcion', 'LIKE', '%' . $text . '%')
+                ->orWhere('descripcion_simple', 'LIKE', '%' . $text . '%');
+        }
+    }
 }

@@ -8,16 +8,12 @@ use Illuminate\Http\Request;
 
 class HaberDescuentoController extends Controller
 {
-    public function search(Request $request)
+    public function search()
     {
-        $tipo = $request->get('tipo') ?? $request->get('tipo');
+        $tipo = request('tipo') ?? request('tipo');
         $descuentos = HaberDescuento::orderBy('nombre', 'DESC')
             ->where('tipo', $tipo)
-            ->when($request->get('q'), function ($query) {
-                $query->where('nombre', 'LIKE', '%' . $request->get('q') . '%')
-                    ->orWhere('descripcion', 'LIKE', '%' . $request->get('q') . '%')
-                    ->orWhere('descripcion_simple', 'LIKE', '%' . $request->get('q') . '%');
-            })
+            ->search(request('q'))
             ->limit(6)
             ->get();
 

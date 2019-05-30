@@ -85,9 +85,7 @@
 </template>
 
 <script>
-import modal from "./modal";
 export default {
-  components: { modal },
   data() {
     return {
       search: "",
@@ -113,8 +111,7 @@ export default {
         { text: "Monto Liquido", value: "monto_liquido" },
         { text: "Monto Imponible", value: "monto_Total" }
       ],
-      pagos: [],
-      showModalEdit: false
+      pagos: []
     };
   },
   created() {
@@ -148,16 +145,8 @@ export default {
     modalAgregar() {
       // this.$root.agregarPersona.show();
     },
-    modalEditar(persona) {
-      // this.$root.editarPersona.show();
-      // this.$root.editarPersona.form.id = persona.id;
-      // this.$root.editarPersona.form.nombre = persona.nombre;
-      // this.$root.editarPersona.form.apellido_paterno = persona.apellido_paterno;
-      // this.$root.editarPersona.form.apellido_materno = persona.apellido_materno;
-      // this.$root.editarPersona.form.dni = persona.dni;
-      // this.$root.editarPersona.form.codigo_modular = persona.codigo_modular;
-      // this.$root.editarPersona.form.cargo = persona.cargo;
-      // this.$root.editarPersona.form.estado = persona.estado;
+    modalEditar(pago) {
+      this.$router.push("/admin/pagos/editar/" + pago.id);
     },
     deleteData(pago) {
       this.$swal({

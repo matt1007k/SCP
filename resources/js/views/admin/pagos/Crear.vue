@@ -6,76 +6,75 @@
           <v-container fill-height fluid>
             <v-layout row wrap>
               <v-flex xs12 class="mb-3">
-                <span class="headline">Registrar pagos</span>
+                <span class="headline">Registrar pago</span>
               </v-flex>
               <v-flex xs12>
-                <span class="body-2">Datos Persona</span>
+                <span class="body-2">Datos de la persona</span>
               </v-flex>
               <v-flex xs12 sm6>
-                <div class="typeahead-dropdown">
-                  <div class="typeahead-input_wrap">
-                    <v-text-field
-                      :value="getNamePersona"
-                      ref="search"
-                      @blur="onBlur"
-                      type="text"
-                      label="Persona"
-                      placeholder="Buscar persona por DNI o Nombre..."
-                      @input="filterDataPersona"
-                      @keydown.esc="onEsc"
-                      @keydown.up="onKey"
-                      @keydown.down="onDownKey"
-                      @keydown.enter="onEnterKey"
-                      autocomplete="off"
-                    ></v-text-field>
-                  </div>
-                  <ul class="typeahead-list" v-if="lista_personas.length">
-                    <li
-                      class="typeahead-item"
-                      v-for="(persona, index) in lista_personas"
-                      :key="persona.id"
-                    >
-                      <a
-                        :class="['typeahead-link', selectIndex === index ? 'typeahead-active':'']"
-                        @mousedown.prevent="select(persona)"
-                        @mouseover.prevent="onMouse(index)"
-                      >{{persona.dni}} - {{persona.apellido_paterno}} {{persona.apellido_materno}}, {{persona.nombre}}</a>
-                    </li>
-                  </ul>
-                  <!-- <ul class="typeahead-list" v-else>
-                  <li class="typeahead-item">No existe ese registro...</li>
-                  </ul>-->
+                <div class="pr-2">
+                  <v-autocomplete
+                    v-model="form.persona"
+                    :items="lista_personas"
+                    :loading="isLoading"
+                    :search-input.sync="search"
+                    no-data-text="Sin resultados"
+                    item-text="nombre"
+                    item-value="API"
+                    label="Nombre"
+                    prepend-icon="mdi-database-search"
+                    :filter="customFilter"
+                    placeholder="Buscar por DNI o nombre completo..."
+                    return-object
+                  >
+                    <!-- <template
+                      v-slot:selection="data"
+                    >{{data.item.apellido_paterno}} {{data.item.apellido_materno}}, {{data.item.nombre}}</template>-->
+                    <template v-slot:item="data">
+                      <v-list-tile-content>
+                        <v-list-tile-title>{{data.item.apellido_paterno}} {{data.item.apellido_materno}}, {{data.item.nombre}}</v-list-tile-title>
+                        <v-list-tile-sub-title>DNI: {{data.item.dni}}</v-list-tile-sub-title>
+                      </v-list-tile-content>
+                    </template>
+                  </v-autocomplete>
                 </div>
+              </v-flex>
+              <v-flex xs12 sm6 md3>
+                <v-text-field
+                  label="Apellido Paterno"
+                  v-model="form.persona.apellido_paterno"
+                  disabled
+                ></v-text-field>
+              </v-flex>
+              <v-flex xs12 sm6 md3>
+                <v-text-field
+                  label="Apellido Materno"
+                  v-model="form.persona.apellido_materno"
+                  disabled
+                ></v-text-field>
               </v-flex>
               <v-flex xs12 sm6>
                 <v-text-field label="El DNI" v-model="form.persona.dni" disabled></v-text-field>
               </v-flex>
+              <v-flex xs12 sm6>
+                <v-text-field label="El cargo" v-model="form.persona.cargo" disabled></v-text-field>
+              </v-flex>
               <v-flex xs12>
-                <span class="body-2 mb-2">El periodo de pago</span>
+                <span class="body-2 mb-2">El periodo del pago</span>
               </v-flex>
-              <v-flex xs12 sm4>
-                <div class="form-group">
-                  <label for="anio">El año</label>
-                  <select v-model="form.anio" class="form-control" id="anio">
-                    <option selected value>--- Seleccionar el año ---</option>
-                    <option v-for="(anio, i) in items_anio" :key="i" :value="anio" v-text="anio"></option>
-                  </select>
+              <v-flex xs12 sm6 md3>
+                <div class="pr-2">
+                  <v-select v-model="form.anio" :items="items_anio" label="El año"></v-select>
                 </div>
               </v-flex>
-              <v-flex xs12 sm4 class="pl-2">
-                <div class="form-group">
-                  <label for="mes">El mes</label>
-                  <select v-model="form.mes" class="form-control" id="mes">
-                    <option selected value>--- Seleccionar el mes ---</option>
-                    <option
-                      v-for="(mes, i) in items_mes"
-                      :key="i"
-                      :value="mes.value"
-                      v-text="mes.text"
-                    ></option>
-                  </select>
-                </div>
-                <v-select v-model="form.mes" :items="items_mes" label="El mes del pago"></v-select>
+              <v-flex xs12 sm6 md3 class="pl-2">
+                <v-select v-model="form.mes" :items="items_mes" label="El mes"></v-select>
+              </v-flex>
+              <v-flex xs12 sm6 md3>
+                <v-btn color="success" @click="addHD('haber')">Agregar Haber</v-btn>
+              </v-flex>
+              <v-flex xs12 sm6 md3>
+                <v-btn color="success" @click="addHD('descuento')">Agregar Descuento</v-btn>
               </v-flex>
             </v-layout>
           </v-container>
@@ -83,45 +82,106 @@
       </v-flex>
     </v-layout>
     <v-layout wrap>
-      <v-flex xs12>
-        <v-data-table :headers="headers" :items="items" hide-actions class="elevation-1">
+      <v-flex xs12 class="mb-3">
+        <v-data-table
+          :headers="headersHaber"
+          :items="form.haberes"
+          hide-actions
+          class="elevation-1"
+          no-data-text="No hay haberes agregados"
+        >
           <template v-slot:items="props">
             <td class="text-xs-left">
-              <v-text-field v-model="props.item.descuento"></v-text-field>
+              <v-text-field v-model="props.item.nombre" label="Nombre" disabled></v-text-field>
             </td>
             <td class="text-xs-center">
               <v-text-field type="number" v-model="props.item.monto"></v-text-field>
             </td>
             <td>
               <v-tooltip bottom>
-                <v-btn slot="activator" icon color="error" @click="removeRow(props.index)">
+                <v-btn
+                  slot="activator"
+                  icon
+                  color="error"
+                  @click="removeItem(props.index, 'haber')"
+                >
                   <v-icon>$vuetify.icons.close</v-icon>
                 </v-btn>
-                <span>Eliminar fila</span>
+                <span>Eliminar haber</span>
               </v-tooltip>
             </td>
           </template>
           <template v-slot:footer>
             <td>
-              <v-btn color="primary" @click="addRow">Agregar fila</v-btn>
+              <strong>Total Haber</strong>
+              <p>S/. {{totalHaber()}}</p>
             </td>
-            <td>
-              <strong>Total Liquido</strong>
-              <p>S/. 2131</p>
-            </td>
+            <td></td>
             <td></td>
           </template>
         </v-data-table>
+
+        <v-data-table
+          :headers="headersDescuento"
+          :items="form.descuentos"
+          hide-actions
+          class="elevation-1"
+          no-data-text="No hay descuentos agregados"
+        >
+          <template v-slot:items="props">
+            <td class="text-xs-left">
+              <v-text-field v-model="props.item.nombre" label="Nombre" disabled></v-text-field>
+            </td>
+            <td class="text-xs-center">
+              <v-text-field type="number" v-model="props.item.monto"></v-text-field>
+            </td>
+            <td>
+              <v-tooltip bottom>
+                <v-btn
+                  slot="activator"
+                  icon
+                  color="error"
+                  @click="removeItem(props.index, 'descuento')"
+                >
+                  <v-icon>$vuetify.icons.close</v-icon>
+                </v-btn>
+                <span>Eliminar descuento</span>
+              </v-tooltip>
+            </td>
+          </template>
+          <template v-slot:footer>
+            <td>
+              <strong>Total Descuento</strong>
+              <p>S/. {{totalDescuento()}}</p>
+            </td>
+            <td>
+              <strong>Total Liquido</strong>
+              <p>S/. {{totalLiquido()}}</p>
+            </td>
+            <td>
+              <strong>Total Remuneracion</strong>
+              <p>S/. 2131</p>
+            </td>
+          </template>
+        </v-data-table>
+      </v-flex>
+      <v-flex xs12 sm6>
+        <v-btn color="error">Cancelar</v-btn>
+      </v-flex>
+      <v-flex xs12 sm6>
+        <v-btn color="primary">Guardar</v-btn>
       </v-flex>
     </v-layout>
+    <agregar ref="modalAgregarhb" @addRow="addRow"></agregar>
   </v-container>
 </template>
 
 <script>
 import { months } from "../../../services/listMonthsOfTheYear";
 import { years } from "../../../services/listYears";
+import Agregar from "../../../components/pagos/Agregar";
 export default {
-  components: {},
+  components: { Agregar },
   data() {
     return {
       isLoading: false,
@@ -141,29 +201,25 @@ export default {
       errors: {},
       lista_personas: [],
       search: "",
-      isOpen: false,
-      selectIndex: -1,
-      headers: [
+      headersHaber: [
         {
-          text: "Haber o Decuento",
+          text: "Haber",
+          align: "left",
+          sortable: false,
+          value: "haber"
+        },
+        { text: "Monto S/.", value: "monto", sortable: false },
+        { text: "Accion", value: "action", sortable: false }
+      ],
+      headersDescuento: [
+        {
+          text: "Descuento",
           align: "left",
           sortable: false,
           value: "descuento"
         },
         { text: "Monto S/.", value: "monto", sortable: false },
         { text: "Accion", value: "action", sortable: false }
-      ],
-      items: [
-        {
-          id: 1,
-          descuento: "Frozen Yogurt",
-          monto: 159
-        },
-        {
-          id: 2,
-          descuento: "Ice cream sandwich",
-          monto: 237
-        }
       ]
     };
   },
@@ -171,87 +227,62 @@ export default {
     document.title = "Registrar un Pago";
     this.addCurrentYear();
   },
+  mounted() {
+    this.$root.modalAgregarhb = this.$refs.modalAgregarhb;
+  },
   methods: {
-    addRow() {
-      this.items.push({
-        descuento: "",
-        monto: 0
-      });
-    },
-    removeRow(index) {
-      this.items.splice(index, 1);
-    },
-    onKey(e) {
-      const KeyCode = e.KeyCode || e.which;
-      if (!e.shiftKey && KeyCode !== 9 && !this.isOpen) {
-        this.open();
-      }
-    },
-    open() {
-      this.fetchData("");
-      this.isOpen = true;
-      this.$nextTick(() => {
-        this.$refs.search.focus();
-      });
-    },
-    filterDataPersona(ev) {
-      this.isLoading = true;
-      const params = {
-        q: ev
-      };
-      axios
-        .get("/search-personas", { params })
-        .then(res => {
-          this.isLoading = false;
+    customFilter(item, queryText, itemText) {
+      const nombre = item.nombre.toLowerCase();
+      const apellido_paterno = item.apellido_paterno.toLowerCase();
+      const apellido_materno = item.apellido_materno.toLowerCase();
+      const dni = item.dni.toLowerCase();
+      const searchText = queryText.toLowerCase();
 
-          this.lista_personas = res.data.personas;
-        })
-        .catch(err => console.log(err));
+      return (
+        nombre.indexOf(searchText) > -1 ||
+        apellido_paterno.indexOf(searchText) ||
+        apellido_materno.indexOf(searchText) ||
+        dni.indexOf(searchText) > -1
+      );
     },
-    onBlur() {
-      this.close();
+
+    addHD(tipo) {
+      this.$root.modalAgregarhb.showModal();
+      this.$root.modalAgregarhb.tipo = tipo;
     },
-    onEsc() {
-      this.close();
-    },
-    close() {
-      this.lista_personas = [];
-      this.isOpen = false;
-      this.search = "";
-      this.selectIndex = -1;
-    },
-    onSearch(e) {
-      const q = e.target.value;
-      this.selectIndex = 0;
-      this.filterDataPersona(q);
-    },
-    onUpKey(e) {
-      if (this.selectIndex > 0) {
-        this.selectIndex--;
-      }
-    },
-    onDownKey(e) {
-      if (this.results.length - 1 > this.selectIndex) {
-        this.selectIndex++;
-      }
-    },
-    onEnterKey() {
-      const found = this.results[this.selectIndex];
-      if (found) {
-        this.select(found);
-      }
-    },
-    select(result) {
-      this.form.persona = result;
-      this.$emit("input", {
-        target: {
-          value: result
+    addRow(item, tipo) {
+      if (tipo == "haber") {
+        const haberes = [...this.form.haberes];
+        const updatedItemIndex = haberes.findIndex(
+          haber => haber.id === item.id
+        );
+        if (updatedItemIndex < 0) {
+          this.form.haberes.push({ ...item, monto: 0.0 });
+        } else {
+          this.$root.$snackbar.show("El haber ya a sido agregado.", {
+            color: "warning"
+          });
         }
-      });
-      this.close();
+      } else if (tipo == "descuento") {
+        const descuentos = [...this.form.descuentos];
+        const updatedItemIndex = descuentos.findIndex(
+          descuento => descuento.id === item.id
+        );
+        if (updatedItemIndex < 0) {
+          this.form.descuentos.push({ ...item, monto: 0.0 });
+        } else {
+          this.$root.$snackbar.show("El descuento ya a sido agregado.", {
+            color: "warning"
+          });
+        }
+      }
     },
-    onMouse(index) {
-      this.selectIndex = index;
+    removeItem(index, tipo) {
+      if (tipo == "haber") {
+        this.form.haberes.splice(index, 1);
+      } else if (tipo == "descuento") {
+        this.form.descuentos.splice(index, 1);
+      }
     },
     addCurrentYear() {
       let currentYear = new Date().getFullYear();
@@ -260,16 +291,50 @@ export default {
         this.items_anio = [...this.items_anio, lastYear];
         this.items_anio = [...this.items_anio, currentYear];
       }
+    },
+    totalHaber() {
+      const totalHaber = this.form.haberes
+        .map(item => {
+          let total = 0;
+          return (total += parseFloat(item.monto));
+        })
+        .reduce((a, b) => {
+          return a + b;
+        }, 0);
+
+      return parseFloat(totalHaber).toFixed(2);
+    },
+    totalDescuento() {
+      const totalDescuento = this.form.descuentos
+        .map(item => {
+          let total = 0;
+          return (total += parseFloat(item.monto));
+        })
+        .reduce((a, b) => {
+          return a + b;
+        }, 0);
+
+      return parseFloat(totalDescuento).toFixed(2);
+    },
+    totalLiquido() {
+      const total = this.totalHaber() - this.totalDescuento();
+      return parseFloat(total).toFixed(2);
     }
   },
-  computed: {
-    getNamePersona() {
-      if (!this.form.persona.apellido_paterno) {
-        return "";
-      }
-      return `${this.form.persona.apellido_paterno} ${
-        this.form.persona.apellido_materno
-      }, ${this.form.persona.nombre}`;
+  watch: {
+    search(value) {
+      if (this.isLoading) return;
+      this.isLoading = true;
+      const params = { q: value };
+      axios
+        .get("/search-personas", { params })
+        .then(res => {
+          this.isLoading = false;
+
+          this.lista_personas = res.data.personas;
+        })
+        .catch(err => console.log(err))
+        .finally(() => (this.isLoading = false));
     }
   }
 };

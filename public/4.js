@@ -1463,7 +1463,7 @@ var render = function() {
                                 }
                               }
                             },
-                            [_vm._v("Censantes")]
+                            [_vm._v("Cesantes")]
                           )
                         ],
                         1

@@ -36,7 +36,7 @@ Route::namespace ('Admin')->group(function () {
         Route::resource('descuentos', 'HaberDescuentoController')
             ->except(['show', 'create', 'edit']);
         Route::resource('pagos', 'PagoController')
-            ->except(['show', 'create', 'edit']);
+            ->except(['show', 'create']);
 
         Route::get('/search-personas', 'PersonaController@search')->name('personas.search');
         Route::get('/search-descuentos', 'HaberDescuentoController@search')->name('descuentos.search');
