@@ -10,7 +10,7 @@ export const listItemsSidebar = [
         url: "/admin/usuarios",
         icon: "mdi mdi-account-multiple",
         exact: false,
-        permission: "usuarios.index"
+        permission: "users.index"
     },
     {
         title: "Personas",
@@ -20,10 +20,16 @@ export const listItemsSidebar = [
         permission: "personas.index"
     },
     {
-        title: "Haberes y Descuentos",
-        url: "/admin/haberes-descuentos",
+        title: "Descuentos",
+        url: "/admin/descuentos",
         icon: "mdi mdi-sale",
         permission: "descuentos.index"
+    },
+    {
+        title: "Haberes",
+        url: "/admin/haberes",
+        icon: "mdi mdi-cash-usd",
+        permission: "haberes.index"
     },
     {
         title: "Pagos",
@@ -69,12 +75,12 @@ export const listItemsSidebar = [
         permission: "importar.todos",
         submenu: [
             {
-                title: "Importar Habs. o Descts.",
+                title: "Haberes y Descuentos",
                 url: "/admin/importar/haberes-descuentos",
                 permission: "importar.descuentos"
             },
             {
-                title: "Importar Personas o Pagos",
+                title: "Personas y Pagos",
                 url: "/admin/importar/personas-pagos",
                 permission: "importar.personas"
             }

@@ -6,11 +6,11 @@
           <v-container fill-height fluid>
             <v-layout row wrap>
               <v-flex xs12 sm8 md9>
-                <span class="headline">Lista de Haberes y Descuentos</span>
+                <span class="headline">Lista de Descuentos</span>
               </v-flex>
-              <v-flex xs12 sm4 md3 justify-end flexbox>
+              <v-flex xs12 sm4 md3 justify-end flexbox v-if="$auth.can('haber_descuentos.create')">
                 <v-btn color="primary" @click="modalAgregar">
-                  <v-icon>$vuetify.icons.add</v-icon>Agregar hab. o desct.
+                  <v-icon>$vuetify.icons.add</v-icon>Agregar descuento
                 </v-btn>
               </v-flex>
             </v-layout>
@@ -26,15 +26,6 @@
                 </v-fade-transition>
               </template>
             </v-text-field>
-            <span class="mb-2">
-              <v-tooltip bottom>
-                <v-icon slot="activator">$vuetify.icons.filter</v-icon>
-                <span>Filtar por tipo</span>
-              </v-tooltip>
-              <v-btn flat @click="filterBy('Todos')">Todos</v-btn>
-              <v-btn flat color="success" @click="filterBy('haber')">Haberes</v-btn>
-              <v-btn flat color="info" @click="filterBy('descuento')">Descuentos</v-btn>
-            </span>
           </v-container>
         </v-card>
       </v-flex>
@@ -57,22 +48,12 @@
             <td class="text-xs-center">{{ props.item.codigo }}</td>
             <td>{{ props.item.nombre }}</td>
             <td>
-              <template v-if="props.item.tipo === 'descuento'">
-                <v-chip
-                  text-color="white"
-                  color="success"
-                  class="text-capitalize"
-                  small
-                >{{ props.item.tipo }}</v-chip>
-              </template>
-              <template v-if="props.item.tipo === 'haber'">
-                <v-chip
-                  text-color="white"
-                  color="info"
-                  class="text-capitalize"
-                  small
-                >{{ props.item.tipo }}</v-chip>
-              </template>
+              <v-chip
+                text-color="white"
+                color="success"
+                class="text-capitalize"
+                small
+              >{{ props.item.tipo }}</v-chip>
             </td>
             <td class="text-xs-center">{{ props.item.descripcion }}</td>
             <td class="text-xs-center">{{props.item.descripcion_simple}}</td>
@@ -93,7 +74,7 @@
           </template>
         </v-data-table>
         <div class="text-xs-center pt-2">
-          <v-pagination v-model="pagination.page" :length="pages"></v-pagination>
+          <!-- <v-pagination v-model="pagination.page" :length="pages"></v-pagination> -->
         </div>
       </v-flex>
     </v-layout>
@@ -109,7 +90,6 @@ export default {
   components: { ModalAgregar, ModalEditar },
   data() {
     return {
-      tipo: "Todos",
       search: "",
       loading: false,
       loadingData: false,
@@ -132,7 +112,7 @@ export default {
     };
   },
   created() {
-    document.title = "Lista de Haberes y Descuentos";
+    document.title = "Lista de Descuentos";
     this.getData();
   },
   mounted() {
@@ -143,7 +123,7 @@ export default {
     getData(url = "/descuentos") {
       this.loadingData = true;
       axios
-        .get(url, { params: { tipo: this.tipo } })
+        .get(url)
         .then(res => {
           this.loadingData = false;
           this.descuentos = res.data.descuentos;
@@ -155,22 +135,18 @@ export default {
           }
         });
     },
-    filterBy(prop) {
-      this.tipo = prop;
-      this.getData();
-    },
     modalAgregar() {
       this.$root.agregarDescuento.show();
     },
-    modalEditar(persona) {
+    modalEditar(descuento) {
       this.$root.editarDescuento.show();
-      this.$root.editarDescuento.form.id = persona.id;
-      this.$root.editarDescuento.form.codigo = persona.codigo;
-      this.$root.editarDescuento.form.nombre = persona.nombre;
-      this.$root.editarDescuento.form.tipo = persona.tipo;
-      this.$root.editarDescuento.form.descripcion = persona.descripcion;
+      this.$root.editarDescuento.form.id = descuento.id;
+      this.$root.editarDescuento.form.codigo = descuento.codigo;
+      this.$root.editarDescuento.form.nombre = descuento.nombre;
+      this.$root.editarDescuento.form.tipo = descuento.tipo;
+      this.$root.editarDescuento.form.descripcion = descuento.descripcion;
       this.$root.editarDescuento.form.descripcion_simple =
-        persona.descripcion_simple;
+        descuento.descripcion_simple;
     },
     deleteData(descuento) {
       this.$swal({

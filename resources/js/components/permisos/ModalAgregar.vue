@@ -3,12 +3,12 @@
     <v-dialog v-model="open" persistent small width="800px">
       <v-card>
         <form @submit.prevent="Submit">
-          <v-card-title wrap>
+          <v-card-title wrap class="blue-grey darken-2 white--text">
             <v-flex xs11>
               <span class="headline">Registrar permiso</span>
             </v-flex>
             <v-flex xs1 class="d-flex justify-end">
-              <v-btn flat color="error" @click="open = false">
+              <v-btn color="error" @click="open = false">
                 <v-icon>$vuetify.icons.close</v-icon>
               </v-btn>
             </v-flex>

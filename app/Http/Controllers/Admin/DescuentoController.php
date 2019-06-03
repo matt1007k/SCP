@@ -6,7 +6,7 @@ use App\Models\HaberDescuento;
 use Auth;
 use Illuminate\Http\Request;
 
-class HaberDescuentoController extends Controller
+class DescuentoController extends Controller
 {
     public function search()
     {
@@ -20,14 +20,9 @@ class HaberDescuentoController extends Controller
         return response()->json(['descuentos' => $descuentos], 200);
     }
 
-    public function index(Request $request)
+    public function index()
     {
-        $tipo = $request->get('tipo') ?? $request->get('tipo');
-        $descuentos = HaberDescuento::all();
-        if ($tipo !== 'Todos') {
-            $descuentos = HaberDescuento::where('tipo', $tipo)->get();
-
-        }
+        $descuentos = HaberDescuento::where('tipo', 'descuento')->get();
 
         return response()->json(['descuentos' => $descuentos], 200);
     }
@@ -44,22 +39,17 @@ class HaberDescuentoController extends Controller
         $codigo = "";
         $totalPorTipo = HaberDescuento::where('tipo', $request->tipo)->get()->count();
 
-        if ($request->tipo == "haber") {
-            $codigo = "H" . (string) ($totalPorTipo + 1);
-        } elseif ($request->tipo == "descuento") {
-            $codigo = "D" . (string) ($totalPorTipo + 1);
+        $codigo = "D" . (string) ($totalPorTipo + rand(2000, 9000));
 
-        }
+        $descuento = new HaberDescuento();
+        $descuento->nombre = $request->nombre;
+        $descuento->codigo = $codigo;
+        $descuento->tipo = $request->tipo;
+        $descuento->descripcion = $request->descripcion;
+        $descuento->descripcion_simple = $request->descripcion_simple;
+        $descuento->user_id = Auth::id();
 
-        $haberDescuento = new HaberDescuento();
-        $haberDescuento->nombre = $request->nombre;
-        $haberDescuento->codigo = $codigo;
-        $haberDescuento->tipo = $request->tipo;
-        $haberDescuento->descripcion = $request->descripcion;
-        $haberDescuento->descripcion_simple = $request->descripcion_simple;
-        $haberDescuento->user_id = Auth::id();
-
-        if ($haberDescuento->save()) {
+        if ($descuento->save()) {
             return response()->json([
                 'created' => true,
             ]);
@@ -78,15 +68,15 @@ class HaberDescuentoController extends Controller
             'descripcion' => 'required',
             'descripcion_simple' => 'required',
         ]);
-        $haberDescuento = HaberDescuento::findOrFail($id);
-        $haberDescuento->nombre = $request->nombre;
-        $haberDescuento->codigo = $request->codigo;
-        $haberDescuento->tipo = $request->tipo;
-        $haberDescuento->descripcion = $request->descripcion;
-        $haberDescuento->descripcion_simple = $request->descripcion_simple;
-        $haberDescuento->user_id = Auth::id();
+        $descuento = HaberDescuento::findOrFail($id);
+        $descuento->nombre = $request->nombre;
+        $descuento->codigo = $request->codigo;
+        $descuento->tipo = $request->tipo;
+        $descuento->descripcion = $request->descripcion;
+        $descuento->descripcion_simple = $request->descripcion_simple;
+        $descuento->user_id = Auth::id();
 
-        if ($haberDescuento->save()) {
+        if ($descuento->save()) {
             return response()->json([
                 'updated' => true,
             ]);
@@ -99,17 +89,11 @@ class HaberDescuentoController extends Controller
 
     public function destroy($id)
     {
-        $haberDescuento = HaberDescuento::findOrFail($id);
+        $descuento = HaberDescuento::findOrFail($id);
 
-        if ($haberDescuento->estado === 'activo') {
-            $haberDescuento->estado = 'inactivo';
-        } else if ($haberDescuento->estado === 'inactivo') {
-            $haberDescuento->estado = 'activo';
-        }
-
-        if ($haberDescuento->save()) {
+        if ($descuento->delete()) {
             return response()->json([
-                'descuento' => $haberDescuento,
+                'descuento' => $descuento,
             ]);
         }
     }

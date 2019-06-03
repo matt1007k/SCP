@@ -67,6 +67,7 @@ class UserController extends Controller
         ]);
         $user->name = $request->name;
         $user->dni = $request->dni;
+        $user->estado = $request->estado;
         if ($user->save()) {
             if ($request->has('roles')) {
                 $user->roles()->sync(collect($request->roles)->pluck('id')->toArray());

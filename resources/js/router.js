@@ -48,9 +48,14 @@ export default new Router({
                     component: () => import("./views/admin/Personas.vue")
                 },
                 {
-                    path: "haberes-descuentos",
+                    path: "descuentos",
                     name: "descuentos",
-                    component: () => import("./views/admin/HaberDescuentos.vue")
+                    component: () => import("./views/admin/Descuentos.vue")
+                },
+                {
+                    path: "haberes",
+                    name: "haberes",
+                    component: () => import("./views/admin/Haberes.vue")
                 },
                 {
                     path: "pagos",

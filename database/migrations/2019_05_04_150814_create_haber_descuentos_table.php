@@ -20,6 +20,7 @@ class CreateHaberDescuentosTable extends Migration
             $table->string('nombre', 200);
             $table->text('descripcion', 100);
             $table->text('descripcion_simple', 100);
+            $table->boolean('es_imponible')->default(false);
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')
                 ->on('users')

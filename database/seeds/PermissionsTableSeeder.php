@@ -15,12 +15,12 @@ class PermissionsTableSeeder extends Seeder
             'description' => 'Lista y navega todos los roles del sistema',
         ]);
         Permission::create([
-            'name' => 'Ver detalle de rol',
+            'name' => 'Ver detalle de un rol',
             'slug' => 'roles.show',
             'description' => 'Ver en detalle cada rol del sistema',
         ]);
         Permission::create([
-            'name' => 'Edición de rol',
+            'name' => 'Edición de un rol',
             'slug' => 'roles.edit',
             'description' => 'Editar los datos de cualquier rol del sistema',
         ]);
@@ -41,17 +41,17 @@ class PermissionsTableSeeder extends Seeder
             'description' => 'Lista y navega todos los usuarios del sistema',
         ]);
         Permission::create([
-            'name' => 'Ver detalle de usuario',
+            'name' => 'Ver detalle de un usuario',
             'slug' => 'users.show',
             'description' => 'Ver en detalle cada usuario del sistema',
         ]);
         Permission::create([
-            'name' => 'Edición de usuarios',
+            'name' => 'Edición de un usuario',
             'slug' => 'users.edit',
             'description' => 'Editar los datos de cualquier usuario del sistema',
         ]);
         Permission::create([
-            'name' => 'Eliminar una usuario',
+            'name' => 'Eliminar un usuario',
             'slug' => 'users.destroy',
             'description' => 'Eliminar los datos de cualquier usuario del sistema',
         ]);
@@ -62,12 +62,12 @@ class PermissionsTableSeeder extends Seeder
             'description' => 'Lista y navega todos los personas del sistema',
         ]);
         Permission::create([
-            'name' => 'Ver detalle de persona',
+            'name' => 'Ver detalle de una persona',
             'slug' => 'personas.show',
             'description' => 'Ver en detalle cada persona del sistema',
         ]);
         Permission::create([
-            'name' => 'Edición de personas',
+            'name' => 'Edición de una persona',
             'slug' => 'personas.edit',
             'description' => 'Editar los datos de cualquier persona del sistema',
         ]);
@@ -81,31 +81,57 @@ class PermissionsTableSeeder extends Seeder
             'slug' => 'personas.create',
             'description' => 'Crear una persona en el sistema',
         ]);
-        //haber descuento
+        //descuento
         Permission::create([
-            'name' => 'Navegar haberes y descuentos',
-            'slug' => 'haber_descuentos.index',
-            'description' => 'Lista y navega todos los haberes y descuentos del sistema',
+            'name' => 'Navegar descuentos',
+            'slug' => 'descuentos.index',
+            'description' => 'Lista y navega todos los descuentos del sistema',
         ]);
         Permission::create([
-            'name' => 'Ver detalle de haber y descuento',
-            'slug' => 'haber_descuentos.show',
-            'description' => 'Ver en detalle cada haber y descuento del sistema',
+            'name' => 'Ver detalle de un descuento',
+            'slug' => 'descuentos.show',
+            'description' => 'Ver en detalle cada descuento del sistema',
         ]);
         Permission::create([
-            'name' => 'Edición de haber y descuentos',
-            'slug' => 'haber_descuentos.edit',
-            'description' => 'Editar los datos de cualquier haber y descuento del sistema',
+            'name' => 'Edición de un descuento',
+            'slug' => 'descuentos.edit',
+            'description' => 'Editar los datos de cualquier descuento del sistema',
         ]);
         Permission::create([
-            'name' => 'Eliminar una haber y descuento',
-            'slug' => 'haber_descuentos.destroy',
-            'description' => 'Eliminar los datos de cualquier haber y descuento del sistema',
+            'name' => 'Eliminar un descuento',
+            'slug' => 'descuentos.destroy',
+            'description' => 'Eliminar los datos de cualquier descuento del sistema',
         ]);
         Permission::create([
-            'name' => 'Crear una haber y descuento',
-            'slug' => 'haber_descuentos.create',
-            'description' => 'Crear una haber y descuento en el sistema',
+            'name' => 'Crear un descuento',
+            'slug' => 'descuentos.create',
+            'description' => 'Crear un descuento en el sistema',
+        ]);
+        //haber
+        Permission::create([
+            'name' => 'Navegar haberes',
+            'slug' => 'haberes.index',
+            'description' => 'Lista y navega todos los haberes del sistema',
+        ]);
+        Permission::create([
+            'name' => 'Ver detalle de un haber',
+            'slug' => 'haberes.show',
+            'description' => 'Ver en detalle cada haber del sistema',
+        ]);
+        Permission::create([
+            'name' => 'Edición de un haber',
+            'slug' => 'haberes.edit',
+            'description' => 'Editar los datos de cualquier haber del sistema',
+        ]);
+        Permission::create([
+            'name' => 'Eliminar un haber',
+            'slug' => 'haberes.destroy',
+            'description' => 'Eliminar los datos de cualquier haber del sistema',
+        ]);
+        Permission::create([
+            'name' => 'Crear un haber',
+            'slug' => 'haberes.create',
+            'description' => 'Crear una haber en el sistema',
         ]);
         //pagos
         Permission::create([
@@ -114,41 +140,41 @@ class PermissionsTableSeeder extends Seeder
             'description' => 'Lista y navega todos los pagos del sistema',
         ]);
         Permission::create([
-            'name' => 'Ver detalle de pagos',
+            'name' => 'Ver detalle de un pago',
             'slug' => 'pagos.show',
-            'description' => 'Ver en detalle cada pagos del sistema',
+            'description' => 'Ver en detalle cada pago del sistema',
         ]);
         Permission::create([
-            'name' => 'Edición de pagos',
+            'name' => 'Edición de un pago',
             'slug' => 'pagos.edit',
-            'description' => 'Editar los datos de cualquier pagos del sistema',
+            'description' => 'Editar los datos de cualquier pago del sistema',
         ]);
         Permission::create([
-            'name' => 'Eliminar una pagos',
+            'name' => 'Eliminar de un pago',
             'slug' => 'pagos.destroy',
-            'description' => 'Eliminar los datos de cualquier pagos del sistema',
+            'description' => 'Eliminar los datos de cualquier pago del sistema',
         ]);
         Permission::create([
-            'name' => 'Crear una pagos',
+            'name' => 'Crear un pago',
             'slug' => 'pagos.create',
-            'description' => 'Crear una pagos en el sistema',
+            'description' => 'Crear una pago en el sistema',
         ]);
         Permission::create([
-            'name' => 'Consultar pagos ',
+            'name' => 'Consultar pagos',
             'slug' => 'pagos.consultar',
-            'description' => 'Ver los pagos consultar en el sistema',
+            'description' => 'Poder consultar los pagos de reportes en el sistema',
         ]);
 
         //Importar datos
         Permission::create([
-            'name' => 'Importar datos de personas',
+            'name' => 'Importar datos de personas o sus pagos',
             'slug' => 'importar.personas',
-            'description' => 'Importar los datos de las personas a la BD del sistema',
+            'description' => 'Importar los datos de las personas o sus pagos a la BD del sistema',
         ]);
         Permission::create([
-            'name' => 'Importar datos de haberes y descuentos',
+            'name' => 'Importar datos de haberes o descuentos',
             'slug' => 'importar.descuentos',
-            'description' => 'Importar los datos de los haberes y descuentos a la BD del sistema',
+            'description' => 'Importar los datos de los haberes o descuentos a la BD del sistema',
         ]);
 
     }

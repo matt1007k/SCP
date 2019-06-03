@@ -5,7 +5,7 @@
         <form @submit.prevent="Submit">
           <v-card-title wrap class="blue-grey darken-2 white--text">
             <v-flex xs11>
-              <span class="headline">Registrar rol</span>
+              <span class="headline">Registrar un Haber</span>
             </v-flex>
             <v-flex xs1 class="d-flex justify-end">
               <v-btn color="error" @click="open = false">
@@ -16,44 +16,40 @@
           <v-card-text>
             <v-container grid-list-md>
               <v-layout wrap>
-                <v-flex xs12 sm6>
+                <v-flex xs12>
                   <v-text-field
-                    label="El Identificador"
-                    required
-                    v-model="form.identificador"
-                    :error-messages="errors.identificador"
-                  ></v-text-field>
-                </v-flex>
-                <v-flex xs12 sm6>
-                  <v-text-field
-                    label="Nombre del rol"
+                    label="Nombre"
                     required
                     v-model="form.nombre"
                     :error-messages="errors.nombre"
                   ></v-text-field>
                 </v-flex>
-
-                <v-flex xs12 sm6>
-                  <v-textarea
+                <v-flex xs12>
+                  <v-text-field
                     label="Descripción"
                     required
                     v-model="form.descripcion"
                     :error-messages="errors.descripcion"
-                  ></v-textarea>
+                  ></v-text-field>
                 </v-flex>
-              </v-layout>
-              <v-layout wrap>
                 <v-flex xs12>
-                  <h4>Asignar Permisos Especiales</h4>
-                  <v-select
-                    v-model="form.permissions"
-                    :items="items_permissions"
-                    item-text="name"
-                    return-object
-                    chips
-                    label="Permisos"
-                    multiple
-                  ></v-select>
+                  <v-text-field
+                    label="Descripción simple"
+                    required
+                    v-model="form.descripcion_simple"
+                    :error-messages="errors.descripcion_simple"
+                  ></v-text-field>
+                </v-flex>
+                <v-flex xs12>
+                  <div class="body-2">Si es asegurable</div>
+                  <v-radio-group
+                    v-model="form.es_imponible"
+                    row
+                    :error-messages="errors.es_imponible"
+                  >
+                    <v-radio label="No" value="0" color="error"></v-radio>
+                    <v-radio label="Si" value="1" color="success"></v-radio>
+                  </v-radio-group>
                 </v-flex>
               </v-layout>
             </v-container>
@@ -72,27 +68,21 @@
 
 <script>
 export default {
-  props: {
-    value: Boolean
-  },
   data: () => ({
     open: false,
     form: {
       nombre: "",
-      identificador: "",
+      tipo: "haber",
       descripcion: "",
-      permissions: []
+      descripcion_simple: "",
+      es_imponible: "0"
     },
-    errors: {},
-    items_permissions: []
+    errors: {}
   }),
-  created() {
-    this.getPermissions();
-  },
   methods: {
     Submit() {
       axios
-        .post("/roles", this.form)
+        .post("/haberes", this.form)
         .then(res => {
           this.$parent.getData();
           this.open = false;
@@ -101,24 +91,22 @@ export default {
         })
         .catch(err => {
           this.errors = err.response.data.errors;
+          if (err.response.status == 403) {
+            this.$router.push("/403");
+          }
         });
-    },
-    getPermissions() {
-      axios
-        .get("/getPermissions")
-        .then(res => {
-          this.items_permissions = res.data.permissions;
-        })
-        .catch(err => console.log(err));
     },
     resetInputs() {
       this.form.nombre = "";
-      this.form.identificador = "";
+      this.form.tipo = "haber";
       this.form.descripcion = "";
-      this.form.permissions = [];
+      this.form.descripcion_simple = "";
+      this.es_imponible = "0";
+      this.errors = {};
     },
     show() {
       this.open = true;
+      this.resetInputs();
     }
   }
 };

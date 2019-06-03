@@ -44,6 +44,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -139,6 +141,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
@@ -146,6 +155,9 @@ __webpack_require__.r(__webpack_exports__);
       type: Boolean,
       required: true
     }
+  },
+  created: function created() {
+    console.log(this.$auth.can("users.index"));
   },
   data: function data() {
     return {
@@ -357,7 +369,18 @@ var render = function() {
         1
       ),
       _vm._v(" "),
-      _c("v-content", [_c("router-view", { key: _vm.$route.fullPath })], 1)
+      _c(
+        "v-content",
+        [
+          _c(
+            "transition",
+            { attrs: { name: "slide-fade" } },
+            [_c("router-view", { key: _vm.$route.fullPath })],
+            1
+          )
+        ],
+        1
+      )
     ],
     1
   )
@@ -438,84 +461,93 @@ var render = function() {
           "v-list",
           { key: index },
           [
-            !item.group
-              ? _c(
-                  "v-list-tile",
-                  {
-                    attrs: {
-                      router: "",
-                      to: item.url,
-                      exact: item.exact,
-                      "active-exact-class": "primary"
-                    }
-                  },
-                  [
-                    _c(
-                      "v-list-tile-action",
-                      [_c("v-icon", [_vm._v(_vm._s(item.icon))])],
-                      1
-                    ),
-                    _vm._v(" "),
-                    _c("v-list-tile-title", [_vm._v(_vm._s(item.title))])
-                  ],
-                  1
-                )
-              : _vm._e(),
-            _vm._v(" "),
             item.group
-              ? _c(
-                  "v-list-group",
-                  {
-                    attrs: {
-                      "prepend-icon": item.icon,
-                      value: _vm.subIsActive([item.url])
-                    },
-                    scopedSlots: _vm._u(
-                      [
+              ? [
+                  _vm.$auth.can(item.permission) || _vm.$auth.isAdmin()
+                    ? _c(
+                        "v-list-group",
                         {
-                          key: "activator",
-                          fn: function() {
-                            return [
-                              _c(
-                                "v-list-tile",
-                                [
-                                  _c("v-list-tile-title", [
-                                    _vm._v(_vm._s(item.title))
-                                  ])
-                                ],
-                                1
-                              )
-                            ]
+                          attrs: {
+                            "prepend-icon": item.icon,
+                            value: _vm.subIsActive([item.url])
                           },
-                          proxy: true
-                        }
-                      ],
-                      null,
-                      true
-                    )
-                  },
-                  [
-                    _vm._v(" "),
-                    _vm._l(item.submenu, function(submenu, i) {
-                      return _c(
-                        "v-list-tile",
-                        { key: i, attrs: { router: "", to: submenu.url } },
+                          scopedSlots: _vm._u(
+                            [
+                              {
+                                key: "activator",
+                                fn: function() {
+                                  return [
+                                    _c(
+                                      "v-list-tile",
+                                      [
+                                        _c("v-list-tile-title", [
+                                          _vm._v(_vm._s(item.title))
+                                        ])
+                                      ],
+                                      1
+                                    )
+                                  ]
+                                },
+                                proxy: true
+                              }
+                            ],
+                            null,
+                            true
+                          )
+                        },
                         [
-                          _c("v-list-tile-action"),
                           _vm._v(" "),
-                          _c("v-list-tile-title", {
-                            domProps: { textContent: _vm._s(submenu.title) }
+                          _vm._l(item.submenu, function(submenu, i) {
+                            return _c(
+                              "v-list-tile",
+                              {
+                                key: i,
+                                attrs: { router: "", to: submenu.url }
+                              },
+                              [
+                                _c("v-list-tile-action"),
+                                _vm._v(" "),
+                                _c("v-list-tile-title", {
+                                  domProps: {
+                                    textContent: _vm._s(submenu.title)
+                                  }
+                                })
+                              ],
+                              1
+                            )
                           })
+                        ],
+                        2
+                      )
+                    : _vm._e()
+                ]
+              : [
+                  _vm.$auth.can(item.permission) || _vm.$auth.isAdmin()
+                    ? _c(
+                        "v-list-tile",
+                        {
+                          attrs: {
+                            router: "",
+                            to: item.url,
+                            exact: item.exact,
+                            "active-exact-class": "primary"
+                          }
+                        },
+                        [
+                          _c(
+                            "v-list-tile-action",
+                            [_c("v-icon", [_vm._v(_vm._s(item.icon))])],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c("v-list-tile-title", [_vm._v(_vm._s(item.title))])
                         ],
                         1
                       )
-                    })
-                  ],
-                  2
-                )
-              : _vm._e()
+                    : _vm._e()
+                ]
           ],
-          1
+          2
         )
       })
     ],
@@ -832,7 +864,7 @@ var listItemsSidebar = [{
   url: "/admin/usuarios",
   icon: "mdi mdi-account-multiple",
   exact: false,
-  permission: "usuarios.index"
+  permission: "users.index"
 }, {
   title: "Personas",
   url: "/admin/personas",
@@ -840,10 +872,15 @@ var listItemsSidebar = [{
   exact: false,
   permission: "personas.index"
 }, {
-  title: "Haberes y Descuentos",
-  url: "/admin/haberes-descuentos",
+  title: "Descuentos",
+  url: "/admin/descuentos",
   icon: "mdi mdi-sale",
   permission: "descuentos.index"
+}, {
+  title: "Haberes",
+  url: "/admin/haberes",
+  icon: "mdi mdi-cash-usd",
+  permission: "haberes.index"
 }, {
   title: "Pagos",
   icon: "mdi mdi-credit-card",
@@ -879,11 +916,11 @@ var listItemsSidebar = [{
   group: true,
   permission: "importar.todos",
   submenu: [{
-    title: "Importar Habs. o Descts.",
+    title: "Haberes y Descuentos",
     url: "/admin/importar/haberes-descuentos",
     permission: "importar.descuentos"
   }, {
-    title: "Importar Personas o Pagos",
+    title: "Personas y Pagos",
     url: "/admin/importar/personas-pagos",
     permission: "importar.personas"
   }]

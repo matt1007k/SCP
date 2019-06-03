@@ -19,6 +19,16 @@
     </div>
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
+
+    <script>
+        window.user = @json(
+        [
+            'user' => Auth::user(),
+            'roles' => Auth::user()->roles,
+            'permissions' => Auth::user()->permissions
+        ]
+        )
+    </script>
 </body>
 
 </html>

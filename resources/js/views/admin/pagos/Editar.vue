@@ -1,177 +1,155 @@
 <template>
   <v-container>
-    <v-layout row wrap class="mb-3">
-      <v-flex xs12>
-        <v-card>
-          <v-container fill-height fluid>
-            <v-layout row wrap>
-              <v-flex xs12 class="mb-3">
-                <span class="headline">Editar pago</span>
-              </v-flex>
-              <v-flex xs12>
-                <span class="body-2">Datos de la persona</span>
-              </v-flex>
-              <v-flex xs12 sm6>
-                <div class="pr-2">
-                  <v-autocomplete
-                    v-model="form.persona"
-                    :items="lista_personas"
-                    :loading="isLoading"
-                    :search-input.sync="search"
-                    no-data-text="Sin resultados"
-                    item-text="nombre"
-                    item-value="API"
-                    label="Nombre"
-                    prepend-icon="mdi-database-search"
-                    :filter="customFilter"
-                    placeholder="Buscar por DNI o nombre completo..."
-                    return-object
-                  >
-                    <!-- <template
+    <form @submit.prevent="onSubmit">
+      <v-layout row wrap class="mb-3">
+        <v-flex xs12>
+          <v-btn color="info" @click="onCancel">
+            <v-icon>$vuetify.icons.left</v-icon>
+            <span>Regresar Atrás</span>
+          </v-btn>
+        </v-flex>
+        <v-flex xs12>
+          <v-card>
+            <v-container fill-height fluid>
+              <v-layout row wrap>
+                <v-flex xs12 class="mb-3">
+                  <span class="headline">Editar pago</span>
+                </v-flex>
+                <v-flex xs12>
+                  <span class="body-2">Datos de la persona</span>
+                </v-flex>
+                <v-flex xs12 sm6>
+                  <div class="pr-2">
+                    <v-autocomplete
+                      v-model="form.persona"
+                      :items="lista_personas"
+                      :loading="isLoading"
+                      :search-input.sync="search"
+                      no-data-text="Sin resultados"
+                      item-text="nombre"
+                      item-value="API"
+                      label="Nombre"
+                      prepend-icon="mdi-database-search"
+                      :filter="customFilter"
+                      placeholder="Buscar por DNI o nombre completo..."
+                      return-object
+                      :error-messages="errors.persona"
+                    >
+                      <!-- <template
                       v-slot:selection="data"
-                    >{{data.item.apellido_paterno}} {{data.item.apellido_materno}}, {{data.item.nombre}}</template>-->
-                    <template v-slot:item="data">
-                      <v-list-tile-content>
-                        <v-list-tile-title>{{data.item.apellido_paterno}} {{data.item.apellido_materno}}, {{data.item.nombre}}</v-list-tile-title>
-                        <v-list-tile-sub-title>DNI: {{data.item.dni}}</v-list-tile-sub-title>
-                      </v-list-tile-content>
-                    </template>
-                  </v-autocomplete>
-                </div>
-              </v-flex>
-              <v-flex xs12 sm6 md3>
-                <v-text-field
-                  label="Apellido Paterno"
-                  v-model="form.persona.apellido_paterno"
-                  disabled
-                ></v-text-field>
-              </v-flex>
-              <v-flex xs12 sm6 md3>
-                <v-text-field
-                  label="Apellido Materno"
-                  v-model="form.persona.apellido_materno"
-                  disabled
-                ></v-text-field>
-              </v-flex>
-              <v-flex xs12 sm6>
-                <v-text-field label="El DNI" v-model="form.persona.dni" disabled></v-text-field>
-              </v-flex>
-              <v-flex xs12 sm6>
-                <v-text-field label="El cargo" v-model="form.persona.cargo" disabled></v-text-field>
-              </v-flex>
-              <v-flex xs12>
-                <span class="body-2 mb-2">El periodo del pago</span>
-              </v-flex>
-              <v-flex xs12 sm6 md3>
-                <div class="pr-2">
-                  <v-select v-model="form.anio" :items="items_anio" label="El año"></v-select>
-                </div>
-              </v-flex>
-              <v-flex xs12 sm6 md3 class="pl-2">
-                <v-select v-model="form.mes" :items="items_mes" label="El mes"></v-select>
-              </v-flex>
-              <v-flex xs12 sm6 md3>
-                <v-btn color="success" @click="addHD('haber')">Agregar Haber</v-btn>
-              </v-flex>
-              <v-flex xs12 sm6 md3>
-                <v-btn color="success" @click="addHD('descuento')">Agregar Descuento</v-btn>
-              </v-flex>
-            </v-layout>
-          </v-container>
-        </v-card>
-      </v-flex>
-    </v-layout>
-    <v-layout wrap>
-      <v-flex xs12 class="mb-3">
-        <v-data-table
-          :headers="headersHaber"
-          :items="form.haberes"
-          hide-actions
-          class="elevation-1"
-          no-data-text="No hay haberes agregados"
-        >
-          <template v-slot:items="props">
-            <td class="text-xs-left">
-              <v-text-field v-model="props.item.nombre" label="Nombre" disabled></v-text-field>
-            </td>
-            <td class="text-xs-center">
-              <v-text-field type="number" v-model="props.item.monto"></v-text-field>
-            </td>
-            <td>
-              <v-tooltip bottom>
-                <v-btn
-                  slot="activator"
-                  icon
-                  color="error"
-                  @click="removeItem(props.index, 'haber')"
-                >
-                  <v-icon>$vuetify.icons.close</v-icon>
-                </v-btn>
-                <span>Eliminar haber</span>
-              </v-tooltip>
-            </td>
-          </template>
-          <template v-slot:footer>
-            <td>
-              <strong>Total Haber</strong>
-              <p>S/. {{totalHaber()}}</p>
-            </td>
-            <td></td>
-            <td></td>
-          </template>
-        </v-data-table>
-
-        <v-data-table
-          :headers="headersDescuento"
-          :items="form.descuentos"
-          hide-actions
-          class="elevation-1"
-          no-data-text="No hay descuentos agregados"
-        >
-          <template v-slot:items="props">
-            <td class="text-xs-left">
-              <v-text-field v-model="props.item.nombre" label="Nombre" disabled></v-text-field>
-            </td>
-            <td class="text-xs-center">
-              <v-text-field type="number" v-model="props.item.monto"></v-text-field>
-            </td>
-            <td>
-              <v-tooltip bottom>
-                <v-btn
-                  slot="activator"
-                  icon
-                  color="error"
-                  @click="removeItem(props.index, 'descuento')"
-                >
-                  <v-icon>$vuetify.icons.close</v-icon>
-                </v-btn>
-                <span>Eliminar descuento</span>
-              </v-tooltip>
-            </td>
-          </template>
-          <template v-slot:footer>
-            <td>
-              <strong>Total Descuento</strong>
-              <p>S/. {{totalDescuento()}}</p>
-            </td>
-            <td>
-              <strong>Total Liquido</strong>
-              <p>S/. {{totalLiquido()}}</p>
-            </td>
-            <td>
-              <strong>Total Remuneracion</strong>
-              <p>S/. 2131</p>
-            </td>
-          </template>
-        </v-data-table>
-      </v-flex>
-      <v-flex xs12 sm6>
-        <v-btn color="error">Cancelar</v-btn>
-      </v-flex>
-      <v-flex xs12 sm6>
-        <v-btn color="primary">Guardar</v-btn>
-      </v-flex>
-    </v-layout>
+                      >{{data.item.apellido_paterno}} {{data.item.apellido_materno}}, {{data.item.nombre}}</template>-->
+                      <template v-slot:item="data">
+                        <v-list-tile-content>
+                          <v-list-tile-title>{{data.item.apellido_paterno}} {{data.item.apellido_materno}}, {{data.item.nombre}}</v-list-tile-title>
+                          <v-list-tile-sub-title>DNI: {{data.item.dni}}</v-list-tile-sub-title>
+                        </v-list-tile-content>
+                      </template>
+                    </v-autocomplete>
+                  </div>
+                </v-flex>
+                <v-flex xs12 sm6 md3>
+                  <v-text-field
+                    label="Apellido Paterno"
+                    v-model="form.persona.apellido_paterno"
+                    disabled
+                  ></v-text-field>
+                </v-flex>
+                <v-flex xs12 sm6 md3>
+                  <v-text-field
+                    label="Apellido Materno"
+                    v-model="form.persona.apellido_materno"
+                    disabled
+                  ></v-text-field>
+                </v-flex>
+                <v-flex xs12 sm6>
+                  <v-text-field label="El DNI" v-model="form.persona.dni" disabled></v-text-field>
+                </v-flex>
+                <v-flex xs12 sm6>
+                  <v-text-field label="El cargo" v-model="form.persona.cargo" disabled></v-text-field>
+                </v-flex>
+                <v-flex xs12>
+                  <span class="body-2 mb-2">El periodo del pago</span>
+                </v-flex>
+                <v-flex xs12 sm6 md3>
+                  <div class="pr-2">
+                    <v-select
+                      v-model="form.anio"
+                      :items="items_anio"
+                      label="El año"
+                      :error-messages="errors.anio"
+                    ></v-select>
+                  </div>
+                </v-flex>
+                <v-flex xs12 sm6 md3 class="pl-2">
+                  <v-select
+                    v-model="form.mes"
+                    :items="items_mes"
+                    label="El mes"
+                    :error-messages="errors.mes"
+                  ></v-select>
+                </v-flex>
+                <v-flex xs12 sm6 md3>
+                  <v-btn color="success" @click="addHD('haber')">Agregar Haber</v-btn>
+                </v-flex>
+                <v-flex xs12 sm6 md3>
+                  <v-btn color="success" @click="addHD('descuento')">Agregar Descuento</v-btn>
+                </v-flex>
+              </v-layout>
+            </v-container>
+          </v-card>
+        </v-flex>
+      </v-layout>
+      <v-layout wrap>
+        <transition name="fade">
+          <v-flex xs12 v-if="errors.haberes">
+            <v-alert :value="true" type="error">
+              <div class="body-2">Los haberes son necesarios.</div>
+            </v-alert>
+          </v-flex>
+        </transition>
+        <transition name="fade">
+          <v-flex xs12 v-if="errors.descuentos">
+            <v-alert :value="true" type="error">
+              <div class="body-2">Los descuentos son necesarios.</div>
+            </v-alert>
+          </v-flex>
+        </transition>
+        <v-flex xs12>
+          <lista-items title="Haberes" :items="form.haberes" @remove="removeItem"></lista-items>
+          <lista-items title="Descuentos" :items="form.descuentos" @remove="removeItem"></lista-items>
+        </v-flex>
+        <v-flex xs12 class="mb-2">
+          <v-card>
+            <v-container fluid grid-list-lg>
+              <v-layout row wrap>
+                <v-flex xs12 sm3>
+                  <div class="subheading font-weight-bold">Total Haber</div>
+                  <p class="no-margin">S/. {{totalHaber()}}</p>
+                </v-flex>
+                <v-flex xs12 sm3>
+                  <div class="subheading font-weight-bold">Total Descuento</div>
+                  <p class="no-margin">S/. {{totalDescuento()}}</p>
+                </v-flex>
+                <v-flex xs12 sm3>
+                  <div class="subheading font-weight-bold">Total Líquido</div>
+                  <p class="no-margin">S/. {{totalLiquido()}}</p>
+                </v-flex>
+                <v-flex xs12 sm3>
+                  <div class="subheading font-weight-bold">Total Imponible</div>
+                  <p class="no-margin">S/. {{totalImponible()}}</p>
+                </v-flex>
+              </v-layout>
+            </v-container>
+          </v-card>
+        </v-flex>
+        <v-flex xs12 sm6>
+          <v-btn color="error" @click="onCancel">Cancelar</v-btn>
+        </v-flex>
+        <v-flex xs12 sm6>
+          <v-btn color="primary" type="submit">Guardar</v-btn>
+        </v-flex>
+      </v-layout>
+    </form>
     <agregar ref="modalAgregarhb" @addRow="addRow"></agregar>
   </v-container>
 </template>
@@ -180,12 +158,13 @@
 import { months } from "../../../services/listMonthsOfTheYear";
 import { years } from "../../../services/listYears";
 import Agregar from "../../../components/pagos/Agregar";
+import ListaItems from "../../../components/pagos/ListaItems";
 export default {
-  components: { Agregar },
+  components: { Agregar, ListaItems },
   data() {
     return {
-      isLoading: false,
       form: {
+        id: "",
         anio: "",
         mes: "",
         persona: {},
@@ -198,47 +177,33 @@ export default {
       },
       items_anio: years,
       items_mes: months,
-      errors: {},
       lista_personas: [],
+      errors: {},
       search: "",
-      headersHaber: [
-        {
-          text: "Haber",
-          align: "left",
-          sortable: false,
-          value: "haber"
-        },
-        { text: "Monto S/.", value: "monto", sortable: false },
-        { text: "Accion", value: "action", sortable: false }
-      ],
-      headersDescuento: [
-        {
-          text: "Descuento",
-          align: "left",
-          sortable: false,
-          value: "descuento"
-        },
-        { text: "Monto S/.", value: "monto", sortable: false },
-        { text: "Accion", value: "action", sortable: false }
-      ]
+      isLoading: false
     };
   },
-  beforeCreate() {
-    this.addCurrentYear();
-  },
   created() {
-    document.title = "Editar un Pago";
-    this.getSale();
+    document.title = "Registrar un Pago";
+    // this.addCurrentYear();
+    this.getItem();
   },
   mounted() {
     this.$root.modalAgregarhb = this.$refs.modalAgregarhb;
   },
   methods: {
-    getSale() {
+    getItem() {
       axios
         .get(`/pagos/${this.$route.params.id}/edit`)
-        .then(res => (this.form = res.data.form))
-        .catch(err => console.log(res));
+        .then(res => {
+          this.form = res.data.form;
+        })
+        .catch(err => {
+          this.errors = err.response.data.errors;
+          if (err.response.status == 403) {
+            this.$router.push("/403");
+          }
+        });
     },
     customFilter(item, queryText, itemText) {
       const nombre = item.nombre.toLowerCase();
@@ -293,14 +258,14 @@ export default {
         this.form.descuentos.splice(index, 1);
       }
     },
-    addCurrentYear() {
-      let currentYear = new Date().getFullYear();
-      let lastYear = this.items_anio.pop();
-      if (Number(lastYear) < currentYear) {
-        this.items_anio = [...this.items_anio, lastYear];
-        this.items_anio = [...this.items_anio, currentYear];
-      }
-    },
+    // addCurrentYear() {
+    //   let currentYear = new Date().getFullYear();
+    //   let lastYear = this.items_anio.pop();
+    //   if (Number(lastYear) < currentYear) {
+    //     this.items_anio = [...this.items_anio, lastYear];
+    //     this.items_anio = [...this.items_anio, currentYear];
+    //   }
+    // },
     totalHaber() {
       const totalHaber = this.form.haberes
         .map(item => {
@@ -328,6 +293,63 @@ export default {
     totalLiquido() {
       const total = this.totalHaber() - this.totalDescuento();
       return parseFloat(total).toFixed(2);
+    },
+    totalImponible() {
+      const total = this.form.haberes
+        .map(item => {
+          let totalItem = 0;
+          if (item.es_imponible == 1) {
+            return (totalItem += parseFloat(item.monto));
+          }
+          return totalItem;
+        })
+        .reduce((a, b) => {
+          return a + b;
+        }, 0);
+      return parseFloat(total).toFixed(2);
+    },
+    onSubmit() {
+      const form = {
+        anio: this.form.anio,
+        mes: this.form.mes,
+        persona: this.form.persona,
+        total_haber: this.totalHaber(),
+        haberes: this.form.haberes,
+        total_descuento: this.totalDescuento(),
+        descuentos: this.form.descuentos,
+        monto_liquido: this.totalLiquido(),
+        monto_imponible: this.totalImponible()
+      };
+      axios
+        .put(`/pagos/${this.form.id}`, form)
+        .then(res => {
+          this.$router.push("/admin/pagos/lista");
+          this.$parent.this.$root.$snackbar.show(
+            "Datos editados correctamente."
+          );
+          this.resetForm();
+        })
+        .catch(err => {
+          this.errors = err.response.data.errors;
+          if (err.response.status == 403) {
+            this.$router.push("/403");
+          }
+        });
+    },
+    resetForm() {
+      this.form.persona = {};
+      this.form.anio = "";
+      this.form.mes = "";
+      this.form.haberes = [];
+      this.form.descuentos = [];
+      this.form.total_haber = 0;
+      this.form.total_descuento = 0;
+      this.form.monto_liquido = 0;
+      this.form.monto_imponible = 0;
+    },
+    onCancel() {
+      this.$router.push("/admin/pagos/lista");
+      this.resetForm();
     }
   },
   watch: {

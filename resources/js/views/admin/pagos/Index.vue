@@ -17,7 +17,13 @@
             </v-layout>
           </v-container>
           <v-container fluid style="padding-bottom: 0; padding-top: 0">
-            <v-text-field v-model="search" clearable label="Buscar" type="text">
+            <v-text-field
+              v-model="search"
+              clearable
+              label="Buscar"
+              type="text"
+              placeholder="Buscar por DNI de la persona o periodo..."
+            >
               <template v-slot:prepend>
                 <v-icon>$vuetify.icons.search</v-icon>
               </template>
@@ -33,7 +39,7 @@
                 <span>Filtar por periodo</span>
               </v-tooltip>
               <v-btn flat @click="filterBy('Todos')">Todos</v-btn>
-              <v-btn flat color="success" @click="filterBy('activo')">Activos</v-btn>
+              <v-btn flat color="success" @click="filterBy('activo')">Periodo</v-btn>
             </span>
           </v-container>
         </v-card>
@@ -104,7 +110,7 @@ export default {
         },
         {
           text: "Nombre persona",
-          value: "persona.apellido_paterno"
+          value: "persona.dni"
         },
         { text: "Total Haber", value: "total_haber" },
         { text: "Total Descuento", value: "total_descuento" },
@@ -141,9 +147,6 @@ export default {
     filterBy(prop) {
       // this.tipo = prop;
       // this.getData();
-    },
-    modalAgregar() {
-      // this.$root.agregarPersona.show();
     },
     modalEditar(pago) {
       this.$router.push("/admin/pagos/editar/" + pago.id);

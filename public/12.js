@@ -1,9 +1,9 @@
 (window["webpackJsonp"] = window["webpackJsonp"] || []).push([[12],{
 
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/admin/importar/ImportarPersonas.vue?vue&type=script&lang=js&":
-/*!*************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/admin/importar/ImportarPersonas.vue?vue&type=script&lang=js& ***!
-  \*************************************************************************************************************************************************************************************/
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/admin/importar/ImportarDescuentos.vue?vue&type=script&lang=js&":
+/*!***************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/admin/importar/ImportarDescuentos.vue?vue&type=script&lang=js& ***!
+  \***************************************************************************************************************************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -95,7 +95,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
         var _this = this;
 
-        var file, formData, res, message;
+        var file, formData, res, message, error;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
@@ -106,7 +106,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 _context.prev = 3;
                 this.uploading = true;
                 _context.next = 7;
-                return axios.post("/importar/personas", formData, {
+                return axios.post("/importar/descuentos", formData, {
                   onUploadProgress: function onUploadProgress(e) {
                     return _this.progress = Math.round(e.loaded * 100 / e.total);
                   }
@@ -127,7 +127,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   });
                 }
 
-                _context.next = 23;
+                _context.next = 25;
                 break;
 
               case 16:
@@ -138,8 +138,16 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 this.error = true;
                 this.uploading = false;
                 this.uploadFile = [];
+                _context.t0 = _context.t0.response.data.message;
 
-              case 23:
+                if (_context.t0 == "Undefined index: HABERES" || _context.t0 == "Undefined index: DESCUENTOS") {
+                  this.$root.$snackbar.show("Las hojas HABERES y DESCUENTOS no exiten en el archivo.", {
+                    color: "info"
+                  });
+                  this.resetInputFile();
+                }
+
+              case 25:
               case "end":
                 return _context.stop();
             }
@@ -165,10 +173,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/admin/importar/ImportarPersonas.vue?vue&type=template&id=207a5107&":
-/*!*****************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/admin/importar/ImportarPersonas.vue?vue&type=template&id=207a5107& ***!
-  \*****************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/admin/importar/ImportarDescuentos.vue?vue&type=template&id=7b72354b&":
+/*!*******************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/admin/importar/ImportarDescuentos.vue?vue&type=template&id=7b72354b& ***!
+  \*******************************************************************************************************************************************************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -204,11 +212,11 @@ var render = function() {
                         [
                           _c("v-flex", { attrs: { xs12: "" } }, [
                             _c("span", { staticClass: "headline" }, [
-                              _vm._v("Importar Personas y los Pagos")
+                              _vm._v("Importar Haberes y Descuentos")
                             ]),
                             _vm._v(" "),
                             _c("div", { staticClass: "body-1" }, [
-                              _vm._v("Subir datos de las personas y los pagos.")
+                              _vm._v("Subir datos de los haberes y descuentos.")
                             ])
                           ])
                         ],
@@ -347,17 +355,17 @@ render._withStripped = true
 
 /***/ }),
 
-/***/ "./resources/js/views/admin/importar/ImportarPersonas.vue":
-/*!****************************************************************!*\
-  !*** ./resources/js/views/admin/importar/ImportarPersonas.vue ***!
-  \****************************************************************/
+/***/ "./resources/js/views/admin/importar/ImportarDescuentos.vue":
+/*!******************************************************************!*\
+  !*** ./resources/js/views/admin/importar/ImportarDescuentos.vue ***!
+  \******************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _ImportarPersonas_vue_vue_type_template_id_207a5107___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ImportarPersonas.vue?vue&type=template&id=207a5107& */ "./resources/js/views/admin/importar/ImportarPersonas.vue?vue&type=template&id=207a5107&");
-/* harmony import */ var _ImportarPersonas_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ImportarPersonas.vue?vue&type=script&lang=js& */ "./resources/js/views/admin/importar/ImportarPersonas.vue?vue&type=script&lang=js&");
+/* harmony import */ var _ImportarDescuentos_vue_vue_type_template_id_7b72354b___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ImportarDescuentos.vue?vue&type=template&id=7b72354b& */ "./resources/js/views/admin/importar/ImportarDescuentos.vue?vue&type=template&id=7b72354b&");
+/* harmony import */ var _ImportarDescuentos_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ImportarDescuentos.vue?vue&type=script&lang=js& */ "./resources/js/views/admin/importar/ImportarDescuentos.vue?vue&type=script&lang=js&");
 /* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
@@ -367,9 +375,9 @@ __webpack_require__.r(__webpack_exports__);
 /* normalize component */
 
 var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
-  _ImportarPersonas_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _ImportarPersonas_vue_vue_type_template_id_207a5107___WEBPACK_IMPORTED_MODULE_0__["render"],
-  _ImportarPersonas_vue_vue_type_template_id_207a5107___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  _ImportarDescuentos_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _ImportarDescuentos_vue_vue_type_template_id_7b72354b___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _ImportarDescuentos_vue_vue_type_template_id_7b72354b___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
   false,
   null,
   null,
@@ -379,38 +387,38 @@ var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_
 
 /* hot reload */
 if (false) { var api; }
-component.options.__file = "resources/js/views/admin/importar/ImportarPersonas.vue"
+component.options.__file = "resources/js/views/admin/importar/ImportarDescuentos.vue"
 /* harmony default export */ __webpack_exports__["default"] = (component.exports);
 
 /***/ }),
 
-/***/ "./resources/js/views/admin/importar/ImportarPersonas.vue?vue&type=script&lang=js&":
-/*!*****************************************************************************************!*\
-  !*** ./resources/js/views/admin/importar/ImportarPersonas.vue?vue&type=script&lang=js& ***!
-  \*****************************************************************************************/
+/***/ "./resources/js/views/admin/importar/ImportarDescuentos.vue?vue&type=script&lang=js&":
+/*!*******************************************************************************************!*\
+  !*** ./resources/js/views/admin/importar/ImportarDescuentos.vue?vue&type=script&lang=js& ***!
+  \*******************************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ImportarPersonas_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../node_modules/vue-loader/lib??vue-loader-options!./ImportarPersonas.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/admin/importar/ImportarPersonas.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ImportarPersonas_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ImportarDescuentos_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../node_modules/vue-loader/lib??vue-loader-options!./ImportarDescuentos.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/admin/importar/ImportarDescuentos.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ImportarDescuentos_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 
-/***/ "./resources/js/views/admin/importar/ImportarPersonas.vue?vue&type=template&id=207a5107&":
-/*!***********************************************************************************************!*\
-  !*** ./resources/js/views/admin/importar/ImportarPersonas.vue?vue&type=template&id=207a5107& ***!
-  \***********************************************************************************************/
+/***/ "./resources/js/views/admin/importar/ImportarDescuentos.vue?vue&type=template&id=7b72354b&":
+/*!*************************************************************************************************!*\
+  !*** ./resources/js/views/admin/importar/ImportarDescuentos.vue?vue&type=template&id=7b72354b& ***!
+  \*************************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ImportarPersonas_vue_vue_type_template_id_207a5107___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib??vue-loader-options!./ImportarPersonas.vue?vue&type=template&id=207a5107& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/admin/importar/ImportarPersonas.vue?vue&type=template&id=207a5107&");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ImportarPersonas_vue_vue_type_template_id_207a5107___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ImportarDescuentos_vue_vue_type_template_id_7b72354b___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib??vue-loader-options!./ImportarDescuentos.vue?vue&type=template&id=7b72354b& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/admin/importar/ImportarDescuentos.vue?vue&type=template&id=7b72354b&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ImportarDescuentos_vue_vue_type_template_id_7b72354b___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ImportarPersonas_vue_vue_type_template_id_207a5107___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ImportarDescuentos_vue_vue_type_template_id_7b72354b___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

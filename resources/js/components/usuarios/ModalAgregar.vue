@@ -3,12 +3,12 @@
     <v-dialog v-model="open" persistent small width="800px">
       <v-card>
         <form @submit.prevent="Submit">
-          <v-card-title wrap>
+          <v-card-title wrap class="blue-grey darken-2 white--text">
             <v-flex xs11>
               <span class="headline">Registrar usuario</span>
             </v-flex>
             <v-flex xs1 class="d-flex justify-end">
-              <v-btn flat color="error" @click="open = false">
+              <v-btn color="error" @click="open = false">
                 <v-icon>$vuetify.icons.close</v-icon>
               </v-btn>
             </v-flex>
@@ -52,6 +52,7 @@
                 </v-flex>
 
                 <v-flex xs12>
+                  <div class="body-2">Estado del usuario</div>
                   <v-radio-group v-model="form.estado" row :error-messages="errors.estado">
                     <v-radio label="Activo" value="activo" color="success"></v-radio>
                     <v-radio label="Inactivo" value="inactivo" color="error"></v-radio>

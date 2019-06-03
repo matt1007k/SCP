@@ -87,6 +87,11 @@ export default {
         this.uploadFile.push(file);
         this.uploading = false;
         this.progress = 0;
+        var message = res.data.msg;
+        if (message) {
+          this.resetInputFile();
+          this.$root.$snackbar.show(message, { color: "warning" });
+        }
       } catch (error) {
         this.errors = error.response.data.errors;
         this.progress = 0;

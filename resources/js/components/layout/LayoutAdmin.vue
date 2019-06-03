@@ -26,7 +26,9 @@
     </v-toolbar>
 
     <v-content>
-      <router-view :key="$route.fullPath"/>
+      <transition name="slide-fade">
+        <router-view :key="$route.fullPath"/>
+      </transition>
     </v-content>
   </v-app>
 </template>

@@ -33,13 +33,15 @@ Route::namespace ('Admin')->group(function () {
             ->except(['show', 'create', 'edit']);
         Route::resource('personas', 'PersonaController')
             ->except(['show', 'create', 'edit']);
-        Route::resource('descuentos', 'HaberDescuentoController')
+        Route::resource('descuentos', 'DescuentoController')
+            ->except(['show', 'create', 'edit']);
+        Route::resource('haberes', 'HaberController')
             ->except(['show', 'create', 'edit']);
         Route::resource('pagos', 'PagoController')
             ->except(['show', 'create']);
 
         Route::get('/search-personas', 'PersonaController@search')->name('personas.search');
-        Route::get('/search-descuentos', 'HaberDescuentoController@search')->name('descuentos.search');
+        Route::get('/search-descuentos', 'DescuentoController@search')->name('descuentos.search');
 
         Route::get('/getRoles', 'RoleController@getRoles')->name('getRoles');
         Route::get('/getPermissions', 'PermissionController@getPermissions')->name('getPermissions');

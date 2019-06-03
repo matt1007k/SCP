@@ -12,7 +12,8 @@ const mdi_icons = {
     filter: "mdi-filter-variant",
     bell: "mdi-bell-ring",
     exit: "mdi-exit-to-app",
-    sale: "mdi-sale"
+    sale: "mdi-sale",
+    left: "mdi-keyboard-backspace"
 };
 
 export default mdi_icons;
