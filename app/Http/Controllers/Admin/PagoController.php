@@ -2,7 +2,6 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Detalle;
 use App\Models\HaberDescuento;
 use App\Models\Pago;
 use Auth;
@@ -44,13 +43,16 @@ class PagoController extends Controller
 
         if ($pago->save()) {
 
-            foreach ($detalles as $detalle) {
-                $detalle_db = new Detalle();
-                $detalle_db->pago_id = $pago->id;
-                $detalle_db->hd_id = $detalle['id'];
-                $detalle_db->monto = $detalle['monto'];
-                $detalle_db->save();
-            }
+            // foreach ($detalles as $detalle) {
+            //     $detalle_db = new Detalle();
+            //     $detalle_db->pago_id = $pago->id;
+            //     $detalle_db->hd_id = $detalle['id'];
+            //     $detalle_db->monto = $detalle['monto'];
+            //     $detalle_db->save();
+            // }
+            $pago->storeHasMany([
+                'detalles' => $detalles,
+            ]);
 
             return response()->json([
                 'created' => true,
@@ -84,6 +86,7 @@ class PagoController extends Controller
                     "es_imponible" => $hd->es_imponible,
                     "created_at" => $hd->created_at,
                     "updated_at" => $hd->updated_at,
+                    "hd_id" => $hd->id,
                     "monto" => $detalle->monto,
                 ]);
             } elseif ($hd->tipo == 'descuento') {
@@ -98,6 +101,7 @@ class PagoController extends Controller
                     "es_imponible" => $hd->es_imponible,
                     "created_at" => $hd->created_at,
                     "updated_at" => $hd->updated_at,
+                    "hd_id" => $hd->id,
                     "monto" => $detalle->monto,
                 ]);
             }
@@ -119,4 +123,60 @@ class PagoController extends Controller
         ], 200);
     }
 
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'persona' => 'required',
+            'mes' => 'required',
+            'anio' => 'required',
+            'total_haber' => 'required',
+            'total_descuento' => 'required',
+            'monto_liquido' => 'required',
+            'monto_imponible' => 'required',
+            'haberes' => 'required',
+            'descuentos' => 'required',
+        ]);
+
+        $detalles = array_merge($request->haberes, $request->descuentos);
+
+        $pago = Pago::findOrfail($id);
+
+        $pago->persona_id = $request->persona['id'];
+        $pago->periodo = $request->anio . $request->mes;
+        $pago->total_haber = $request->total_haber;
+        $pago->total_descuento = $request->total_descuento;
+        $pago->monto_liquido = $request->monto_liquido;
+        $pago->monto_imponible = $request->monto_imponible;
+        $pago->user_id = Auth::user()->id;
+
+        if ($pago->save()) {
+
+            $pago->updateHasMany([
+                'detalles' => $detalles,
+            ]);
+
+            return response()->json([
+                'updated' => true,
+            ], 201);
+        } else {
+            return response()->json([
+                'updated' => false,
+            ], 404);
+        }
+    }
+
+    public function destroy($id)
+    {
+        $pago = Pago::findOrfail($id);
+
+        if ($pago->delete()) {
+            return response()->json([
+                'deleted' => true,
+            ], 200);
+        } else {
+            return response()->json([
+                'deleted' => false,
+            ], 404);
+        }
+    }
 }

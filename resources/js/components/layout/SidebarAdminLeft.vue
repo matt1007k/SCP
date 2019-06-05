@@ -16,10 +16,10 @@
       </v-layout>
     </v-img>
 
-    <v-list v-for="(item, index) in itemsMenu" :key="index">
+    <v-list v-for="(item, index) in itemsMenu" :key="index" dense>
       <template v-if="item.group">
         <v-list-group
-          v-if="$auth.can(item.permission) || $auth.isAdmin()"
+          v-show="$auth.can(item.permission) || $auth.isAdmin()"
           :prepend-icon="item.icon"
           :value="subIsActive([item.url])"
         >
@@ -29,7 +29,13 @@
             </v-list-tile>
           </template>
 
-          <v-list-tile v-for="(submenu, i) in item.submenu" :key="i" router :to="submenu.url">
+          <v-list-tile
+            v-for="(submenu, i) in item.submenu"
+            :key="i"
+            router
+            :to="submenu.url"
+            v-show="$auth.can(submenu.permission) || $auth.isAdmin()"
+          >
             <v-list-tile-action></v-list-tile-action>
             <v-list-tile-title v-text="submenu.title"></v-list-tile-title>
           </v-list-tile>

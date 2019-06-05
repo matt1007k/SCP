@@ -184,7 +184,7 @@ export default {
     };
   },
   created() {
-    document.title = "Registrar un Pago";
+    document.title = "Editar un Pago";
     // this.addCurrentYear();
     this.getItem();
   },
@@ -231,7 +231,7 @@ export default {
           haber => haber.id === item.id
         );
         if (updatedItemIndex < 0) {
-          this.form.haberes.push({ ...item, monto: 0.0 });
+          this.form.haberes.push({ ...item, monto: 0.0, hd_id: item.id });
         } else {
           this.$root.$snackbar.show("El haber ya a sido agregado.", {
             color: "warning"
@@ -243,7 +243,7 @@ export default {
           descuento => descuento.id === item.id
         );
         if (updatedItemIndex < 0) {
-          this.form.descuentos.push({ ...item, monto: 0.0 });
+          this.form.descuentos.push({ ...item, monto: 0.0, hd_id: item.id });
         } else {
           this.$root.$snackbar.show("El descuento ya a sido agregado.", {
             color: "warning"
@@ -336,20 +336,8 @@ export default {
           }
         });
     },
-    resetForm() {
-      this.form.persona = {};
-      this.form.anio = "";
-      this.form.mes = "";
-      this.form.haberes = [];
-      this.form.descuentos = [];
-      this.form.total_haber = 0;
-      this.form.total_descuento = 0;
-      this.form.monto_liquido = 0;
-      this.form.monto_imponible = 0;
-    },
     onCancel() {
       this.$router.push("/admin/pagos/lista");
-      this.resetForm();
     }
   },
   watch: {

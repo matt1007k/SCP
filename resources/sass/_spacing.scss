@@ -1,0 +1,92 @@
+// padding
+
+@for $number from 1 through 4 {
+    .pt-#{$number} {
+        padding-top: #{$number}em;
+    }
+}
+
+@for $number from 1 through 4 {
+    .pb-#{$number} {
+        padding-bottom: #{$number}em;
+    }
+}
+
+@for $number from 1 through 4 {
+    .pl-#{$number} {
+        padding-left: #{$number}em;
+    }
+}
+
+@for $number from 1 through 4 {
+    .pr-#{$number} {
+        padding-right: #{$number}em;
+    }
+}
+
+// margin
+@for $number from 1 through 4 {
+    .mt-#{$number} {
+        margin-top: #{$number}em;
+    }
+}
+
+@for $number from 1 through 4 {
+    .mb-#{$number} {
+        margin-bottom: #{$number}em;
+    }
+}
+
+@for $number from 1 through 4 {
+    .ml-#{$number} {
+        margin-left: #{$number}em;
+    }
+}
+
+@for $number from 1 through 4 {
+    .mr-#{$number} {
+        margin-right: #{$number}em;
+    }
+}
+
+// width
+.w-100 {
+    width: 100%;
+}
+.w-70 {
+    width: 70%;
+}
+.w-50 {
+    width: 50%;
+}
+.w-30 {
+    width: 30%;
+}
+//height
+
+.h-100 {
+    height: 100%;
+}
+.h-100vh {
+    height: 100vh;
+}
+
+.padding-ultra-small {
+    padding: 0.5em;
+}
+.padding-small {
+    padding: 1em;
+}
+.no-padding {
+    padding: 0;
+}
+
+.margin-ultra-small {
+    margin: 0.5em;
+}
+.margin-small {
+    margin: 1em;
+}
+.no-margin {
+    margin: 0;
+}

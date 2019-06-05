@@ -216,7 +216,7 @@ export default {
           haber => haber.id === item.id
         );
         if (updatedItemIndex < 0) {
-          this.form.haberes.push({ ...item, monto: 0.0 });
+          this.form.haberes.push({ ...item, monto: 0.0, hd_id: item.id });
         } else {
           this.$root.$snackbar.show("El haber ya a sido agregado.", {
             color: "warning"
@@ -228,7 +228,7 @@ export default {
           descuento => descuento.id === item.id
         );
         if (updatedItemIndex < 0) {
-          this.form.descuentos.push({ ...item, monto: 0.0 });
+          this.form.descuentos.push({ ...item, monto: 0.0, hd_id: item.id });
         } else {
           this.$root.$snackbar.show("El descuento ya a sido agregado.", {
             color: "warning"

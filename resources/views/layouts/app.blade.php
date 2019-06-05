@@ -21,6 +21,7 @@
     <script src="{{ asset('js/app.js') }}" defer></script>
 
     <script>
+        @isset(Auth::user()->roles)
         window.user = @json(
         [
             'user' => Auth::user(),
@@ -28,6 +29,7 @@
             'permissions' => Auth::user()->permissions
         ]
         )
+        @endisset
     </script>
 </body>
 

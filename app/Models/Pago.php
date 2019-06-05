@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use App\Helpers\HasManyRelation;
 use Illuminate\Database\Eloquent\Model;
 
 class Pago extends Model
 {
+    use HasManyRelation;
+
     protected $fillable = [
         'periodo',
         'total_descuento',

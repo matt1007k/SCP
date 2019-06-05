@@ -44386,24 +44386,24 @@ var ParentComponent = {
   }, {
     path: "/auth",
     component: function component() {
-      return __webpack_require__.e(/*! import() */ 10).then(__webpack_require__.bind(null, /*! ./components/layout/LayoutClient.vue */ "./resources/js/components/layout/LayoutClient.vue"));
+      return __webpack_require__.e(/*! import() */ 9).then(__webpack_require__.bind(null, /*! ./components/layout/LayoutClient.vue */ "./resources/js/components/layout/LayoutClient.vue"));
     },
     children: [{
       path: "login",
       component: function component() {
-        return __webpack_require__.e(/*! import() */ 17).then(__webpack_require__.bind(null, /*! ./views/auth/Login.vue */ "./resources/js/views/auth/Login.vue"));
+        return __webpack_require__.e(/*! import() */ 18).then(__webpack_require__.bind(null, /*! ./views/auth/Login.vue */ "./resources/js/views/auth/Login.vue"));
       }
     }]
   }, {
     path: "/admin",
     component: function component() {
-      return __webpack_require__.e(/*! import() */ 1).then(__webpack_require__.bind(null, /*! ./components/layout/LayoutAdmin.vue */ "./resources/js/components/layout/LayoutAdmin.vue"));
+      return __webpack_require__.e(/*! import() */ 2).then(__webpack_require__.bind(null, /*! ./components/layout/LayoutAdmin.vue */ "./resources/js/components/layout/LayoutAdmin.vue"));
     },
     children: [{
       path: "",
       name: "admin",
       component: function component() {
-        return __webpack_require__.e(/*! import() */ 11).then(__webpack_require__.bind(null, /*! ./views/admin/Dashboard.vue */ "./resources/js/views/admin/Dashboard.vue"));
+        return __webpack_require__.e(/*! import() */ 10).then(__webpack_require__.bind(null, /*! ./views/admin/Dashboard.vue */ "./resources/js/views/admin/Dashboard.vue"));
       }
     }, {
       path: "usuarios",
@@ -44445,17 +44445,17 @@ var ParentComponent = {
       children: [{
         path: "lista",
         component: function component() {
-          return __webpack_require__.e(/*! import() */ 14).then(__webpack_require__.bind(null, /*! ./views/admin/pagos/Index.vue */ "./resources/js/views/admin/pagos/Index.vue"));
+          return __webpack_require__.e(/*! import() */ 15).then(__webpack_require__.bind(null, /*! ./views/admin/pagos/Index.vue */ "./resources/js/views/admin/pagos/Index.vue"));
         }
       }, {
         path: "crear",
         component: function component() {
-          return Promise.all(/*! import() */[__webpack_require__.e(2), __webpack_require__.e(20)]).then(__webpack_require__.bind(null, /*! ./views/admin/pagos/Crear.vue */ "./resources/js/views/admin/pagos/Crear.vue"));
+          return Promise.all(/*! import() */[__webpack_require__.e(0), __webpack_require__.e(13)]).then(__webpack_require__.bind(null, /*! ./views/admin/pagos/Crear.vue */ "./resources/js/views/admin/pagos/Crear.vue"));
         }
       }, {
         path: "editar/:id",
         component: function component() {
-          return Promise.all(/*! import() */[__webpack_require__.e(2), __webpack_require__.e(21)]).then(__webpack_require__.bind(null, /*! ./views/admin/pagos/Editar.vue */ "./resources/js/views/admin/pagos/Editar.vue"));
+          return Promise.all(/*! import() */[__webpack_require__.e(0), __webpack_require__.e(14)]).then(__webpack_require__.bind(null, /*! ./views/admin/pagos/Editar.vue */ "./resources/js/views/admin/pagos/Editar.vue"));
         }
       }]
     }, {
@@ -44487,13 +44487,13 @@ var ParentComponent = {
         path: "haberes-descuentos",
         name: "importar.descuentos",
         component: function component() {
-          return Promise.all(/*! import() */[__webpack_require__.e(0), __webpack_require__.e(12)]).then(__webpack_require__.bind(null, /*! ./views/admin/importar/ImportarDescuentos.vue */ "./resources/js/views/admin/importar/ImportarDescuentos.vue"));
+          return Promise.all(/*! import() */[__webpack_require__.e(1), __webpack_require__.e(11)]).then(__webpack_require__.bind(null, /*! ./views/admin/importar/ImportarDescuentos.vue */ "./resources/js/views/admin/importar/ImportarDescuentos.vue"));
         }
       }, {
         path: "personas-pagos",
         name: "importar.personas",
         component: function component() {
-          return Promise.all(/*! import() */[__webpack_require__.e(0), __webpack_require__.e(13)]).then(__webpack_require__.bind(null, /*! ./views/admin/importar/ImportarPersonas.vue */ "./resources/js/views/admin/importar/ImportarPersonas.vue"));
+          return Promise.all(/*! import() */[__webpack_require__.e(1), __webpack_require__.e(12)]).then(__webpack_require__.bind(null, /*! ./views/admin/importar/ImportarPersonas.vue */ "./resources/js/views/admin/importar/ImportarPersonas.vue"));
         }
       }]
     }, {
@@ -44503,24 +44503,24 @@ var ParentComponent = {
         path: "anual",
         name: "reporte.anual",
         component: function component() {
-          return __webpack_require__.e(/*! import() */ 15).then(__webpack_require__.bind(null, /*! ./views/admin/reportes/Anual.vue */ "./resources/js/views/admin/reportes/Anual.vue"));
+          return __webpack_require__.e(/*! import() */ 16).then(__webpack_require__.bind(null, /*! ./views/admin/reportes/Anual.vue */ "./resources/js/views/admin/reportes/Anual.vue"));
         }
       }, {
         path: "mensual",
         name: "reporte.mensual",
         component: function component() {
-          return __webpack_require__.e(/*! import() */ 16).then(__webpack_require__.bind(null, /*! ./views/admin/reportes/Mensual.vue */ "./resources/js/views/admin/reportes/Mensual.vue"));
+          return __webpack_require__.e(/*! import() */ 17).then(__webpack_require__.bind(null, /*! ./views/admin/reportes/Mensual.vue */ "./resources/js/views/admin/reportes/Mensual.vue"));
         }
       }]
     }, {
       path: "403",
       component: function component() {
-        return __webpack_require__.e(/*! import() */ 19).then(__webpack_require__.bind(null, /*! ./views/errors/Unauthorize.vue */ "./resources/js/views/errors/Unauthorize.vue"));
+        return __webpack_require__.e(/*! import() */ 20).then(__webpack_require__.bind(null, /*! ./views/errors/Unauthorize.vue */ "./resources/js/views/errors/Unauthorize.vue"));
       }
     }, {
       path: "**",
       component: function component() {
-        return __webpack_require__.e(/*! import() */ 18).then(__webpack_require__.bind(null, /*! ./views/errors/NotFoundPage.vue */ "./resources/js/views/errors/NotFoundPage.vue"));
+        return __webpack_require__.e(/*! import() */ 19).then(__webpack_require__.bind(null, /*! ./views/errors/NotFoundPage.vue */ "./resources/js/views/errors/NotFoundPage.vue"));
       }
     }]
   }]

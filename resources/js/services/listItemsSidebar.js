@@ -1,8 +1,9 @@
 export const listItemsSidebar = [
     {
-        title: "Dashboard",
+        title: "Tablero",
         url: "/admin",
         icon: "mdi mdi-chart-line",
+        permission: "admin.index",
         exact: true
     },
     {
@@ -36,6 +37,7 @@ export const listItemsSidebar = [
         icon: "mdi mdi-credit-card",
         url: "/admin/pagos",
         group: true,
+        permission: "pagos.index",
         submenu: [
             {
                 title: "Lista de pagos",

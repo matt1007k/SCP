@@ -22,8 +22,7 @@ Route::namespace ('Admin')->group(function () {
 
     Route::middleware(['auth'])->group(function () {
         Route::get('/admin/{any?}', 'DashboardController@index')
-            ->where('any', '.*')
-            ->middleware('auth');
+            ->where('any', '.*');
 
         Route::resource('usuarios', 'UserController')
             ->except(['show', 'create', 'edit']);

@@ -1,108 +1,55 @@
 <template>
-  <v-card color="red lighten-2" dark>
-    <v-card-title class="headline red lighten-3">Search for Public APIs</v-card-title>
-    <v-card-text>
-      Explore hundreds of free API's ready for consumption! For more information visit
-      <a
-        class="grey--text text--lighten-3"
-        href="https://github.com/toddmotto/public-apis"
-        target="_blank"
-      >the Github repository</a>.
-    </v-card-text>
-    <v-card-text>
-      <v-autocomplete
-        v-model="model"
-        :items="items"
-        :loading="isLoading"
-        :search-input.sync="search"
-        color="white"
-        no-data-text="Sin resultados"
-        hide-selected
-        item-text="Description"
-        item-value="API"
-        label="Public APIs"
-        placeholder="Start typing to Search"
-        prepend-icon="mdi-database-search"
-        return-object
-      ></v-autocomplete>
-    </v-card-text>
-    <v-divider></v-divider>
-    <v-expand-transition>
-      <v-list v-if="model" class="green lighten-3">
-        <v-list-tile v-for="(field, i) in fields" :key="i">
-          <v-list-tile-content>
-            <v-list-tile-title v-text="field.value"></v-list-tile-title>
-            <v-list-tile-sub-title v-text="field.key"></v-list-tile-sub-title>
-          </v-list-tile-content>
-        </v-list-tile>
-      </v-list>
-    </v-expand-transition>
-    <v-card-actions>
-      <v-spacer></v-spacer>
-      <v-btn :disabled="!model" color="grey darken-3" @click="model = null">
-        Clear
-        <v-icon right>mdi-close-circle</v-icon>
-      </v-btn>
-    </v-card-actions>
-  </v-card>
+  <v-container fluid grid-list-md>
+    <v-layout row wrap class="mb-3">
+      <v-flex xs12>
+        <span class="headline">Tablero de resumenes</span>
+      </v-flex>
+    </v-layout>
+    <v-layout row wrap>
+      <v-flex xs12 sm4 md3 v-for="(item, index) in count_items" :key="index">
+        <count-item :color="item.color" :icon="item.icon" :label="item.label" :total="item.total"></count-item>
+      </v-flex>
+    </v-layout>
+  </v-container>
 </template>
 
 <script>
+import CountItem from "../../components/dashboard/CountItem";
 export default {
-  data: () => ({
-    descriptionLimit: 60,
-    entries: [],
-    isLoading: false,
-    model: null,
-    search: null
-  }),
-
-  computed: {
-    fields() {
-      if (!this.model) return [];
-
-      return Object.keys(this.model).map(key => {
-        return {
-          key,
-          value: this.model[key] || "n/a"
-        };
-      });
-    },
-    items() {
-      return this.entries.map(entry => {
-        const Description =
-          entry.Description.length > this.descriptionLimit
-            ? entry.Description.slice(0, this.descriptionLimit) + "..."
-            : entry.Description;
-
-        return Object.assign({}, entry, { Description });
-      });
-    }
+  components: { CountItem },
+  mounted() {
+    console.log(this.$vuetify.breakpoint);
   },
-
-  watch: {
-    search(val) {
-      // Items have already been loaded
-      if (this.items.length > 0) return;
-
-      // Items have already been requested
-      if (this.isLoading) return;
-
-      this.isLoading = true;
-
-      // Lazily load input items
-      fetch("https://api.publicapis.org/entries")
-        .then(res => res.json())
-        .then(res => {
-          const { count, entries } = res;
-          this.count = count;
-          this.entries = entries;
-        })
-        .catch(err => {
-          console.log(err);
-        })
-        .finally(() => (this.isLoading = false));
-    }
-  }
+  data: () => ({
+    count_items: [
+      {
+        label: "Total de pagos",
+        color: "error",
+        icon: "mdi mdi-credit-card",
+        total: 3500
+      },
+      {
+        label: "Total de personas",
+        color: "indigo",
+        icon: "mdi mdi-account-group",
+        total: 1200
+      },
+      {
+        label: "Total de haberes",
+        color: "info",
+        icon: "mdi mdi-cash-usd",
+        total: 230
+      },
+      {
+        label: "Total de descuentos",
+        color: "success",
+        icon: "mdi mdi-sale",
+        total: 300
+      }
+    ]
+  })
 };
 </script>
+
+<style>
+</style>

@@ -8,7 +8,13 @@ class PermissionsTableSeeder extends Seeder
     {
         Permission::truncate();
 
-        //permisos
+        Permission::create([
+            'name' => 'Navegar tablero',
+            'slug' => 'admin.index',
+            'description' => 'Ver el tablero de resumenes en el sistema',
+        ]);
+
+        //roles
         Permission::create([
             'name' => 'Navegar roles',
             'slug' => 'roles.index',

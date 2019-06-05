@@ -74,7 +74,7 @@
                 <span>Editar registro</span>
               </v-tooltip>
               <v-tooltip bottom>
-                <v-btn color="error" fab small slot="activator">
+                <v-btn color="error" fab small slot="activator" @click="deleteData(props.item)">
                   <v-icon>$vuetify.icons.delete</v-icon>
                 </v-btn>
                 <span>Cambiar estado</span>
@@ -154,7 +154,7 @@ export default {
     deleteData(pago) {
       this.$swal({
         title: "Esta seguro de eliminar el registro?",
-        text: "Esta operación va ha cambiar el estado del registro",
+        text: "Esta operación eliminar el registro.",
         type: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
