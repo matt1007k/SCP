@@ -7,6 +7,8 @@ trait HasManyRelation
 
     public function storeHasMany($relations)
     {
+        $this->save();
+
         foreach ($relations as $key => $items) {
             $newItems = [];
             foreach ($items as $item) {
@@ -19,6 +21,8 @@ trait HasManyRelation
     }
     public function updateHasMany($relations)
     {
+        $this->save();
+
         $parentKey = $this->getKeyName();
         $parentId = $this->getAttribute($parentKey);
         foreach ($relations as $key => $items) {

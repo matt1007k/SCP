@@ -12,9 +12,18 @@
  */
 
 Auth::routes();
+Route::get('/users/sign-in', 'Auth\SignInController@showLoginForm')->name('users.signin');
+Route::post('/users/sign-in', 'Auth\SignInController@login')->name('users.signin');
+Route::post('/users/logout', 'Auth\SignInController@logout')->name('users.logout');
 
 Route::get('/', function () {
     return redirect()->route('login');
+});
+
+Route::namespace ('Pages')->group(function () {
+    Route::middleware(['auth'])->group(function () {
+        Route::get('consulta-pagos', 'ConsultaController@consulta')->name('consulta.index');
+    });
 });
 
 Route::namespace ('Admin')->group(function () {
@@ -47,6 +56,10 @@ Route::namespace ('Admin')->group(function () {
 
         Route::post('/importar/personas', 'ImportarController@personas')->name('admin.importar.personas');
         Route::post('/importar/descuentos', 'ImportarController@descuentos')->name('admin.importar.descuentos');
+
+        Route::get('/reporte/por-anio', 'ReporteController@porAnio')->name('admin.reporte.poranio');
+        Route::post('/reporte/por-mes', 'ReporteController@porMes')->name('admin.reporte.pormes');
+
     });
 
 });

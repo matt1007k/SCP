@@ -20,6 +20,9 @@ export default {
   mounted() {
     console.log(this.$vuetify.breakpoint);
   },
+  created() {
+    document.title = "Tablero de Resumenes";
+  },
   data: () => ({
     count_items: [
       {

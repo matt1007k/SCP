@@ -10,7 +10,8 @@ class Pago extends Model
     use HasManyRelation;
 
     protected $fillable = [
-        'periodo',
+        'anio',
+        'mes',
         'total_descuento',
         'total_haber',
         'monto_liquido',
@@ -26,5 +27,11 @@ class Pago extends Model
     public function detalles()
     {
         return $this->hasMany('App\Models\Detalle');
+    }
+
+    public function scopeMes($query, $mes)
+    {
+        return $query->where('mes', $mes);
+
     }
 }

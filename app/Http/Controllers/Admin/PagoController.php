@@ -2,6 +2,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Detalle;
 use App\Models\HaberDescuento;
 use App\Models\Pago;
 use Auth;
@@ -34,7 +35,8 @@ class PagoController extends Controller
 
         $pago = new Pago();
         $pago->persona_id = $request->persona['id'];
-        $pago->periodo = $request->anio . $request->mes;
+        $pago->anio = $request->anio;
+        $pago->mes = $request->mes;
         $pago->total_haber = $request->total_haber;
         $pago->total_descuento = $request->total_descuento;
         $pago->monto_liquido = $request->monto_liquido;
@@ -43,16 +45,13 @@ class PagoController extends Controller
 
         if ($pago->save()) {
 
-            // foreach ($detalles as $detalle) {
-            //     $detalle_db = new Detalle();
-            //     $detalle_db->pago_id = $pago->id;
-            //     $detalle_db->hd_id = $detalle['id'];
-            //     $detalle_db->monto = $detalle['monto'];
-            //     $detalle_db->save();
-            // }
-            $pago->storeHasMany([
-                'detalles' => $detalles,
-            ]);
+            foreach ($detalles as $detalle) {
+                $detalle_db = new Detalle();
+                $detalle_db->pago_id = $pago->id;
+                $detalle_db->hd_id = $detalle['id'];
+                $detalle_db->monto = $detalle['monto'];
+                $detalle_db->save();
+            }
 
             return response()->json([
                 'created' => true,
@@ -68,8 +67,8 @@ class PagoController extends Controller
     public function edit($id)
     {
         $pago = Pago::findOrfail($id);
-        $anio = substr($pago->periodo, 0, 4);
-        $mes = substr($pago->periodo, -2);
+        // $anio = substr($pago->periodo, 0, 4);
+        // $mes = substr($pago->periodo, -2);
         $haberes = array();
         $descuentos = array();
         foreach ($pago->detalles as $detalle) {
@@ -114,8 +113,8 @@ class PagoController extends Controller
             'total_descuento' => $pago->total_descuento,
             'monto_liquido' => $pago->monto_liquido,
             'monto_imponible' => $pago->monto_imponible,
-            'anio' => $anio,
-            'mes' => $mes,
+            'anio' => $pago->anio,
+            'mes' => $pago->mes,
         ];
 
         return response()->json([
@@ -126,7 +125,7 @@ class PagoController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'persona' => 'required',
+            'persona_id' => 'required|exists:personas,id',
             'mes' => 'required',
             'anio' => 'required',
             'total_haber' => 'required',
@@ -141,28 +140,39 @@ class PagoController extends Controller
 
         $pago = Pago::findOrfail($id);
 
-        $pago->persona_id = $request->persona['id'];
-        $pago->periodo = $request->anio . $request->mes;
+        $pago->persona_id = $request->persona_id;
+        $pago->anio = $request->anio;
+        $pago->mes = $request->mes;
         $pago->total_haber = $request->total_haber;
         $pago->total_descuento = $request->total_descuento;
         $pago->monto_liquido = $request->monto_liquido;
         $pago->monto_imponible = $request->monto_imponible;
         $pago->user_id = Auth::user()->id;
 
-        if ($pago->save()) {
+        $pago->updateHasMany([
+            'detalles' => $detalles,
+        ]);
 
-            $pago->updateHasMany([
-                'detalles' => $detalles,
-            ]);
+        // if ($pago->save()) {
+        //     $deleteOldItems = Detalle::whereNotIn('hd_id', collect($detalles)->pluck('id')->toArray())
+        //             ->where('pago_id', $pago->id);
+        //     return $detalles;
+        //     foreach ($detalles as $detalle) {
+        //         // $detalle_db = new Detalle();
+        //         // $detalle_db->pago_id = $pago->id;
+        //         // $detalle_db->hd_id = $detalle['hd_id'];
+        //         // $detalle_db->monto = $detalle['monto'];
+        //         // $detalle_db->save();
+        //     }
 
-            return response()->json([
-                'updated' => true,
-            ], 201);
-        } else {
-            return response()->json([
-                'updated' => false,
-            ], 404);
-        }
+        return response()->json([
+            'updated' => true,
+        ], 201);
+        // } else {
+        //     return response()->json([
+        //         'updated' => false,
+        //     ], 404);
+        // }
     }
 
     public function destroy($id)

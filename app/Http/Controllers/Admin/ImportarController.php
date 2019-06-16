@@ -27,7 +27,6 @@ class ImportarController extends Controller
         $estadoExcelNnombre = substr($filename, -1);
         $estado = $this->getEstado($estadoExcelNnombre);
 
-        
         try {
             $personasExcel = Excel::toCollection(new PersonasImport(), $request->file('archivo'));
         } catch (\PhpOffice\PhpSpreadsheet\Exception $e) {
@@ -61,8 +60,12 @@ class ImportarController extends Controller
                     if ($persona->save()) {
                         $totalHD = HaberDescuento::all()->count();
                         if ($totalHD > 0) {
+                            $anio = substr($personaExcel['periodo'], 0, 4);
+                            $mes = substr($personaExcel['periodo'], -2);
+
                             $pago = new Pago();
-                            $pago->periodo = $personaExcel['periodo'];
+                            $pago->anio = $anio;
+                            $pago->mes = $mes;
                             $pago->total_descuento = $total_descuento;
                             $pago->total_haber = $total_haber;
                             $pago->monto_liquido = $personaExcel['rlq_totliqpago'];
@@ -86,8 +89,12 @@ class ImportarController extends Controller
 
                     if ($totalHD > 0) {
 
+                        $anio = substr($personaExcel['periodo'], 0, 4);
+                        $mes = substr($personaExcel['periodo'], -2);
+
                         $pago = new Pago();
-                        $pago->periodo = $personaExcel['periodo'];
+                        $pago->anio = $anio;
+                        $pago->mes = $mes;
                         $pago->total_descuento = $total_descuento;
                         $pago->total_haber = $total_haber;
                         $pago->monto_liquido = $personaExcel['rlq_totliqpago'];

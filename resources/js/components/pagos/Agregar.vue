@@ -1,13 +1,13 @@
 <template>
   <v-layout row justify-center>
-    <v-dialog v-model="open" small width="600px" persistent>
+    <v-dialog v-model="open" small width="800px" persistent>
       <v-card>
-        <v-card-title wrap>
+        <v-card-title wrap class="blue-grey darken-2 white--text">
           <v-flex xs11>
             <span class="headline">Agregar {{this.tipo}}</span>
           </v-flex>
           <v-flex xs1 class="d-flex justify-end">
-            <v-btn flat color="error" @click="closeModal">
+            <v-btn color="error" @click="closeModal">
               <v-icon>$vuetify.icons.close</v-icon>
             </v-btn>
           </v-flex>
@@ -31,6 +31,7 @@
               <template v-slot:items="props">
                 <td>{{props.item.nombre}}</td>
                 <td>{{props.item.descripcion}}</td>
+                <td>{{props.item.descripcion_simple}}</td>
                 <td>
                   <v-btn color="success" @click="$emit('addRow', props.item, tipo)">Agregar</v-btn>
                 </td>
@@ -59,6 +60,11 @@ export default {
         value: "nombre"
       },
       { text: "Descripción", value: "descripcion", sortable: false },
+      {
+        text: "Descripción simple",
+        value: "descripcion_simple",
+        sortable: false
+      },
       { text: "Acción", value: "action", sortable: false }
     ]
   }),

@@ -312,7 +312,7 @@ export default {
       const form = {
         anio: this.form.anio,
         mes: this.form.mes,
-        persona: this.form.persona,
+        persona_id: this.form.persona.id,
         total_haber: this.totalHaber(),
         haberes: this.form.haberes,
         total_descuento: this.totalDescuento(),
@@ -321,13 +321,12 @@ export default {
         monto_imponible: this.totalImponible()
       };
       axios
-        .put(`/pagos/${this.form.id}`, form)
+        .put(`/pagos/${this.$route.params.id}`, form)
         .then(res => {
           this.$router.push("/admin/pagos/lista");
           this.$parent.this.$root.$snackbar.show(
             "Datos editados correctamente."
           );
-          this.resetForm();
         })
         .catch(err => {
           this.errors = err.response.data.errors;

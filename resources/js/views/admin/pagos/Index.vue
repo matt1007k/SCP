@@ -60,7 +60,7 @@
           :rows-per-page-items="RowsPerPageItems"
         >
           <template v-slot:items="props">
-            <td class="text-xs-center">{{ props.item.periodo }}</td>
+            <td class="text-xs-center">{{ props.item.anio }}, {{ props.item.mes }}</td>
             <td>{{ props.item.persona.apellido_paterno }} {{ props.item.persona.apellido_materno }}, {{ props.item.persona.nombre }}</td>
             <td class="text-xs-center">{{ props.item.total_haber }}</td>
             <td class="text-xs-center">{{ props.item.total_descuento }}</td>
@@ -106,7 +106,7 @@ export default {
           text: "Periodo",
           align: "left",
           sortable: true,
-          value: "periodo"
+          value: "anio"
         },
         {
           text: "Nombre persona",

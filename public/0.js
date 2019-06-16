@@ -53,6 +53,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ["addRow"],
   data: function data() {
@@ -70,6 +71,10 @@ __webpack_require__.r(__webpack_exports__);
       }, {
         text: "Descripción",
         value: "descripcion",
+        sortable: false
+      }, {
+        text: "Descripción simple",
+        value: "descripcion_simple",
         sortable: false
       }, {
         text: "Acción",
@@ -229,7 +234,7 @@ var render = function() {
       _c(
         "v-dialog",
         {
-          attrs: { small: "", width: "600px", persistent: "" },
+          attrs: { small: "", width: "800px", persistent: "" },
           model: {
             value: _vm.open,
             callback: function($$v) {
@@ -244,7 +249,10 @@ var render = function() {
             [
               _c(
                 "v-card-title",
-                { attrs: { wrap: "" } },
+                {
+                  staticClass: "blue-grey darken-2 white--text",
+                  attrs: { wrap: "" }
+                },
                 [
                   _c("v-flex", { attrs: { xs11: "" } }, [
                     _c("span", { staticClass: "headline" }, [
@@ -259,7 +267,7 @@ var render = function() {
                       _c(
                         "v-btn",
                         {
-                          attrs: { flat: "", color: "error" },
+                          attrs: { color: "error" },
                           on: { click: _vm.closeModal }
                         },
                         [_c("v-icon", [_vm._v("$vuetify.icons.close")])],
@@ -319,6 +327,10 @@ var render = function() {
                                 _vm._v(" "),
                                 _c("td", [
                                   _vm._v(_vm._s(props.item.descripcion))
+                                ]),
+                                _vm._v(" "),
+                                _c("td", [
+                                  _vm._v(_vm._s(props.item.descripcion_simple))
                                 ]),
                                 _vm._v(" "),
                                 _c(

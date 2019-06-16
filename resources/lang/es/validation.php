@@ -171,5 +171,7 @@ return [
 
         'codmodular' => 'Código modular',
         'permissions' => 'permisos',
+        'persona_id' => 'persona',
+        'anio' => 'año',
     ],
 ];
