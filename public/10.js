@@ -152,11 +152,13 @@ __webpack_require__.r(__webpack_exports__);
       return nombre.indexOf(searchText) > -1 || apellido_paterno.indexOf(searchText) || apellido_materno.indexOf(searchText) || dni.indexOf(searchText) > -1;
     },
     buscarPago: function buscarPago() {
+      var _this = this;
+
       // axios
       //   .get(`/reporte/por-anio`, {
       //     params: {
       //       anio: this.form.anio,
-      //       persona_id: this.form.persona.id
+      //       dni: this.form.dni
       //     }
       //   })
       //   .then(res => {
@@ -177,17 +179,36 @@ __webpack_require__.r(__webpack_exports__);
       }).then(function (response) {
         var url = window.URL.createObjectURL(new Blob([response.data]));
         var link = document.createElement("a");
+        var name_file = "".concat(_this.form.persona.codigo_modular, "-").concat(_this.form.anio, ".pdf");
         link.href = url;
-        link.setAttribute("download", "file.pdf"); //or any other extension
+        link.setAttribute("download", name_file); //or any other extension
 
         document.body.appendChild(link);
         link.click();
+      });
+    },
+    viewPDF: function viewPDF() {
+      axios("/reporte/pdf", {
+        method: "GET",
+        responseType: "blob" //Force to receive data in a Blob Format
+
+      }).then(function (response) {
+        //Create a Blob from the PDF Stream
+        var file = new Blob([response.data], {
+          type: "application/pdf"
+        }); //Build a URL from the file
+
+        var fileURL = URL.createObjectURL(file); //Open the URL on new Window
+
+        window.open(fileURL);
+      })["catch"](function (error) {
+        console.log(error);
       });
     }
   },
   watch: {
     search: function search(value) {
-      var _this = this;
+      var _this2 = this;
 
       if (this.isLoading) return;
       this.isLoading = true;
@@ -197,12 +218,12 @@ __webpack_require__.r(__webpack_exports__);
       axios.get("/search-personas", {
         params: params
       }).then(function (res) {
-        _this.isLoading = false;
-        _this.lista_personas = res.data.personas;
+        _this2.isLoading = false;
+        _this2.lista_personas = res.data.personas;
       })["catch"](function (err) {
         return console.log(err);
       })["finally"](function () {
-        return _this.isLoading = false;
+        return _this2.isLoading = false;
       });
     }
   }

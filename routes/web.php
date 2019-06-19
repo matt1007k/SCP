@@ -12,8 +12,8 @@
  */
 
 Auth::routes();
-Route::get('/users/sign-in', 'Auth\SignInController@showLoginForm')->name('users.signin');
-Route::post('/users/sign-in', 'Auth\SignInController@login')->name('users.signin');
+Route::get('/users/sign_in', 'Auth\SignInController@showLoginForm')->name('users.signin');
+Route::post('/users/sign_in', 'Auth\SignInController@login')->name('users.signin');
 Route::post('/users/logout', 'Auth\SignInController@logout')->name('users.logout');
 
 Route::get('/', function () {
@@ -21,7 +21,7 @@ Route::get('/', function () {
 });
 
 Route::namespace ('Pages')->group(function () {
-    Route::middleware(['auth'])->group(function () {
+    Route::middleware(['auth', 'role:docente'])->group(function () {
         Route::get('consulta-pagos', 'ConsultaController@consulta')->name('consulta.index');
     });
 });

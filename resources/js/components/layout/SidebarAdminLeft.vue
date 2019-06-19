@@ -6,12 +6,15 @@
     fixed
     app
   >
-    <v-img src="https://cdn.vuetifyjs.com/images/parallax/material.jpg">
+    <v-img
+      src="https://cdn.vuetifyjs.com/images/parallax/material.jpg"
+      gradient="to top right, rgba(100,115,201,.33), rgba(25,32,72,.7)"
+    >
       <v-layout pa-2 column fill-height class="lightbox white--text">
         <v-spacer></v-spacer>
         <v-flex shrink>
-          <div class="subheading">Jonathan Lee</div>
-          <div class="body-1">heyfromjonathan@gmail.com</div>
+          <div class="subheading">{{$auth.user.user.name}}</div>
+          <div class="body-1">{{$auth.user.user.dni}}</div>
         </v-flex>
       </v-layout>
     </v-img>

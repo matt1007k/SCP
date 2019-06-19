@@ -10,13 +10,6 @@
 
     <title>Sistema de Constancia de Pago | @yield('title')</title>
 
-    <!-- Scripts -->
-    <script src="{{ asset('js/material.min.js') }}" defer></script>
-
-    <!-- Fonts -->
-
-    <!-- Styles -->
-    <link href="{{ asset('css/material.blue-red.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
 
@@ -24,6 +17,21 @@
     <div id="app">
         @yield('content')
     </div>
+    
+    
+    <script>
+        @isset(Auth::user()->roles)
+        window.user = @json(
+        [
+            'user' => Auth::user(),
+            'roles' => Auth::user()->roles,
+            'permissions' => Auth::user()->permissions
+        ]
+        )
+        @endisset
+    </script>
+
+    <script src="{{ asset('client/js/client.js') }}"></script>
 </body>
 
 </html>

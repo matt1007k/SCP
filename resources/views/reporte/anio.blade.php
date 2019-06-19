@@ -15,6 +15,9 @@
     .w-80{
         width: 80%;
     }
+    .w-100{
+        width: 100%;
+    }
     .body table{
         border-collapse: collapse;
         /* width: 100%; */
@@ -22,7 +25,6 @@
     .body .body-row td{   
         border: 1px solid #c2c2c2;
         font-size: 14px;
-        padding: 5px;
     }
     .text-center{
         text-align: center;
@@ -71,7 +73,7 @@
     </header>
     <div class="spacer"></div>
     <div class="body">
-        <table>
+        <table class="w-100">
             <tbody>
                 <tr class="body-row">
                     <td class="text-center">

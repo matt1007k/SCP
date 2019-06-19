@@ -154,6 +154,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
@@ -433,7 +436,8 @@ var render = function() {
         "v-img",
         {
           attrs: {
-            src: "https://cdn.vuetifyjs.com/images/parallax/material.jpg"
+            src: "https://cdn.vuetifyjs.com/images/parallax/material.jpg",
+            gradient: "to top right, rgba(100,115,201,.33), rgba(25,32,72,.7)"
           }
         },
         [
@@ -448,11 +452,11 @@ var render = function() {
               _vm._v(" "),
               _c("v-flex", { attrs: { shrink: "" } }, [
                 _c("div", { staticClass: "subheading" }, [
-                  _vm._v("Jonathan Lee")
+                  _vm._v(_vm._s(_vm.$auth.user.user.name))
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "body-1" }, [
-                  _vm._v("heyfromjonathan@gmail.com")
+                  _vm._v(_vm._s(_vm.$auth.user.user.dni))
                 ])
               ])
             ],

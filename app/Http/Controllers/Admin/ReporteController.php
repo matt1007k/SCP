@@ -13,53 +13,44 @@ class ReporteController extends Controller
     public function porAnio(Request $request)
     {
         $request->validate([
-            'persona_id' => 'required',
+            'dni' => 'required',
             'anio' => 'required',
         ]);
         $haberes = array();
         $descuentos = array();
         $pago = Pago::where('anio', $request->anio)
-            ->where('persona_id', $request->persona_id)->first();
+            ->whereHas('persona', function ($query) use ($request) {
+                $query->where('dni', 'like', "%{$request->dni}%");
+            })->first();
 
-        // Detalles por mes
-        $meses = $this->getMeses($request->anio, $request->persona_id);
-        
-        $haberes = $this->getAllDetailsByType($request->anio, $request->persona_id, 'haber');
-        $descuentos = $this->getAllDetailsByType($request->anio, $request->persona_id, 'descuento');
+        if ($pago->monto_liquido != '0.00') {
+            // Detalles por mes
+            $meses = $this->getMeses($request->anio, $request->dni);
+            
+            // Detalles por haberes y descuentos
+            $haberes = $this->getAllDetailsByType($request->anio, $request->dni, 'haber');
+            $descuentos = $this->getAllDetailsByType($request->anio, $request->dni, 'descuento');
 
-        $total_haberes = $this->getTotalByYear($request->anio, $request->persona_id, 'haberes');
-        $total_descuentos = $this->getTotalByYear($request->anio, $request->persona_id, 'descuentos');
-        $total_liquidos = $this->getTotalByYear($request->anio, $request->persona_id, 'liquidos');
-        $total_imponibles = $this->getTotalByYear($request->anio, $request->persona_id, 'imponibles');
+            // Detalles totales
+            $total_haberes = $this->getTotalByYear($request->anio, $request->dni, 'haberes');
+            $total_descuentos = $this->getTotalByYear($request->anio, $request->dni, 'descuentos');
+            $total_liquidos = $this->getTotalByYear($request->anio, $request->dni, 'liquidos');
+            $total_imponibles = $this->getTotalByYear($request->anio, $request->dni, 'imponibles');
 
-        
-        
-        // $array_test = array([
-        //     "nombre_haber"=> "reunifica",
-        //     "monto_enero1"=> "150.00",  
-        //     "monto_enero2"=> "128.00", 
-        //     "monto_febrero1"=> "20.00", 
-        //     "monto_marzo1"=> "0.00"
-        // ]);
+            // $array_test = array([
+            //     "nombre_haber"=> "reunifica",
+            //     "monto_enero1"=> "150.00",  
+            //     "monto_enero2"=> "128.00", 
+            //     "monto_febrero1"=> "20.00", 
+            //     "monto_marzo1"=> "0.00"
+            // ]);
 
-        // $array_test2 = array([
-        //     ["total_haber_enero1"=> "1261.00"],
-        //     ["total_haber_enero2"=> "128.00"],             
-        // ]);
-        
-        
-       
-
-       
-        // $total_haber = array_merge($array_test[0], $array_test33[0], $array_test22[0]);
-        
-        
-        
-
-        // return $total_haber;
+            // $array_test2 = array([
+            //     ["total_haber_enero1"=> "1261.00"],
+            //     ["total_haber_enero2"=> "128.00"],             
+            // ]);
 
         
-        if ($pago) {
             $pdf = PDF::loadView('reporte.anio', [
                 'pago' => $pago,
                 'haberes' => (object)$haberes,
@@ -110,10 +101,12 @@ class ReporteController extends Controller
         }
         return $retData;
     }
-    public function getNameDetails($anio, $persona_id, $tipo)
+    public function getNameDetails($anio, $dni, $tipo)
     {
-        $pago = Pago::where('persona_id', $persona_id)
-            ->where('anio', $anio)->first();
+        $pago = Pago::where('anio', $anio)
+                ->whereHas('persona', function ($query) use ($dni) {
+                    $query->where('dni', 'like', "%{$dni}%");
+                })->first();
 
         $nombre_detalles = array();
         foreach ($pago->detalles->sortByDesc('hd_id') as $key => $detalle) {
@@ -130,7 +123,7 @@ class ReporteController extends Controller
         return $nombre_detalles;
     }
 
-    public function getDetalleByMes($anio, $mes, $tipo, $persona_id)
+    public function getDetalleByMes($anio, $mes, $tipo, $dni)
     {
         $mes_nombre = '';
         $haberes = array();
@@ -138,8 +131,10 @@ class ReporteController extends Controller
         $descuentos = array();
         $descuento_item = array();
 
-        $pagos = Pago::where('persona_id', $persona_id)
-            ->where('anio', $anio)->mes($mes)->get();
+        $pagos = Pago::where('anio', $anio)->mes($mes)
+                    ->whereHas('persona', function ($query) use ($dni) {
+                        $query->where('dni', 'like', "%{$dni}%");
+                    })->get();
         // return $pagos;
         foreach ($this->getNameMeses() as $item_mes) {
             if ($mes == $item_mes['numero']) {
@@ -191,7 +186,7 @@ class ReporteController extends Controller
         }
     }
 
-    public function getTotalByMes($anio, $persona_id, $tipo, $mes)
+    public function getTotalByMes($anio, $dni, $tipo, $mes)
     {
         $mes_nombre = '';
         $total_haberes = array();
@@ -199,8 +194,10 @@ class ReporteController extends Controller
         $total_liquidos = array();
         $total_imponibles = array();
 
-        $pagos = Pago::where('persona_id', $persona_id)
-            ->where('anio', $anio)->mes($mes)->get();
+        $pagos = Pago::where('anio', $anio)->mes($mes)
+                    ->whereHas('persona', function ($query) use ($dni) {
+                        $query->where('dni', 'like', "%{$dni}%");
+                    })->get();
         // return $pagos;
         foreach ($this->getNameMeses() as $item_mes) {
                     
@@ -243,20 +240,20 @@ class ReporteController extends Controller
         }
     }
 
-    public function getTotalByYear($anio, $persona_id, $tipo)
+    public function getTotalByYear($anio, $dni, $tipo)
     {
-        $total_enero = $this->getTotalByMes($anio, $persona_id, $tipo, '01');
-        $total_febrero = $this->getTotalByMes($anio, $persona_id, $tipo, '02');
-        $total_marzo = $this->getTotalByMes($anio, $persona_id, $tipo, '03');
-        $total_abril = $this->getTotalByMes($anio, $persona_id, $tipo, '04');
-        $total_mayo = $this->getTotalByMes($anio, $persona_id, $tipo, '05');
-        $total_junio = $this->getTotalByMes($anio, $persona_id, $tipo, '06');
-        $total_julio = $this->getTotalByMes($anio, $persona_id, $tipo, '07');
-        $total_agosto = $this->getTotalByMes($anio, $persona_id, $tipo, '08');
-        $total_septiembre = $this->getTotalByMes($anio, $persona_id, $tipo, '09');
-        $total_octubre = $this->getTotalByMes($anio, $persona_id, $tipo, '10');
-        $total_noviembre = $this->getTotalByMes($anio, $persona_id, $tipo, '11');
-        $total_diciembre = $this->getTotalByMes($anio, $persona_id, $tipo, '12');
+        $total_enero = $this->getTotalByMes($anio, $dni, $tipo, '01');
+        $total_febrero = $this->getTotalByMes($anio, $dni, $tipo, '02');
+        $total_marzo = $this->getTotalByMes($anio, $dni, $tipo, '03');
+        $total_abril = $this->getTotalByMes($anio, $dni, $tipo, '04');
+        $total_mayo = $this->getTotalByMes($anio, $dni, $tipo, '05');
+        $total_junio = $this->getTotalByMes($anio, $dni, $tipo, '06');
+        $total_julio = $this->getTotalByMes($anio, $dni, $tipo, '07');
+        $total_agosto = $this->getTotalByMes($anio, $dni, $tipo, '08');
+        $total_septiembre = $this->getTotalByMes($anio, $dni, $tipo, '09');
+        $total_octubre = $this->getTotalByMes($anio, $dni, $tipo, '10');
+        $total_noviembre = $this->getTotalByMes($anio, $dni, $tipo, '11');
+        $total_diciembre = $this->getTotalByMes($anio, $dni, $tipo, '12');
         
         $total = array_merge(
                     $total_enero, $total_febrero, $total_marzo, $total_abril, 
@@ -266,20 +263,20 @@ class ReporteController extends Controller
         return $total;
     }
 
-    public function getAllDetailsByType($anio, $persona_id, $tipo){
-        $nombres = $this->getNameDetails($anio, $persona_id, $tipo);
-        $enero_monto = $this->getDetalleByMes($anio, '01', $tipo, $persona_id);
-        $febrero_monto = $this->getDetalleByMes($anio, '02', $tipo, $persona_id);
-        $marzo_monto = $this->getDetalleByMes($anio, '03', $tipo, $persona_id);
-        $abril_monto = $this->getDetalleByMes($anio, '04', $tipo, $persona_id);
-        $mayo_monto = $this->getDetalleByMes($anio, '05', $tipo, $persona_id);
-        $junio_monto = $this->getDetalleByMes($anio, '06', $tipo, $persona_id);
-        $julio_monto = $this->getDetalleByMes($anio, '07', $tipo, $persona_id);
-        $agosto_monto = $this->getDetalleByMes($anio, '08', $tipo, $persona_id);
-        $septiembre_monto = $this->getDetalleByMes($anio, '09', $tipo, $persona_id);
-        $octubre_monto = $this->getDetalleByMes($anio, '10', $tipo, $persona_id);
-        $noviembre_monto = $this->getDetalleByMes($anio, '11', $tipo, $persona_id);
-        $diciembre_monto = $this->getDetalleByMes($anio, '12', $tipo, $persona_id);
+    public function getAllDetailsByType($anio, $dni, $tipo){
+        $nombres = $this->getNameDetails($anio, $dni, $tipo);
+        $enero_monto = $this->getDetalleByMes($anio, '01', $tipo, $dni);
+        $febrero_monto = $this->getDetalleByMes($anio, '02', $tipo, $dni);
+        $marzo_monto = $this->getDetalleByMes($anio, '03', $tipo, $dni);
+        $abril_monto = $this->getDetalleByMes($anio, '04', $tipo, $dni);
+        $mayo_monto = $this->getDetalleByMes($anio, '05', $tipo, $dni);
+        $junio_monto = $this->getDetalleByMes($anio, '06', $tipo, $dni);
+        $julio_monto = $this->getDetalleByMes($anio, '07', $tipo, $dni);
+        $agosto_monto = $this->getDetalleByMes($anio, '08', $tipo, $dni);
+        $septiembre_monto = $this->getDetalleByMes($anio, '09', $tipo, $dni);
+        $octubre_monto = $this->getDetalleByMes($anio, '10', $tipo, $dni);
+        $noviembre_monto = $this->getDetalleByMes($anio, '11', $tipo, $dni);
+        $diciembre_monto = $this->getDetalleByMes($anio, '12', $tipo, $dni);
 
         $enero = $this->addItemToArray($nombres, $enero_monto, '01');
         $febrero = $this->addItemToArray($enero, $febrero_monto, '02');
@@ -298,20 +295,56 @@ class ReporteController extends Controller
         return $diciembre;
     }
 
-    public function getMeses($anio, $persona_id)
+    public function getMeses($anio, $dni)
     {
-        $enero_count = Pago::where('persona_id', $persona_id)->where('anio', $anio)->where('mes', '01')->count();
-        $febrero_count = Pago::where('persona_id', $persona_id)->where('anio', $anio)->where('mes', '02')->count();
-        $marzo_count = Pago::where('persona_id', $persona_id)->where('anio', $anio)->where('mes', '03')->count();
-        $abril_count = Pago::where('persona_id', $persona_id)->where('anio', $anio)->where('mes', '04')->count();
-        $mayo_count = Pago::where('persona_id', $persona_id)->where('anio', $anio)->where('mes', '05')->count();
-        $junio_count = Pago::where('persona_id', $persona_id)->where('anio', $anio)->where('mes', '06')->count();
-        $julio_count = Pago::where('persona_id', $persona_id)->where('anio', $anio)->where('mes', '07')->count();
-        $agosto_count = Pago::where('persona_id', $persona_id)->where('anio', $anio)->where('mes', '08')->count();
-        $septiembre_count = Pago::where('persona_id', $persona_id)->where('anio', $anio)->where('mes', '09')->count();
-        $octubre_count = Pago::where('persona_id', $persona_id)->where('anio', $anio)->where('mes', '10')->count();
-        $noviembre_count = Pago::where('persona_id', $persona_id)->where('anio', $anio)->where('mes', '11')->count();
-        $diciembre_count = Pago::where('persona_id', $persona_id)->where('anio', $anio)->where('mes', '12')->count();
+        $enero_count = Pago::where('anio', $anio)->where('mes', '01')
+                        ->whereHas('persona', function ($query) use ($dni) {
+                            $query->where('dni', 'like', "%{$dni}%");
+                        })->count();
+        $febrero_count = Pago::where('anio', $anio)->where('mes', '02')
+                        ->whereHas('persona', function ($query) use ($dni) {
+                            $query->where('dni', 'like', "%{$dni}%");
+                        })->count();
+        $marzo_count = Pago::where('anio', $anio)->where('mes', '03')
+                        ->whereHas('persona', function ($query) use ($dni) {
+                            $query->where('dni', 'like', "%{$dni}%");
+                        })->count();
+        $abril_count = Pago::where('anio', $anio)->where('mes', '04')
+                        ->whereHas('persona', function ($query) use ($dni) {
+                            $query->where('dni', 'like', "%{$dni}%");
+                        })->count();
+        $mayo_count = Pago::where('anio', $anio)->where('mes', '05')
+                        ->whereHas('persona', function ($query) use ($dni) {
+                            $query->where('dni', 'like', "%{$dni}%");
+                        })->count();
+        $junio_count = Pago::where('anio', $anio)->where('mes', '06')
+                        ->whereHas('persona', function ($query) use ($dni) {
+                            $query->where('dni', 'like', "%{$dni}%");
+                        })->count();
+        $julio_count = Pago::where('anio', $anio)->where('mes', '07')
+                        ->whereHas('persona', function ($query) use ($dni) {
+                            $query->where('dni', 'like', "%{$dni}%");
+                        })->count();
+        $agosto_count = Pago::where('anio', $anio)->where('mes', '08')
+                        ->whereHas('persona', function ($query) use ($dni) {
+                            $query->where('dni', 'like', "%{$dni}%");
+                        })->count();
+        $septiembre_count = Pago::where('anio', $anio)->where('mes', '09')
+                        ->whereHas('persona', function ($query) use ($dni) {
+                            $query->where('dni', 'like', "%{$dni}%");
+                        })->count();
+        $octubre_count = Pago::where('anio', $anio)->where('mes', '10')
+                        ->whereHas('persona', function ($query) use ($dni) {
+                            $query->where('dni', 'like', "%{$dni}%");
+                        })->count();
+        $noviembre_count = Pago::where('anio', $anio)->where('mes', '11')
+                        ->whereHas('persona', function ($query) use ($dni) {
+                            $query->where('dni', 'like', "%{$dni}%");
+                        })->count();
+        $diciembre_count = Pago::where('anio', $anio)->where('mes', '12')
+                        ->whereHas('persona', function ($query) use ($dni) {
+                            $query->where('dni', 'like', "%{$dni}%");
+                        })->count();
 
         return [
             ['numero' => '01', 'nombre' => 'Enero', 'cantidad' => $enero_count],
@@ -350,15 +383,16 @@ class ReporteController extends Controller
     public function porMes(Request $request)
     {
         $request->validate([
-            'persona_id' => 'required',
+            'dni' => 'required',
             'anio' => 'required|exists:periodos, anio',
             'mes' => 'required',
         ]);
 
         $pago = Pago::where('anio', $request->anio)
             ->mes($request->mes)
-            ->where('persona_id', $request->persona_id)
-            ->first();
+            ->whereHas('persona', function ($query) use ($request) {
+                $query->where('dni', 'like', "%{$request->dni}%");
+            })->first();
         if ($pago) {
             $pdf = PDF::loadView('reporte.mes', [
                 'pago' => $pago,

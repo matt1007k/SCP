@@ -28,16 +28,23 @@ class RolesTableSeeder extends Seeder
         ]);
         Role::create([
             'name' => 'Tesoreria',
-            'description' => 'Acceso a los módulos de pagos, personas, Haberes y Descuentos del sistemas',
+            'description' => 'Acceso a los módulos de pagos, personas, Haberes y Descuentos del sistema',
             'slug' => 'tesoreria',
         ]);
         Role::create([
             'name' => 'Personal',
-            'description' => 'Acceso a los módulos de importar datos al db del sistemas',
+            'description' => 'Acceso a los módulos de importar datos al db del sistema',
             'slug' => 'personal',
+        ]);
+
+        Role::create([
+            'name' => 'Usuario invitado o docente',
+            'description' => 'Acceso a consulta de pago en el sistema',
+            'slug' => 'docente',
         ]);
 
         $user = User::find(1);
         $user->roles()->sync(1);
+        $user->permissions()->sync(1);
     }
 }

@@ -144,7 +144,7 @@ __webpack_require__.r(__webpack_exports__);
 
         _this.open = false;
 
-        _this.$root.$snackbar.show("Datos registrados correctamente.");
+        _this.$swal("Mensaje de operación", "Datos registrados correctamente.", "success");
 
         _this.resetInputs();
       })["catch"](function (err) {
@@ -332,7 +332,7 @@ __webpack_require__.r(__webpack_exports__);
 
         _this.open = false;
 
-        _this.$root.$snackbar.show("Datos editados correctamente.");
+        _this.$swal("Mensaje de operación", "Datos editados correctamente.", "success");
       })["catch"](function (err) {
         _this.errors = err.response.data.errors;
       });

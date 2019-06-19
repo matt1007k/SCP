@@ -46,4 +46,9 @@ class SignInController extends Controller
     {
         return 'dni';
     }
+
+    protected function loggedOut(Request $request)
+    {
+        return redirect()->route('users.signin');
+    }
 }

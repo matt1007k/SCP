@@ -2,53 +2,74 @@
 @section('title', 'Iniciar sesion')
 
 @section('content')
-<div class="h-100vh">
-    <div class="mdl-grid no-padding">
-        <div class="mdl-cell mdl-cell--6-col no-margin d-flex justify-center align-center h-100vh">
+    <div class="row no-margin">
+        <div class="col-md-6 col-xs-12 no-padding d-flex justify-center align-center">
             <div class="d-flex flex-column padding-small" style="max-width: 400px">
-                <h3 class="text-center">Iniciar sesión</h3>
-                <h5>Ingrese para consulta sus pagos.</h5>
+                <h2 class="text-center mdc-typography--headline5">Iniciar sesión</h2>
+                <h5 class="mdc-typography--subtitle1 center-xs">Ingrese para consulta sus pagos.</h5>
                 <form method="POST" action="{{ route('users.signin') }}">
                     @csrf
-            
-                    <div class="w-100 mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                        <input class="mdl-textfield__input" type="text" name="dni" maxlength="8" pattern="[0-9]*" id="dni" value="{{ old('dni') }}">
-                        <label class="mdl-textfield__label" for="dni">{{ __('DNI') }}</label>
-                        @error('dni')
-                        <span class="text-error">{{ $message }}</span>
-                        @enderror
+
+                    <div class="w-100 mdc-text-f mdc-text-field mdc-text-field--outlined @error('dni') mdc-text-field--invalid  @enderror" data-mdc-auto-init="MDCTextField">
+                        <input type="text" id="dni" class="mdc-text-field__input " name="dni" maxlength="8" value="{{ old('dni') }}" required>
+                        <div class="mdc-notched-outline">
+                            <div class="mdc-notched-outline__leading"></div>
+                            <div class="mdc-notched-outline__notch">
+                                <label for="dni" class="mdc-floating-label">{{ __('Ingrese su DNI') }}</label>
+                            </div>
+                            <div class="mdc-notched-outline__trailing"></div>
+                        </div>                        
                     </div>
-    
-                    <div class="pt-2 w-100 mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                        <input class="mdl-textfield__input" type="password" name="password" id="password">
-                        <label class="mdl-textfield__label" for="password">{{ __('Contraseña') }}</label>
-                        @error('password')
+                    @error('dni')
                         <span class="text-error">{{ $message }}</span>
-                        @enderror
+                    @enderror
+                        
+                    <div class="mt-2 w-100 mdc-text-f mdc-text-field mdc-text-field--outlined @error('password') mdc-text-field--invalid  @enderror" data-mdc-auto-init="MDCTextField">
+                        <input type="password" id="password" class="mdc-text-field__input" name="password" value="{{ old('password') }}" required>
+                        <div class="mdc-notched-outline">
+                            <div class="mdc-notched-outline__leading"></div>
+                            <div class="mdc-notched-outline__notch">
+                                <label for="password" class="mdc-floating-label">{{ __('Contraseña') }}</label>
+                            </div>
+                            <div class="mdc-notched-outline__trailing"></div>
+                        </div>                        
                     </div>
-                    <div class="pt-1">
-                        <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="remember">
-                            <input type="checkbox" id="remember" class="mdl-switch__input" {{ old('remember') ? 'checked' : '' }}>
-                            <span class="mdl-switch__label">{{ __('Recordarme') }}</span>
-                        </label>
+                    @error('password')
+                        <span class="text-error">{{ $message }}</span>
+                    @enderror   
+                    
+                    <div class="mt-1">
+                        <div class="mdc-form-field">
+                            <div class="mdc-checkbox" data-mdc-auto-init="MDCCheckBox">
+                                <input type="checkbox"
+                                        class="mdc-checkbox__native-control"
+                                        id="remember" 
+                                        name="remember" 
+                                        {{ old('remember') ? 'selected': ''}}/>
+                                <div class="mdc-checkbox__background">
+                                    <svg class="mdc-checkbox__checkmark"
+                                        viewBox="0 0 24 24">
+                                    <path class="mdc-checkbox__checkmark-path"
+                                            fill="none"
+                                            d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
+                                    </svg>
+                                    <div class="mdc-checkbox__mixedmark"></div>
+                                </div>
+                            </div>
+                            <label for="remember">{{ __('Recordarme') }}</label>
+                        </div>
                     </div>
                     
-                    <div class="d-flex justify-end pt-3">
-                        <button type="submit" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--raised mdl-button--colored w-100">
-                            {{ __('Ingresar') }}
-                        </button>  
+                    <div class="pt-3">
+                        <button class="foo-button mdc-button mdc-button--raised mdc-theme--secondary-bg w-100" type="submit">{{ __('Ingresar') }}</button> 
                     </div>       
                 </form>
             </div>
         </div>
-        <div class="mdl-cell--hide-phone mdl-cell mdl-cell--6-col no-margin h-100vh w-50" style="background-image: url(https://cdn.vuetifyjs.com/images/parallax/material.jpg); background-size: cover; background-position: center">
-            <div style="background: rgba(21, 96, 216,0.7)" class="h-100vh w-100 d-flex justify-center align-center">
-                <h3 class="text-white">Sistema de Constancia de Pagos</h3>
+        <div class="col-md-6 col-xs-12 no-padding h-100vh" style="background-image: url(https://cdn.vuetifyjs.com/images/parallax/material.jpg); background-size: cover; background-position: center">
+            <div style="background: rgba(21, 96, 216,0.7)" class="h-100vh d-flex justify-center align-center">
+                <h1 class="text-white">Sistema de Constancia de Pagos</h1>
             </div>
         </div>
-    </div>
-        
-</div>
-                    
-                
+    </div>         
 @endsection

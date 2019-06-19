@@ -148,7 +148,7 @@ export default {
       //   .get(`/reporte/por-anio`, {
       //     params: {
       //       anio: this.form.anio,
-      //       persona_id: this.form.persona.id
+      //       dni: this.form.dni
       //     }
       //   })
       //   .then(res => {
