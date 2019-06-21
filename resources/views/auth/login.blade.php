@@ -66,7 +66,7 @@
                 </form>
             </div>
         </div>
-        <div class="col-md-6 col-xs-12 no-padding h-100vh" style="background-image: url(https://cdn.vuetifyjs.com/images/parallax/material.jpg); background-size: cover; background-position: center">
+        <div class="col-md-6 col-xs-12 no-padding h-100vh" style="background-image: url({{asset('img/dre-ayacucho.png')}}); background-size: cover; background-position: center">
             <div style="background: rgba(21, 96, 216,0.7)" class="h-100vh d-flex justify-center align-center">
                 <h1 class="text-white">Sistema de Constancia de Pagos</h1>
             </div>

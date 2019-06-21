@@ -90,18 +90,31 @@
     </v-layout>
     <v-layout row wrap>
       <v-flex xs12>
-        <div class="title mb-2">Resultados encontrados</div>
-        <template v-if="lista_resultado.lenght > 0">
+        <template v-if="Object.keys(lista_resultado).length !== 0">
+          <div class="title mb-2">Resultados encontrados</div>
           <v-card>
-            <v-card-text>
-              <div class="body-2">go</div>
+            <v-card-text class="d-flex justify-content-between">
+              <div class="actions">
+                <div class="heading" v-html="lista_resultado.anio"></div>
+                <div class="body-2">{{getName()}}</div>
+              </div>
+              <div class="actions">
+                <v-btn color="success" @click="downloadPDF(lista_resultado.anio, form.persona.dni)">
+                  <v-icon>mdi mdi-cloud-download-outline</v-icon>
+                </v-btn>
+                <v-btn color="info" @click="viewPDF(lista_resultado.anio, form.persona.dni)">
+                  <v-icon>mdi mdi-printer</v-icon>
+                </v-btn>
+              </div>
             </v-card-text>
           </v-card>
         </template>
-        <template v-else>
+        <template v-else-if="loading">
           <v-card>
             <v-card-text>
-              <div class="body-2">Sin resultados...</div>
+              <div class="text-xs-center">
+                <v-progress-circular indeterminate color="primary"></v-progress-circular>
+              </div>
             </v-card-text>
           </v-card>
         </template>
@@ -126,6 +139,7 @@ export default {
     search: "",
     lista_personas: [],
     lista_resultado: [],
+    loading: false,
     errors: {}
   }),
   methods: {
@@ -144,27 +158,27 @@ export default {
       );
     },
     buscarPago() {
-      // axios
-      //   .get(`/reporte/por-anio`, {
-      //     params: {
-      //       anio: this.form.anio,
-      //       dni: this.form.dni
-      //     }
-      //   })
-      //   .then(res => {
-      //     console.log(res);
-      //   })
-      //   .catch(err => {
-      //     this.errors = err.response.data.errors;
-      //   });
-
+      this.loading = true;
+      axios
+        .get(`/search/por-anio`, {
+          params: {
+            anio: this.form.anio,
+            dni: this.form.persona.dni
+          }
+        })
+        .then(res => {
+          this.loading = false;
+          this.lista_resultado = res.data.pagos;
+        })
+        .catch(err => {
+          this.errors = err.response.data.errors;
+        });
+    },
+    downloadPDF(anio, dni) {
       axios({
         url: "/reporte/por-anio",
         method: "GET",
-        params: {
-          anio: this.form.anio,
-          persona_id: this.form.persona.id
-        },
+        params: { anio, dni },
         responseType: "blob" // important
       }).then(response => {
         const url = window.URL.createObjectURL(new Blob([response.data]));
@@ -178,22 +192,34 @@ export default {
         link.click();
       });
     },
-    viewPDF() {
-      axios(`/reporte/pdf`, {
-        method: "GET",
-        responseType: "blob" //Force to receive data in a Blob Format
-      })
-        .then(response => {
-          //Create a Blob from the PDF Stream
-          const file = new Blob([response.data], { type: "application/pdf" });
-          //Build a URL from the file
-          const fileURL = URL.createObjectURL(file);
-          //Open the URL on new Window
-          window.open(fileURL);
-        })
-        .catch(error => {
-          console.log(error);
-        });
+    viewPDF(anio, dni) {
+      // axios(`/reporte/por-anio`, {
+      //   method: "GET",
+      //   params: { anio, dni },
+      //   responseType: "blob" //Force to receive data in a Blob Format
+      // })
+      //   .then(response => {
+      //Create a Blob from the PDF Stream
+      // const file = new Blob([response.data], { type: "application/pdf" });
+      //Build a URL from the file
+      // const fileURL = URL.createObjectURL(file);
+      //Open the URL on new Window7
+      // window.open(fileURL, "_blank");
+      // const url = window.URL.createObjectURL(new Blob([response.data]));
+      // window.open("data:application/pdf;base64," + encodeURI(response.data));
+      window.open(`/reporte/por-anio?anio=${anio}&dni=${dni}`, "_blank");
+      // location.href = `/reporte/por-anio?anio=${anio}&dni=${dni}`;
+      // target = "_blank";
+      // done = 1;
+      // })
+      // .catch(error => {
+      //   console.log(error);
+      // });
+    },
+    getName() {
+      return `${this.form.persona.apellido_paterno} ${
+        this.form.persona.apellido_materno
+      }, ${this.form.persona.apellido_materno} `;
     }
   },
   watch: {
@@ -214,6 +240,3 @@ export default {
   }
 };
 </script>
-
-<style>
-</style>

@@ -7,22 +7,26 @@
     app
   >
     <v-img
-      src="https://cdn.vuetifyjs.com/images/parallax/material.jpg"
-      gradient="to top right, rgba(100,115,201,.33), rgba(25,32,72,.7)"
+      src="/img/logo-drea.png"
+      gradient="to top right, rgba(0,0,0,.5), rgba(25,32,72,.7)"
+      style="height: 180px"
     >
-      <v-layout pa-2 column fill-height class="lightbox white--text">
+      <v-layout pa-2 fill-height column class="lightbox white--text">
         <v-spacer></v-spacer>
-        <v-flex shrink>
+        <v-flex shrink pl-2>
           <div class="subheading">{{$auth.user.user.name}}</div>
           <div class="body-1">{{$auth.user.user.dni}}</div>
+          <v-btn color="secondary" style="margin-left: 0;">
+            <v-icon>$vuetify.icons.user</v-icon>Perfil
+          </v-btn>
         </v-flex>
       </v-layout>
     </v-img>
 
-    <v-list v-for="(item, index) in itemsMenu" :key="index" dense>
+    <v-list dense v-for="(item, index) in itemsMenu" :key="index">
       <template v-if="item.group">
         <v-list-group
-          v-show="$auth.can(item.permission) || $auth.isAdmin()"
+          v-if="$auth.can(item.permission) || $auth.isAdmin()"
           :prepend-icon="item.icon"
           :value="subIsActive([item.url])"
         >
@@ -32,16 +36,17 @@
             </v-list-tile>
           </template>
 
-          <v-list-tile
-            v-for="(submenu, i) in item.submenu"
-            :key="i"
-            router
-            :to="submenu.url"
-            v-show="$auth.can(submenu.permission) || $auth.isAdmin()"
-          >
-            <v-list-tile-action></v-list-tile-action>
-            <v-list-tile-title v-text="submenu.title"></v-list-tile-title>
-          </v-list-tile>
+          <template v-for="(submenu, i) in item.submenu">
+            <v-list-tile
+              :key="i"
+              router
+              :to="submenu.url"
+              v-if="$auth.can(submenu.permission) || $auth.isAdmin()"
+            >
+              <v-list-tile-action></v-list-tile-action>
+              <v-list-tile-title v-text="submenu.title"></v-list-tile-title>
+            </v-list-tile>
+          </template>
         </v-list-group>
       </template>
       <template v-else>

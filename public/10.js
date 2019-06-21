@@ -123,6 +123,19 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -139,6 +152,7 @@ __webpack_require__.r(__webpack_exports__);
       search: "",
       lista_personas: [],
       lista_resultado: [],
+      loading: false,
       errors: {}
     };
   },
@@ -154,32 +168,35 @@ __webpack_require__.r(__webpack_exports__);
     buscarPago: function buscarPago() {
       var _this = this;
 
-      // axios
-      //   .get(`/reporte/por-anio`, {
-      //     params: {
-      //       anio: this.form.anio,
-      //       dni: this.form.dni
-      //     }
-      //   })
-      //   .then(res => {
-      //     console.log(res);
-      //   })
-      //   .catch(err => {
-      //     this.errors = err.response.data.errors;
-      //   });
+      this.loading = true;
+      axios.get("/search/por-anio", {
+        params: {
+          anio: this.form.anio,
+          dni: this.form.persona.dni
+        }
+      }).then(function (res) {
+        _this.loading = false;
+        _this.lista_resultado = res.data.pagos;
+      })["catch"](function (err) {
+        _this.errors = err.response.data.errors;
+      });
+    },
+    downloadPDF: function downloadPDF(anio, dni) {
+      var _this2 = this;
+
       axios({
         url: "/reporte/por-anio",
         method: "GET",
         params: {
-          anio: this.form.anio,
-          persona_id: this.form.persona.id
+          anio: anio,
+          dni: dni
         },
         responseType: "blob" // important
 
       }).then(function (response) {
         var url = window.URL.createObjectURL(new Blob([response.data]));
         var link = document.createElement("a");
-        var name_file = "".concat(_this.form.persona.codigo_modular, "-").concat(_this.form.anio, ".pdf");
+        var name_file = "".concat(_this2.form.persona.codigo_modular, "-").concat(_this2.form.anio, ".pdf");
         link.href = url;
         link.setAttribute("download", name_file); //or any other extension
 
@@ -187,28 +204,36 @@ __webpack_require__.r(__webpack_exports__);
         link.click();
       });
     },
-    viewPDF: function viewPDF() {
-      axios("/reporte/pdf", {
-        method: "GET",
-        responseType: "blob" //Force to receive data in a Blob Format
-
-      }).then(function (response) {
-        //Create a Blob from the PDF Stream
-        var file = new Blob([response.data], {
-          type: "application/pdf"
-        }); //Build a URL from the file
-
-        var fileURL = URL.createObjectURL(file); //Open the URL on new Window
-
-        window.open(fileURL);
-      })["catch"](function (error) {
-        console.log(error);
-      });
+    viewPDF: function viewPDF(anio, dni) {
+      // axios(`/reporte/por-anio`, {
+      //   method: "GET",
+      //   params: { anio, dni },
+      //   responseType: "blob" //Force to receive data in a Blob Format
+      // })
+      //   .then(response => {
+      //Create a Blob from the PDF Stream
+      // const file = new Blob([response.data], { type: "application/pdf" });
+      //Build a URL from the file
+      // const fileURL = URL.createObjectURL(file);
+      //Open the URL on new Window7
+      // window.open(fileURL, "_blank");
+      // const url = window.URL.createObjectURL(new Blob([response.data]));
+      // window.open("data:application/pdf;base64," + encodeURI(response.data));
+      window.open("/reporte/por-anio?anio=".concat(anio, "&dni=").concat(dni), "_blank"); // location.href = `/reporte/por-anio?anio=${anio}&dni=${dni}`;
+      // target = "_blank";
+      // done = 1;
+      // })
+      // .catch(error => {
+      //   console.log(error);
+      // });
+    },
+    getName: function getName() {
+      return "".concat(this.form.persona.apellido_paterno, " ").concat(this.form.persona.apellido_materno, ", ").concat(this.form.persona.apellido_materno, " ");
     }
   },
   watch: {
     search: function search(value) {
-      var _this2 = this;
+      var _this3 = this;
 
       if (this.isLoading) return;
       this.isLoading = true;
@@ -218,12 +243,12 @@ __webpack_require__.r(__webpack_exports__);
       axios.get("/search-personas", {
         params: params
       }).then(function (res) {
-        _this2.isLoading = false;
-        _this2.lista_personas = res.data.personas;
+        _this3.isLoading = false;
+        _this3.lista_personas = res.data.personas;
       })["catch"](function (err) {
         return console.log(err);
       })["finally"](function () {
-        return _this2.isLoading = false;
+        return _this3.isLoading = false;
       });
     }
   }
@@ -567,35 +592,104 @@ var render = function() {
             "v-flex",
             { attrs: { xs12: "" } },
             [
-              _c("div", { staticClass: "title mb-2" }, [
-                _vm._v("Resultados encontrados")
-              ]),
-              _vm._v(" "),
-              _vm.lista_resultado.lenght > 0
+              Object.keys(_vm.lista_resultado).length !== 0
+                ? [
+                    _c("div", { staticClass: "title mb-2" }, [
+                      _vm._v("Resultados encontrados")
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "v-card",
+                      [
+                        _c(
+                          "v-card-text",
+                          { staticClass: "d-flex justify-content-between" },
+                          [
+                            _c("div", { staticClass: "actions" }, [
+                              _c("div", {
+                                staticClass: "heading",
+                                domProps: {
+                                  innerHTML: _vm._s(_vm.lista_resultado.anio)
+                                }
+                              }),
+                              _vm._v(" "),
+                              _c("div", { staticClass: "body-2" }, [
+                                _vm._v(_vm._s(_vm.getName()))
+                              ])
+                            ]),
+                            _vm._v(" "),
+                            _c(
+                              "div",
+                              { staticClass: "actions" },
+                              [
+                                _c(
+                                  "v-btn",
+                                  {
+                                    attrs: { color: "success" },
+                                    on: {
+                                      click: function($event) {
+                                        return _vm.downloadPDF(
+                                          _vm.lista_resultado.anio,
+                                          _vm.form.persona.dni
+                                        )
+                                      }
+                                    }
+                                  },
+                                  [
+                                    _c("v-icon", [
+                                      _vm._v("mdi mdi-cloud-download-outline")
+                                    ])
+                                  ],
+                                  1
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "v-btn",
+                                  {
+                                    attrs: { color: "info" },
+                                    on: {
+                                      click: function($event) {
+                                        return _vm.viewPDF(
+                                          _vm.lista_resultado.anio,
+                                          _vm.form.persona.dni
+                                        )
+                                      }
+                                    }
+                                  },
+                                  [_c("v-icon", [_vm._v("mdi mdi-printer")])],
+                                  1
+                                )
+                              ],
+                              1
+                            )
+                          ]
+                        )
+                      ],
+                      1
+                    )
+                  ]
+                : _vm.loading
                 ? [
                     _c(
                       "v-card",
                       [
                         _c("v-card-text", [
-                          _c("div", { staticClass: "body-2" }, [_vm._v("go")])
+                          _c(
+                            "div",
+                            { staticClass: "text-xs-center" },
+                            [
+                              _c("v-progress-circular", {
+                                attrs: { indeterminate: "", color: "primary" }
+                              })
+                            ],
+                            1
+                          )
                         ])
                       ],
                       1
                     )
                   ]
-                : [
-                    _c(
-                      "v-card",
-                      [
-                        _c("v-card-text", [
-                          _c("div", { staticClass: "body-2" }, [
-                            _vm._v("Sin resultados...")
-                          ])
-                        ])
-                      ],
-                      1
-                    )
-                  ]
+                : _vm._e()
             ],
             2
           )

@@ -7,6 +7,7 @@ const mdi_icons = {
     edit: "mdi-pencil",
     delete: "mdi-delete",
     users: "mdi-account-multiple",
+    user: "mdi-account",
     people: "mdi-account-group",
     search: "mdi-magnify",
     filter: "mdi-filter-variant",

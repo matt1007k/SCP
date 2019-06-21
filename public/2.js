@@ -157,6 +157,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
@@ -435,9 +440,10 @@ var render = function() {
       _c(
         "v-img",
         {
+          staticStyle: { height: "180px" },
           attrs: {
-            src: "https://cdn.vuetifyjs.com/images/parallax/material.jpg",
-            gradient: "to top right, rgba(100,115,201,.33), rgba(25,32,72,.7)"
+            src: "/img/logo-drea.png",
+            gradient: "to top right, rgba(0,0,0,.5), rgba(25,32,72,.7)"
           }
         },
         [
@@ -445,20 +451,38 @@ var render = function() {
             "v-layout",
             {
               staticClass: "lightbox white--text",
-              attrs: { "pa-2": "", column: "", "fill-height": "" }
+              attrs: { "pa-2": "", "fill-height": "", column: "" }
             },
             [
               _c("v-spacer"),
               _vm._v(" "),
-              _c("v-flex", { attrs: { shrink: "" } }, [
-                _c("div", { staticClass: "subheading" }, [
-                  _vm._v(_vm._s(_vm.$auth.user.user.name))
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "body-1" }, [
-                  _vm._v(_vm._s(_vm.$auth.user.user.dni))
-                ])
-              ])
+              _c(
+                "v-flex",
+                { attrs: { shrink: "", "pl-2": "" } },
+                [
+                  _c("div", { staticClass: "subheading" }, [
+                    _vm._v(_vm._s(_vm.$auth.user.user.name))
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "body-1" }, [
+                    _vm._v(_vm._s(_vm.$auth.user.user.dni))
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "v-btn",
+                    {
+                      staticStyle: { "margin-left": "0" },
+                      attrs: { color: "secondary" }
+                    },
+                    [
+                      _c("v-icon", [_vm._v("$vuetify.icons.user")]),
+                      _vm._v("Perfil\n        ")
+                    ],
+                    1
+                  )
+                ],
+                1
+              )
             ],
             1
           )
@@ -473,81 +497,68 @@ var render = function() {
           [
             item.group
               ? [
-                  _c(
-                    "v-list-group",
-                    {
-                      directives: [
+                  _vm.$auth.can(item.permission) || _vm.$auth.isAdmin()
+                    ? _c(
+                        "v-list-group",
                         {
-                          name: "show",
-                          rawName: "v-show",
-                          value:
-                            _vm.$auth.can(item.permission) ||
-                            _vm.$auth.isAdmin(),
-                          expression:
-                            "$auth.can(item.permission) || $auth.isAdmin()"
-                        }
-                      ],
-                      attrs: {
-                        "prepend-icon": item.icon,
-                        value: _vm.subIsActive([item.url])
-                      },
-                      scopedSlots: _vm._u(
-                        [
-                          {
-                            key: "activator",
-                            fn: function() {
-                              return [
-                                _c(
-                                  "v-list-tile",
-                                  [
-                                    _c("v-list-tile-title", [
-                                      _vm._v(_vm._s(item.title))
-                                    ])
-                                  ],
-                                  1
-                                )
-                              ]
-                            },
-                            proxy: true
-                          }
-                        ],
-                        null,
-                        true
-                      )
-                    },
-                    [
-                      _vm._v(" "),
-                      _vm._l(item.submenu, function(submenu, i) {
-                        return _c(
-                          "v-list-tile",
-                          {
-                            directives: [
+                          attrs: {
+                            "prepend-icon": item.icon,
+                            value: _vm.subIsActive([item.url])
+                          },
+                          scopedSlots: _vm._u(
+                            [
                               {
-                                name: "show",
-                                rawName: "v-show",
-                                value:
-                                  _vm.$auth.can(submenu.permission) ||
-                                  _vm.$auth.isAdmin(),
-                                expression:
-                                  "$auth.can(submenu.permission) || $auth.isAdmin()"
+                                key: "activator",
+                                fn: function() {
+                                  return [
+                                    _c(
+                                      "v-list-tile",
+                                      [
+                                        _c("v-list-tile-title", [
+                                          _vm._v(_vm._s(item.title))
+                                        ])
+                                      ],
+                                      1
+                                    )
+                                  ]
+                                },
+                                proxy: true
                               }
                             ],
-                            key: i,
-                            attrs: { router: "", to: submenu.url }
-                          },
-                          [
-                            _c("v-list-tile-action"),
-                            _vm._v(" "),
-                            _c("v-list-tile-title", {
-                              domProps: { textContent: _vm._s(submenu.title) }
-                            })
-                          ],
-                          1
-                        )
-                      })
-                    ],
-                    2
-                  )
+                            null,
+                            true
+                          )
+                        },
+                        [
+                          _vm._v(" "),
+                          _vm._l(item.submenu, function(submenu, i) {
+                            return [
+                              _vm.$auth.can(submenu.permission) ||
+                              _vm.$auth.isAdmin()
+                                ? _c(
+                                    "v-list-tile",
+                                    {
+                                      key: i,
+                                      attrs: { router: "", to: submenu.url }
+                                    },
+                                    [
+                                      _c("v-list-tile-action"),
+                                      _vm._v(" "),
+                                      _c("v-list-tile-title", {
+                                        domProps: {
+                                          textContent: _vm._s(submenu.title)
+                                        }
+                                      })
+                                    ],
+                                    1
+                                  )
+                                : _vm._e()
+                            ]
+                          })
+                        ],
+                        2
+                      )
+                    : _vm._e()
                 ]
               : [
                   _vm.$auth.can(item.permission) || _vm.$auth.isAdmin()

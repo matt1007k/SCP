@@ -9,6 +9,35 @@ use PDF;
 
 class ReporteController extends Controller
 {
+    public function searchByYear(Request $request)
+    {
+        $request->validate([
+            'dni' => 'required',
+            'anio' => 'required',
+        ]);
+        $haberes = array();
+        $descuentos = array();
+        $pago = Pago::where('anio', $request->anio)
+            ->whereHas('persona', function ($query) use ($request) {
+                $query->where('dni', 'like', "%{$request->dni}%");
+            })->first();
+         
+        if ($pago) {
+            if ($pago->monto_liquido != '0.00') {                
+                return response()->json([
+                    'pagos' => $pago,
+                ], 200);
+            }else {
+                return response()->json([
+                    'msg' => 'Pago no tiene datos.',
+                ], 404);
+            }
+        } else {
+            return response()->json([
+                'msg' => 'Pago no ha sido encontrado',
+            ], 404);
+        }
+    }
 
     public function porAnio(Request $request)
     {
@@ -23,46 +52,52 @@ class ReporteController extends Controller
                 $query->where('dni', 'like', "%{$request->dni}%");
             })->first();
 
-        if ($pago->monto_liquido != '0.00') {
-            // Detalles por mes
-            $meses = $this->getMeses($request->anio, $request->dni);
+        if ($pago) {
+            if ($pago->monto_liquido != '0.00') {
+                // Detalles por mes
+                $meses = $this->getMeses($request->anio, $request->dni);
+                
+                // Detalles por haberes y descuentos
+                $haberes = $this->getAllDetailsByType($request->anio, $request->dni, 'haber');
+                $descuentos = $this->getAllDetailsByType($request->anio, $request->dni, 'descuento');
+    
+                // Detalles totales
+                $total_haberes = $this->getTotalByYear($request->anio, $request->dni, 'haberes');
+                $total_descuentos = $this->getTotalByYear($request->anio, $request->dni, 'descuentos');
+                $total_liquidos = $this->getTotalByYear($request->anio, $request->dni, 'liquidos');
+                $total_imponibles = $this->getTotalByYear($request->anio, $request->dni, 'imponibles');
+    
+                // $array_test = array([
+                //     "nombre_haber"=> "reunifica",
+                //     "monto_enero1"=> "150.00",  
+                //     "monto_enero2"=> "128.00", 
+                //     "monto_febrero1"=> "20.00", 
+                //     "monto_marzo1"=> "0.00"
+                // ]);
+    
+                // $array_test2 = array([
+                //     ["res_enero1"=> "1261.00"],
+                //     ["res_enero2"=> "128.00"],             
+                // ]);
+    
             
-            // Detalles por haberes y descuentos
-            $haberes = $this->getAllDetailsByType($request->anio, $request->dni, 'haber');
-            $descuentos = $this->getAllDetailsByType($request->anio, $request->dni, 'descuento');
-
-            // Detalles totales
-            $total_haberes = $this->getTotalByYear($request->anio, $request->dni, 'haberes');
-            $total_descuentos = $this->getTotalByYear($request->anio, $request->dni, 'descuentos');
-            $total_liquidos = $this->getTotalByYear($request->anio, $request->dni, 'liquidos');
-            $total_imponibles = $this->getTotalByYear($request->anio, $request->dni, 'imponibles');
-
-            // $array_test = array([
-            //     "nombre_haber"=> "reunifica",
-            //     "monto_enero1"=> "150.00",  
-            //     "monto_enero2"=> "128.00", 
-            //     "monto_febrero1"=> "20.00", 
-            //     "monto_marzo1"=> "0.00"
-            // ]);
-
-            // $array_test2 = array([
-            //     ["total_haber_enero1"=> "1261.00"],
-            //     ["total_haber_enero2"=> "128.00"],             
-            // ]);
-
-        
-            $pdf = PDF::loadView('reporte.anio', [
-                'pago' => $pago,
-                'haberes' => (object)$haberes,
-                'descuentos' => (object)$descuentos,
-                'total_haberes' => (object)$total_haberes,
-                'total_descuentos' => (object)$total_descuentos,
-                'liquidos' => (object)$total_liquidos,
-                'imponibles' => (object)$total_imponibles,
-                'meses' => $meses,
-            ]);
-            $pdf->setPaper('a4', 'landscape');
-            return $pdf->stream();
+                $pdf = PDF::loadView('reporte.anio', [
+                    'pago' => $pago,
+                    'haberes' => (object)$haberes,
+                    'descuentos' => (object)$descuentos,
+                    'total_haberes' => (object)$total_haberes,
+                    'total_descuentos' => (object)$total_descuentos,
+                    'liquidos' => (object)$total_liquidos,
+                    'imponibles' => (object)$total_imponibles,
+                    'meses' => $meses,
+                ]);
+                $pdf->setPaper('a4', 'landscape');
+                return $pdf->stream();
+            }else {
+                return response()->json([
+                    'msg' => 'Pago no tiene datos.',
+                ], 404);
+            }
         } else {
             return response()->json([
                 'msg' => 'Pago no ha sido encontrado',
@@ -76,12 +111,8 @@ class ReporteController extends Controller
     public function addItemToArray($array, $item_array, $mes)
     {
         $i = 0;
-        $mes_nombre = '';
-        foreach ($this->getNameMeses() as $item_mes) {
-            if ($mes == $item_mes['numero']) {
-                $mes_nombre = strtolower($item_mes['nombre']);
-            }
-        }
+        $mes_nombre = strtolower($this->getNameMonth($mes));
+
         foreach ($item_array as $key => $item)
         {
             $array[$i][$mes_nombre] = $item;
@@ -125,7 +156,6 @@ class ReporteController extends Controller
 
     public function getDetalleByMes($anio, $mes, $tipo, $dni)
     {
-        $mes_nombre = '';
         $haberes = array();
         $haber_item = array();
         $descuentos = array();
@@ -136,11 +166,7 @@ class ReporteController extends Controller
                         $query->where('dni', 'like', "%{$dni}%");
                     })->get();
         // return $pagos;
-        foreach ($this->getNameMeses() as $item_mes) {
-            if ($mes == $item_mes['numero']) {
-                $mes_nombre = strtolower($item_mes['nombre']);
-            }
-        }
+        $mes_nombre = strtolower($this->getNameMonth($mes));
 
         if ($pagos->count() > 0) {
             foreach ($pagos as $key_mes => $pago) {
@@ -188,7 +214,6 @@ class ReporteController extends Controller
 
     public function getTotalByMes($anio, $dni, $tipo, $mes)
     {
-        $mes_nombre = '';
         $total_haberes = array();
         $total_descuentos = array();
         $total_liquidos = array();
@@ -199,13 +224,7 @@ class ReporteController extends Controller
                         $query->where('dni', 'like', "%{$dni}%");
                     })->get();
         // return $pagos;
-        foreach ($this->getNameMeses() as $item_mes) {
-                    
-            if ($mes == $item_mes['numero']) {
-                $mes_nombre = strtolower($item_mes['nombre']);
-                
-            }
-        }
+        $mes_nombre = strtolower($this->getNameMonth($mes));
 
         if ($pagos->count() > 0) {
             $i = 0;
@@ -295,6 +314,15 @@ class ReporteController extends Controller
         return $diciembre;
     }
 
+    public function getOneDetailsByType($anio, $mes, $dni, $tipo)
+    {
+        $nombres = $this->getNameDetails($anio, $dni, $tipo);
+        $items_by_month = $this->getDetalleByMes($anio, $mes, $tipo, $dni);
+        $items = $this->addItemToArray($nombres, $items_by_month, $mes);
+
+        return $items;
+    }
+
     public function getMeses($anio, $dni)
     {
         $enero_count = Pago::where('anio', $anio)->where('mes', '01')
@@ -380,25 +408,101 @@ class ReporteController extends Controller
         ];
     }
 
+    public function getNameMonth($mes)
+    {
+        $nombre = '';
+        foreach ($this->getNameMeses() as $item_mes) {
+            if ($mes == $item_mes['numero']) {
+                $nombre = $item_mes['nombre'];
+            }
+        }
+
+        return $nombre;
+    }
+
     public function porMes(Request $request)
     {
         $request->validate([
             'dni' => 'required',
-            'anio' => 'required|exists:periodos, anio',
+            // 'anio' => 'required|exists:periodos, anio',
+            'anio' => 'required',
             'mes' => 'required',
         ]);
 
-        $pago = Pago::where('anio', $request->anio)
-            ->mes($request->mes)
+        $pago = Pago::where('anio', $request->anio)->mes($request->mes)
             ->whereHas('persona', function ($query) use ($request) {
                 $query->where('dni', 'like', "%{$request->dni}%");
             })->first();
+                
         if ($pago) {
-            $pdf = PDF::loadView('reporte.mes', [
-                'pago' => $pago,
-            ]);
-            $pdf->setPaper('a4');
-            return $pdf->stream();
+            if ($pago->monto_liquido != '0.00') {
+
+                $total_pagos = Pago::where('anio', $request->anio)->mes($request->mes)
+                                        ->whereHas('persona', function ($query) use ($request) {
+                                            $query->where('dni', 'like', "%{$request->dni}%");
+                                        })->count();
+
+                //detalles de haberes y descuentos 
+                $haberes = $this->getOneDetailsByType($request->anio, $request->mes, $request->dni, 'haber');
+                $descuentos = $this->getOneDetailsByType($request->anio, $request->mes, $request->dni, 'descuento');
+                
+                //totales
+                $total_haberes = $this->getTotalByMes($request->anio, $request->dni, 'haberes', $request->mes);
+                $total_descuentos = $this->getTotalByMes($request->anio, $request->dni, 'descuentos', $request->mes);
+                $total_liquidos = $this->getTotalByMes($request->anio, $request->dni, 'liquidos', $request->mes);
+                $total_imponibles = $this->getTotalByMes($request->anio, $request->dni, 'imponibles', $request->mes);
+                
+                $nombre_mes = strtoupper($this->getNameMonth($request->mes));
+
+                $pdf = PDF::loadView('reporte.mes', [
+                    'pago' => $pago,
+                    'nombre_mes' => $nombre_mes,
+                    'total_pagos' => $total_pagos,
+                    'haberes' => $haberes,
+                    'descuentos' => $descuentos,
+                    'total_haberes' => $total_haberes,
+                    'total_descuentos' => $total_descuentos,
+                    'liquidos' => $total_liquidos,
+                    'imponibles' => $total_imponibles,
+                ]);
+                $pdf->setPaper('a4');
+                return $pdf->stream();
+            }else {
+                return response()->json([
+                    'msg' => 'Pago no tiene datos.',
+                ], 404);
+            }
+        } else {
+            return response()->json([
+                'msg' => 'Pago no ha sido encontrado',
+            ], 404);
+        }
+    }
+
+    public function searchByYearAndMonth(Request $request)
+    {
+        $request->validate([
+            'dni' => 'required',
+            // 'anio' => 'required|exists:periodos, anio',
+            'anio' => 'required',
+            'mes' => 'required',
+        ]);
+
+        $pago = Pago::With(['persona'])->where('anio', $request->anio)->mes($request->mes)
+            ->whereHas('persona', function ($query) use ($request) {
+                $query->where('dni', 'like', "%{$request->dni}%");
+            })->first();
+                
+        if ($pago) {
+            if ($pago->monto_liquido != '0.00') {
+                return response()->json([
+                    'pagos' => ['pago' => $pago],
+                ], 200);
+            }else {
+                return response()->json([
+                    'msg' => 'Pago no tiene datos.',
+                ], 404);
+            }
         } else {
             return response()->json([
                 'msg' => 'Pago no ha sido encontrado',
