@@ -33,6 +33,10 @@ Route::namespace ('Admin')->group(function () {
         Route::get('/admin/{any?}', 'DashboardController@index')
             ->where('any', '.*');
 
+        Route::get('/getCount', 'DashboardController@getCount')->name('admin.count');
+        Route::get('/getTotalPagos', 'DashboardController@getTotalPagos')->name('admin.total_pagos');
+        Route::get('/getTotalPersonas', 'DashboardController@getTotalPersonas')->name('admin.total_personas');
+
         Route::resource('usuarios', 'UserController')
             ->except(['show', 'create', 'edit']);
         Route::resource('roles', 'RoleController')

@@ -50,18 +50,12 @@
 }
 
 // width
-.w-100 {
-    width: 100%;
+@for $i from 1 through 10 {
+    .w-#{$i * 10} {
+        width: 10% * $i;
+    }
 }
-.w-70 {
-    width: 70%;
-}
-.w-50 {
-    width: 50%;
-}
-.w-30 {
-    width: 30%;
-}
+
 //height
 
 .h-100 {
