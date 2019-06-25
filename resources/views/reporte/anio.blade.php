@@ -878,7 +878,7 @@
                     @endforeach
                 </tr>
                 <tr class="body-row">
-                    <td><b>Rem. ASEGURABLE</b></td>
+                    <td><b>REM. ASEGURABLE</b></td>
                     @foreach ($imponibles as $total)
                         {{-- Monto enero --}}
                         @if(isset($total['monto_imponible_enero1']))

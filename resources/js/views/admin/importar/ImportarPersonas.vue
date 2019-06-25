@@ -34,7 +34,7 @@
             </div>
           </div>
           <div v-if="progress === 100">
-            <p class="text-info">Subiendo los datos espere:</p>
+            <p class="text-info subheading">Subiendo los datos espere:</p>
             <div class="spinner">
               <div class="rect1"></div>
               <div class="rect2"></div>
@@ -70,7 +70,9 @@ export default {
       errors: {}
     };
   },
-
+  created() {
+    document.title = "Importar datos de personas y pagos";
+  },
   methods: {
     async sendFile() {
       let file = this.$refs.file.files[0];
@@ -91,7 +93,8 @@ export default {
         var message = res.data.msg;
         if (message) {
           this.resetInputFile();
-          this.$root.$snackbar.show(message, { color: "warning" });
+          // this.$root.$snackbar.show(message, { color: "warning" });
+          this.$swal("Importar datos de personas", message, "warning");
         }
       } catch (error) {
         this.errors = error.response.data.errors;

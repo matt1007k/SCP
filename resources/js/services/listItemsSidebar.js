@@ -97,11 +97,13 @@ export const listItemsSidebar = [
         submenu: [
             {
                 title: "Por año",
-                url: "/admin/reporte/anual"
+                url: "/admin/reporte/anual",
+                permission: "pagos.consultar",
             },
             {
                 title: "Por mes",
-                url: "/admin/reporte/mensual"
+                url: "/admin/reporte/mensual",
+                permission: "pagos.consultar",
             }
         ]
     }

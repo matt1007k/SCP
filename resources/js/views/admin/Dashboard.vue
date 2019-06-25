@@ -13,7 +13,31 @@
     <v-layout row wrap>
       <v-flex xs12 sm8>
         <v-card>
-          <v-card-title>Total de pagos</v-card-title>
+          <v-card-title>
+            <v-layout row align-center>
+              <v-flex xs1>
+                <v-tooltip bottom>
+                  <v-icon slot="activator">$vuetify.icons.filter</v-icon>
+                  <span>Filtar o ver los total de pagos por año y estado de personas</span>
+                </v-tooltip>
+              </v-flex>
+              <v-flex xs3>
+                <v-select
+                  :items="items"
+                  v-model="anio"
+                  @input="filterByYear()"
+                  label="Seleccionar el año"
+                ></v-select>
+              </v-flex>
+              <v-flex xs8>
+                <span>
+                  <v-btn flat color="success" @click="filterBy('activo')">Activos</v-btn>
+                  <v-btn flat color="info" @click="filterBy('sobreviviente')">Sobrevivientes</v-btn>
+                  <v-btn flat color="error" @click="filterBy('cesante')">Cesantes</v-btn>
+                </span>
+              </v-flex>
+            </v-layout>
+          </v-card-title>
           <v-card-text>
             <bar-chart :chart-data="dataPagos"></bar-chart>
           </v-card-text>
@@ -40,8 +64,9 @@ export default {
     count_items: [],
     dataPagos: {},
     dataPersonas: {},
-    anio: new Date().getFullYear(),
-    estado: "activo"
+    anio: String(new Date().getFullYear()),
+    estado: "activo",
+    items: ["2019", "2018", "2017", "2016"]
   }),
   created() {
     document.title = "Tablero de Resumenes";
@@ -98,6 +123,13 @@ export default {
           };
         })
         .catch(err => console.log(err));
+    },
+    filterBy(estado) {
+      this.estado = estado;
+      this.getTotalPagos();
+    },
+    filterByYear() {
+      this.getTotalPagos();
     }
   }
 };

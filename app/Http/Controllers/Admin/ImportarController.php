@@ -21,11 +21,14 @@ class ImportarController extends Controller
             'archivo' => 'required|mimes:xls,xlsx',
         ]);
         set_time_limit(0);
+        // ini_set('memory_limit', '20.97152M');
+        ini_set('memory_limit', '-1');
+
         $archivo = $request->file('archivo')->getClientOriginalName();
         $filename = pathinfo($archivo, PATHINFO_FILENAME);
 
-        $estadoExcelNnombre = substr($filename, -1);
-        $estado = $this->getEstado($estadoExcelNnombre);
+        $estadoExcelNombre = substr($filename, -1);
+        $estado = $this->getEstado($estadoExcelNombre);
 
         try {
             $personasExcel = Excel::toCollection(new PersonasImport(), $request->file('archivo'));
@@ -154,16 +157,16 @@ class ImportarController extends Controller
         return true;
     }
 
-    public function getEstado($estadoExcelNnombre)
+    public function getEstado($estadoExcelNombre)
     {
         $estado = 'activo';
-        if ($estadoExcelNnombre == 'A') {
+        if ($estadoExcelNombre == 'A') {
             $estado = 'activo';
             return $estado;
-        } elseif ($estadoExcelNnombre == 'C') {
+        } elseif ($estadoExcelNombre == 'C') {
             $estado = 'cesante';
             return $estado;
-        } elseif ($estadoExcelNnombre == 'S') {
+        } elseif ($estadoExcelNombre == 'S') {
             $estado = 'sobreviviente';
             return $estado;
         } else {

@@ -61,6 +61,7 @@ class DashboardController extends Controller
 
     public function getTotalPagos(Request $request)
     {
+        set_time_limit(0);
         $pagos = Pago::where('anio', $request->anio)
             ->whereHas('persona', function ($query) use ($request) {
                 $query->where('estado', 'like', "%{$request->estado}%");
@@ -68,20 +69,21 @@ class DashboardController extends Controller
 
         $total_pagos = array();
 
-        $total_by_year = $this->getTotalLiquidoByYear($pagos);
+        $total_by_year = $this->getTotalLiquidoByYear($pagos, $request);
 
         // return $total_by_year;
         $color = '';
         if ($request->estado == 'activo') {
             $color = "#4CAF50";
-        } elseif ($request->estado == 'activo') {
+        } elseif ($request->estado == 'cesante') {
             $color = "#FF5252";
-        } elseif ($request->estado == 'activo') {
+        } elseif ($request->estado == 'sobreviviente') {
             $color = "#2196F3";
         }
+        $estado = strtoupper($request->estado);
 
         array_push($total_pagos, (object) [
-            "label" => "Total de pagos por cada mes en $request->anio, por estado el $request->estado",
+            "label" => "Total de pagos por cada mes en el $request->anio, del estado $estado",
             "backgroundColor" => $color,
             //Data to be represented on y-axis
             "data" => $total_by_year,
@@ -93,8 +95,9 @@ class DashboardController extends Controller
 
     public function getTotalPersonas()
     {
+        set_time_limit(0);
         $total_activo = Persona::where('estado', 'activo')->count();
-        $total_censante = Persona::where('estado', 'censante')->count();
+        $total_censante = Persona::where('estado', 'cesante')->count();
         $total_sobreviviente = Persona::where('estado', 'sobreviviente')->count();
 
         $total_personas = array();
@@ -108,22 +111,46 @@ class DashboardController extends Controller
         ], 200);
     }
 
-    public function getTotalLiquidoByYear($pagos)
+    public function getTotalLiquidoByYear($pagos, $request)
     {
         foreach ($pagos as $pago) {
             return [
-                $pago->mes('01')->sum('monto_liquido'),
-                $pago->mes('02')->sum('monto_liquido'),
-                $pago->mes('03')->sum('monto_liquido'),
-                $pago->mes('04')->sum('monto_liquido'),
-                $pago->mes('05')->sum('monto_liquido'),
-                $pago->mes('06')->sum('monto_liquido'),
-                $pago->mes('07')->sum('monto_liquido'),
-                $pago->mes('08')->sum('monto_liquido'),
-                $pago->mes('09')->sum('monto_liquido'),
-                $pago->mes('10')->sum('monto_liquido'),
-                $pago->mes('11')->sum('monto_liquido'),
-                $pago->mes('12')->sum('monto_liquido'),
+                $pago->mes('01')->whereHas('persona', function ($query) use ($request) {
+                    $query->where('estado', 'like', "%{$request->estado}%");
+                })->sum('monto_liquido'),
+                $pago->mes('02')->whereHas('persona', function ($query) use ($request) {
+                    $query->where('estado', 'like', "%{$request->estado}%");
+                })->sum('monto_liquido'),
+                $pago->mes('03')->whereHas('persona', function ($query) use ($request) {
+                    $query->where('estado', 'like', "%{$request->estado}%");
+                })->sum('monto_liquido'),
+                $pago->mes('04')->whereHas('persona', function ($query) use ($request) {
+                    $query->where('estado', 'like', "%{$request->estado}%");
+                })->sum('monto_liquido'),
+                $pago->mes('05')->whereHas('persona', function ($query) use ($request) {
+                    $query->where('estado', 'like', "%{$request->estado}%");
+                })->sum('monto_liquido'),
+                $pago->mes('06')->whereHas('persona', function ($query) use ($request) {
+                    $query->where('estado', 'like', "%{$request->estado}%");
+                })->sum('monto_liquido'),
+                $pago->mes('07')->whereHas('persona', function ($query) use ($request) {
+                    $query->where('estado', 'like', "%{$request->estado}%");
+                })->sum('monto_liquido'),
+                $pago->mes('08')->whereHas('persona', function ($query) use ($request) {
+                    $query->where('estado', 'like', "%{$request->estado}%");
+                })->sum('monto_liquido'),
+                $pago->mes('09')->whereHas('persona', function ($query) use ($request) {
+                    $query->where('estado', 'like', "%{$request->estado}%");
+                })->sum('monto_liquido'),
+                $pago->mes('10')->whereHas('persona', function ($query) use ($request) {
+                    $query->where('estado', 'like', "%{$request->estado}%");
+                })->sum('monto_liquido'),
+                $pago->mes('11')->whereHas('persona', function ($query) use ($request) {
+                    $query->where('estado', 'like', "%{$request->estado}%");
+                })->sum('monto_liquido'),
+                $pago->mes('12')->whereHas('persona', function ($query) use ($request) {
+                    $query->where('estado', 'like', "%{$request->estado}%");
+                })->sum('monto_liquido'),
             ];
         }
     }

@@ -26,16 +26,19 @@ class ReporteController extends Controller
             if ($pago->monto_liquido != '0.00') {                
                 return response()->json([
                     'pagos' => $pago,
+                    'status' => true,
                 ], 200);
             }else {
                 return response()->json([
-                    'msg' => 'Pago no tiene datos.',
+                    'msg' => 'El pago no tiene datos.',
                 ], 404);
             }
         } else {
             return response()->json([
-                'msg' => 'Pago no ha sido encontrado',
-            ], 404);
+                'msg' => 'El pago no ha sido encontrado',
+                'pagos' => (object)[],
+                'status' => false,
+            ], 200);
         }
     }
 

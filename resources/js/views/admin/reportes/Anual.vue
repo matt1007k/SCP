@@ -27,7 +27,7 @@
                     :filter="customFilter"
                     placeholder="Buscar por DNI o nombre completo..."
                     return-object
-                    :error-messages="errors.persona"
+                    :error-messages="errors.dni"
                   >
                     <template v-slot:item="data">
                       <v-list-tile-content>
@@ -66,6 +66,8 @@
                   <v-select
                     v-model="form.anio"
                     :items="items_anio"
+                    item-text="anio"
+                    item-value="anio"
                     label="El año"
                     :error-messages="errors.anio"
                   ></v-select>
@@ -94,17 +96,35 @@
           <div class="title mb-2">Resultados encontrados</div>
           <v-card>
             <v-card-text class="d-flex justify-content-between">
-              <div class="actions">
+              <div class="details-info">
                 <div class="heading" v-html="lista_resultado.anio"></div>
                 <div class="body-2">{{getName()}}</div>
               </div>
               <div class="actions">
-                <v-btn color="success" @click="downloadPDF(lista_resultado.anio, form.persona.dni)">
-                  <v-icon>mdi mdi-cloud-download-outline</v-icon>
-                </v-btn>
-                <v-btn color="info" @click="viewPDF(lista_resultado.anio, form.persona.dni)">
-                  <v-icon>mdi mdi-printer</v-icon>
-                </v-btn>
+                <v-tooltip bottom>
+                  <template v-slot:activator="{ on }">
+                    <v-btn
+                      color="success"
+                      @click="downloadPDF(lista_resultado.anio, form.persona.dni)"
+                      v-on="on"
+                    >
+                      <v-icon>mdi mdi-cloud-download-outline</v-icon>
+                    </v-btn>
+                  </template>
+                  <span>Descargar constancia de pago</span>
+                </v-tooltip>
+                <v-tooltip bottom>
+                  <template v-slot:activator="{ on }">
+                    <v-btn
+                      color="info"
+                      @click="viewPDF(lista_resultado.anio, form.persona.dni)"
+                      v-on="on"
+                    >
+                      <v-icon>mdi mdi-printer</v-icon>
+                    </v-btn>
+                  </template>
+                  <span>Imprimir constancia de pago</span>
+                </v-tooltip>
               </div>
             </v-card-text>
           </v-card>
@@ -115,6 +135,13 @@
               <div class="text-xs-center">
                 <v-progress-circular indeterminate color="primary"></v-progress-circular>
               </div>
+            </v-card-text>
+          </v-card>
+        </template>
+        <template v-else-if="notFound">
+          <v-card>
+            <v-card-text>
+              <div class="text-xs-center body-2">{{this.msg}}</div>
             </v-card-text>
           </v-card>
         </template>
@@ -133,15 +160,21 @@ export default {
       mes: "",
       anio: ""
     },
-    isLoading: false,
-    items_anio: years,
     items_mes: months,
+    items_anio: [],
+    isLoading: false,
     search: "",
     lista_personas: [],
     lista_resultado: [],
     loading: false,
+    notFound: false,
+    msg: null,
     errors: {}
   }),
+  created() {
+    document.title = "Reporte de pagos por año";
+    this.getYears();
+  },
   methods: {
     customFilter(item, queryText, itemText) {
       const nombre = item.nombre.toLowerCase();
@@ -157,6 +190,12 @@ export default {
         dni.indexOf(searchText) > -1
       );
     },
+    getYears() {
+      axios
+        .get("/periodos")
+        .then(res => (this.items_anio = res.data.years))
+        .catch(err => console.log(err));
+    },
     buscarPago() {
       this.loading = true;
       axios
@@ -168,9 +207,19 @@ export default {
         })
         .then(res => {
           this.loading = false;
+          this.errors = {};
           this.lista_resultado = res.data.pagos;
+
+          let msg = res.data.msg;
+          if (msg) {
+            this.loading = false;
+            this.notFound = true;
+            this.msg = msg;
+            this.lista_resultado = {};
+          }
         })
         .catch(err => {
+          this.loading = false;
           this.errors = err.response.data.errors;
         });
     },

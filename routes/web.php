@@ -37,6 +37,9 @@ Route::namespace ('Admin')->group(function () {
         Route::get('/getTotalPagos', 'DashboardController@getTotalPagos')->name('admin.total_pagos');
         Route::get('/getTotalPersonas', 'DashboardController@getTotalPersonas')->name('admin.total_personas');
 
+        Route::resource('periodos', 'PeriodoController')
+            ->except(['show', 'create', 'edit']);
+
         Route::resource('usuarios', 'UserController')
             ->except(['show', 'create', 'edit']);
         Route::resource('roles', 'RoleController')
