@@ -14,7 +14,9 @@ const mdi_icons = {
     bell: "mdi-bell-ring",
     exit: "mdi-exit-to-app",
     sale: "mdi-sale",
-    left: "mdi-keyboard-backspace"
+    left: "mdi-keyboard-backspace",
+    email: "mdi-email",
+    card_id: "mdi-account-card-details"
 };
 
 export default mdi_icons;

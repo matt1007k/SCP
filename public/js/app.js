@@ -44304,7 +44304,9 @@ var mdi_icons = {
   bell: "mdi-bell-ring",
   exit: "mdi-exit-to-app",
   sale: "mdi-sale",
-  left: "mdi-keyboard-backspace"
+  left: "mdi-keyboard-backspace",
+  email: "mdi-email",
+  card_id: "mdi-account-card-details"
 };
 /* harmony default export */ __webpack_exports__["default"] = (mdi_icons);
 
@@ -44410,6 +44412,15 @@ var ParentComponent = {
       name: "admin",
       component: function component() {
         return Promise.all(/*! import() */[__webpack_require__.e(0), __webpack_require__.e(2), __webpack_require__.e(4)]).then(__webpack_require__.bind(null, /*! ./views/admin/Dashboard.vue */ "./resources/js/views/admin/Dashboard.vue"));
+      }
+    }, {
+      path: "perfil",
+      name: "perfil",
+      meta: {
+        titulo: "Perfil"
+      },
+      component: function component() {
+        return __webpack_require__.e(/*! import() */ 22).then(__webpack_require__.bind(null, /*! ./views/admin/Perfil.vue */ "./resources/js/views/admin/Perfil.vue"));
       }
     }, {
       path: "usuarios",

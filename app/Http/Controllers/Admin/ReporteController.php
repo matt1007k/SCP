@@ -499,7 +499,7 @@ class ReporteController extends Controller
         if ($pago) {
             if ($pago->monto_liquido != '0.00') {
                 return response()->json([
-                    'pagos' => ['pago' => $pago],
+                    'pagos' => $pago,
                 ], 200);
             }else {
                 return response()->json([
@@ -509,7 +509,8 @@ class ReporteController extends Controller
         } else {
             return response()->json([
                 'msg' => 'Pago no ha sido encontrado',
-            ], 404);
+                'pagos' => (object)[],
+            ], 200);
         }
     }
 }

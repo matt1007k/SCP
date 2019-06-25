@@ -183,6 +183,9 @@ __webpack_require__.r(__webpack_exports__);
     goTo: function goTo(url) {
       this.$router.push(url);
     },
+    goToPerfil: function goToPerfil() {
+      this.$router.push("/admin/perfil");
+    },
     subIsActive: function subIsActive(input) {
       var _this = this;
 
@@ -472,7 +475,12 @@ var render = function() {
                     "v-btn",
                     {
                       staticStyle: { "margin-left": "0" },
-                      attrs: { color: "secondary" }
+                      attrs: { color: "secondary" },
+                      on: {
+                        click: function($event) {
+                          return _vm.goToPerfil()
+                        }
+                      }
                     },
                     [
                       _c("v-icon", [_vm._v("$vuetify.icons.user")]),

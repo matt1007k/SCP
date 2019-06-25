@@ -36,6 +36,12 @@ export default new Router({
                     component: () => import("./views/admin/Dashboard.vue")
                 },
                 {
+                    path: "perfil",
+                    name: "perfil",
+                    meta: { titulo: "Perfil" },
+                    component: () => import("./views/admin/Perfil.vue")
+                },
+                {
                     path: "usuarios",
                     name: "usuarios",
                     meta: { titulo: "Usuarios" },

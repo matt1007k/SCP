@@ -16,7 +16,7 @@
         <v-flex shrink pl-2>
           <div class="subheading">{{$auth.user.user.name}}</div>
           <div class="body-1">{{$auth.user.user.dni}}</div>
-          <v-btn color="secondary" style="margin-left: 0;">
+          <v-btn color="secondary" style="margin-left: 0;" @click="goToPerfil()">
             <v-icon>$vuetify.icons.user</v-icon>Perfil
           </v-btn>
         </v-flex>
@@ -86,6 +86,9 @@ export default {
   methods: {
     goTo(url) {
       this.$router.push(url);
+    },
+    goToPerfil() {
+      this.$router.push("/admin/perfil");
     },
     subIsActive(input) {
       const paths = Array.isArray(input) ? input : [input];

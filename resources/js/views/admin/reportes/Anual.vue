@@ -73,14 +73,7 @@
                   ></v-select>
                 </div>
               </v-flex>
-              <v-flex xs12 sm6 md3 class="pl-2">
-                <v-select
-                  v-model="form.mes"
-                  :items="items_mes"
-                  label="El mes"
-                  :error-messages="errors.mes"
-                ></v-select>
-              </v-flex>
+              <v-flex xs12 sm6 md3 class="pl-2"></v-flex>
               <v-flex xs12 sm9 md3></v-flex>
               <v-flex xs12 sm3 md3 class="d-flex" justify-end>
                 <v-btn color="success" @click="buscarPago()">Buscar</v-btn>
@@ -151,16 +144,12 @@
 </template>
 
 <script>
-import { months } from "../../../services/listMonthsOfTheYear";
-import { years } from "../../../services/listYears";
 export default {
   data: () => ({
     form: {
       persona: {},
-      mes: "",
       anio: ""
     },
-    items_mes: months,
     items_anio: [],
     isLoading: false,
     search: "",

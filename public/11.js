@@ -9,8 +9,6 @@
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _services_listMonthsOfTheYear__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../services/listMonthsOfTheYear */ "./resources/js/services/listMonthsOfTheYear.js");
-/* harmony import */ var _services_listYears__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../services/listYears */ "./resources/js/services/listYears.js");
 //
 //
 //
@@ -156,24 +154,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-
-
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       form: {
         persona: {},
-        mes: "",
         anio: ""
       },
-      items_mes: _services_listMonthsOfTheYear__WEBPACK_IMPORTED_MODULE_0__["months"],
       items_anio: [],
       isLoading: false,
       search: "",
@@ -566,30 +553,10 @@ var render = function() {
                             ]
                           ),
                           _vm._v(" "),
-                          _c(
-                            "v-flex",
-                            {
-                              staticClass: "pl-2",
-                              attrs: { xs12: "", sm6: "", md3: "" }
-                            },
-                            [
-                              _c("v-select", {
-                                attrs: {
-                                  items: _vm.items_mes,
-                                  label: "El mes",
-                                  "error-messages": _vm.errors.mes
-                                },
-                                model: {
-                                  value: _vm.form.mes,
-                                  callback: function($$v) {
-                                    _vm.$set(_vm.form, "mes", $$v)
-                                  },
-                                  expression: "form.mes"
-                                }
-                              })
-                            ],
-                            1
-                          ),
+                          _c("v-flex", {
+                            staticClass: "pl-2",
+                            attrs: { xs12: "", sm6: "", md3: "" }
+                          }),
                           _vm._v(" "),
                           _c("v-flex", {
                             attrs: { xs12: "", sm9: "", md3: "" }
@@ -840,70 +807,6 @@ var staticRenderFns = []
 render._withStripped = true
 
 
-
-/***/ }),
-
-/***/ "./resources/js/services/listMonthsOfTheYear.js":
-/*!******************************************************!*\
-  !*** ./resources/js/services/listMonthsOfTheYear.js ***!
-  \******************************************************/
-/*! exports provided: months */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "months", function() { return months; });
-var months = [{
-  text: "Enero",
-  value: "01"
-}, {
-  text: "Febrero",
-  value: "02"
-}, {
-  text: "Marzo",
-  value: "03"
-}, {
-  text: "Abril",
-  value: "04"
-}, {
-  text: "Mayo",
-  value: "05"
-}, {
-  text: "Junio",
-  value: "06"
-}, {
-  text: "Julio",
-  value: "07"
-}, {
-  text: "Agosto",
-  value: "08"
-}, {
-  text: "Septiembre",
-  value: "09"
-}, {
-  text: "Octubre",
-  value: "10"
-}, {
-  text: "Noviembre",
-  value: "11"
-}, {
-  text: "Diciembre",
-  value: "12"
-}];
-
-/***/ }),
-
-/***/ "./resources/js/services/listYears.js":
-/*!********************************************!*\
-  !*** ./resources/js/services/listYears.js ***!
-  \********************************************/
-/*! exports provided: years */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "years", function() { return years; });
-var years = ["2002", "2016", "2017", "2018", "2019"];
 
 /***/ }),
 
