@@ -69,6 +69,8 @@ Route::namespace ('Admin')->group(function () {
 
         Route::get('/reporte/por-anio', 'ReporteController@porAnio')->name('admin.reporte.poranio');
         Route::get('/reporte/por-mes', 'ReporteController@porMes')->name('admin.reporte.pormes');
+        
+        Route::get('/boleta/por-mes', 'ReporteController@boletaPorMes')->name('admin.boleta.pormes');
 
     });
 

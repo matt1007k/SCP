@@ -9,7 +9,7 @@
       <v-flex xs12>
         <v-card>
           <v-img
-            src="/img/drea.jpg"
+            src="/img/local_drea.png"
             gradient="to top right, rgba(0,0,0,.5), rgba(0,0,0,.8)"
             height="300px"
           >

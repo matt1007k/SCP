@@ -1,6 +1,6 @@
 <template>
   <v-toolbar app flat>
-    <v-toolbar-title>Sistema de Constancia de Pagos</v-toolbar-title>
+    <v-toolbar-title>Consulta de Boletas de Pago</v-toolbar-title>
 
     <v-spacer></v-spacer>
 

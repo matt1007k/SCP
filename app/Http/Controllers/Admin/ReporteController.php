@@ -62,6 +62,7 @@ class ReporteController extends Controller
                 
                 // Detalles por haberes y descuentos
                 $haberes = $this->getAllDetailsByType($request->anio, $request->dni, 'haber');
+                
                 $descuentos = $this->getAllDetailsByType($request->anio, $request->dni, 'descuento');
     
                 // Detalles totales
@@ -77,7 +78,7 @@ class ReporteController extends Controller
                 //     "monto_febrero1"=> "20.00", 
                 //     "monto_marzo1"=> "0.00"
                 // ]);
-    
+                return $haberes;
                 // $array_test2 = array([
                 //     ["res_enero1"=> "1261.00"],
                 //     ["res_enero2"=> "128.00"],             
@@ -114,16 +115,144 @@ class ReporteController extends Controller
     public function addItemToArray($array, $item_array, $mes)
     {
         $i = 0;
-        $mes_nombre = strtolower($this->getNameMonth($mes));
+        $num = 1;
+        $num2 = 0;
+        $nombre_mes = strtolower($this->getNameMonth($mes));
+        $array_check = array();
+        $array_new = array();
+        // return $item_array;
 
-        foreach ($item_array as $key => $item)
+        //Get names
+        $only_names = $this->getNames($item_array);
+        // Get count by values
+        $count_names = array_count_values($only_names);
+        $collect = collect($item_array);
+       
+        $duplicates = $this->getDuplicatesItem($count_names, $collect);   
+        // Generar monto
+        $not_duplicates = $this->getNotDuplicatesItem($count_names, $collect);   
+        
+        $unique_duplicates_items = $this->unique_multidim_array($duplicates, 'nombre');
+        $unique_duplicate_name = $this->getNames($unique_duplicates_items);
+        
+        
+        $nombre = array();
+        $monto = array();
+        // return $unique_duplicate_name;
+        foreach ($unique_duplicate_name as $key => $name)
         {
-            $array[$i][$mes_nombre] = $item;
-            // $result [$i]["enero"]= $item->name;
-            $i++;
+            // return $value['descripcion_'.$nombre_mes.$num];
+            // return $value['nombre_haber'];
+            // $value['monto'.$nombre_mes.$num]
+
+            if(isset($name)){ 
+                $arrayd = collect($duplicates)->filter(function($item) use ($name){
+                    return $item['nombre'] === $name;
+                });  
+                return $arrayd;            
+                $i2 = 0;
+                    foreach ($arrayd as $key => $item)
+                    {
+                        
+                        $nombre['nombre'] = $item['nombre'];
+                        // if(isset($item['monto']['monto_'.$nombre_mes.$num]))
+                        if(isset($item['monto']['monto_'.$nombre_mes.$num]))
+
+                            $monto[$nombre_mes]['monto_'.$nombre_mes.$num] = $item['monto']['monto_'.$nombre_mes.$num];
+                        // $result [$i]["enero"]= $item->name;
+                        $i++;
+                        // $i2++;
+                        
+                        $num++;
+                    }
+
+            }            
+            $num2++;
         }
-        return $array;
+
+        
+
+
+    
+        return array_merge($nombre, $monto);
+
+        // $i = 0;
+        // $nombre_mes = strtolower($this->getNameMonth($mes));
+        // foreach ($item_array as $key => $item)
+        // {
+        //     $array[$i][$nombre_mes] = $item;
+        //     // $result [$i]["enero"]= $item->name;
+        //     $i++;
+            
+        // }        
+        // return $array;
     }
+
+    public function getDuplicatesItem($count_names, $collect)
+    {
+        $array_duplicates = [];
+        foreach ($count_names as $key => $count){
+            // if count > 1 item duplicate
+            if($count > 1){
+                // Search text
+                $text = $key;
+                $array_duplicates = $collect->filter(function ($item) use ($text) {
+                    if(isset($item['nombre']))            
+                        return $item['nombre'] === $text;
+                })->values();
+                
+            }
+            
+       }
+       return $array_duplicates; 
+    }
+
+    public function getNotDuplicatesItem($count_names, $collect)
+    {
+        $array_not_duplicates = array();
+        $i = 0;
+        foreach ($count_names as $key => $count){
+            // if count > 1 item duplicate
+            if($count <= 1){
+                // Search text
+                $text = $key;
+                $array = $collect->filter(function ($item) use ($text) {
+                    if(isset($item['nombre']))            
+                        return $item['nombre'] == $text;
+                })->values();
+                $array_not_duplicates[$i] = $array[0];
+                $i++; 
+            }
+            
+       }
+       return $array_not_duplicates; 
+    }
+
+    public function getNames($array)
+    {
+        $array_names = array();
+        foreach($array as $k => $v)
+            if(isset($v["nombre"]))
+                $array_names[$k] = $v["nombre"];
+    
+        return $array_names;
+    }
+
+
+    function unique_multidim_array($array, $key) { 
+        $array_unique = array(); 
+        $i = 0; 
+        $key_array = array(); 
+        
+        foreach($array as $value) { 
+            if (!in_array($value[$key], $key_array)) { 
+                $key_array[$i] = $value[$key]; 
+                $array_unique[$i] = $value; 
+            } 
+            $i++; 
+        } 
+        return $array_unique; 
+    } 
 
     public function transposeData($data)
     {
@@ -135,78 +264,131 @@ class ReporteController extends Controller
         }
         return $retData;
     }
-    public function getNameDetails($anio, $dni, $tipo)
+    public function getNameAllDetails($anio, $dni, $tipo)
     {
-        $pago = Pago::where('anio', $anio)
+        $pagos = Pago::where('anio', $anio)
                 ->whereHas('persona', function ($query) use ($dni) {
                     $query->where('dni', 'like', "%{$dni}%");
-                })->first();
-
+                })->get();
         $nombre_detalles = array();
-        foreach ($pago->detalles->sortByDesc('hd_id') as $key => $detalle) {
-            $hd = HaberDescuento::findOrfail($detalle->hd_id);
-            // return $hd->descripcion_simple;
-            if ($hd->tipo == $tipo) {
-                array_push($nombre_detalles, [
-                    'nombre_' . $tipo => $hd->descripcion_simple,
-                ]);
+        if($pagos->count() > 0){ 
+            $i = 0;
+            foreach ($pagos as $key => $pago) {                
+                foreach ($pago->detalles->sortByDesc('hd_id') as $key => $detalle) {
+                    $hd = HaberDescuento::findOrfail($detalle->hd_id);
+                    if ($hd->tipo == $tipo) {
+                        if(count($nombre_detalles) > 0){                            
+                            $nombre_detalles[$i]['nombre_' . $tipo] = $hd->descripcion_simple; 
+                            $i++;
+                            
+                        }  else{
+                            $nombre_detalles[$i]['nombre_' . $tipo] = $hd->descripcion_simple;
+                            $i++;
+                        }  
+                        
+                    }        
+                }                
             }
-
         }
 
-        return $nombre_detalles;
+        $nombres_unique = $this->unique_multidim_array($nombre_detalles, 'nombre_'. $tipo);
+
+        return $nombres_unique;
     }
+
+    public function getNameOneDetails($anio, $mes, $dni, $tipo)
+    {
+        $nombre_detalles = array();        
+        $pagos = Pago::where('anio', $anio)
+                ->mes($mes)
+                ->whereHas('persona', function ($query) use ($dni) {
+                    $query->where('dni', 'like', "%{$dni}%");
+                })->get();        
+        if($pagos->count() > 0){ 
+            $i = 0;
+            foreach ($pagos as $key => $pago) {                
+                foreach ($pago->detalles->sortByDesc('hd_id') as $key => $detalle) {
+                    $hd = HaberDescuento::findOrfail($detalle->hd_id);
+                    if ($hd->tipo == $tipo) {                           
+                        $nombre_detalles[$i]['nombre_' . $tipo] = $hd->descripcion_simple; 
+                        $i++;
+                    }        
+                }                
+            }
+        }
+
+        $nombres_unique = $this->unique_multidim_array($nombre_detalles, 'nombre_'. $tipo);
+
+        return $nombres_unique;
+    }    
 
     public function getDetalleByMes($anio, $mes, $tipo, $dni)
     {
         $haberes = array();
-        $haber_item = array();
         $descuentos = array();
-        $descuento_item = array();
 
         $pagos = Pago::where('anio', $anio)->mes($mes)
                     ->whereHas('persona', function ($query) use ($dni) {
                         $query->where('dni', 'like', "%{$dni}%");
                     })->get();
-        // return $pagos;
-        $mes_nombre = strtolower($this->getNameMonth($mes));
-
+        // return $pagos->detalles->count();
+        $nombre_mes = strtolower($this->getNameMonth($mes));
+                    $monto = [];
         if ($pagos->count() > 0) {
             foreach ($pagos as $key_mes => $pago) {
                 $i = 0;
                 $i2 = 0;
-                foreach ($pago->detalles->sortByDesc('hd_id') as $detalle) {
+                // return $pago->detalles;
+                foreach ($pago->detalles->sortByDesc('hd_id') as $key => $detalle) {
+                   
                     $hd = HaberDescuento::findOrfail($detalle->hd_id);
                    
                     if ($hd->tipo == 'haber') {
-                        $haberes[$i]["monto_" . $mes_nombre . ($key_mes + 1)] = $detalle->monto;
+                        // if(isset($key_mes)){
+                        //     $monto[] = [
+                        //         "monto_" . $nombre_mes . ($key_mes + 1) => $detalle->monto,
+                        //     ];
+                        // }else{
+                        //     $monto[] = [
+                        //         "monto_" . $nombre_mes . ($i + 1) => '0.00',
+                        //     ];
+                        // }
+                        // array_push($haberes, [
+                        //     "nombre" => $hd->descripcion_simple,
+                        //     "monto" => $monto
+                        // ]);
+                        $haberes[($key_mes + $i)]["nombre"] = $hd->descripcion_simple;
+                        $haberes[($key_mes + $i)]["monto"]["monto_" . $nombre_mes . ($key_mes + 1)] = $detalle->monto;
                         $i++;
+                        // whereHas('haber_descuento', function ($query) {
+                        //     $query->where('tipo', "haber");
+                        // })
+                        // for ($j = ($key_mes + $i); $j < count($pago->detalles); $j++) { 
+                        //     $haberes[$j]["nombre"] = '';
+
+                        //     $haberes[$j]['monto']["monto_" . $nombre_mes . ($key_mes + 1)] = '0.00';
+                        // }
+
                     } elseif ($hd->tipo == 'descuento') {
-                        $descuentos[$i2]["monto_" . $mes_nombre . ($key_mes + 1)] = $detalle->monto;
+                        $descuentos[$i2]["descripcion_" . $nombre_mes . ($key_mes + 1)] = $hd->descripcion_simple;
+                        $descuentos[$i2]["monto_" . $nombre_mes . ($key_mes + 1)] = $detalle->monto;
                         $i2++;
                     }
                 }
             }
-            // Add detalles
-            // array_push($haberes, $haber_item);
-            // array_push($descuentos, $descuento_item);
-
         } else {
             if ($tipo == 'haber') {
-                array_push($haber_item, [
-                    "monto_" . $mes_nombre . '1' => '0.00',
-                ]);
+                
+                $haberes[0]["nombre"] = '';
+                $haberes[0]["monto"]["monto_" . $nombre_mes . '1'] = '0.00';
+              
             } elseif ($tipo == 'descuento') {
-                array_push($descuento_item, [
-                    "monto_" . $mes_nombre . '1' => '0.00',
-                ]);
+                
+                $descuentos[0][ "nombre"] = '';
+                $descuentos[0]["monto"]["monto_" . $nombre_mes . '1'] = '0.00';
+                
             }
-            // Add detalles
-            array_push($haberes, $haber_item);
-            array_push($descuento_item, $descuento_item);
         }
-
-        
 
         if ($tipo == 'haber') {
             return $haberes;
@@ -286,8 +468,8 @@ class ReporteController extends Controller
     }
 
     public function getAllDetailsByType($anio, $dni, $tipo){
-        $nombres = $this->getNameDetails($anio, $dni, $tipo);
-        $enero_monto = $this->getDetalleByMes($anio, '01', $tipo, $dni);
+        $nombres = $this->getNameAllDetails($anio, $dni, $tipo);
+        $enero_monto = $this->getDetalleByMes($anio, '01', $tipo, $dni);        
         $febrero_monto = $this->getDetalleByMes($anio, '02', $tipo, $dni);
         $marzo_monto = $this->getDetalleByMes($anio, '03', $tipo, $dni);
         $abril_monto = $this->getDetalleByMes($anio, '04', $tipo, $dni);
@@ -299,19 +481,24 @@ class ReporteController extends Controller
         $octubre_monto = $this->getDetalleByMes($anio, '10', $tipo, $dni);
         $noviembre_monto = $this->getDetalleByMes($anio, '11', $tipo, $dni);
         $diciembre_monto = $this->getDetalleByMes($anio, '12', $tipo, $dni);
-
-        $enero = $this->addItemToArray($nombres, $enero_monto, '01');
-        $febrero = $this->addItemToArray($enero, $febrero_monto, '02');
-        $marzo = $this->addItemToArray($febrero, $marzo_monto, '03');
-        $abril = $this->addItemToArray($marzo, $abril_monto, '04');
-        $mayo = $this->addItemToArray($abril, $mayo_monto, '05');
-        $junio = $this->addItemToArray($mayo, $junio_monto, '06');
-        $julio = $this->addItemToArray($junio, $julio_monto, '07');
-        $agosto = $this->addItemToArray($julio, $agosto_monto, '08');
-        $septiembre = $this->addItemToArray($agosto, $septiembre_monto, '09');
-        $octubre = $this->addItemToArray($septiembre, $octubre_monto, '10');
-        $noviembre = $this->addItemToArray($octubre, $noviembre_monto, '11');
-        $diciembre = $this->addItemToArray($noviembre, $diciembre_monto, '12');
+        // Join array monto
+        $enero = array_merge($enero_monto, $febrero_monto, $marzo_monto, $abril_monto, 
+                            $mayo_monto, $junio_monto, $julio_monto, $agosto_monto, 
+                            $septiembre_monto, $octubre_monto, $noviembre_monto, $diciembre_monto);
+        // return $enero;
+        $diciembre = $this->addItemToArray($nombres, $enero, '01');
+        // $enero = $this->addItemToArray($nombres, $enero_monto, '01');
+        // $febrero = $this->addItemToArray($enero, $febrero_monto, '02');
+        // $marzo = $this->addItemToArray($febrero, $marzo_monto, '03');
+        // $abril = $this->addItemToArray($marzo, $abril_monto, '04');
+        // $mayo = $this->addItemToArray($abril, $mayo_monto, '05');
+        // $junio = $this->addItemToArray($mayo, $junio_monto, '06');
+        // $julio = $this->addItemToArray($junio, $julio_monto, '07');
+        // $agosto = $this->addItemToArray($julio, $agosto_monto, '08');
+        // $septiembre = $this->addItemToArray($agosto, $septiembre_monto, '09');
+        // $octubre = $this->addItemToArray($septiembre, $octubre_monto, '10');
+        // $noviembre = $this->addItemToArray($octubre, $noviembre_monto, '11');
+        // $diciembre = $this->addItemToArray($noviembre, $diciembre_monto, '12');
 
 
         return $diciembre;
@@ -319,8 +506,8 @@ class ReporteController extends Controller
 
     public function getOneDetailsByType($anio, $mes, $dni, $tipo)
     {
-        $nombres = $this->getNameDetails($anio, $dni, $tipo);
-        $items_by_month = $this->getDetalleByMes($anio, $mes, $tipo, $dni);
+        $nombres = $this->getNameOneDetails($anio, $mes, $dni, $tipo);
+        $items_by_month = $this->getDetalleByMes($anio, $mes, $tipo, $dni);        
         $items = $this->addItemToArray($nombres, $items_by_month, $mes);
 
         return $items;
@@ -441,12 +628,12 @@ class ReporteController extends Controller
             if ($pago->monto_liquido != '0.00') {
 
                 $total_pagos = Pago::where('anio', $request->anio)->mes($request->mes)
-                                        ->whereHas('persona', function ($query) use ($request) {
-                                            $query->where('dni', 'like', "%{$request->dni}%");
-                                        })->count();
+                                    ->whereHas('persona', function ($query) use ($request) {
+                                        $query->where('dni', 'like', "%{$request->dni}%");
+                                    })->count();
 
                 //detalles de haberes y descuentos 
-                $haberes = $this->getOneDetailsByType($request->anio, $request->mes, $request->dni, 'haber');
+                return $haberes = $this->getOneDetailsByType($request->anio, $request->mes, $request->dni, 'haber');
                 $descuentos = $this->getOneDetailsByType($request->anio, $request->mes, $request->dni, 'descuento');
                 
                 //totales
@@ -456,7 +643,7 @@ class ReporteController extends Controller
                 $total_imponibles = $this->getTotalByMes($request->anio, $request->dni, 'imponibles', $request->mes);
                 
                 $nombre_mes = strtoupper($this->getNameMonth($request->mes));
-
+                // return    $descuentos;                     
                 $pdf = PDF::loadView('reporte.mes', [
                     'pago' => $pago,
                     'nombre_mes' => $nombre_mes,
@@ -513,4 +700,7 @@ class ReporteController extends Controller
             ], 200);
         }
     }
+
+
+
 }

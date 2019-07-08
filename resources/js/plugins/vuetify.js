@@ -5,7 +5,7 @@ import mdi_icons from "./mdi-icons";
 
 Vue.use(Vuetify, {
     theme: {
-        primary: "#3F51B5",
+        primary: "#01579B",
         secondary: "#ee44aa",
         accent: "#82B1FF",
         error: "#FF5252",

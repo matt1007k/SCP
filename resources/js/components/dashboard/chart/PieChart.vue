@@ -13,6 +13,17 @@ export default {
           display: true,
           text: "Cantidad de personas por estado"
         },
+        legend: {
+          display: true
+        },
+        plugins: {
+          labels: {
+            render: function(args) {
+              return "$" + args.value;
+            },
+            arc: true
+          }
+        },
         responsive: true,
         maintainAspectRatio: false
       }

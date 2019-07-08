@@ -477,7 +477,9 @@ var render = function() {
                                                     },
                                                     [
                                                       _vm._v(
-                                                        _vm._s(item.descripcion)
+                                                        _vm._s(
+                                                          item.descripcion_simple
+                                                        )
                                                       )
                                                     ]
                                                   )

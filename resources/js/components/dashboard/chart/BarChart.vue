@@ -31,7 +31,14 @@ export default {
           yAxes: [
             {
               ticks: {
-                beginAtZero: true
+                beginAtZero: true,
+                callback: function(label, index, labels) {
+                  return (
+                    "S/. " +
+                    label.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") +
+                    ".00"
+                  );
+                }
               },
               gridLines: {
                 display: true
@@ -48,6 +55,20 @@ export default {
         },
         legend: {
           display: true
+        },
+        tooltips: {
+          mode: "label",
+          label: "mylabel",
+          callbacks: {
+            label: function(tooltipItem, data) {
+              return (
+                "S/. " +
+                tooltipItem.yLabel
+                  .toString()
+                  .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+              );
+            }
+          }
         },
         responsive: true,
         maintainAspectRatio: false

@@ -54,7 +54,7 @@
 </head>
 <body>
     <header>
-        <h5 class="text-center" style="margin-top: -20px">CONSTANCIA DE PAGOS DE HABERES Y DESCUENTOS</h5>
+        <h5 class="text-center" style="margin-top: -20px;text-decoration: underline">CONSTANCIA DE PAGOS DE HABERES Y DESCUENTOS</h5>
         <table>
             <tbody>
                 <tr>
@@ -447,27 +447,6 @@
                 </tr>
                 <?php endforeach;?>
                 
-                <tr class="body-row">
-                    <td class="text-center" style="height: 20px"></td>
-                    @foreach ($meses as $mes)
-                        @if ($mes['cantidad'] > 0)
-                            <td class="text-center" colspan="{{$mes['cantidad']}}">                                
-                            </td>
-                        @else
-                            <td class="text-center">
-                            </td>
-                        @endif
-                        
-                    @endforeach
-                </tr>
-
-                {{-- <tr class="body-row">
-                    <td><b>Total Haber</b></td>
-                    @foreach ($total_haberes as $total)
-                    <td class="text-center">{{$total['total_haber_enero1']}}</td>
-                    <td class="text-center">{{$total['total_haber_enero2']}}</td>
-                    @endforeach
-                </tr> --}}
                 <tr class="body-row">
                     <td><b>TOTAL HABER</b></td>
                     @foreach ($total_haberes as $key => $total)

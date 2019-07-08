@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Reporte por mes</title>
+    <title>Boleta de pago por mes</title>
     <style>
     *{
         font-family: Arial, Helvetica, sans-serif;
@@ -46,11 +46,20 @@
 </head>
 <body>
     <header>
-        
-        
-        <img src="{{ public_path().'/img/cabecera.png' }}" class="w-100" height="120"  alt="">
-        
-        <h4 class="text-center" style="text-decoration: underline">CONSTANCIA DE PAGOS DE HABERES Y DESCUENTOS</h4>
+        DREA
+        Apellidos: apellido_paterno apellido_materno
+        Nombres: nombre
+        Fecha de Nacimiento: fec_nac
+        Documento de Identidad: (Lib. Electoral o D.N.) dni
+        Establecimiento: institucion_educativa
+        Cargo: cargo
+        Tipo de Servidor: 
+        Regimen Laboral: 
+        Fecha de Registro: Ing.: inicio Termino: fin 
+        Leyenda Permanente: leyenda
+        Leyenda Mensual: leymes (vacio)
+
+        <h4 class="text-center" style="text-decoration: underline">BOLETA DE PAGO</h4>
         <table class="w-100">
             <tbody>
                 <tr>
@@ -79,21 +88,12 @@
                     </td>
                     <td class="fs-header">{{$nombre_mes}}</td>
                 </tr>
-                <tr style="height: 80px">
-                    <td class="text-left fs-header"></td>
-                    <td class="text-left fs-header">
-                        <b>CERTIFICADO N.:</b>
-                    </td>
-                    <td class="fs-header">111111111</td>
-                    <td class="fs-header"></td>
-
-                </tr>
             </tbody>
         </table>
 
     </header>
     <div class="spacer"></div>
-    <div class="body w-80" style="margin: auto;">
+    <div class="body">
         <table class="w-100">
             <tbody>
                 <tr class="body-row">
@@ -253,6 +253,16 @@
                     @endif
                 </tr>
                 <?php endforeach;?>
+                <tr class="body-row">
+                    <td class="text-center"><b>DESCUENTOS</b></td>
+                    @if ($total_pagos == 1)
+                        <td class="text-center"></td>
+                    @elseif ($total_pagos > 1)
+                        <?php for ($i=0; $i < $total_pagos; $i++) {?> 
+                            <td class="text-center"></td>
+                        <?php } ?> 
+                    @endif
+                </tr>
                 <?php foreach ($descuentos as $key => $descuento) :?>
                 <tr class="body-row">
                     @if(isset($descuento['nombre_descuento']))

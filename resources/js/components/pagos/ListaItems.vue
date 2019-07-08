@@ -19,7 +19,7 @@
                           &mdash;
                           <span
                             class="caption text--secondary"
-                          >{{item.descripcion}}</span>
+                          >{{item.descripcion_simple}}</span>
                         </v-list-tile-sub-title>
                       </v-container>
                     </v-list-tile-content>

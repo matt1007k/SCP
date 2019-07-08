@@ -7,7 +7,7 @@
     app
   >
     <v-img
-      src="/img/logo-drea.png"
+      src="/img/local_drea.png"
       gradient="to top right, rgba(0,0,0,.5), rgba(25,32,72,.7)"
       style="height: 180px"
     >
@@ -16,7 +16,7 @@
         <v-flex shrink pl-2>
           <div class="subheading">{{$auth.user.user.name}}</div>
           <div class="body-1">{{$auth.user.user.dni}}</div>
-          <v-btn color="secondary" style="margin-left: 0;" @click="goToPerfil()">
+          <v-btn color="info" style="margin-left: 0;" @click="goToPerfil()">
             <v-icon>$vuetify.icons.user</v-icon>Perfil
           </v-btn>
         </v-flex>

@@ -15,6 +15,6 @@ class Detalle extends Model
 
     public function haber_descuento()
     {
-        return $this->belongsTo('App\Models\HaberDescuento');
+        return $this->belongsTo('App\Models\HaberDescuento', 'hd_id', 'id');
     }
 }

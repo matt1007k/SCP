@@ -3599,7 +3599,7 @@ var render = function() {
     "v-toolbar",
     { attrs: { app: "", flat: "" } },
     [
-      _c("v-toolbar-title", [_vm._v("Sistema de Constancia de Pagos")]),
+      _c("v-toolbar-title", [_vm._v("Consulta de Boletas de Pago")]),
       _vm._v(" "),
       _c("v-spacer"),
       _vm._v(" "),
@@ -42120,7 +42120,7 @@ __webpack_require__.r(__webpack_exports__);
 
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuetify__WEBPACK_IMPORTED_MODULE_1___default.a, {
   theme: {
-    primary: "#3F51B5",
+    primary: "#01579B",
     secondary: "#ee44aa",
     accent: "#82B1FF",
     error: "#FF5252",
@@ -42205,7 +42205,7 @@ var years = ["2002", "2016", "2017", "2018", "2019"];
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! D:\Code\SCP\resources\js\client.js */"./resources/js/client.js");
+module.exports = __webpack_require__(/*! D:\code\SCP\resources\js\client.js */"./resources/js/client.js");
 
 
 /***/ })
