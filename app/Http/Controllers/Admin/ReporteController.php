@@ -176,7 +176,7 @@ class ReporteController extends Controller
         $meses_and_count = $this->getMesesAndCount($anio, $dni);
         $array_check = array();
         $array_new = array();
-        return $item_array;
+        // return $item_array;
         //Get names
         $only_names = $this->getNames($item_array);
         // Get count by values
@@ -193,16 +193,34 @@ class ReporteController extends Controller
         
         $nombre = array();
         $monto = array();
-        
+        $nombre2 = array();
+        $monto2 = array();
         foreach ($meses_and_count as $key => $month) {
             if($mes === $month['numero'])
                 $count_items_this_month = $month['cantidad']; 
+            
         }
 
         foreach ($not_duplicates as $key => $value) {
-            # code...
+            $nombre2['nombre'] = $value['nombre'];
+            for ($j = 1; $j <= $count_items_this_month; $j++) {
+               
+                if(!isset($value['monto']['monto_'.$nombre_mes.$j])){
+                    // return $value['monto']['monto_'.$nombre_mes.$j]; 
+                    $not_duplicates[$key]['monto']['monto_'.$nombre_mes.$j] = '0.00';
+                }
+              
+                // $not_duplicates[$j]['monto']['monto_'.$nombre_mes.$j] = '0.00';
+                
+            }
+            
         }
+         // for ($j = ($key_mes + $i); $j < count($pago->detalles); $j++) { 
+            //     $haberes[$j]["nombre"] = '';
 
+            //     $haberes[$j]['monto']["monto_" . $nombre_mes . ($key_mes + 1)] = '0.00';
+            // }
+        return $not_duplicates;
 
         // Join Duplicate
         foreach ($unique_duplicate_name as $key => $name)
@@ -433,10 +451,15 @@ class ReporteController extends Controller
     
                         } elseif ($hd->tipo == 'descuento') {
                             
-                            $descuentos[($key_mes + $i2)]["nombre"] = $hd->descripcion_simple;
-                            $descuentos[($key_mes + $i2)]["monto"]["monto_" . $nombre_mes . ($key_mes + 1)] = $detalle->monto;
-                            $i2++;
-                            
+                            // $descuentos[($key_mes + $i2)]["nombre"] = $hd->descripcion_simple;
+                            // $descuentos[($key_mes + $i2)]["monto"]["monto_" . $nombre_mes . ($key_mes + 1)] = $detalle->monto;
+                            // $i2++;
+                            array_push($descuentos, [
+                                "nombre" => $hd->descripcion_simple,
+                                "monto" => [
+                                    "monto_" . $nombre_mes . ($key_mes + 1) => $detalle->monto
+                                ]
+                            ]);
                         }
                     }
                     
