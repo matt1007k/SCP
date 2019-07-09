@@ -78,6 +78,10 @@
                         <b>AÑO:</b>
                     </td>
                     <td class="fs-header">{{$pago->anio}}</td>
+                    <td class="text-left fs-header">
+                        <b>CERTIFICADO N°:</b>
+                    </td>
+                    <td class="fs-header">111111111</td>
                 </tr>
             </tbody>
         </table>
@@ -107,8 +111,8 @@
                 
                 <?php foreach ($haberes as $key => $haber) :?>
                 <tr class="body-row">
-                    @if(isset($haber['nombre_haber']))
-                        <td class="text-left"><?php echo $haber['nombre_haber']?></td>
+                    @if(isset($haber['nombre']))
+                        <td class="text-left"><?php echo $haber['nombre']?></td>
                     @else
                         <td class="text-left"><?php echo ''?></td>
                     @endif
@@ -284,8 +288,8 @@
                 </tr>
                 <?php foreach ($descuentos as $key => $descuento) :?>
                 <tr class="body-row">
-                    @if(isset($descuento['nombre_descuento']))
-                        <td class="text-left"><?php echo $descuento['nombre_descuento']?></td>
+                    @if(isset($descuento['nombre']))
+                        <td class="text-left"><?php echo $descuento['nombre']?></td>
                     @else
                         <td class="text-left"><?php echo ''?></td>
                     @endif
