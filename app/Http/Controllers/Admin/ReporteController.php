@@ -70,6 +70,7 @@ class ReporteController extends Controller
                 $total_liquidos = $this->getTotalByYear($request->anio, $request->dni, 'liquidos');
                 $total_imponibles = $this->getTotalByYear($request->anio, $request->dni, 'imponibles');
     
+                $certificado = '1111111111';
                 // $array_test = array([
                 //     "nombre_haber"=> "reunifica",
                 //     "monto_enero1"=> "150.00",  
@@ -88,6 +89,7 @@ class ReporteController extends Controller
                     'liquidos' => (object)$total_liquidos,
                     'imponibles' => (object)$total_imponibles,
                     'meses' => $meses,
+                    'certificado' => $certificado
                 ]);
                 $pdf->setPaper('a4', 'landscape');
                 return $pdf->stream();
@@ -681,6 +683,8 @@ class ReporteController extends Controller
                 $total_imponibles = $this->getTotalByMes($request->anio, $request->dni, 'imponibles', $request->mes);
                 
                 $nombre_mes = strtoupper($this->getNameMonth($request->mes));
+
+                $certificado = '1111111111';
                 // return    $descuentos;                     
                 $pdf = PDF::loadView('reporte.mes', [
                     'pago' => $pago,
@@ -692,6 +696,7 @@ class ReporteController extends Controller
                     'total_descuentos' => $total_descuentos,
                     'liquidos' => $total_liquidos,
                     'imponibles' => $total_imponibles,
+                    'certificado' => $certificado
                 ]);
                 $pdf->setPaper('a4');
                 return $pdf->stream();

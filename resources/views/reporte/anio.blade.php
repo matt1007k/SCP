@@ -81,7 +81,7 @@
                     <td class="text-left fs-header">
                         <b>CERTIFICADO N°:</b>
                     </td>
-                    <td class="fs-header">111111111</td>
+                    <td class="fs-header">{{$certificado}}</td>
                 </tr>
             </tbody>
         </table>
