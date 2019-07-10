@@ -4,13 +4,33 @@
 }
 
 .text-white {
-    color: white;
+    color: $bg-color;
 }
 
 .text-error {
-    color: #ff5252;
+    color: $error;
 }
 
+.text-primary {
+    color: $primary;
+}
+
+.text-secondary {
+    color: $secondary;
+}
+
+.bg-primary {
+    background: $primary;
+}
+.bg-error {
+    background: $error;
+}
+.bg-secondary {
+    background: $secondary;
+}
+.mdc-fz-2 {
+    font-size: 20rem;
+}
 // padding
 
 .no-padding-top {

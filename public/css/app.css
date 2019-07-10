@@ -601,11 +601,35 @@ webpackContext.id = "./node_modules/moment/locale sync recursive ^\\.\\/.*$";* {
 }
 
 .text-white {
-  color: white;
+  color: #f8f8f8;
 }
 
 .text-error {
   color: #ff5252;
+}
+
+.text-primary {
+  color: #039be5;
+}
+
+.text-secondary {
+  color: #006db3;
+}
+
+.bg-primary {
+  background: #039be5;
+}
+
+.bg-error {
+  background: #ff5252;
+}
+
+.bg-secondary {
+  background: #006db3;
+}
+
+.mdc-fz-2 {
+  font-size: 20rem;
 }
 
 .no-padding-top {

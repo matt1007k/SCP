@@ -42205,7 +42205,7 @@ var years = ["2002", "2016", "2017", "2018", "2019"];
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! D:\code\SCP\resources\js\client.js */"./resources/js/client.js");
+module.exports = __webpack_require__(/*! D:\Code\SCP\resources\js\client.js */"./resources/js/client.js");
 
 
 /***/ })

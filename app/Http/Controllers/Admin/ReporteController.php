@@ -262,28 +262,30 @@ class ReporteController extends Controller
         $nombre = array();
         $monto = array();
         $duplicates_array = array();
-        foreach ($unique_duplicate_name as $key => $name)
-        {
-            if(isset($name)){ 
-                $arrayd = collect($duplicates)->filter(function($item) use ($name){
-                    return $item['nombre'] === $name;
-                });  
-                // return $arrayd;            
-                
-                foreach ($arrayd as $key => $item)
-                {
-                    $nombre['nombre'] = $item['nombre'];
-                    // if(isset($item['monto']['monto_'.$nombre_mes.$num]))
-                    if(isset($item[$nombre_mes]['monto_'.$nombre_mes.$num]))
-                        $monto[$nombre_mes]['monto_'.$nombre_mes.$num] = $item[$nombre_mes]['monto_'.$nombre_mes.$num];
-                    // $result [$i]["enero"]= $item->name;                   
-                    $num++;
-                }
+        if(count($duplicates) > 0){
+            foreach ($unique_duplicate_name as $key => $name)
+            {
+                if(isset($name)){ 
+                    $arrayd = collect($duplicates)->filter(function($item) use ($name){
+                        return $item['nombre'] === $name;
+                    });  
+                    // return $arrayd;            
+                    
+                    foreach ($arrayd as $key => $item)
+                    {
+                        $nombre['nombre'] = $item['nombre'];
+                        // if(isset($item['monto']['monto_'.$nombre_mes.$num]))
+                        if(isset($item[$nombre_mes]['monto_'.$nombre_mes.$num]))
+                            $monto[$nombre_mes]['monto_'.$nombre_mes.$num] = $item[$nombre_mes]['monto_'.$nombre_mes.$num];
+                        // $result [$i]["enero"]= $item->name;                   
+                        $num++;
+                    }
 
-                array_push($duplicates_array, array_merge($nombre, $monto));
-
-            } 
-        }        
+                    array_push($duplicates_array, array_merge($nombre, $monto));
+                } 
+            }    
+        }
+            
         return array_merge($duplicates_array, $not_duplicates);
     }
 

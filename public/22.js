@@ -22,19 +22,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({});
 
 /***/ }),
@@ -56,13 +43,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "v-layout",
-    {
-      staticStyle: {
-        "background-image":
-          "url(https://cdn.vuetifyjs.com/images/parallax/material.jpg)"
-      },
-      attrs: { row: "", wrap: "", "fill-height": "" }
-    },
+    { attrs: { row: "", wrap: "", "fill-height": "" } },
     [
       _c(
         "v-flex",
@@ -72,22 +53,22 @@ var render = function() {
             "v-container",
             { staticClass: "text-xs-center" },
             [
-              _c("h1", { staticClass: "display-4 error--text" }, [
+              _c("h1", { staticClass: "mdc-fz-2 info--text no-margin" }, [
                 _vm._v("403")
               ]),
               _vm._v(" "),
-              _c("div", { staticClass: "mt-2 mb-2 title" }, [
+              _c("div", { staticClass: "display-2 info--text mb-3" }, [
                 _vm._v("Sin Autorización")
               ]),
               _vm._v(" "),
-              _c("p", { staticClass: "text-muted m-t-30 m-b-30" }, [
+              _c("p", { staticClass: "text-muted m-t-30 m-b-30 info--text" }, [
                 _vm._v("No tienes permisos para esta sección.")
               ]),
               _vm._v(" "),
               _c(
                 "v-btn",
                 {
-                  attrs: { color: "info" },
+                  attrs: { color: "primary" },
                   on: {
                     click: function($event) {
                       return _vm.$router.push("/admin")
