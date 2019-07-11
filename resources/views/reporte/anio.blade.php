@@ -35,6 +35,9 @@
     .text-left{
         text-align: left;
     }
+    .text-right{
+        text-align: right;
+    }
     .text-uppercase{
         text-transform: uppercase;
     }
@@ -55,7 +58,7 @@
 <body>
     <header>
         <h5 class="text-center" style="margin-top: -20px;text-decoration: underline">CONSTANCIA DE PAGOS DE HABERES Y DESCUENTOS</h5>
-        <table>
+        <table class="w-100">
             <tbody>
                 <tr>
                     <td class="text-left fs-header">
@@ -71,7 +74,7 @@
                     <td class="text-left fs-header">
                         <b>APELLIDOS Y NOMBRES:</b>
                     </td>
-                    <td class="fs-header">{{$pago->persona->apellido_paterno}} {{$pago->persona->apellido_materno}}, {{$pago->persona->nombre}}</td>
+                    <td class="fs-header" >{{$pago->persona->apellido_paterno}} {{$pago->persona->apellido_materno}}, {{$pago->persona->nombre}}</td>
                 </tr>
                 <tr>
                     <td class="text-left fs-header">
@@ -81,7 +84,14 @@
                     <td class="text-left fs-header">
                         <b>CERTIFICADO N°:</b>
                     </td>
-                    <td class="fs-header">{{$certificado}}</td>
+                    <td class="fs-header">{{$certificado}}</td>                   
+                    <td class="fs-header text-right">
+                        {{-- <b>FECHA DE IMPRESIÓN:</b> --}}
+                        <b>Fecha de Impresión:</b>
+                    </td>
+                    <td class="fs-header text-right">
+                        {{date('d/m/Y')}}
+                    </td>
                 </tr>
             </tbody>
         </table>

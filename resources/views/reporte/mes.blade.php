@@ -70,7 +70,7 @@
                     <td class="text-left fs-header">
                         <b>APELLIDOS Y NOMBRES:</b>
                     </td>
-                    <td class="fs-header">{{$pago->persona->apellido_paterno}} {{$pago->persona->apellido_materno}}, {{$pago->persona->nombre}}</td>
+                    <td class="fs-header" colspan="3">{{$pago->persona->apellido_paterno}} {{$pago->persona->apellido_materno}}, {{$pago->persona->nombre}}</td>
                 </tr>
                 <tr>
                     <td class="text-left fs-header">
@@ -87,7 +87,12 @@
                         <b>CERTIFICADO N°:</b>
                     </td>
                     <td class="fs-header">{{$certificado}}</td>
-
+                    <td class="fs-header">
+                        <b>Fecha de Impresión:</b>
+                    </td>
+                    <td class="fs-header">
+                        {{date('d/m/Y')}}
+                    </td>
                 </tr>
             </tbody>
         </table>

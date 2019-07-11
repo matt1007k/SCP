@@ -81,7 +81,13 @@
                   :error-messages="errors.mes"
                 ></v-select>
               </v-flex>
-              <v-flex xs12 sm9 md3></v-flex>
+              <v-flex xs12 sm9 md3 class="pl-2">
+                <v-text-field
+                  label="Número de Certificado"
+                  v-model="form.certificado"
+                  :error-messages="errors.certificado"
+                ></v-text-field>
+              </v-flex>
               <v-flex xs12 sm3 md3 class="d-flex" justify-end>
                 <v-btn color="success" @click="buscarPago()">Buscar</v-btn>
               </v-flex>
@@ -159,7 +165,8 @@ export default {
       form: {
         persona: {},
         mes: "",
-        anio: ""
+        anio: "",
+        certificado: ""
       },
       items_mes: months,
       items_anio: [],
@@ -211,7 +218,8 @@ export default {
           params: {
             anio: this.form.anio,
             mes: this.form.mes,
-            dni: this.form.persona.dni
+            dni: this.form.persona.dni,
+            certificado: this.form.certificado
           }
         })
         .then(res => {
@@ -236,14 +244,12 @@ export default {
       axios({
         url: "/reporte/por-mes",
         method: "GET",
-        params: { anio, mes, dni },
+        params: { anio, mes, dni, certificado: this.form.certificado },
         responseType: "blob" // important
       }).then(response => {
         const url = window.URL.createObjectURL(new Blob([response.data]));
         const link = document.createElement("a");
-        const name_file = `${this.form.persona.codigo_modular}-${
-          this.form.mes
-        }-${this.form.anio}.pdf`;
+        const name_file = `${this.form.persona.codigo_modular}-${this.form.mes}-${this.form.anio}.pdf`;
         link.href = url;
         link.setAttribute("download", name_file); //or any other extension
         document.body.appendChild(link);
@@ -251,15 +257,14 @@ export default {
       });
     },
     viewPDF(anio, mes, dni) {
+      const certificado = this.form.certificado;
       window.open(
-        `/reporte/por-mes?anio=${anio}&mes=${mes}&dni=${dni}`,
+        `/reporte/por-mes?anio=${anio}&mes=${mes}&dni=${dni}&certificado=${certificado}`,
         "_blank"
       );
     },
     getName() {
-      return `${this.form.persona.apellido_paterno} ${
-        this.form.persona.apellido_materno
-      }, ${this.form.persona.apellido_materno} `;
+      return `${this.form.persona.apellido_paterno} ${this.form.persona.apellido_materno}, ${this.form.persona.apellido_materno} `;
     }
   },
   watch: {

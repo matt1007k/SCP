@@ -154,12 +154,19 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       form: {
         persona: {},
-        anio: ""
+        anio: "",
+        certificado: ""
       },
       items_anio: [],
       isLoading: false,
@@ -201,7 +208,8 @@ __webpack_require__.r(__webpack_exports__);
       axios.get("/search/por-anio", {
         params: {
           anio: this.form.anio,
-          dni: this.form.persona.dni
+          dni: this.form.persona.dni,
+          certificado: this.form.certificado
         }
       }).then(function (res) {
         _this2.loading = false;
@@ -228,7 +236,8 @@ __webpack_require__.r(__webpack_exports__);
         method: "GET",
         params: {
           anio: anio,
-          dni: dni
+          dni: dni,
+          certificado: this.form.certificado
         },
         responseType: "blob" // important
 
@@ -258,7 +267,8 @@ __webpack_require__.r(__webpack_exports__);
       // window.open(fileURL, "_blank");
       // const url = window.URL.createObjectURL(new Blob([response.data]));
       // window.open("data:application/pdf;base64," + encodeURI(response.data));
-      window.open("/reporte/por-anio?anio=".concat(anio, "&dni=").concat(dni), "_blank"); // location.href = `/reporte/por-anio?anio=${anio}&dni=${dni}`;
+      var certificado = this.form.certificado;
+      window.open("/reporte/por-anio?anio=".concat(anio, "&dni=").concat(dni, "&certificado=").concat(certificado), "_blank"); // location.href = `/reporte/por-anio?anio=${anio}&dni=${dni}`;
       // target = "_blank";
       // done = 1;
       // })
@@ -553,10 +563,29 @@ var render = function() {
                             ]
                           ),
                           _vm._v(" "),
-                          _c("v-flex", {
-                            staticClass: "pl-2",
-                            attrs: { xs12: "", sm6: "", md3: "" }
-                          }),
+                          _c(
+                            "v-flex",
+                            {
+                              staticClass: "pl-2",
+                              attrs: { xs12: "", sm6: "", md3: "" }
+                            },
+                            [
+                              _c("v-text-field", {
+                                attrs: {
+                                  label: "Número de Certificado",
+                                  "error-messages": _vm.errors.certificado
+                                },
+                                model: {
+                                  value: _vm.form.certificado,
+                                  callback: function($$v) {
+                                    _vm.$set(_vm.form, "certificado", $$v)
+                                  },
+                                  expression: "form.certificado"
+                                }
+                              })
+                            ],
+                            1
+                          ),
                           _vm._v(" "),
                           _c("v-flex", {
                             attrs: { xs12: "", sm9: "", md3: "" }

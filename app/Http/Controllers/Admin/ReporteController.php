@@ -14,6 +14,7 @@ class ReporteController extends Controller
         $request->validate([
             'dni' => 'required',
             'anio' => 'required',
+            'certificado' => 'required|numeric',
         ]);
         $haberes = array();
         $descuentos = array();
@@ -47,6 +48,7 @@ class ReporteController extends Controller
         $request->validate([
             'dni' => 'required',
             'anio' => 'required',
+            'certificado' => 'required|numeric',
         ]);
         $haberes = array();
         $descuentos = array();
@@ -70,7 +72,7 @@ class ReporteController extends Controller
                 $total_liquidos = $this->getTotalByYear($request->anio, $request->dni, 'liquidos');
                 $total_imponibles = $this->getTotalByYear($request->anio, $request->dni, 'imponibles');
     
-                $certificado = '1111111111';
+                $certificado = $request->certificado;
                 // $array_test = array([
                 //     "nombre_haber"=> "reunifica",
                 //     "monto_enero1"=> "150.00",  
@@ -657,6 +659,7 @@ class ReporteController extends Controller
             // 'anio' => 'required|exists:periodos, anio',
             'anio' => 'required',
             'mes' => 'required',
+            'certificado' => 'required|numeric',
         ]);
 
         $pago = Pago::where('anio', $request->anio)->mes($request->mes)
@@ -684,7 +687,7 @@ class ReporteController extends Controller
                 
                 $nombre_mes = strtoupper($this->getNameMonth($request->mes));
 
-                $certificado = '1111111111';
+                $certificado = $request->certificado;
                 // return    $descuentos;                     
                 $pdf = PDF::loadView('reporte.mes', [
                     'pago' => $pago,
@@ -719,6 +722,7 @@ class ReporteController extends Controller
             // 'anio' => 'required|exists:periodos, anio',
             'anio' => 'required',
             'mes' => 'required',
+            'certificado' => 'required|numeric',
         ]);
 
         $pago = Pago::With(['persona'])->where('anio', $request->anio)->mes($request->mes)

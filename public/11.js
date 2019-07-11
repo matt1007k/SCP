@@ -162,6 +162,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -169,7 +175,8 @@ __webpack_require__.r(__webpack_exports__);
       form: {
         persona: {},
         mes: "",
-        anio: ""
+        anio: "",
+        certificado: ""
       },
       items_mes: _services_listMonthsOfTheYear__WEBPACK_IMPORTED_MODULE_0__["months"],
       items_anio: [],
@@ -219,7 +226,8 @@ __webpack_require__.r(__webpack_exports__);
         params: {
           anio: this.form.anio,
           mes: this.form.mes,
-          dni: this.form.persona.dni
+          dni: this.form.persona.dni,
+          certificado: this.form.certificado
         }
       }).then(function (res) {
         _this2.loading = false;
@@ -247,7 +255,8 @@ __webpack_require__.r(__webpack_exports__);
         params: {
           anio: anio,
           mes: mes,
-          dni: dni
+          dni: dni,
+          certificado: this.form.certificado
         },
         responseType: "blob" // important
 
@@ -263,7 +272,8 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     viewPDF: function viewPDF(anio, mes, dni) {
-      window.open("/reporte/por-mes?anio=".concat(anio, "&mes=").concat(mes, "&dni=").concat(dni), "_blank");
+      var certificado = this.form.certificado;
+      window.open("/reporte/por-mes?anio=".concat(anio, "&mes=").concat(mes, "&dni=").concat(dni, "&certificado=").concat(certificado), "_blank");
     },
     getName: function getName() {
       return "".concat(this.form.persona.apellido_paterno, " ").concat(this.form.persona.apellido_materno, ", ").concat(this.form.persona.apellido_materno, " ");
@@ -573,9 +583,29 @@ var render = function() {
                             1
                           ),
                           _vm._v(" "),
-                          _c("v-flex", {
-                            attrs: { xs12: "", sm9: "", md3: "" }
-                          }),
+                          _c(
+                            "v-flex",
+                            {
+                              staticClass: "pl-2",
+                              attrs: { xs12: "", sm9: "", md3: "" }
+                            },
+                            [
+                              _c("v-text-field", {
+                                attrs: {
+                                  label: "Número de Certificado",
+                                  "error-messages": _vm.errors.certificado
+                                },
+                                model: {
+                                  value: _vm.form.certificado,
+                                  callback: function($$v) {
+                                    _vm.$set(_vm.form, "certificado", $$v)
+                                  },
+                                  expression: "form.certificado"
+                                }
+                              })
+                            ],
+                            1
+                          ),
                           _vm._v(" "),
                           _c(
                             "v-flex",

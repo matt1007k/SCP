@@ -73,7 +73,13 @@
                   ></v-select>
                 </div>
               </v-flex>
-              <v-flex xs12 sm6 md3 class="pl-2"></v-flex>
+              <v-flex xs12 sm6 md3 class="pl-2">
+                <v-text-field
+                  label="Número de Certificado"
+                  v-model="form.certificado"
+                  :error-messages="errors.certificado"
+                ></v-text-field>
+              </v-flex>
               <v-flex xs12 sm9 md3></v-flex>
               <v-flex xs12 sm3 md3 class="d-flex" justify-end>
                 <v-btn color="success" @click="buscarPago()">Buscar</v-btn>
@@ -148,7 +154,8 @@ export default {
   data: () => ({
     form: {
       persona: {},
-      anio: ""
+      anio: "",
+      certificado: ""
     },
     items_anio: [],
     isLoading: false,
@@ -191,7 +198,8 @@ export default {
         .get(`/search/por-anio`, {
           params: {
             anio: this.form.anio,
-            dni: this.form.persona.dni
+            dni: this.form.persona.dni,
+            certificado: this.form.certificado
           }
         })
         .then(res => {
@@ -216,14 +224,12 @@ export default {
       axios({
         url: "/reporte/por-anio",
         method: "GET",
-        params: { anio, dni },
+        params: { anio, dni, certificado: this.form.certificado },
         responseType: "blob" // important
       }).then(response => {
         const url = window.URL.createObjectURL(new Blob([response.data]));
         const link = document.createElement("a");
-        const name_file = `${this.form.persona.codigo_modular}-${
-          this.form.anio
-        }.pdf`;
+        const name_file = `${this.form.persona.codigo_modular}-${this.form.anio}.pdf`;
         link.href = url;
         link.setAttribute("download", name_file); //or any other extension
         document.body.appendChild(link);
@@ -245,7 +251,11 @@ export default {
       // window.open(fileURL, "_blank");
       // const url = window.URL.createObjectURL(new Blob([response.data]));
       // window.open("data:application/pdf;base64," + encodeURI(response.data));
-      window.open(`/reporte/por-anio?anio=${anio}&dni=${dni}`, "_blank");
+      const certificado = this.form.certificado;
+      window.open(
+        `/reporte/por-anio?anio=${anio}&dni=${dni}&certificado=${certificado}`,
+        "_blank"
+      );
       // location.href = `/reporte/por-anio?anio=${anio}&dni=${dni}`;
       // target = "_blank";
       // done = 1;
@@ -255,9 +265,7 @@ export default {
       // });
     },
     getName() {
-      return `${this.form.persona.apellido_paterno} ${
-        this.form.persona.apellido_materno
-      }, ${this.form.persona.apellido_materno} `;
+      return `${this.form.persona.apellido_paterno} ${this.form.persona.apellido_materno}, ${this.form.persona.apellido_materno} `;
     }
   },
   watch: {
