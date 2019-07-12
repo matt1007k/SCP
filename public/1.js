@@ -462,7 +462,9 @@ var render = function() {
                                                     },
                                                     [
                                                       _vm._v(
-                                                        _vm._s(item.nombre)
+                                                        _vm._s(
+                                                          item.descripcion_simple
+                                                        )
                                                       )
                                                     ]
                                                   ),
@@ -477,9 +479,7 @@ var render = function() {
                                                     },
                                                     [
                                                       _vm._v(
-                                                        _vm._s(
-                                                          item.descripcion_simple
-                                                        )
+                                                        _vm._s(item.nombre)
                                                       )
                                                     ]
                                                   )

@@ -80,7 +80,7 @@ class ReporteController extends Controller
                 //     "monto_febrero1"=> "20.00", 
                 //     "monto_marzo1"=> "0.00"
                 // ]);
-                // return $haberes;    
+                return $haberes;    
             
                 $pdf = PDF::loadView('reporte.anio', [
                     'pago' => $pago,
@@ -112,7 +112,7 @@ class ReporteController extends Controller
 
     public function orderMontoByYear($item_array, $anio, $dni)
     {
-        
+        // return $item_array;
         $meses_and_count = $this->getMesesAndCount($anio, $dni);
         $new_duplicates = [];
         //Get names
@@ -121,14 +121,16 @@ class ReporteController extends Controller
         $count_names = array_count_values($only_names);
         $collect = collect($item_array);
 
-        $duplicates = $this->getDuplicatesItem($count_names, $collect); 
+        $duplicates = $this->getDuplicatesItem($count_names, $collect);
+        // return count($duplicates); 
         if(count($duplicates) > 0){ 
             $new_duplicates = $this->getDuplicatesByYear($meses_and_count, $duplicates);
         }
+
+        return $new_duplicates;
         $not_duplicates = $this->getNotDuplicatesItem($count_names, $collect);
         $new_not_duplicates = $this->getNotDuplicatesByYear($meses_and_count, $not_duplicates);
                     
-        // return $new_duplicates;
         return array_merge($new_duplicates, $new_not_duplicates);
 
     }
@@ -137,45 +139,54 @@ class ReporteController extends Controller
         $duplicates2 = array();
         $nombre = array();
         $monto = array();
-
-        // Generar monto no duplicates add 0.00
-        $unique_duplicates_items = $this->unique_multidim_array($duplicates, 'nombre');
-        $unique_duplicate_name = $this->getNames($unique_duplicates_items); 
         
+        // Generar monto no duplicates add 0.00
+        $unique_duplicates_items = $this->unique_multidim_array_object($duplicates, 'nombre');
+        $unique_duplicate_name = $this->getNames($unique_duplicates_items); 
+        // return $unique_duplicate_name;
+        
+
         // get order by name
+      
         $duplicates_array = array();
         foreach ($unique_duplicate_name as $key => $name)
         {
             if(isset($name)){ 
-                $arrayd = collect($duplicates)->filter(function($item) use ($name){
-                    return $item['nombre'] === $name;
-                });            
-                array_push($duplicates_array, $arrayd);
+                foreach ($duplicates as $key => $duplicate) {
+                    # code...
+                    $arrayd = collect($duplicate)->filter(function($item) use ($name){
+                        if(isset($item['nombre']))
+                            return $item['nombre'] === $name;
+                    });            
+                    array_push($duplicates_array, $arrayd);
+                }
             } 
         }
         // Get Join Duplicate
         foreach ($meses_and_count as $key => $month) {            
             $count_items_one_month = $month['cantidad'];            
             $nombre_mes = strtolower($month['nombre']);            
-            foreach ($duplicates_array as $key => $duplicates)
-            {   
-                foreach ($duplicates as $key => $item) {                   
+            foreach ($duplicates as $key => $duplicate)
+            {   $monto1 = array();
+                foreach ($duplicate as $key => $item) { 
                     $nombre['nombre'] = $item['nombre'];
                     if($count_items_one_month > 0){
                         for ($j = 1; $j <= $count_items_one_month; $j++) {  
                             if(isset($item[$nombre_mes]['monto_'.$nombre_mes.$j])){
-                                $monto[$nombre_mes]['monto_'.$nombre_mes.$j] = $item[$nombre_mes]['monto_'.$nombre_mes.$j];           
+                                $monto1[$nombre_mes]['monto_'.$nombre_mes.$j] = $item[$nombre_mes]['monto_'.$nombre_mes.$j];           
                             }
                         }
                     }else{
-                        $monto[$nombre_mes]['monto_'.$nombre_mes.'1'] = '0.00';
+                        $monto1[$nombre_mes]['monto_'.$nombre_mes.'1'] = '0.00';
                     }
                 }
+                array_push($monto, $monto1);
             } 
             
         }
-        
+        return $monto;
         array_push($duplicates2, array_merge($nombre, $monto));
+        
 
         // add zero
         foreach ($meses_and_count as $key => $month) {            
@@ -242,10 +253,12 @@ class ReporteController extends Controller
         $not_duplicates = $this->getNotDuplicatesItem($count_names, $collect); 
         
         // Generar monto no duplicates add 0.00
-        $unique_duplicates_items = $this->unique_multidim_array($duplicates, 'nombre');
+        $unique_duplicates_items = $this->unique_multidim_array_object($duplicates, 'nombre');
+        return $unique_duplicates_items;
         $unique_duplicate_name = $this->getNames($unique_duplicates_items); 
 
         foreach ($meses_and_count as $key => $month) {
+
             if($mes === $month['numero']){
                 $count_items_this_month = $month['cantidad']; 
 
@@ -289,7 +302,7 @@ class ReporteController extends Controller
                 } 
             }    
         }
-            
+        // return $not_duplicates;
         return array_merge($duplicates_array, $not_duplicates);
     }
 
@@ -309,17 +322,20 @@ class ReporteController extends Controller
 
     public function getDuplicatesItem($count_names, $collect)
     {
-        $array_duplicates = [];        
+        $array_duplicates = []; 
+        $i = 0;
         foreach ($count_names as $key => $count){
             // if count > 1 item duplicate
             if($count > 1){
                 // Search text
-                if($key != ''){
+                if($key !== ''){
                     $text = $key;
-                    $array_duplicates = $collect->filter(function ($item) use ($text) {
+                    $duplicate = $collect->filter(function ($item) use ($text) {
                         if(isset($item['nombre']))            
                             return $item['nombre'] === $text;
                     })->values();
+                    $array_duplicates[$i] = $duplicate;
+                    $i++;
                 }
             }
             
@@ -365,13 +381,33 @@ class ReporteController extends Controller
         $i = 0; 
         $array_unique = array(); 
         $key_array = array();
-        
-        foreach($array as $value) { 
+
+        foreach($array as $ix => $value) {
+            // return $value[0][$key]; 
             if (!in_array($value[$key], $key_array)) { 
                 $key_array[$i] = $value[$key]; 
                 $array_unique[$i] = $value; 
             } 
             $i++; 
+        } 
+        return $array_unique; 
+    }
+    
+    function unique_multidim_array_object($array, $key) { 
+        $i = 0; 
+        $array_unique = array(); 
+        $key_array = array();
+
+        foreach($array as $ix => $object) {
+            // return $value[0][$key]; 
+            foreach ($object as $key2 => $value) {
+                if (!in_array($value[$key], $key_array)) { 
+                    $key_array[$i] = $value[$key]; 
+                    $array_unique[$i] = $value; 
+                } 
+                $i++; 
+            }
+            
         } 
         return $array_unique; 
     } 
@@ -686,7 +722,7 @@ class ReporteController extends Controller
                 $total_imponibles = $this->getTotalByMes($request->anio, $request->dni, 'imponibles', $request->mes);
                 
                 $nombre_mes = strtoupper($this->getNameMonth($request->mes));
-
+                return $haberes;
                 $certificado = $request->certificado;
                 // return    $descuentos;                     
                 $pdf = PDF::loadView('reporte.mes', [

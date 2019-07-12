@@ -15,11 +15,11 @@
                       <v-container fluid>
                         <v-list-tile-title class="font-weight-bold">Nombre</v-list-tile-title>
                         <v-list-tile-sub-title>
-                          <span class="text--primary">{{item.nombre}}</span>
+                          <span class="text--primary">{{item.descripcion_simple}}</span>
                           &mdash;
                           <span
                             class="caption text--secondary"
-                          >{{item.descripcion_simple}}</span>
+                          >{{item.nombre}}</span>
                         </v-list-tile-sub-title>
                       </v-container>
                     </v-list-tile-content>

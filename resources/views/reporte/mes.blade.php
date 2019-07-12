@@ -122,9 +122,9 @@
                 <?php foreach ($haberes as $key => $haber) :?>
                 <tr class="body-row">
                     @if(isset($haber['nombre']))
-                        <td class="text-left"><?php echo $haber['nombre']?></td>
+                        <td class="text-center"><?php echo $haber['nombre']?></td>
                     @else
-                        <td class="text-left"><?php echo ''?></td>
+                        <td class="text-center"><?php echo ''?></td>
                     @endif
                     {{-- Monto enero --}}
                     @if(isset($haber['enero']['monto_enero1']))
@@ -274,9 +274,9 @@
                 <?php foreach ($descuentos as $key => $descuento) :?>
                 <tr class="body-row">
                     @if(isset($descuento['nombre']))
-                        <td class="text-left"><?php echo $descuento['nombre']?></td>
+                        <td class="text-center"><?php echo $descuento['nombre']?></td>
                     @else
-                        <td class="text-left"><?php echo ''?></td>
+                        <td class="text-center"><?php echo ''?></td>
                     @endif
                     {{-- Monto enero --}}
                     @if(isset($descuento['enero']['monto_enero1']))
