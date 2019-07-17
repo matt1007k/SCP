@@ -14,7 +14,6 @@ class HaberController extends Controller
         $haberes = HaberDescuento::orderBy('nombre', 'DESC')
             ->where('es_imponible', $es_imponible)
             ->search(request('q'))
-            ->limit(6)
             ->get();
 
         return response()->json(['haberes' => $haberes], 200);

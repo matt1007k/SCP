@@ -162,6 +162,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
@@ -169,9 +172,6 @@ __webpack_require__.r(__webpack_exports__);
       type: Boolean,
       required: true
     }
-  },
-  created: function created() {
-    console.log(this.$auth.can("users.index"));
   },
   data: function data() {
     return {
@@ -498,107 +498,113 @@ var render = function() {
         1
       ),
       _vm._v(" "),
-      _vm._l(_vm.itemsMenu, function(item, index) {
-        return _c(
-          "v-list",
-          { key: index, attrs: { dense: "" } },
-          [
-            item.group
-              ? [
-                  _vm.$auth.can(item.permission) || _vm.$auth.isAdmin()
-                    ? _c(
-                        "v-list-group",
-                        {
-                          attrs: {
-                            "prepend-icon": item.icon,
-                            value: _vm.subIsActive([item.url])
+      _c(
+        "v-list",
+        { attrs: { dense: "" } },
+        [
+          _vm._l(_vm.itemsMenu, function(item, index) {
+            return [
+              item.group
+                ? [
+                    _vm.$auth.can(item.permission) || _vm.$auth.isAdmin()
+                      ? _c(
+                          "v-list-group",
+                          {
+                            key: index,
+                            attrs: {
+                              "prepend-icon": item.icon,
+                              value: _vm.subIsActive([item.url])
+                            },
+                            scopedSlots: _vm._u(
+                              [
+                                {
+                                  key: "activator",
+                                  fn: function() {
+                                    return [
+                                      _c(
+                                        "v-list-tile",
+                                        [
+                                          _c("v-list-tile-title", [
+                                            _vm._v(_vm._s(item.title))
+                                          ])
+                                        ],
+                                        1
+                                      )
+                                    ]
+                                  },
+                                  proxy: true
+                                }
+                              ],
+                              null,
+                              true
+                            )
                           },
-                          scopedSlots: _vm._u(
-                            [
-                              {
-                                key: "activator",
-                                fn: function() {
-                                  return [
-                                    _c(
+                          [
+                            _vm._v(" "),
+                            _vm._l(item.submenu, function(submenu, i) {
+                              return [
+                                _vm.$auth.can(submenu.permission) ||
+                                _vm.$auth.isAdmin()
+                                  ? _c(
                                       "v-list-tile",
+                                      {
+                                        key: i,
+                                        attrs: { router: "", to: submenu.url }
+                                      },
                                       [
-                                        _c("v-list-tile-title", [
-                                          _vm._v(_vm._s(item.title))
-                                        ])
+                                        _c("v-list-tile-action"),
+                                        _vm._v(" "),
+                                        _c("v-list-tile-title", {
+                                          domProps: {
+                                            textContent: _vm._s(submenu.title)
+                                          }
+                                        })
                                       ],
                                       1
                                     )
-                                  ]
-                                },
-                                proxy: true
-                              }
-                            ],
-                            null,
-                            true
-                          )
-                        },
-                        [
-                          _vm._v(" "),
-                          _vm._l(item.submenu, function(submenu, i) {
-                            return [
-                              _vm.$auth.can(submenu.permission) ||
-                              _vm.$auth.isAdmin()
-                                ? _c(
-                                    "v-list-tile",
-                                    {
-                                      key: i,
-                                      attrs: { router: "", to: submenu.url }
-                                    },
-                                    [
-                                      _c("v-list-tile-action"),
-                                      _vm._v(" "),
-                                      _c("v-list-tile-title", {
-                                        domProps: {
-                                          textContent: _vm._s(submenu.title)
-                                        }
-                                      })
-                                    ],
-                                    1
-                                  )
-                                : _vm._e()
-                            ]
-                          })
-                        ],
-                        2
-                      )
-                    : _vm._e()
-                ]
-              : [
-                  _vm.$auth.can(item.permission) || _vm.$auth.isAdmin()
-                    ? _c(
-                        "v-list-tile",
-                        {
-                          attrs: {
-                            router: "",
-                            to: item.url,
-                            exact: item.exact,
-                            "active-exact-class": "primary"
-                          }
-                        },
-                        [
-                          _c(
-                            "v-list-tile-action",
-                            [_c("v-icon", [_vm._v(_vm._s(item.icon))])],
-                            1
-                          ),
-                          _vm._v(" "),
-                          _c("v-list-tile-title", [_vm._v(_vm._s(item.title))])
-                        ],
-                        1
-                      )
-                    : _vm._e()
-                ]
-          ],
-          2
-        )
-      })
+                                  : _vm._e()
+                              ]
+                            })
+                          ],
+                          2
+                        )
+                      : _vm._e()
+                  ]
+                : [
+                    _vm.$auth.can(item.permission) || _vm.$auth.isAdmin()
+                      ? _c(
+                          "v-list-tile",
+                          {
+                            key: index,
+                            attrs: {
+                              router: "",
+                              to: item.url,
+                              exact: item.exact,
+                              "active-exact-class": "primary"
+                            }
+                          },
+                          [
+                            _c(
+                              "v-list-tile-action",
+                              [_c("v-icon", [_vm._v(_vm._s(item.icon))])],
+                              1
+                            ),
+                            _vm._v(" "),
+                            _c("v-list-tile-title", [
+                              _vm._v(_vm._s(item.title))
+                            ])
+                          ],
+                          1
+                        )
+                      : _vm._e()
+                  ]
+            ]
+          })
+        ],
+        2
+      )
     ],
-    2
+    1
   )
 }
 var staticRenderFns = []
@@ -929,6 +935,11 @@ var listItemsSidebar = [{
   url: "/admin/haberes",
   icon: "mdi mdi-cash-usd",
   permission: "haberes.index"
+}, {
+  title: "Historial de constancias",
+  url: "/admin/historiales",
+  icon: "mdi mdi-chart-histogram",
+  permission: "historiales.index"
 }, {
   title: "Pagos",
   icon: "mdi mdi-credit-card",

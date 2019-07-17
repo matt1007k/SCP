@@ -42074,7 +42074,8 @@ var mdi_icons = {
   sale: "mdi-sale",
   left: "mdi-keyboard-backspace",
   email: "mdi-email",
-  card_id: "mdi-account-card-details"
+  card_id: "mdi-account-card-details",
+  file: "mdi-file"
 };
 /* harmony default export */ __webpack_exports__["default"] = (mdi_icons);
 

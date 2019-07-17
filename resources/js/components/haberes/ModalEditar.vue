@@ -87,7 +87,11 @@ export default {
         .then(res => {
           this.$parent.getData();
           this.open = false;
-          this.$root.$snackbar.show("Datos registrados correctamente.");
+          this.$swal(
+            "Mensaje de operación",
+            "Datos editados correctamente",
+            "success"
+          );
           this.resetInputs();
         })
         .catch(err => {

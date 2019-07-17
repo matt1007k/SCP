@@ -24,4 +24,22 @@ class PeriodoController extends Controller
 
         return response()->json(['created' => true]);
     }
+
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'anio' => 'required|numeric|unique:periodos, anio,' . $id,
+        ]);
+
+        Periodo::findOrfail($id)->update($request->all());
+
+        return response()->json(['updated' => true]);
+    }
+
+    public function destroy($id)
+    {
+        Periodo::findOrfail($id)->delete();
+
+        return response()->json(['deleted' => true]);
+    }
 }

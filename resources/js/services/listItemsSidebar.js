@@ -33,6 +33,12 @@ export const listItemsSidebar = [
         permission: "haberes.index"
     },
     {
+        title: "Historial de constancias",
+        url: "/admin/historiales",
+        icon: "mdi mdi-chart-histogram",
+        permission: "historiales.index"
+    },
+    {
         title: "Pagos",
         icon: "mdi mdi-credit-card",
         url: "/admin/pagos",
@@ -98,12 +104,12 @@ export const listItemsSidebar = [
             {
                 title: "Por año",
                 url: "/admin/reporte/anual",
-                permission: "pagos.consultar",
+                permission: "pagos.consultar"
             },
             {
                 title: "Por mes",
                 url: "/admin/reporte/mensual",
-                permission: "pagos.consultar",
+                permission: "pagos.consultar"
             }
         ]
     }

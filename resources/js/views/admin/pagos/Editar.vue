@@ -75,6 +75,8 @@
                     <v-select
                       v-model="form.anio"
                       :items="items_anio"
+                      item-text="anio"
+                      item-value="anio"
                       label="El año"
                       :error-messages="errors.anio"
                     ></v-select>
@@ -156,7 +158,6 @@
 
 <script>
 import { months } from "../../../services/listMonthsOfTheYear";
-import { years } from "../../../services/listYears";
 import Agregar from "../../../components/pagos/Agregar";
 import ListaItems from "../../../components/pagos/ListaItems";
 export default {
@@ -175,7 +176,7 @@ export default {
         monto_liquido: 0,
         monto_imponible: 0
       },
-      items_anio: years,
+      items_anio: [],
       items_mes: months,
       lista_personas: [],
       errors: {},
@@ -184,9 +185,13 @@ export default {
     };
   },
   created() {
-    document.title = "Editar un Pago";
-    // this.addCurrentYear();
-    this.getItem();
+    if (this.$auth.can("pagos.edit") || this.$auth.isAdmin()) {
+      document.title = "Editar un Pago";
+      this.getYears();
+      this.getItem();
+    } else {
+      this.$router.push("/admin/403");
+    }
   },
   mounted() {
     this.$root.modalAgregarhb = this.$refs.modalAgregarhb;
@@ -219,7 +224,12 @@ export default {
         dni.indexOf(searchText) > -1
       );
     },
-
+    getYears() {
+      axios
+        .get("/periodos")
+        .then(res => (this.items_anio = res.data.years))
+        .catch(err => console.log(err));
+    },
     addHD(tipo) {
       this.$root.modalAgregarhb.showModal();
       this.$root.modalAgregarhb.tipo = tipo;
@@ -233,9 +243,11 @@ export default {
         if (updatedItemIndex < 0) {
           this.form.haberes.push({ ...item, monto: 0.0, hd_id: item.id });
         } else {
-          this.$root.$snackbar.show("El haber ya a sido agregado.", {
-            color: "warning"
-          });
+          this.$swal(
+            "Mensaje de operación",
+            "El haber ya ha sido agregado.",
+            "info"
+          );
         }
       } else if (tipo == "descuento") {
         const descuentos = [...this.form.descuentos];
@@ -245,9 +257,11 @@ export default {
         if (updatedItemIndex < 0) {
           this.form.descuentos.push({ ...item, monto: 0.0, hd_id: item.id });
         } else {
-          this.$root.$snackbar.show("El descuento ya a sido agregado.", {
-            color: "warning"
-          });
+          this.$swal(
+            "Mensaje de operación",
+            "El descuento ya ha sido agregado.",
+            "info"
+          );
         }
       }
     },
@@ -258,14 +272,6 @@ export default {
         this.form.descuentos.splice(index, 1);
       }
     },
-    // addCurrentYear() {
-    //   let currentYear = new Date().getFullYear();
-    //   let lastYear = this.items_anio.pop();
-    //   if (Number(lastYear) < currentYear) {
-    //     this.items_anio = [...this.items_anio, lastYear];
-    //     this.items_anio = [...this.items_anio, currentYear];
-    //   }
-    // },
     totalHaber() {
       const totalHaber = this.form.haberes
         .map(item => {
@@ -324,8 +330,10 @@ export default {
         .put(`/pagos/${this.$route.params.id}`, form)
         .then(res => {
           this.$router.push("/admin/pagos/lista");
-          this.$parent.this.$root.$snackbar.show(
-            "Datos editados correctamente."
+          this.$swal(
+            "Mensaje de operación",
+            "Datos editados correctamente",
+            "success"
           );
         })
         .catch(err => {

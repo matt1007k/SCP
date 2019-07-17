@@ -8,7 +8,7 @@
               <v-flex xs12 sm8 md9>
                 <span class="headline">Lista de Haberes</span>
               </v-flex>
-              <v-flex xs12 sm4 md3 justify-end flexbox>
+              <v-flex xs12 sm4 md3 justify-end flexbox v-if="$auth.can('haberes.create') || $auth.isAdmin()">
                 <v-btn color="primary" @click="modalAgregar">
                   <v-icon>$vuetify.icons.add</v-icon>Agregar haber
                 </v-btn>
@@ -75,13 +75,13 @@
               </template>
             </td>
             <td>
-              <v-tooltip bottom>
+              <v-tooltip bottom v-if="$auth.can('haberes.edit') || $auth.isAdmin()">
                 <v-btn color="info" fab small slot="activator" @click="modalEditar(props.item)">
                   <v-icon>$vuetify.icons.edit</v-icon>
                 </v-btn>
                 <span>Editar registro</span>
               </v-tooltip>
-              <v-tooltip bottom>
+              <v-tooltip bottom v-if="$auth.can('haberes.destroy') || $auth.isAdmin()">
                 <v-btn color="error" fab small slot="activator" @click="deleteData(props.item)">
                   <v-icon>$vuetify.icons.delete</v-icon>
                 </v-btn>
@@ -131,8 +131,12 @@ export default {
     };
   },
   created() {
-    document.title = "Lista de Haberes";
-    this.getData();
+    if (this.$auth.can("haberes.index") || this.$auth.isAdmin()) {
+      document.title = "Lista de Haberes";
+      this.getData();
+    } else {
+      this.$router.push("/admin/403");
+    }
   },
   mounted() {
     this.$root.agregarHaber = this.$refs.agregarHaber;

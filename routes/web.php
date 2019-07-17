@@ -54,6 +54,7 @@ Route::namespace ('Admin')->group(function () {
             ->except(['show', 'create', 'edit']);
         Route::resource('pagos', 'PagoController')
             ->except(['show', 'create']);
+        Route::get('/historiales', 'HistorialController@index')->name('historiales.index');
 
         Route::get('/search-personas', 'PersonaController@search')->name('personas.search');
         Route::get('/search-descuentos', 'DescuentoController@search')->name('descuentos.search');
@@ -69,7 +70,7 @@ Route::namespace ('Admin')->group(function () {
 
         Route::get('/reporte/por-anio', 'ReporteController@porAnio')->name('admin.reporte.poranio');
         Route::get('/reporte/por-mes', 'ReporteController@porMes')->name('admin.reporte.pormes');
-        
+
         Route::get('/boleta/por-mes', 'ReporteController@boletaPorMes')->name('admin.boleta.pormes');
 
     });

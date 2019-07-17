@@ -378,6 +378,8 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_usuarios_ModalAgregar__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../components/usuarios/ModalAgregar */ "./resources/js/components/usuarios/ModalAgregar.vue");
 /* harmony import */ var _components_usuarios_ModalEditar__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../components/usuarios/ModalEditar */ "./resources/js/components/usuarios/ModalEditar.vue");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_2__);
 //
 //
 //
@@ -490,6 +492,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -530,8 +540,12 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   created: function created() {
-    document.title = "Lista de Usuarios";
-    this.getData();
+    if (this.$auth.can("users.index") || this.$auth.isAdmin()) {
+      document.title = "Lista de Usuarios";
+      this.getData();
+    } else {
+      this.$router.push("/admin/403");
+    }
   },
   mounted: function mounted() {
     this.$root.agregarUsuario = this.$refs.agregarUsuario;
@@ -1363,38 +1377,42 @@ var render = function() {
                             ]
                           ),
                           _vm._v(" "),
-                          _c(
-                            "v-flex",
-                            {
-                              attrs: {
-                                xs12: "",
-                                sm3: "",
-                                md3: "",
-                                "justify-end": "",
-                                flexbox: ""
-                              }
-                            },
-                            [
-                              _c(
-                                "v-btn",
+                          _vm.$auth.can("users.create") || _vm.$auth.isAdmin()
+                            ? _c(
+                                "v-flex",
                                 {
-                                  attrs: { color: "primary" },
-                                  on: {
-                                    click: function($event) {
-                                      $event.stopPropagation()
-                                      return _vm.modalAgregar($event)
-                                    }
+                                  attrs: {
+                                    xs12: "",
+                                    sm3: "",
+                                    md3: "",
+                                    "justify-end": "",
+                                    flexbox: ""
                                   }
                                 },
                                 [
-                                  _c("v-icon", [_vm._v("$vuetify.icons.add")]),
-                                  _vm._v("Agregar usuario\n              ")
+                                  _c(
+                                    "v-btn",
+                                    {
+                                      attrs: { color: "primary" },
+                                      on: {
+                                        click: function($event) {
+                                          $event.stopPropagation()
+                                          return _vm.modalAgregar($event)
+                                        }
+                                      }
+                                    },
+                                    [
+                                      _c("v-icon", [
+                                        _vm._v("$vuetify.icons.add")
+                                      ]),
+                                      _vm._v("Agregar usuario\n              ")
+                                    ],
+                                    1
+                                  )
                                 ],
                                 1
                               )
-                            ],
-                            1
-                          )
+                            : _vm._e()
                         ],
                         1
                       )
@@ -1591,71 +1609,76 @@ var render = function() {
                           _c(
                             "td",
                             [
-                              _c(
-                                "v-tooltip",
-                                { attrs: { bottom: "" } },
-                                [
-                                  _c(
-                                    "v-btn",
-                                    {
-                                      attrs: {
-                                        slot: "activator",
-                                        color: "info",
-                                        fab: "",
-                                        small: ""
-                                      },
-                                      on: {
-                                        click: function($event) {
-                                          return _vm.modalEditar(props.item)
-                                        }
-                                      },
-                                      slot: "activator"
-                                    },
+                              _vm.$auth.can("users.edit") || _vm.$auth.isAdmin()
+                                ? _c(
+                                    "v-tooltip",
+                                    { attrs: { bottom: "" } },
                                     [
-                                      _c("v-icon", [
-                                        _vm._v("$vuetify.icons.edit")
-                                      ])
+                                      _c(
+                                        "v-btn",
+                                        {
+                                          attrs: {
+                                            slot: "activator",
+                                            color: "info",
+                                            fab: "",
+                                            small: ""
+                                          },
+                                          on: {
+                                            click: function($event) {
+                                              return _vm.modalEditar(props.item)
+                                            }
+                                          },
+                                          slot: "activator"
+                                        },
+                                        [
+                                          _c("v-icon", [
+                                            _vm._v("$vuetify.icons.edit")
+                                          ])
+                                        ],
+                                        1
+                                      ),
+                                      _vm._v(" "),
+                                      _c("span", [_vm._v("Editar registro")])
                                     ],
                                     1
-                                  ),
-                                  _vm._v(" "),
-                                  _c("span", [_vm._v("Editar registro")])
-                                ],
-                                1
-                              ),
+                                  )
+                                : _vm._e(),
                               _vm._v(" "),
-                              _c(
-                                "v-tooltip",
-                                { attrs: { bottom: "" } },
-                                [
-                                  _c(
-                                    "v-btn",
-                                    {
-                                      attrs: {
-                                        slot: "activator",
-                                        color: "error",
-                                        fab: "",
-                                        small: ""
-                                      },
-                                      on: {
-                                        click: function($event) {
-                                          return _vm.deleteData(props.item)
-                                        }
-                                      },
-                                      slot: "activator"
-                                    },
+                              _vm.$auth.can("users.destroy") ||
+                              _vm.$auth.isAdmin()
+                                ? _c(
+                                    "v-tooltip",
+                                    { attrs: { bottom: "" } },
                                     [
-                                      _c("v-icon", [
-                                        _vm._v("$vuetify.icons.delete")
-                                      ])
+                                      _c(
+                                        "v-btn",
+                                        {
+                                          attrs: {
+                                            slot: "activator",
+                                            color: "error",
+                                            fab: "",
+                                            small: ""
+                                          },
+                                          on: {
+                                            click: function($event) {
+                                              return _vm.deleteData(props.item)
+                                            }
+                                          },
+                                          slot: "activator"
+                                        },
+                                        [
+                                          _c("v-icon", [
+                                            _vm._v("$vuetify.icons.delete")
+                                          ])
+                                        ],
+                                        1
+                                      ),
+                                      _vm._v(" "),
+                                      _c("span", [_vm._v("Cambiar estado")])
                                     ],
                                     1
-                                  ),
-                                  _vm._v(" "),
-                                  _c("span", [_vm._v("Cambiar estado")])
-                                ],
-                                1
-                              )
+                                  )
+                                : _vm._e()
                             ],
                             1
                           )

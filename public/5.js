@@ -88,7 +88,7 @@ __webpack_require__.r(__webpack_exports__);
 
         _this.open = false;
 
-        _this.$root.$snackbar.show("Datos registrados correctamente.");
+        _this.$swal("Mensaje de operación", "Datos registrados correctamente", "success");
 
         _this.resetInputs();
       })["catch"](function (err) {
@@ -204,7 +204,7 @@ __webpack_require__.r(__webpack_exports__);
 
         _this.open = false;
 
-        _this.$root.$snackbar.show("Datos registrados correctamente.");
+        _this.$swal("Mensaje de operación", "Datos editados correctamente", "success");
 
         _this.resetInputs();
       })["catch"](function (err) {
@@ -238,6 +238,13 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_descuentos_ModalAgregar__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../components/descuentos/ModalAgregar */ "./resources/js/components/descuentos/ModalAgregar.vue");
 /* harmony import */ var _components_descuentos_ModalEditar__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../components/descuentos/ModalEditar */ "./resources/js/components/descuentos/ModalEditar.vue");
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -363,8 +370,12 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   created: function created() {
-    document.title = "Lista de Descuentos";
-    this.getData();
+    if (this.$auth.can("descuentos.index") || this.$auth.isAdmin()) {
+      document.title = "Lista de Descuentos";
+      this.getData();
+    } else {
+      this.$router.push("/admin/403");
+    }
   },
   mounted: function mounted() {
     this.$root.agregarDescuento = this.$refs.agregarDescuento;
@@ -925,7 +936,8 @@ var render = function() {
                             ]
                           ),
                           _vm._v(" "),
-                          _vm.$auth.can("haber_descuentos.create")
+                          _vm.$auth.can("descuentos.create") ||
+                          _vm.$auth.isAdmin()
                             ? _c(
                                 "v-flex",
                                 {
@@ -1100,71 +1112,77 @@ var render = function() {
                         _c(
                           "td",
                           [
-                            _c(
-                              "v-tooltip",
-                              { attrs: { bottom: "" } },
-                              [
-                                _c(
-                                  "v-btn",
-                                  {
-                                    attrs: {
-                                      slot: "activator",
-                                      color: "info",
-                                      fab: "",
-                                      small: ""
-                                    },
-                                    on: {
-                                      click: function($event) {
-                                        return _vm.modalEditar(props.item)
-                                      }
-                                    },
-                                    slot: "activator"
-                                  },
+                            _vm.$auth.can("descuentos.edit") ||
+                            _vm.$auth.isAdmin()
+                              ? _c(
+                                  "v-tooltip",
+                                  { attrs: { bottom: "" } },
                                   [
-                                    _c("v-icon", [
-                                      _vm._v("$vuetify.icons.edit")
-                                    ])
+                                    _c(
+                                      "v-btn",
+                                      {
+                                        attrs: {
+                                          slot: "activator",
+                                          color: "info",
+                                          fab: "",
+                                          small: ""
+                                        },
+                                        on: {
+                                          click: function($event) {
+                                            return _vm.modalEditar(props.item)
+                                          }
+                                        },
+                                        slot: "activator"
+                                      },
+                                      [
+                                        _c("v-icon", [
+                                          _vm._v("$vuetify.icons.edit")
+                                        ])
+                                      ],
+                                      1
+                                    ),
+                                    _vm._v(" "),
+                                    _c("span", [_vm._v("Editar registro")])
                                   ],
                                   1
-                                ),
-                                _vm._v(" "),
-                                _c("span", [_vm._v("Editar registro")])
-                              ],
-                              1
-                            ),
+                                )
+                              : _vm._e(),
                             _vm._v(" "),
-                            _c(
-                              "v-tooltip",
-                              { attrs: { bottom: "" } },
-                              [
-                                _c(
-                                  "v-btn",
-                                  {
-                                    attrs: {
-                                      slot: "activator",
-                                      color: "error",
-                                      fab: "",
-                                      small: ""
-                                    },
-                                    on: {
-                                      click: function($event) {
-                                        return _vm.deleteData(props.item)
-                                      }
-                                    },
-                                    slot: "activator"
-                                  },
+                            _vm.$auth.can("descuentos.destroy") ||
+                            _vm.$auth.isAdmin()
+                              ? _c(
+                                  "v-tooltip",
+                                  { attrs: { bottom: "" } },
                                   [
-                                    _c("v-icon", [
-                                      _vm._v("$vuetify.icons.delete")
-                                    ])
+                                    _c(
+                                      "v-btn",
+                                      {
+                                        attrs: {
+                                          slot: "activator",
+                                          color: "error",
+                                          fab: "",
+                                          small: ""
+                                        },
+                                        on: {
+                                          click: function($event) {
+                                            return _vm.deleteData(props.item)
+                                          }
+                                        },
+                                        slot: "activator"
+                                      },
+                                      [
+                                        _c("v-icon", [
+                                          _vm._v("$vuetify.icons.delete")
+                                        ])
+                                      ],
+                                      1
+                                    ),
+                                    _vm._v(" "),
+                                    _c("span", [_vm._v("Cambiar estado")])
                                   ],
                                   1
-                                ),
-                                _vm._v(" "),
-                                _c("span", [_vm._v("Cambiar estado")])
-                              ],
-                              1
-                            )
+                                )
+                              : _vm._e()
                           ],
                           1
                         )

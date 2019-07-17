@@ -8,7 +8,14 @@
               <v-flex xs12 sm8 md9>
                 <span class="headline">Lista de Descuentos</span>
               </v-flex>
-              <v-flex xs12 sm4 md3 justify-end flexbox v-if="$auth.can('haber_descuentos.create')">
+              <v-flex
+                xs12
+                sm4
+                md3
+                justify-end
+                flexbox
+                v-if="$auth.can('descuentos.create') || $auth.isAdmin()"
+              >
                 <v-btn color="primary" @click="modalAgregar">
                   <v-icon>$vuetify.icons.add</v-icon>Agregar descuento
                 </v-btn>
@@ -58,13 +65,13 @@
             <td class="text-xs-center">{{ props.item.descripcion }}</td>
             <td class="text-xs-center">{{props.item.descripcion_simple}}</td>
             <td>
-              <v-tooltip bottom>
+              <v-tooltip bottom v-if="$auth.can('descuentos.edit') || $auth.isAdmin()">
                 <v-btn color="info" fab small slot="activator" @click="modalEditar(props.item)">
                   <v-icon>$vuetify.icons.edit</v-icon>
                 </v-btn>
                 <span>Editar registro</span>
               </v-tooltip>
-              <v-tooltip bottom>
+              <v-tooltip bottom v-if="$auth.can('descuentos.destroy') || $auth.isAdmin()">
                 <v-btn color="error" fab small slot="activator" @click="deleteData(props.item)">
                   <v-icon>$vuetify.icons.delete</v-icon>
                 </v-btn>
@@ -112,8 +119,12 @@ export default {
     };
   },
   created() {
-    document.title = "Lista de Descuentos";
-    this.getData();
+    if (this.$auth.can("descuentos.index") || this.$auth.isAdmin()) {
+      document.title = "Lista de Descuentos";
+      this.getData();
+    } else {
+      this.$router.push("/admin/403");
+    }
   },
   mounted() {
     this.$root.agregarDescuento = this.$refs.agregarDescuento;

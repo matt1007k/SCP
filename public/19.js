@@ -180,8 +180,12 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   created: function created() {
-    document.title = "Reporte de pagos por año";
-    this.getYears();
+    if (this.$auth.can("pagos.consultar") || this.$auth.isAdmin()) {
+      document.title = "Reporte de pagos por año";
+      this.getYears();
+    } else {
+      this.$router.push("/admin/403");
+    }
   },
   methods: {
     customFilter: function customFilter(item, queryText, itemText) {

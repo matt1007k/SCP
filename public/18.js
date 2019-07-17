@@ -9,6 +9,7 @@
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _services_listMonthsOfTheYear__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../services/listMonthsOfTheYear */ "./resources/js/services/listMonthsOfTheYear.js");
 //
 //
 //
@@ -101,11 +102,30 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       search: "",
-      tipo: "Todos",
       loading: false,
       loadingData: false,
       pagination: {},
@@ -135,17 +155,22 @@ __webpack_require__.r(__webpack_exports__);
         text: "Monto Imponible",
         value: "monto_Total"
       }],
-      pagos: []
+      pagos: [],
+      items_anio: [],
+      items_mes: _services_listMonthsOfTheYear__WEBPACK_IMPORTED_MODULE_0__["months"],
+      anio: "",
+      mes: ""
     };
   },
   created: function created() {
-    document.title = "Lista de Pagos";
-    this.getData();
+    if (this.$auth.can("pagos.index") || this.$auth.isAdmin()) {
+      document.title = "Lista de Pagos";
+      this.getData();
+      this.getYears();
+    } else {
+      this.$router.push("/admin/403");
+    }
   },
-  // mounted() {
-  //   this.$root.agregarPersona = this.$refs.agregarPersona;
-  //   this.$root.editarPersona = this.$refs.editarPersona;
-  // },
   methods: {
     getData: function getData() {
       var _this = this;
@@ -154,7 +179,8 @@ __webpack_require__.r(__webpack_exports__);
       this.loadingData = true;
       axios.get(url, {
         params: {
-          tipo: this.tipo
+          anio: this.anio,
+          mes: this.mes
         }
       }).then(function (res) {
         _this.loadingData = false;
@@ -167,14 +193,27 @@ __webpack_require__.r(__webpack_exports__);
         }
       });
     },
-    filterBy: function filterBy(prop) {// this.tipo = prop;
-      // this.getData();
+    filterByYear: function filterByYear() {
+      this.mes = "01";
+      this.getData();
+    },
+    filterByMonth: function filterByMonth() {
+      this.getData();
+    },
+    getYears: function getYears() {
+      var _this2 = this;
+
+      axios.get("/periodos").then(function (res) {
+        return _this2.items_anio = res.data.years;
+      })["catch"](function (err) {
+        return console.log(err);
+      });
     },
     modalEditar: function modalEditar(pago) {
       this.$router.push("/admin/pagos/editar/" + pago.id);
     },
     deleteData: function deleteData(pago) {
-      var _this2 = this;
+      var _this3 = this;
 
       this.$swal({
         title: "Esta seguro de eliminar el registro?",
@@ -188,14 +227,14 @@ __webpack_require__.r(__webpack_exports__);
       }).then(function (result) {
         if (result.value) {
           axios["delete"]("/pagos/".concat(pago.id)).then(function (res) {
-            _this2.$swal("Mensaje de operación", "Rol eliminado correctamente", "success");
+            _this3.$swal("Mensaje de operación", "Rol eliminado correctamente", "success");
 
-            _this2.getData();
+            _this3.getData();
           })["catch"](function (err) {
             console.log(err);
 
             if (err.response.status == 403) {
-              _this2.$router.push("/403");
+              _this3.$router.push("/403");
             }
           });
         }
@@ -259,30 +298,34 @@ var render = function() {
                             ]
                           ),
                           _vm._v(" "),
-                          _c(
-                            "v-flex",
-                            { attrs: { xs12: "", sm3: "", md3: "" } },
-                            [
-                              _c("v-spacer"),
-                              _vm._v(" "),
-                              _c(
-                                "v-btn",
-                                {
-                                  attrs: {
-                                    color: "primary",
-                                    router: "",
-                                    to: "/admin/pagos/crear"
-                                  }
-                                },
+                          _vm.$auth.can("pagos.create") || _vm.$auth.isAdmin()
+                            ? _c(
+                                "v-flex",
+                                { attrs: { xs12: "", sm3: "", md3: "" } },
                                 [
-                                  _c("v-icon", [_vm._v("$vuetify.icons.add")]),
-                                  _vm._v("Realizar pago\n              ")
+                                  _c("v-spacer"),
+                                  _vm._v(" "),
+                                  _c(
+                                    "v-btn",
+                                    {
+                                      attrs: {
+                                        color: "primary",
+                                        router: "",
+                                        to: "/admin/pagos/crear"
+                                      }
+                                    },
+                                    [
+                                      _c("v-icon", [
+                                        _vm._v("$vuetify.icons.add")
+                                      ]),
+                                      _vm._v("Realizar pago\n              ")
+                                    ],
+                                    1
+                                  )
                                 ],
                                 1
                               )
-                            ],
-                            1
-                          )
+                            : _vm._e()
                         ],
                         1
                       )
@@ -306,7 +349,7 @@ var render = function() {
                           label: "Buscar",
                           type: "text",
                           placeholder:
-                            "Buscar por DNI de la persona o periodo..."
+                            "Buscar por DNI de la persona o filtrar por periodo..."
                         },
                         scopedSlots: _vm._u([
                           {
@@ -353,51 +396,89 @@ var render = function() {
                       }),
                       _vm._v(" "),
                       _c(
-                        "span",
-                        { staticClass: "mb-2" },
+                        "v-layout",
+                        {
+                          staticClass: "mb-2",
+                          attrs: { row: "", wrap: "", "align-center": "" }
+                        },
                         [
                           _c(
-                            "v-tooltip",
-                            { attrs: { bottom: "" } },
+                            "v-flex",
+                            { attrs: { xs1: "" } },
                             [
                               _c(
-                                "v-icon",
-                                {
-                                  attrs: { slot: "activator" },
-                                  slot: "activator"
-                                },
-                                [_vm._v("$vuetify.icons.filter")]
-                              ),
-                              _vm._v(" "),
-                              _c("span", [_vm._v("Filtar por periodo")])
+                                "v-tooltip",
+                                { attrs: { bottom: "" } },
+                                [
+                                  _c(
+                                    "v-icon",
+                                    {
+                                      attrs: { slot: "activator" },
+                                      slot: "activator"
+                                    },
+                                    [_vm._v("$vuetify.icons.filter")]
+                                  ),
+                                  _vm._v(" "),
+                                  _c("span", [_vm._v("Filtar por periodo")])
+                                ],
+                                1
+                              )
                             ],
                             1
                           ),
                           _vm._v(" "),
                           _c(
-                            "v-btn",
-                            {
-                              attrs: { flat: "" },
-                              on: {
-                                click: function($event) {
-                                  return _vm.filterBy("Todos")
+                            "v-flex",
+                            { attrs: { xs4: "" } },
+                            [
+                              _c("v-select", {
+                                attrs: {
+                                  items: _vm.items_anio,
+                                  "item-text": "anio",
+                                  "item-value": "anio",
+                                  label: "Seleccionar el año"
+                                },
+                                on: {
+                                  input: function($event) {
+                                    return _vm.filterByYear()
+                                  }
+                                },
+                                model: {
+                                  value: _vm.anio,
+                                  callback: function($$v) {
+                                    _vm.anio = $$v
+                                  },
+                                  expression: "anio"
                                 }
-                              }
-                            },
-                            [_vm._v("Todos")]
+                              })
+                            ],
+                            1
                           ),
                           _vm._v(" "),
                           _c(
-                            "v-btn",
-                            {
-                              attrs: { flat: "", color: "success" },
-                              on: {
-                                click: function($event) {
-                                  return _vm.filterBy("activo")
+                            "v-flex",
+                            { staticClass: "ml-2", attrs: { xs4: "" } },
+                            [
+                              _c("v-select", {
+                                attrs: {
+                                  items: _vm.items_mes,
+                                  label: "Seleccionar el mes"
+                                },
+                                on: {
+                                  input: function($event) {
+                                    return _vm.filterByMonth()
+                                  }
+                                },
+                                model: {
+                                  value: _vm.mes,
+                                  callback: function($$v) {
+                                    _vm.mes = $$v
+                                  },
+                                  expression: "mes"
                                 }
-                              }
-                            },
-                            [_vm._v("Periodo")]
+                              })
+                            ],
+                            1
                           )
                         ],
                         1
@@ -483,71 +564,76 @@ var render = function() {
                         _c(
                           "td",
                           [
-                            _c(
-                              "v-tooltip",
-                              { attrs: { bottom: "" } },
-                              [
-                                _c(
-                                  "v-btn",
-                                  {
-                                    attrs: {
-                                      slot: "activator",
-                                      color: "info",
-                                      fab: "",
-                                      small: ""
-                                    },
-                                    on: {
-                                      click: function($event) {
-                                        return _vm.modalEditar(props.item)
-                                      }
-                                    },
-                                    slot: "activator"
-                                  },
+                            _vm.$auth.can("pagos.edit") || _vm.$auth.isAdmin()
+                              ? _c(
+                                  "v-tooltip",
+                                  { attrs: { bottom: "" } },
                                   [
-                                    _c("v-icon", [
-                                      _vm._v("$vuetify.icons.edit")
-                                    ])
+                                    _c(
+                                      "v-btn",
+                                      {
+                                        attrs: {
+                                          slot: "activator",
+                                          color: "info",
+                                          fab: "",
+                                          small: ""
+                                        },
+                                        on: {
+                                          click: function($event) {
+                                            return _vm.modalEditar(props.item)
+                                          }
+                                        },
+                                        slot: "activator"
+                                      },
+                                      [
+                                        _c("v-icon", [
+                                          _vm._v("$vuetify.icons.edit")
+                                        ])
+                                      ],
+                                      1
+                                    ),
+                                    _vm._v(" "),
+                                    _c("span", [_vm._v("Editar registro")])
                                   ],
                                   1
-                                ),
-                                _vm._v(" "),
-                                _c("span", [_vm._v("Editar registro")])
-                              ],
-                              1
-                            ),
+                                )
+                              : _vm._e(),
                             _vm._v(" "),
-                            _c(
-                              "v-tooltip",
-                              { attrs: { bottom: "" } },
-                              [
-                                _c(
-                                  "v-btn",
-                                  {
-                                    attrs: {
-                                      slot: "activator",
-                                      color: "error",
-                                      fab: "",
-                                      small: ""
-                                    },
-                                    on: {
-                                      click: function($event) {
-                                        return _vm.deleteData(props.item)
-                                      }
-                                    },
-                                    slot: "activator"
-                                  },
+                            _vm.$auth.can("pagos.destroy") ||
+                            _vm.$auth.isAdmin()
+                              ? _c(
+                                  "v-tooltip",
+                                  { attrs: { bottom: "" } },
                                   [
-                                    _c("v-icon", [
-                                      _vm._v("$vuetify.icons.delete")
-                                    ])
+                                    _c(
+                                      "v-btn",
+                                      {
+                                        attrs: {
+                                          slot: "activator",
+                                          color: "error",
+                                          fab: "",
+                                          small: ""
+                                        },
+                                        on: {
+                                          click: function($event) {
+                                            return _vm.deleteData(props.item)
+                                          }
+                                        },
+                                        slot: "activator"
+                                      },
+                                      [
+                                        _c("v-icon", [
+                                          _vm._v("$vuetify.icons.delete")
+                                        ])
+                                      ],
+                                      1
+                                    ),
+                                    _vm._v(" "),
+                                    _c("span", [_vm._v("Cambiar estado")])
                                   ],
                                   1
-                                ),
-                                _vm._v(" "),
-                                _c("span", [_vm._v("Cambiar estado")])
-                              ],
-                              1
-                            )
+                                )
+                              : _vm._e()
                           ],
                           1
                         )
@@ -588,6 +674,56 @@ var staticRenderFns = []
 render._withStripped = true
 
 
+
+/***/ }),
+
+/***/ "./resources/js/services/listMonthsOfTheYear.js":
+/*!******************************************************!*\
+  !*** ./resources/js/services/listMonthsOfTheYear.js ***!
+  \******************************************************/
+/*! exports provided: months */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "months", function() { return months; });
+var months = [{
+  text: "Enero",
+  value: "01"
+}, {
+  text: "Febrero",
+  value: "02"
+}, {
+  text: "Marzo",
+  value: "03"
+}, {
+  text: "Abril",
+  value: "04"
+}, {
+  text: "Mayo",
+  value: "05"
+}, {
+  text: "Junio",
+  value: "06"
+}, {
+  text: "Julio",
+  value: "07"
+}, {
+  text: "Agosto",
+  value: "08"
+}, {
+  text: "Septiembre",
+  value: "09"
+}, {
+  text: "Octubre",
+  value: "10"
+}, {
+  text: "Noviembre",
+  value: "11"
+}, {
+  text: "Diciembre",
+  value: "12"
+}];
 
 /***/ }),
 

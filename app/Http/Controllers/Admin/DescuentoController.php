@@ -14,7 +14,6 @@ class DescuentoController extends Controller
         $descuentos = HaberDescuento::orderBy('nombre', 'DESC')
             ->where('tipo', $tipo)
             ->search(request('q'))
-            ->limit(6)
             ->get();
 
         return response()->json(['descuentos' => $descuentos], 200);

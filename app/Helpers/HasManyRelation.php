@@ -22,7 +22,7 @@ trait HasManyRelation
     public function updateHasMany($relations)
     {
         $this->save();
-
+        return $relations;
         $parentKey = $this->getKeyName();
         $parentId = $this->getAttribute($parentKey);
         foreach ($relations as $key => $items) {

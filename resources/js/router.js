@@ -64,6 +64,11 @@ export default new Router({
                     component: () => import("./views/admin/Haberes.vue")
                 },
                 {
+                    path: "historiales",
+                    name: "historiales",
+                    component: () => import("./views/admin/Historiales.vue")
+                },
+                {
                     path: "pagos",
                     name: "pagos",
                     meta: { titulo: "Pagos" },

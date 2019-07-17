@@ -10,9 +10,8 @@
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _services_listMonthsOfTheYear__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../services/listMonthsOfTheYear */ "./resources/js/services/listMonthsOfTheYear.js");
-/* harmony import */ var _services_listYears__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../services/listYears */ "./resources/js/services/listYears.js");
-/* harmony import */ var _components_pagos_Agregar__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../components/pagos/Agregar */ "./resources/js/components/pagos/Agregar.vue");
-/* harmony import */ var _components_pagos_ListaItems__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../components/pagos/ListaItems */ "./resources/js/components/pagos/ListaItems.vue");
+/* harmony import */ var _components_pagos_Agregar__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../components/pagos/Agregar */ "./resources/js/components/pagos/Agregar.vue");
+/* harmony import */ var _components_pagos_ListaItems__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../components/pagos/ListaItems */ "./resources/js/components/pagos/ListaItems.vue");
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { _defineProperty(target, key, source[key]); }); } return target; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
@@ -180,15 +179,13 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 //
 //
 //
-//
-
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
-    Agregar: _components_pagos_Agregar__WEBPACK_IMPORTED_MODULE_2__["default"],
-    ListaItems: _components_pagos_ListaItems__WEBPACK_IMPORTED_MODULE_3__["default"]
+    Agregar: _components_pagos_Agregar__WEBPACK_IMPORTED_MODULE_1__["default"],
+    ListaItems: _components_pagos_ListaItems__WEBPACK_IMPORTED_MODULE_2__["default"]
   },
   data: function data() {
     return {
@@ -203,7 +200,7 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
         monto_liquido: 0,
         monto_imponible: 0
       },
-      items_anio: _services_listYears__WEBPACK_IMPORTED_MODULE_1__["years"],
+      items_anio: [],
       items_mes: _services_listMonthsOfTheYear__WEBPACK_IMPORTED_MODULE_0__["months"],
       lista_personas: [],
       errors: {},
@@ -212,7 +209,12 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
     };
   },
   created: function created() {
-    document.title = "Registrar un Pago"; // this.addCurrentYear();
+    if (this.$auth.can("pagos.create") || this.$auth.isAdmin()) {
+      document.title = "Registrar un Pago";
+      this.getYears();
+    } else {
+      this.$router.push("/admin/403");
+    }
   },
   mounted: function mounted() {
     this.$root.modalAgregarhb = this.$refs.modalAgregarhb;
@@ -225,6 +227,15 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
       var dni = item.dni.toLowerCase();
       var searchText = queryText.toLowerCase();
       return nombre.indexOf(searchText) > -1 || apellido_paterno.indexOf(searchText) || apellido_materno.indexOf(searchText) || dni.indexOf(searchText) > -1;
+    },
+    getYears: function getYears() {
+      var _this = this;
+
+      axios.get("/periodos").then(function (res) {
+        return _this.items_anio = res.data.years;
+      })["catch"](function (err) {
+        return console.log(err);
+      });
     },
     addHD: function addHD(tipo) {
       this.$root.modalAgregarhb.showModal();
@@ -244,9 +255,7 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
             hd_id: item.id
           }));
         } else {
-          this.$root.$snackbar.show("El haber ya a sido agregado.", {
-            color: "warning"
-          });
+          this.$swal("Mensaje de operación", "El haber ya ha sido agregado.", "info");
         }
       } else if (tipo == "descuento") {
         var descuentos = _toConsumableArray(this.form.descuentos);
@@ -261,9 +270,7 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
             hd_id: item.id
           }));
         } else {
-          this.$root.$snackbar.show("El descuento ya a sido agregado.", {
-            color: "warning"
-          });
+          this.$swal("Mensaje de operación", "El descuento ya ha sido agregado.", "info");
         }
       }
     },
@@ -274,14 +281,6 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
         this.form.descuentos.splice(index, 1);
       }
     },
-    // addCurrentYear() {
-    //   let currentYear = new Date().getFullYear();
-    //   let lastYear = this.items_anio.pop();
-    //   if (Number(lastYear) < currentYear) {
-    //     this.items_anio = [...this.items_anio, lastYear];
-    //     this.items_anio = [...this.items_anio, currentYear];
-    //   }
-    // },
     totalHaber: function totalHaber() {
       var totalHaber = this.form.haberes.map(function (item) {
         var total = 0;
@@ -319,7 +318,7 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
       return parseFloat(total).toFixed(2);
     },
     onSubmit: function onSubmit() {
-      var _this = this;
+      var _this2 = this;
 
       var form = {
         anio: this.form.anio,
@@ -333,16 +332,16 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
         monto_imponible: this.totalImponible()
       };
       axios.post("/pagos", form).then(function (res) {
-        _this.$router.push("/admin/pagos/lista");
+        _this2.$router.push("/admin/pagos/lista");
 
-        _this.$parent["this"].$root.$snackbar.show("Datos registrados correctamente.");
+        _this2.$parent["this"].$root.$snackbar.show("Datos registrados correctamente.");
 
-        _this.resetForm();
+        _this2.resetForm();
       })["catch"](function (err) {
-        _this.errors = err.response.data.errors;
+        _this2.errors = err.response.data.errors;
 
         if (err.response.status == 403) {
-          _this.$router.push("/403");
+          _this2.$router.push("/403");
         }
       });
     },
@@ -364,7 +363,7 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
   },
   watch: {
     search: function search(value) {
-      var _this2 = this;
+      var _this3 = this;
 
       if (this.isLoading) return;
       this.isLoading = true;
@@ -374,12 +373,12 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
       axios.get("/search-personas", {
         params: params
       }).then(function (res) {
-        _this2.isLoading = false;
-        _this2.lista_personas = res.data.personas;
+        _this3.isLoading = false;
+        _this3.lista_personas = res.data.personas;
       })["catch"](function (err) {
         return console.log(err);
       })["finally"](function () {
-        return _this2.isLoading = false;
+        return _this3.isLoading = false;
       });
     }
   }
@@ -655,6 +654,8 @@ var render = function() {
                                       _c("v-select", {
                                         attrs: {
                                           items: _vm.items_anio,
+                                          "item-text": "anio",
+                                          "item-value": "anio",
                                           label: "El año",
                                           "error-messages": _vm.errors.anio
                                         },

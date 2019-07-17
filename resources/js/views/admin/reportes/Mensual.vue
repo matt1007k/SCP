@@ -180,9 +180,13 @@ export default {
       errors: {}
     };
   },
-  created() {
-    document.title = "Reporte de pagos por mes de un año";
-    this.getYears();
+  created() {    
+    if (this.$auth.can("pagos.consultar") || this.$auth.isAdmin()) {
+      document.title = "Reporte de pagos por mes de un año";
+      this.getYears();
+    } else {
+      this.$router.push("/admin/403");
+    }
   },
   methods: {
     customFilter(item, queryText, itemText) {

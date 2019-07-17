@@ -22,46 +22,49 @@
         </v-flex>
       </v-layout>
     </v-img>
+    <v-list dense>
+      <template v-for="(item, index) in itemsMenu">
+        <template v-if="item.group">
+          <v-list-group
+            v-if="$auth.can(item.permission) || $auth.isAdmin()"
+            :prepend-icon="item.icon"
+            :value="subIsActive([item.url])"
+            :key="index"
+          >
+            <template v-slot:activator>
+              <v-list-tile>
+                <v-list-tile-title>{{item.title}}</v-list-tile-title>
+              </v-list-tile>
+            </template>
 
-    <v-list dense v-for="(item, index) in itemsMenu" :key="index">
-      <template v-if="item.group">
-        <v-list-group
-          v-if="$auth.can(item.permission) || $auth.isAdmin()"
-          :prepend-icon="item.icon"
-          :value="subIsActive([item.url])"
-        >
-          <template v-slot:activator>
-            <v-list-tile>
-              <v-list-tile-title>{{item.title}}</v-list-tile-title>
-            </v-list-tile>
-          </template>
-
-          <template v-for="(submenu, i) in item.submenu">
-            <v-list-tile
-              :key="i"
-              router
-              :to="submenu.url"
-              v-if="$auth.can(submenu.permission) || $auth.isAdmin()"
-            >
-              <v-list-tile-action></v-list-tile-action>
-              <v-list-tile-title v-text="submenu.title"></v-list-tile-title>
-            </v-list-tile>
-          </template>
-        </v-list-group>
-      </template>
-      <template v-else>
-        <v-list-tile
-          v-if="$auth.can(item.permission) || $auth.isAdmin()"
-          router
-          :to="item.url"
-          :exact="item.exact"
-          active-exact-class="primary"
-        >
-          <v-list-tile-action>
-            <v-icon>{{item.icon}}</v-icon>
-          </v-list-tile-action>
-          <v-list-tile-title>{{item.title}}</v-list-tile-title>
-        </v-list-tile>
+            <template v-for="(submenu, i) in item.submenu">
+              <v-list-tile
+                :key="i"
+                router
+                :to="submenu.url"
+                v-if="$auth.can(submenu.permission) || $auth.isAdmin()"
+              >
+                <v-list-tile-action></v-list-tile-action>
+                <v-list-tile-title v-text="submenu.title"></v-list-tile-title>
+              </v-list-tile>
+            </template>
+          </v-list-group>
+        </template>
+        <template v-else>
+          <v-list-tile
+            v-if="$auth.can(item.permission) || $auth.isAdmin()"
+            router
+            :to="item.url"
+            :exact="item.exact"
+            active-exact-class="primary"
+            :key="index"
+          >
+            <v-list-tile-action>
+              <v-icon>{{item.icon}}</v-icon>
+            </v-list-tile-action>
+            <v-list-tile-title>{{item.title}}</v-list-tile-title>
+          </v-list-tile>
+        </template>
       </template>
     </v-list>
   </v-navigation-drawer>
@@ -74,10 +77,6 @@ export default {
       type: Boolean,
       required: true
     }
-  },
-
-  created() {
-    console.log(this.$auth.can("users.index"));
   },
   data: () => ({
     drawer: true,

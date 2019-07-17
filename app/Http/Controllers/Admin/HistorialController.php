@@ -9,9 +9,9 @@ class HistorialController extends Controller
 {
     public function index()
     {
-        $years = Historial::orderBy('anio', 'DESC')->get(['id', 'anio']);
+        $historiales = Historial::orderBy('created_at', 'DESC')->get();
 
-        return response()->json(['years' => $years]);
+        return response()->json(['historiales' => $historiales]);
     }
 
     public function store(Request $request)

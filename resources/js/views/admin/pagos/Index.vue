@@ -8,7 +8,7 @@
               <v-flex xs12 sm9 md9>
                 <span class="headline">Lista de pagos</span>
               </v-flex>
-              <v-flex xs12 sm3 md3>
+              <v-flex xs12 sm3 md3 v-if="$auth.can('pagos.create') || $auth.isAdmin()">
                 <v-spacer></v-spacer>
                 <v-btn color="primary" router to="/admin/pagos/crear">
                   <v-icon>$vuetify.icons.add</v-icon>Realizar pago
@@ -22,7 +22,7 @@
               clearable
               label="Buscar"
               type="text"
-              placeholder="Buscar por DNI de la persona o periodo..."
+              placeholder="Buscar por DNI de la persona o filtrar por periodo..."
             >
               <template v-slot:prepend>
                 <v-icon>$vuetify.icons.search</v-icon>
@@ -33,14 +33,33 @@
                 </v-fade-transition>
               </template>
             </v-text-field>
-            <span class="mb-2">
-              <v-tooltip bottom>
-                <v-icon slot="activator">$vuetify.icons.filter</v-icon>
-                <span>Filtar por periodo</span>
-              </v-tooltip>
-              <v-btn flat @click="filterBy('Todos')">Todos</v-btn>
-              <v-btn flat color="success" @click="filterBy('activo')">Periodo</v-btn>
-            </span>
+            <v-layout row wrap class="mb-2" align-center>
+              <v-flex xs1>
+                <v-tooltip bottom>
+                  <v-icon slot="activator">$vuetify.icons.filter</v-icon>
+                  <span>Filtar por periodo</span>
+                </v-tooltip>
+                <!-- <v-btn flat @click="filterBy('Todos')">Todos</v-btn> -->
+              </v-flex>
+              <v-flex xs4>
+                <v-select
+                  :items="items_anio"
+                  v-model="anio"
+                  item-text="anio"
+                  item-value="anio"
+                  @input="filterByYear()"
+                  label="Seleccionar el año"
+                ></v-select>
+              </v-flex>
+              <v-flex xs4 class="ml-2">
+                <v-select
+                  v-model="mes"
+                  :items="items_mes"
+                  label="Seleccionar el mes"
+                  @input="filterByMonth()"
+                ></v-select>
+              </v-flex>
+            </v-layout>
           </v-container>
         </v-card>
       </v-flex>
@@ -67,13 +86,13 @@
             <td class="text-xs-center">{{ props.item.monto_liquido }}</td>
             <td class="text-xs-center">{{ props.item.monto_imponible }}</td>
             <td>
-              <v-tooltip bottom>
+              <v-tooltip bottom v-if="$auth.can('pagos.edit') || $auth.isAdmin()">
                 <v-btn color="info" fab small slot="activator" @click="modalEditar(props.item)">
                   <v-icon>$vuetify.icons.edit</v-icon>
                 </v-btn>
                 <span>Editar registro</span>
               </v-tooltip>
-              <v-tooltip bottom>
+              <v-tooltip bottom v-if="$auth.can('pagos.destroy') || $auth.isAdmin()">
                 <v-btn color="error" fab small slot="activator" @click="deleteData(props.item)">
                   <v-icon>$vuetify.icons.delete</v-icon>
                 </v-btn>
@@ -91,11 +110,11 @@
 </template>
 
 <script>
+import { months } from "../../../services/listMonthsOfTheYear";
 export default {
   data() {
     return {
       search: "",
-      tipo: "Todos",
       loading: false,
       loadingData: false,
       pagination: {},
@@ -117,22 +136,29 @@ export default {
         { text: "Monto Liquido", value: "monto_liquido" },
         { text: "Monto Imponible", value: "monto_Total" }
       ],
-      pagos: []
+      pagos: [],
+      items_anio: [],
+      items_mes: months,
+      anio: "",
+      mes: ""
     };
   },
   created() {
-    document.title = "Lista de Pagos";
-    this.getData();
+    if (this.$auth.can("pagos.index") || this.$auth.isAdmin()) {
+      document.title = "Lista de Pagos";
+      this.getData();
+      this.getYears();
+    } else {
+      this.$router.push("/admin/403");
+    }
   },
-  // mounted() {
-  //   this.$root.agregarPersona = this.$refs.agregarPersona;
-  //   this.$root.editarPersona = this.$refs.editarPersona;
-  // },
   methods: {
     getData(url = "/pagos") {
       this.loadingData = true;
       axios
-        .get(url, { params: { tipo: this.tipo } })
+        .get(url, {
+          params: { anio: this.anio, mes: this.mes }
+        })
         .then(res => {
           this.loadingData = false;
           this.pagos = res.data.pagos;
@@ -144,9 +170,18 @@ export default {
           }
         });
     },
-    filterBy(prop) {
-      // this.tipo = prop;
-      // this.getData();
+    filterByYear() {
+      this.mes = "01";
+      this.getData();
+    },
+    filterByMonth() {
+      this.getData();
+    },
+    getYears() {
+      axios
+        .get("/periodos")
+        .then(res => (this.items_anio = res.data.years))
+        .catch(err => console.log(err));
     },
     modalEditar(pago) {
       this.$router.push("/admin/pagos/editar/" + pago.id);

@@ -18,7 +18,7 @@
       <v-flex xs12 sm8 md6>
         <v-card>
           <div class="dropzone">
-            <input type="file" ref="file" class="input-file" @change="sendFile">
+            <input type="file" ref="file" class="input-file" @change="sendFile" />
             <p v-if="!uploading" class="call-to-action">
               <i class="mdi mdi-upload"></i>
               Seleccione un archivo Excel
@@ -71,7 +71,11 @@ export default {
     };
   },
   created() {
-    document.title = "Importar datos de personas y pagos";
+    if (this.$auth.can("importar.personas") || this.$auth.isAdmin()) {
+      document.title = "Importar datos de personas y pagos";
+    } else {
+      this.$router.push("/admin/403");
+    }
   },
   methods: {
     async sendFile() {
@@ -114,6 +118,3 @@ export default {
   }
 };
 </script>
-
-<style>
-</style>

@@ -18,7 +18,7 @@
       <v-flex xs12 sm8 md6>
         <v-card>
           <div class="dropzone">
-            <input type="file" ref="file" class="input-file" @change="sendFile">
+            <input type="file" ref="file" class="input-file" @change="sendFile" />
             <p v-if="!uploading" class="call-to-action">
               <i class="mdi mdi-upload"></i>
               Seleccione un archivo Excel
@@ -70,7 +70,13 @@ export default {
       errors: {}
     };
   },
-
+  created() {
+    if (this.$auth.can("importar.descuentos") || this.$auth.isAdmin()) {
+      document.title = "Importar Haberes y Descuentos";
+    } else {
+      this.$router.push("/admin/403");
+    }
+  },
   methods: {
     async sendFile() {
       let file = this.$refs.file.files[0];
@@ -123,5 +129,3 @@ export default {
 };
 </script>
 
-<style>
-</style>

@@ -12,8 +12,16 @@ class PagoController extends Controller
 {
     public function index()
     {
-        $pagos = Pago::orderBy('created_at', 'desc')->With(['persona'])->get();
-
+        $anio = request('anio');
+        $mes = request('mes');        
+        if ($anio && $mes) {
+            $pagos = Pago::where('anio', $anio)->where('mes', $mes)
+                ->orderBy('created_at', 'desc')
+                ->With(['persona'])->get();
+        } else {
+            $pagos = Pago::orderBy('created_at', 'desc')
+                ->With(['persona'])->get();
+        }
         return response()->json(['pagos' => $pagos], 200);
     }
 
@@ -87,6 +95,7 @@ class PagoController extends Controller
                     "updated_at" => $hd->updated_at,
                     "hd_id" => $hd->id,
                     "monto" => $detalle->monto,
+                    "detalle_id" => $detalle->id,
                 ]);
             } elseif ($hd->tipo == 'descuento') {
                 array_push($descuentos, [
@@ -102,6 +111,7 @@ class PagoController extends Controller
                     "updated_at" => $hd->updated_at,
                     "hd_id" => $hd->id,
                     "monto" => $detalle->monto,
+                    "detalle_id" => $detalle->id,
                 ]);
             }
         }
@@ -149,30 +159,45 @@ class PagoController extends Controller
         $pago->monto_imponible = $request->monto_imponible;
         $pago->user_id = Auth::user()->id;
 
-        $pago->updateHasMany([
-            'detalles' => $detalles,
-        ]);
+        if ($pago->save()) {
+            $updatedIds = [];
+            $newItems = [];
+            // 1. filter and update
+            foreach ($detalles as $detalle) {
+                $detalle_db = Detalle::where('hd_id', $detalle['hd_id'])
+                    ->where('pago_id', $pago->id)->first();
+                if ($detalle_db) {
+                    $detalle_db->pago_id = $pago->id;
+                    $detalle_db->hd_id = $detalle['hd_id'];
+                    $detalle_db->monto = $detalle['monto'];
+                    $detalle_db->save();
+                    $updatedIds[] = $detalle_db->id;
+                } else {
+                    $newItems[] = $detalle;
+                }
 
-        // if ($pago->save()) {
-        //     $deleteOldItems = Detalle::whereNotIn('hd_id', collect($detalles)->pluck('id')->toArray())
-        //             ->where('pago_id', $pago->id);
-        //     return $detalles;
-        //     foreach ($detalles as $detalle) {
-        //         // $detalle_db = new Detalle();
-        //         // $detalle_db->pago_id = $pago->id;
-        //         // $detalle_db->hd_id = $detalle['hd_id'];
-        //         // $detalle_db->monto = $detalle['monto'];
-        //         // $detalle_db->save();
-        //     }
+            }
 
-        return response()->json([
-            'updated' => true,
-        ], 201);
-        // } else {
-        //     return response()->json([
-        //         'updated' => false,
-        //     ], 404);
-        // }
+            // 2. delete non-updated items
+            $detalle_delete = Detalle::whereNotIn('id', $updatedIds)
+                ->where('pago_id', $pago->id)
+                ->delete();
+
+            // 3. save new items
+            if (count($newItems)) {
+                foreach ($newItems as $key => $detalle_new) {
+                    $detalle = new Detalle();
+                    $detalle->pago_id = $pago->id;
+                    $detalle->hd_id = $detalle_new['hd_id'];
+                    $detalle->monto = $detalle_new['monto'];
+                    $detalle->save();
+                }
+            }
+
+            return response()->json([
+                'updated' => true,
+            ], 201);
+        }
     }
 
     public function destroy($id)

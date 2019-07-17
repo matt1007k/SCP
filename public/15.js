@@ -89,7 +89,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     };
   },
   created: function created() {
-    document.title = "Importar datos de personas y pagos";
+    if (this.$auth.can("importar.personas") || this.$auth.isAdmin()) {
+      document.title = "Importar datos de personas y pagos";
+    } else {
+      this.$router.push("/admin/403");
+    }
   },
   methods: {
     sendFile: function () {

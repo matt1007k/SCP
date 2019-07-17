@@ -8,7 +8,14 @@
               <v-flex xs12 sm9 md9>
                 <span class="headline">Lista de usuarios</span>
               </v-flex>
-              <v-flex xs12 sm3 md3 justify-end flexbox>
+              <v-flex
+                xs12
+                sm3
+                md3
+                justify-end
+                flexbox
+                v-if="$auth.can('users.create') || $auth.isAdmin()"
+              >
                 <v-btn color="primary" @click.stop="modalAgregar">
                   <v-icon>$vuetify.icons.add</v-icon>Agregar usuario
                 </v-btn>
@@ -85,13 +92,13 @@
               </td>
             </template>
             <td>
-              <v-tooltip bottom>
+              <v-tooltip bottom v-if="$auth.can('users.edit') || $auth.isAdmin()">
                 <v-btn color="info" fab small slot="activator" @click="modalEditar(props.item)">
                   <v-icon>$vuetify.icons.edit</v-icon>
                 </v-btn>
                 <span>Editar registro</span>
               </v-tooltip>
-              <v-tooltip bottom>
+              <v-tooltip bottom v-if="$auth.can('users.destroy') || $auth.isAdmin()">
                 <v-btn color="error" fab small slot="activator" @click="deleteData(props.item)">
                   <v-icon>$vuetify.icons.delete</v-icon>
                 </v-btn>
@@ -113,6 +120,7 @@
 <script>
 import ModalAgregar from "../../components/usuarios/ModalAgregar";
 import ModalEditar from "../../components/usuarios/ModalEditar";
+import Vue from "vue";
 export default {
   components: { ModalAgregar, ModalEditar },
   data() {
@@ -142,8 +150,12 @@ export default {
     };
   },
   created() {
-    document.title = "Lista de Usuarios";
-    this.getData();
+    if (this.$auth.can("users.index") || this.$auth.isAdmin()) {
+      document.title = "Lista de Usuarios";
+      this.getData();
+    } else {
+      this.$router.push("/admin/403");
+    }
   },
   mounted() {
     this.$root.agregarUsuario = this.$refs.agregarUsuario;

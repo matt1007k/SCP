@@ -44306,7 +44306,8 @@ var mdi_icons = {
   sale: "mdi-sale",
   left: "mdi-keyboard-backspace",
   email: "mdi-email",
-  card_id: "mdi-account-card-details"
+  card_id: "mdi-account-card-details",
+  file: "mdi-file"
 };
 /* harmony default export */ __webpack_exports__["default"] = (mdi_icons);
 
@@ -44451,6 +44452,12 @@ var ParentComponent = {
       name: "haberes",
       component: function component() {
         return __webpack_require__.e(/*! import() */ 6).then(__webpack_require__.bind(null, /*! ./views/admin/Haberes.vue */ "./resources/js/views/admin/Haberes.vue"));
+      }
+    }, {
+      path: "historiales",
+      name: "historiales",
+      component: function component() {
+        return __webpack_require__.e(/*! import() */ 23).then(__webpack_require__.bind(null, /*! ./views/admin/Historiales.vue */ "./resources/js/views/admin/Historiales.vue"));
       }
     }, {
       path: "pagos",

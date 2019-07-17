@@ -8,7 +8,14 @@
               <v-flex xs12 sm9 md9>
                 <span class="headline">Lista de roles</span>
               </v-flex>
-              <v-flex xs12 sm3 md3 justify-end flexbox>
+              <v-flex
+                xs12
+                sm3
+                md3
+                justify-end
+                flexbox
+                v-if="$auth.can('roles.create') || $auth.isAdmin()"
+              >
                 <v-btn color="primary" @click.stop="modalAgregar">
                   <v-icon>$vuetify.icons.add</v-icon>Agregar rol
                 </v-btn>
@@ -49,13 +56,13 @@
             <td>{{ props.item.name }}</td>
             <td>{{ props.item.description }}</td>
             <td>
-              <v-tooltip bottom>
+              <v-tooltip bottom v-if="$auth.can('roles.edit') || $auth.isAdmin()">
                 <v-btn color="info" fab small slot="activator" @click="modalEditar(props.item)">
                   <v-icon>$vuetify.icons.edit</v-icon>
                 </v-btn>
                 <span>Editar registro</span>
               </v-tooltip>
-              <v-tooltip bottom>
+              <v-tooltip bottom v-if="$auth.can('roles.destroy') || $auth.isAdmin()">
                 <v-btn color="error" fab small slot="activator" @click="deleteData(props.item)">
                   <v-icon>$vuetify.icons.delete</v-icon>
                 </v-btn>
@@ -104,8 +111,12 @@ export default {
     };
   },
   created() {
-    document.title = "Lista de Roles";
-    this.getData();
+    if (this.$auth.can("roles.index") || this.$auth.isAdmin()) {
+      document.title = "Lista de Roles";
+      this.getData();
+    } else {
+      this.$router.push("/admin/403");
+    }
   },
   mounted() {
     this.$root.agregarRol = this.$refs.agregarRol;

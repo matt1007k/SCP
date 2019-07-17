@@ -823,20 +823,6 @@ var months = [{
   value: "12"
 }];
 
-/***/ }),
-
-/***/ "./resources/js/services/listYears.js":
-/*!********************************************!*\
-  !*** ./resources/js/services/listYears.js ***!
-  \********************************************/
-/*! exports provided: years */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "years", function() { return years; });
-var years = ["2002", "2016", "2017", "2018", "2019"];
-
 /***/ })
 
 }]);

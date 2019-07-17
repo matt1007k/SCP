@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Reporte por anos</title>
+    <title>Reporte por año</title>
     <style>
     *{
         font-family: Arial, Helvetica, sans-serif;
@@ -58,7 +58,7 @@
 <body>
     <header>
         <h5 class="text-center" style="margin-top: -20px;text-decoration: underline">CONSTANCIA DE PAGOS DE HABERES Y DESCUENTOS</h5>
-        <table class="w-100">
+        <table class="w-80">
             <tbody>
                 <tr>
                     <td class="text-left fs-header">
@@ -81,21 +81,24 @@
                         <b>AÑO:</b>
                     </td>
                     <td class="fs-header">{{$pago->anio}}</td>
-                    <td class="text-left fs-header">
-                        <b>CERTIFICADO N°:</b>
+                    <td>
+                            <td class="text-left fs-header">
+                                    <b>CERTIFICADO N°:</b>
+                                </td>
+                                <td class="fs-header">{{$certificado}}</td>                   
+                                <td class="fs-header text-right">
+                                    {{-- <b>FECHA DE IMPRESIÓN:</b> --}}
+                                    <b>Fecha de Impresión:</b>
+                                </td>
+                                <td class="fs-header text-right">
+                                    {{date('d/m/Y')}}
+                                </td>
                     </td>
-                    <td class="fs-header">{{$certificado}}</td>                   
-                    <td class="fs-header text-right">
-                        {{-- <b>FECHA DE IMPRESIÓN:</b> --}}
-                        <b>Fecha de Impresión:</b>
-                    </td>
-                    <td class="fs-header text-right">
-                        {{date('d/m/Y')}}
-                    </td>
+                    
                 </tr>
             </tbody>
         </table>
-
+        
     </header>
     <div class="spacer"></div>
     <div class="body">

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\HaberDescuento;
 use App\Models\Pago;
+use App\Models\Historial;
 use Illuminate\Http\Request;
 use PDF;
 
@@ -48,7 +49,7 @@ class ReporteController extends Controller
         $request->validate([
             'dni' => 'required',
             'anio' => 'required',
-            'certificado' => 'required|numeric',
+            'certificado' => 'required|numeric|unique:historiales, certificado',
         ]);
         $haberes = array();
         $descuentos = array();
@@ -80,7 +81,15 @@ class ReporteController extends Controller
                 //     "monto_febrero1"=> "20.00", 
                 //     "monto_marzo1"=> "0.00"
                 // ]);
-                // return $haberes;    
+                // return $haberes; 
+                
+                //create historial
+                Historial::create([
+                    'anio' => $request->anio,
+                    'meses' => '01-12',
+                    'dni' => $request->dni,
+                    'certificado' => $certificado,
+                ]);  
             
                 $pdf = PDF::loadView('reporte.anio', [
                     'pago' => $pago,
@@ -94,6 +103,7 @@ class ReporteController extends Controller
                     'certificado' => $certificado
                 ]);
                 $pdf->setPaper('a4', 'landscape');
+                
                 return $pdf->stream();
             }else {
                 return response()->json([

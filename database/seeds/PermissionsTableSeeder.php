@@ -40,7 +40,38 @@ class PermissionsTableSeeder extends Seeder
             'slug' => 'roles.create',
             'description' => 'Registrar un rol del sistema',
         ]);
+        //permisos
+        Permission::create([
+            'name' => 'Navegar permisos',
+            'slug' => 'permisos.index',
+            'description' => 'Lista y navega todos los permisos del sistema',
+        ]);
+        Permission::create([
+            'name' => 'Ver detalle de un permiso',
+            'slug' => 'permisos.show',
+            'description' => 'Ver en detalle cada permiso del sistema',
+        ]);
+        Permission::create([
+            'name' => 'Edición de un permiso',
+            'slug' => 'permisos.edit',
+            'description' => 'Editar los datos de cualquier permiso del sistema',
+        ]);
+        Permission::create([
+            'name' => 'Eliminar un permiso',
+            'slug' => 'permisos.destroy',
+            'description' => 'Eliminar los datos de cualquier permiso del sistema',
+        ]);
+        Permission::create([
+            'name' => 'Registrar un permiso',
+            'slug' => 'permisos.create',
+            'description' => 'Registrar un permiso del sistema',
+        ]);
         //users
+        Permission::create([
+            'name' => 'Registrar un usuario',
+            'slug' => 'users.create',
+            'description' => 'Registrar un usuario del sistema',
+        ]);
         Permission::create([
             'name' => 'Navegar usuarios',
             'slug' => 'users.index',
@@ -169,6 +200,12 @@ class PermissionsTableSeeder extends Seeder
             'name' => 'Consultar pagos',
             'slug' => 'pagos.consultar',
             'description' => 'Poder consultar los pagos de reportes en el sistema',
+        ]);
+        //pagos
+        Permission::create([
+            'name' => 'Navegar historial',
+            'slug' => 'historiales.index',
+            'description' => 'Lista y navega todos los historiales del sistema',
         ]);
 
         //Importar datos

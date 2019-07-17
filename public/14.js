@@ -88,6 +88,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       errors: {}
     };
   },
+  created: function created() {
+    if (this.$auth.can("importar.descuentos") || this.$auth.isAdmin()) {
+      document.title = "Importar Haberes y Descuentos";
+    } else {
+      this.$router.push("/admin/403");
+    }
+  },
   methods: {
     sendFile: function () {
       var _sendFile = _asyncToGenerator(
