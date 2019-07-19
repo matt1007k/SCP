@@ -138,6 +138,12 @@ export default new Router({
                     component: ParentComponent,
                     children: [
                         {
+                            path: "rango-anual",
+                            name: "reporte.rango-anual",
+                            component: () =>
+                                import("./views/admin/reportes/RangoAnual.vue")
+                        },
+                        {
                             path: "anual",
                             name: "reporte.anual",
                             component: () =>

@@ -10,15 +10,130 @@ use PDF;
 
 class ReporteController extends Controller
 {
+    public function searchByYears(Request $request)
+    {
+        $request->validate([
+            'dni' => 'required',
+            'anio_anterior' => 'required|exists:periodos,anio',
+            'anio_actual' => 'required|exists:periodos,anio',
+            'certificado' => 'required|numeric|unique:historiales,certificado',
+        ]);
+        
+        $pagos = Pago::whereBetween('anio', [$request->anio_anterior, $request->anio_actual])
+            ->whereHas('persona', function ($query) use ($request) {
+                $query->where('dni', 'like', "%{$request->dni}%");
+            })->orderBy('anio', 'DESC')->get();
+        $years_exist_unique = $this->getYearsUnique($pagos);         
+
+        if (count($years_exist_unique) > 0) {             
+            return response()->json([
+                'pagos' => collect($years_exist_unique),
+                'status' => true,
+            ], 200);
+        } else {
+            return response()->json([
+                'msg' => 'El pago no ha sido encontrado o no esta registrado',
+                'pagos' => (object)[],
+                'status' => false,
+            ], 200);
+        }
+    }
+
+    public function porAnios(Request $request)
+    {
+        $request->validate([
+            'dni' => 'required',
+            'anio_anterior' => 'required|exists:periodos,anio',
+            'anio_actual' => 'required|exists:periodos,anio',
+            'certificado' => 'required|numeric|unique:historiales,certificado',
+        ]);
+        $certificado = $request->certificado;
+
+        $pagos = Pago::whereBetween('anio', [$request->anio_anterior, $request->anio_actual])
+            ->whereHas('persona', function ($query) use ($request) {
+                $query->where('dni', 'like', "%{$request->dni}%");
+            })->orderBy('anio', 'DESC')->get();
+        $years_exist_unique = $this->getYearsUnique($pagos);
+        // return $pagos;
+        if (count($years_exist_unique) > 0) {
+            $pagos_with_detalles = array();
+        
+            foreach ($years_exist_unique as $key => $year) {                            
+                $pago = Pago::With(['persona'])->where('anio', $year)
+                                ->whereHas('persona', function ($query) use ($request) {
+                                    $query->where('dni', 'like', "%{$request->dni}%");
+                                })->first();
+                // Detalles por mes
+                $meses = $this->getMesesAndCount($year, $request->dni);
+                
+                // Detalles por haberes y descuentos
+                $haberes = $this->getAllDetailsByType($year, $request->dni, 'haber');
+                $descuentos = $this->getAllDetailsByType($year, $request->dni, 'descuento');
+    
+                // Detalles totales
+                $total_haberes = $this->getTotalByYear($year, $request->dni, 'haberes');
+                $total_descuentos = $this->getTotalByYear($year, $request->dni, 'descuentos');
+                $total_liquidos = $this->getTotalByYear($year, $request->dni, 'liquidos');
+                $total_imponibles = $this->getTotalByYear($year, $request->dni, 'imponibles');
+    
+                array_push($pagos_with_detalles, [                    
+                    'pago' => $pago,
+                    'haberes' => (object)$haberes,
+                    'descuentos' => (object)$descuentos,
+                    'total_haberes' => (object)$total_haberes,
+                    'total_descuentos' => (object)$total_descuentos,
+                    'liquidos' => (object)$total_liquidos,
+                    'imponibles' => (object)$total_imponibles,
+                    'meses' => $meses,
+                    'certificado' => $certificado                    
+                ]);
+            }                   
+                //create historial
+                // Historial::create([
+                //     'anio' => '$request->anio',
+                //     'meses' => '01-12',
+                //     'dni' => $request->dni,
+                //     'certificado' => $certificado,
+                // ]);  
+            // return $pagos_with_detalles;
+            $pdf = PDF::loadView('reporte.anios', ['pagos' => $pagos_with_detalles]);
+            $pdf->setPaper('a4', 'landscape');
+            
+            return $pdf->stream();
+            
+        } else {
+            return response()->json([
+                'msg' => 'Pago no ha sido encontrado',
+            ], 404);
+        }
+
+    }
+
+    public function getYearsUnique($pagos)
+    {
+        $years_exist = array();
+        $years_exist_unique = array();
+
+        foreach ($pagos as $key => $value) {
+            array_push($years_exist, ['anio' => $value['anio']]);
+        }
+
+        $pagos_unique_year = $this->unique_multidim_array($years_exist, 'anio');
+        foreach ($pagos_unique_year as $key => $value) {
+            array_push($years_exist_unique, ['anio' => $value['anio']]);
+        }
+
+        return $years_exist_unique;
+    }
+    
     public function searchByYear(Request $request)
     {
         $request->validate([
             'dni' => 'required',
             'anio' => 'required',
-            'certificado' => 'required|numeric',
+            'certificado' => 'required|numeric|unique:historiales,certificado',
         ]);
-        $haberes = array();
-        $descuentos = array();
+        
         $pago = Pago::where('anio', $request->anio)
             ->whereHas('persona', function ($query) use ($request) {
                 $query->where('dni', 'like', "%{$request->dni}%");
@@ -44,12 +159,13 @@ class ReporteController extends Controller
         }
     }
 
+
     public function porAnio(Request $request)
     {
         $request->validate([
             'dni' => 'required',
             'anio' => 'required',
-            'certificado' => 'required|numeric|unique:historiales, certificado',
+            'certificado' => 'required|numeric|unique:historiales,certificado',
         ]);
         $haberes = array();
         $descuentos = array();
@@ -674,7 +790,7 @@ class ReporteController extends Controller
             // 'anio' => 'required|exists:periodos, anio',
             'anio' => 'required',
             'mes' => 'required',
-            'certificado' => 'required|numeric',
+            'certificado' => 'required|numeric|unique:historiales,certificado',
         ]);
 
         $pago = Pago::where('anio', $request->anio)->mes($request->mes)
@@ -737,7 +853,7 @@ class ReporteController extends Controller
             // 'anio' => 'required|exists:periodos, anio',
             'anio' => 'required',
             'mes' => 'required',
-            'certificado' => 'required|numeric',
+            'certificado' => 'required|numeric|unique:historiales,certificado',
         ]);
 
         $pago = Pago::With(['persona'])->where('anio', $request->anio)->mes($request->mes)

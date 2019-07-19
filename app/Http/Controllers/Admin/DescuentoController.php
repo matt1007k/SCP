@@ -8,6 +8,10 @@ use Illuminate\Http\Request;
 
 class DescuentoController extends Controller
 {
+    public function __construct(){
+        // $this->middleware('permissions:pagos.consultar')->only(['search']);
+    }
+
     public function search()
     {
         $tipo = request('tipo') ?? request('tipo');

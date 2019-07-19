@@ -6,8 +6,8 @@
           <v-container fill-height fluid>
             <v-layout row wrap>
               <v-flex xs12 class="mb-3">
-                <span class="headline">Reporte de pagos por año</span>
-                <div class="body-1">Consultar el pago de una persona de un año completo.</div>
+                <span class="headline">Reporte de pagos por años</span>
+                <div class="body-1">Consultar el pago de una persona por rango de años.</div>
               </v-flex>
               <v-flex xs12>
                 <span class="body-2">Datos de la persona</span>
@@ -59,17 +59,32 @@
                 <v-text-field label="El cargo" v-model="form.persona.cargo" disabled></v-text-field>
               </v-flex>
               <v-flex xs12>
-                <span class="body-2 mb-2">El periodo del pago</span>
+                <span class="body-2 mb-2">El periodo del pago por años</span>
               </v-flex>
               <v-flex xs12 sm6 md3>
                 <div class="pr-2">
                   <v-select
-                    v-model="form.anio"
+                    v-model="form.anio_anterior"
                     :items="items_anio"
                     item-text="anio"
                     item-value="anio"
-                    label="El año"
-                    :error-messages="errors.anio"
+                    label="Del año"
+                    :error-messages="errors.anio_anterior"
+                  ></v-select>
+                </div>
+              </v-flex>
+              <div>
+                <v-icon>mdi mdi-arrow-expand-horizontal</v-icon>
+              </div>
+              <v-flex xs12 sm6 md3>
+                <div class="pr-2">
+                  <v-select
+                    v-model="form.anio_actual"
+                    :items="items_anio"
+                    item-text="anio"
+                    item-value="anio"
+                    label="Hasta el año"
+                    :error-messages="errors.anio_actual"
                   ></v-select>
                 </div>
               </v-flex>
@@ -80,8 +95,7 @@
                   :error-messages="errors.certificado"
                 ></v-text-field>
               </v-flex>
-              <v-flex xs12 sm9 md3></v-flex>
-              <v-flex xs12 sm3 md3 class="d-flex" justify-end>
+              <v-flex xs12 sm4 class="d-flex" justify-end>
                 <v-btn color="success" @click="buscarPago()">Buscar</v-btn>
               </v-flex>
             </v-layout>
@@ -91,45 +105,65 @@
     </v-layout>
     <v-layout row wrap>
       <v-flex xs12>
-        <template v-if="Object.keys(lista_resultado).length !== 0">
+        <template v-if="lista_resultado.length > 0">
           <div class="mb-2 d-flex justify-content-between">
-            <div class="title">Resultados encontrados</div>
-            <dir class="caption">Descargar o imprimir todos los pagos por el rango de años</dir>
+            <div>
+              <div class="title">Resultados encontrados</div>
+              <dir class="caption">Descargar o imprimir todos los pagos por el rango de años</dir>
+            </div>
+            <div class="actions">
+              <v-tooltip bottom>
+                <template v-slot:activator="{ on }">
+                  <v-btn color="success" @click="downloadAllPDF()" v-on="on" icon>
+                    <v-icon>mdi mdi-cloud-download-outline</v-icon>
+                  </v-btn>
+                </template>
+                <span>Descargar constancia de pago de todos los años</span>
+              </v-tooltip>
+              <v-tooltip bottom>
+                <template v-slot:activator="{ on }">
+                  <v-btn color="info" @click="viewAllPDF()" v-on="on" icon>
+                    <v-icon>mdi mdi-printer</v-icon>
+                  </v-btn>
+                </template>
+                <span>Imprimir constancia de pago de todos los años</span>
+              </v-tooltip>
+            </div>
           </div>
-          <v-card>
-            <v-card-text class="d-flex justify-content-between">
-              <div class="details-info">
-                <div class="heading" v-html="lista_resultado.anio"></div>
-                <div class="body-2">{{getName()}}</div>
-              </div>
-              <div class="actions">
-                <v-tooltip bottom>
-                  <template v-slot:activator="{ on }">
-                    <v-btn
-                      color="success"
-                      @click="downloadPDF(lista_resultado.anio, form.persona.dni)"
-                      v-on="on"
-                    >
-                      <v-icon>mdi mdi-cloud-download-outline</v-icon>
-                    </v-btn>
-                  </template>
-                  <span>Descargar constancia de pago</span>
-                </v-tooltip>
-                <v-tooltip bottom>
-                  <template v-slot:activator="{ on }">
-                    <v-btn
-                      color="info"
-                      @click="viewPDF(lista_resultado.anio, form.persona.dni)"
-                      v-on="on"
-                    >
-                      <v-icon>mdi mdi-printer</v-icon>
-                    </v-btn>
-                  </template>
-                  <span>Imprimir constancia de pago</span>
-                </v-tooltip>
-              </div>
-            </v-card-text>
-          </v-card>
+
+          <template v-for="(pago, index) in lista_resultado">
+            <v-card :key="index">
+              <v-card-text class="d-flex justify-content-between">
+                <div class="details-info">
+                  <div class="heading">Año: {{pago.anio}}</div>
+                  <div class="body-2">Nombre completo: {{getName()}}</div>
+                  <div class="caption">DNI: {{form.persona.dni}}</div>
+                </div>
+                <div class="actions">
+                  <v-tooltip bottom>
+                    <template v-slot:activator="{ on }">
+                      <v-btn
+                        color="success"
+                        @click="downloadPDF(pago.anio, form.persona.dni)"
+                        v-on="on"
+                      >
+                        <v-icon>mdi mdi-cloud-download-outline</v-icon>
+                      </v-btn>
+                    </template>
+                    <span>Descargar constancia de pago del año ({{pago.anio}})</span>
+                  </v-tooltip>
+                  <v-tooltip bottom>
+                    <template v-slot:activator="{ on }">
+                      <v-btn color="info" @click="viewPDF(pago.anio, form.persona.dni)" v-on="on">
+                        <v-icon>mdi mdi-printer</v-icon>
+                      </v-btn>
+                    </template>
+                    <span>Imprimir constancia de pago del año ({{pago.anio}})</span>
+                  </v-tooltip>
+                </div>
+              </v-card-text>
+            </v-card>
+          </template>
         </template>
         <template v-else-if="loading">
           <v-card>
@@ -157,7 +191,8 @@ export default {
   data: () => ({
     form: {
       persona: {},
-      anio: "",
+      anio_anterior: "",
+      anio_actual: "",
       certificado: ""
     },
     items_anio: [],
@@ -201,10 +236,18 @@ export default {
     },
     buscarPago() {
       this.loading = true;
+      if (this.form.anio_anterior > this.form.anio_actual) {
+        this.$swal(
+          "Mensaje de operación",
+          "El campo (del año anterior) debe ser menor, que el campo (hasta el año) o actual.",
+          "info"
+        );
+      }
       axios
-        .get(`/search/por-anio`, {
+        .get(`/search/por-anios`, {
           params: {
-            anio: this.form.anio,
+            anio_anterior: this.form.anio_anterior,
+            anio_actual: this.form.anio_actual,
             dni: this.form.persona.dni,
             certificado: this.form.certificado
           }
@@ -219,7 +262,7 @@ export default {
             this.loading = false;
             this.notFound = true;
             this.msg = msg;
-            this.lista_resultado = {};
+            this.lista_resultado = [];
           }
         })
         .catch(err => {
@@ -243,33 +286,44 @@ export default {
         link.click();
       });
     },
+    downloadAllPDF() {
+      let params = {
+        anio_anterior: this.form.anio_anterior,
+        anio_actual: this.form.anio_actual,
+        dni: this.form.persona.dni,
+        certificado: this.form.certificado
+      };
+      axios({
+        url: "/reporte/por-anios",
+        method: "GET",
+        params,
+        responseType: "blob" // important
+      }).then(response => {
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement("a");
+        const name_file = `${this.form.persona.codigo_modular}-${this.form.anio_anterior}-${this.form.anio_actual}.pdf`;
+        link.href = url;
+        link.setAttribute("download", name_file); //or any other extension
+        document.body.appendChild(link);
+        link.click();
+      });
+    },
     viewPDF(anio, dni) {
-      // axios(`/reporte/por-anio`, {
-      //   method: "GET",
-      //   params: { anio, dni },
-      //   responseType: "blob" //Force to receive data in a Blob Format
-      // })
-      //   .then(response => {
-      //Create a Blob from the PDF Stream
-      // const file = new Blob([response.data], { type: "application/pdf" });
-      //Build a URL from the file
-      // const fileURL = URL.createObjectURL(file);
-      //Open the URL on new Window7
-      // window.open(fileURL, "_blank");
-      // const url = window.URL.createObjectURL(new Blob([response.data]));
-      // window.open("data:application/pdf;base64," + encodeURI(response.data));
       const certificado = this.form.certificado;
       window.open(
         `/reporte/por-anio?anio=${anio}&dni=${dni}&certificado=${certificado}`,
         "_blank"
       );
-      // location.href = `/reporte/por-anio?anio=${anio}&dni=${dni}`;
-      // target = "_blank";
-      // done = 1;
-      // })
-      // .catch(error => {
-      //   console.log(error);
-      // });
+    },
+    viewAllPDF() {
+      const anio_anterior = this.form.anio_anterior;
+      const anio_actual = this.form.anio_actual;
+      const dni = this.form.persona.dni;
+      const certificado = this.form.certificado;
+      window.open(
+        `/reporte/por-anios?anio_anterior=${anio_anterior}&anio_actual=${anio_actual}&dni=${dni}&certificado=${certificado}`,
+        "_blank"
+      );
     },
     getName() {
       return `${this.form.persona.apellido_paterno} ${this.form.persona.apellido_materno}, ${this.form.persona.apellido_materno} `;

@@ -991,6 +991,10 @@ var listItemsSidebar = [{
   group: true,
   permission: "pagos.consultar",
   submenu: [{
+    title: "Por años",
+    url: "/admin/reporte/rango-anual",
+    permission: "pagos.consultar"
+  }, {
     title: "Por año",
     url: "/admin/reporte/anual",
     permission: "pagos.consultar"

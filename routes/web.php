@@ -65,9 +65,11 @@ Route::namespace ('Admin')->group(function () {
         Route::post('/importar/personas', 'ImportarController@personas')->name('admin.importar.personas');
         Route::post('/importar/descuentos', 'ImportarController@descuentos')->name('admin.importar.descuentos');
 
+        Route::get('/search/por-anios', 'ReporteController@searchByYears')->name('admin.search.poranios');
         Route::get('/search/por-anio', 'ReporteController@searchByYear')->name('admin.search.poranio');
         Route::get('/search/por-mes', 'ReporteController@searchByYearAndMonth')->name('admin.search.poranio');
 
+        Route::get('/reporte/por-anios', 'ReporteController@porAnios')->name('admin.reporte.poranios');
         Route::get('/reporte/por-anio', 'ReporteController@porAnio')->name('admin.reporte.poranio');
         Route::get('/reporte/por-mes', 'ReporteController@porMes')->name('admin.reporte.pormes');
 
