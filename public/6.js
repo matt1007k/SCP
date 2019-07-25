@@ -365,6 +365,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -464,7 +471,7 @@ __webpack_require__.r(__webpack_exports__);
 
       this.$swal({
         title: "Esta seguro de cambiar el estado del registro?",
-        text: "Esta operación va ha cambiar a ser asegurable o no el haber",
+        text: "Esta operación va a cambiar a ser asegurable o no el haber",
         type: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",

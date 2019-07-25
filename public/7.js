@@ -392,7 +392,7 @@ __webpack_require__.r(__webpack_exports__);
 
       this.$swal({
         title: "Esta seguro de eliminar el registro?",
-        text: "Esta operación va ha cambiar el estado del registro",
+        text: "Esta operación va a eliminar el registro",
         type: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
@@ -402,7 +402,7 @@ __webpack_require__.r(__webpack_exports__);
       }).then(function (result) {
         if (result.value) {
           axios["delete"]("/permisos/".concat(permiso.id)).then(function (res) {
-            _this2.$swal("Mensaje de operación", "Permiso eliminado correctamente", "success");
+            _this2.$swal("Mensaje de operación", "El permiso se eliminó correctamente", "success");
 
             _this2.getData();
           })["catch"](function (err) {

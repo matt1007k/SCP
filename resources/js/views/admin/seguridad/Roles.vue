@@ -152,7 +152,7 @@ export default {
     deleteData(rol) {
       this.$swal({
         title: "Esta seguro de eliminar el registro?",
-        text: "Esta operación va ha cambiar el estado del registro",
+        text: "Esta operación va a eliminar el registro",
         type: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
@@ -166,7 +166,7 @@ export default {
             .then(res => {
               this.$swal(
                 "Mensaje de operación",
-                "Rol eliminado correctamente",
+                "El rol se eliminó correctamente",
                 "success"
               );
               this.getData();

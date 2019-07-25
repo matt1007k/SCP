@@ -94,7 +94,7 @@
         <template v-if="Object.keys(lista_resultado).length !== 0">
           <div class="mb-2 d-flex justify-content-between">
             <div class="title">Resultados encontrados</div>
-            <dir class="caption">Descargar o imprimir todos los pagos por el rango de años</dir>
+            <div class="caption">Descargar o imprimir todos los pagos por año</div>
           </div>
           <v-card>
             <v-card-text class="d-flex justify-content-between">
@@ -272,7 +272,7 @@ export default {
       // });
     },
     getName() {
-      return `${this.form.persona.apellido_paterno} ${this.form.persona.apellido_materno}, ${this.form.persona.apellido_materno} `;
+      return `${this.form.persona.apellido_paterno} ${this.form.persona.apellido_materno}, ${this.form.persona.nombre} `;
     }
   },
   watch: {

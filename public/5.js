@@ -415,7 +415,7 @@ __webpack_require__.r(__webpack_exports__);
 
       this.$swal({
         title: "Esta seguro de eliminar el registro?",
-        text: "Esta operación va ha cambiar el estado del registro",
+        text: "Esta operación va a eliminar el registro",
         type: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
@@ -425,7 +425,7 @@ __webpack_require__.r(__webpack_exports__);
       }).then(function (result) {
         if (result.value) {
           axios["delete"]("/descuentos/".concat(descuento.id)).then(function (res) {
-            _this2.$swal("Mensaje de operación", "Elimino correctamente", "success");
+            _this2.$swal("Mensaje de operación", "El descuento se eliminó correctamente", "success");
 
             _this2.getData();
           })["catch"](function (err) {
@@ -1178,7 +1178,7 @@ var render = function() {
                                       1
                                     ),
                                     _vm._v(" "),
-                                    _c("span", [_vm._v("Cambiar estado")])
+                                    _c("span", [_vm._v("Eliminar registro")])
                                   ],
                                   1
                                 )

@@ -280,7 +280,7 @@ __webpack_require__.r(__webpack_exports__);
       window.open("/reporte/por-mes?anio=".concat(anio, "&mes=").concat(mes, "&dni=").concat(dni, "&certificado=").concat(certificado), "_blank");
     },
     getName: function getName() {
-      return "".concat(this.form.persona.apellido_paterno, " ").concat(this.form.persona.apellido_materno, ", ").concat(this.form.persona.apellido_materno, " ");
+      return "".concat(this.form.persona.apellido_paterno, " ").concat(this.form.persona.apellido_materno, ", ").concat(this.form.persona.nombre, " ");
     }
   },
   watch: {

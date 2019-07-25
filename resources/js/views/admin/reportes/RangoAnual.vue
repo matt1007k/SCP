@@ -326,7 +326,7 @@ export default {
       );
     },
     getName() {
-      return `${this.form.persona.apellido_paterno} ${this.form.persona.apellido_materno}, ${this.form.persona.apellido_materno} `;
+      return `${this.form.persona.apellido_paterno} ${this.form.persona.apellido_materno}, ${this.form.persona.nombre} `;
     }
   },
   watch: {

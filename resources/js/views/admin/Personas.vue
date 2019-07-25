@@ -103,7 +103,7 @@
                 <v-btn color="error" fab small slot="activator" @click="deleteData(props.item)">
                   <v-icon>$vuetify.icons.delete</v-icon>
                 </v-btn>
-                <span>Cambiar estado</span>
+                <span>Eliminar registro</span>
               </v-tooltip>
             </td>
           </template>
@@ -200,14 +200,14 @@ export default {
     },
     deleteData(persona) {
       this.$swal({
-        title: "Esta seguro de cambiar el estado?",
-        text: "Esta operación va ha cambiar el estado del registro",
+        title: "Esta seguro de eliminar el registro?",
+        text: "Esta operación va a eliminar el registro",
         type: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
         cancelButtonText: "Cancelar",
-        confirmButtonText: "Si, cambiar"
+        confirmButtonText: "Si, eliminar"
       }).then(result => {
         if (result.value) {
           axios
@@ -215,7 +215,7 @@ export default {
             .then(res => {
               this.$swal(
                 "Mensaje de operación",
-                "Estado cambiado correctamente",
+                "La persona se eliminó correctamente",
                 "success"
               );
               this.getData();

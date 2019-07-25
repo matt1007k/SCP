@@ -22,7 +22,7 @@
               clearable
               label="Buscar"
               type="text"
-              placeholder="Buscar por DNI de la persona o filtrar por periodo..."
+              placeholder="Buscar por DNI de la persona..."
             >
               <template v-slot:prepend>
                 <v-icon>$vuetify.icons.search</v-icon>
@@ -96,7 +96,7 @@
                 <v-btn color="error" fab small slot="activator" @click="deleteData(props.item)">
                   <v-icon>$vuetify.icons.delete</v-icon>
                 </v-btn>
-                <span>Cambiar estado</span>
+                <span>Eliminar registro</span>
               </v-tooltip>
             </td>
           </template>
@@ -189,7 +189,7 @@ export default {
     deleteData(pago) {
       this.$swal({
         title: "Esta seguro de eliminar el registro?",
-        text: "Esta operación eliminar el registro.",
+        text: "Esta operación va a eliminar el registro.",
         type: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
@@ -203,7 +203,7 @@ export default {
             .then(res => {
               this.$swal(
                 "Mensaje de operación",
-                "Rol eliminado correctamente",
+                "El pago se eliminó correctamente",
                 "success"
               );
               this.getData();

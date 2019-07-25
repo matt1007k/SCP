@@ -546,18 +546,18 @@ __webpack_require__.r(__webpack_exports__);
       var _this2 = this;
 
       this.$swal({
-        title: "Esta seguro de cambiar el estado?",
-        text: "Esta operación va ha cambiar el estado del registro",
+        title: "Esta seguro de eliminar el registro?",
+        text: "Esta operación va a eliminar el registro",
         type: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
         cancelButtonText: "Cancelar",
-        confirmButtonText: "Si, cambiar"
+        confirmButtonText: "Si, eliminar"
       }).then(function (result) {
         if (result.value) {
           axios["delete"]("/personas/".concat(persona.id)).then(function (res) {
-            _this2.$swal("Mensaje de operación", "Estado cambiado correctamente", "success");
+            _this2.$swal("Mensaje de operación", "La persona se eliminó correctamente", "success");
 
             _this2.getData();
           })["catch"](function (err) {
@@ -1683,7 +1683,7 @@ var render = function() {
                                       1
                                     ),
                                     _vm._v(" "),
-                                    _c("span", [_vm._v("Cambiar estado")])
+                                    _c("span", [_vm._v("Eliminar registro")])
                                   ],
                                   1
                                 )

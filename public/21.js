@@ -338,7 +338,7 @@ __webpack_require__.r(__webpack_exports__);
       window.open("/reporte/por-anios?anio_anterior=".concat(anio_anterior, "&anio_actual=").concat(anio_actual, "&dni=").concat(dni, "&certificado=").concat(certificado), "_blank");
     },
     getName: function getName() {
-      return "".concat(this.form.persona.apellido_paterno, " ").concat(this.form.persona.apellido_materno, ", ").concat(this.form.persona.apellido_materno, " ");
+      return "".concat(this.form.persona.apellido_paterno, " ").concat(this.form.persona.apellido_materno, ", ").concat(this.form.persona.nombre, " ");
     }
   },
   watch: {

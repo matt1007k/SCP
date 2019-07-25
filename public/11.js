@@ -217,7 +217,7 @@ __webpack_require__.r(__webpack_exports__);
 
       this.$swal({
         title: "Esta seguro de eliminar el registro?",
-        text: "Esta operación eliminar el registro.",
+        text: "Esta operación va a eliminar el registro.",
         type: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
@@ -227,7 +227,7 @@ __webpack_require__.r(__webpack_exports__);
       }).then(function (result) {
         if (result.value) {
           axios["delete"]("/pagos/".concat(pago.id)).then(function (res) {
-            _this3.$swal("Mensaje de operación", "Rol eliminado correctamente", "success");
+            _this3.$swal("Mensaje de operación", "El pago se eliminó correctamente", "success");
 
             _this3.getData();
           })["catch"](function (err) {
@@ -348,8 +348,7 @@ var render = function() {
                           clearable: "",
                           label: "Buscar",
                           type: "text",
-                          placeholder:
-                            "Buscar por DNI de la persona o filtrar por periodo..."
+                          placeholder: "Buscar por DNI de la persona..."
                         },
                         scopedSlots: _vm._u([
                           {
@@ -629,7 +628,7 @@ var render = function() {
                                       1
                                     ),
                                     _vm._v(" "),
-                                    _c("span", [_vm._v("Cambiar estado")])
+                                    _c("span", [_vm._v("Eliminar registro")])
                                   ],
                                   1
                                 )

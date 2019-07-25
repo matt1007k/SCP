@@ -106,13 +106,7 @@ class PersonaController extends Controller
     {
         $persona = Persona::findOrFail($id);
 
-        if ($persona->estado === 'activo') {
-            $persona->estado = 'inactivo';
-        } else if ($persona->estado === 'inactivo') {
-            $persona->estado = 'activo';
-        }
-
-        if ($persona->save()) {
+        if ($persona->delete()) {
             return response()->json([
                 'persona' => $persona,
             ]);

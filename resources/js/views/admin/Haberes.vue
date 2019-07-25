@@ -8,7 +8,14 @@
               <v-flex xs12 sm8 md9>
                 <span class="headline">Lista de Haberes</span>
               </v-flex>
-              <v-flex xs12 sm4 md3 justify-end flexbox v-if="$auth.can('haberes.create') || $auth.isAdmin()">
+              <v-flex
+                xs12
+                sm4
+                md3
+                justify-end
+                flexbox
+                v-if="$auth.can('haberes.create') || $auth.isAdmin()"
+              >
                 <v-btn color="primary" @click="modalAgregar">
                   <v-icon>$vuetify.icons.add</v-icon>Agregar haber
                 </v-btn>
@@ -179,7 +186,7 @@ export default {
     deleteData(haber) {
       this.$swal({
         title: "Esta seguro de cambiar el estado del registro?",
-        text: "Esta operación va ha cambiar a ser asegurable o no el haber",
+        text: "Esta operación va a cambiar a ser asegurable o no el haber",
         type: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",

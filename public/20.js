@@ -284,7 +284,7 @@ __webpack_require__.r(__webpack_exports__);
       // });
     },
     getName: function getName() {
-      return "".concat(this.form.persona.apellido_paterno, " ").concat(this.form.persona.apellido_materno, ", ").concat(this.form.persona.apellido_materno, " ");
+      return "".concat(this.form.persona.apellido_paterno, " ").concat(this.form.persona.apellido_materno, ", ").concat(this.form.persona.nombre, " ");
     }
   },
   watch: {
@@ -659,13 +659,10 @@ var render = function() {
                           _vm._v("Resultados encontrados")
                         ]),
                         _vm._v(" "),
-                        _c("dir", { staticClass: "caption" }, [
-                          _vm._v(
-                            "Descargar o imprimir todos los pagos por el rango de años"
-                          )
+                        _c("div", { staticClass: "caption" }, [
+                          _vm._v("Descargar o imprimir todos los pagos por año")
                         ])
-                      ],
-                      1
+                      ]
                     ),
                     _vm._v(" "),
                     _c(

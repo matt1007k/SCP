@@ -193,7 +193,7 @@ export default {
     deleteData(usuario) {
       this.$swal({
         title: "Esta seguro de cambiar el estado?",
-        text: "Esta operación va ha cambiar el estado del registro",
+        text: "Esta operación va a cambiar el estado del registro",
         type: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",

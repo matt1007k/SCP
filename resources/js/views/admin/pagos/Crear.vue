@@ -312,8 +312,10 @@ export default {
         .post("/pagos", form)
         .then(res => {
           this.$router.push("/admin/pagos/lista");
-          this.$parent.this.$root.$snackbar.show(
-            "Datos registrados correctamente."
+          this.$swal(
+            "Mensaje de operación",
+            "Datos registrados correctamente",
+            "success"
           );
           this.resetForm();
         })

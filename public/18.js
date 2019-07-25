@@ -334,7 +334,7 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
       axios.post("/pagos", form).then(function (res) {
         _this2.$router.push("/admin/pagos/lista");
 
-        _this2.$parent["this"].$root.$snackbar.show("Datos registrados correctamente.");
+        _this2.$swal("Mensaje de operación", "Datos registrados correctamente", "success");
 
         _this2.resetForm();
       })["catch"](function (err) {
