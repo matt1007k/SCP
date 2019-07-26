@@ -129,9 +129,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
                 if (message) {
                   this.resetInputFile();
-                  this.$root.$snackbar.show(message, {
-                    color: "warning"
-                  });
+                  this.$swal("Mensaje de operación", message, "info");
                 }
 
                 _context.next = 25;
@@ -148,9 +146,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 _context.t0 = _context.t0.response.data.message;
 
                 if (_context.t0 == "Undefined index: HABERES" || _context.t0 == "Undefined index: DESCUENTOS") {
-                  this.$root.$snackbar.show("Las hojas HABERES y DESCUENTOS no exiten en el archivo.", {
-                    color: "info"
-                  });
+                  this.$swal("Mensaje de operación", "Las hojas HABERES y DESCUENTOS no exiten en el archivo.", "info");
                   this.resetInputFile();
                 }
 

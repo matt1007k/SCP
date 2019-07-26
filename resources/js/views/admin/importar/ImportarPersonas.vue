@@ -98,7 +98,7 @@ export default {
         if (message) {
           this.resetInputFile();
           // this.$root.$snackbar.show(message, { color: "warning" });
-          this.$swal("Importar datos de personas", message, "warning");
+          this.$swal("Mensaje de operación", message, "info");
         }
       } catch (error) {
         this.errors = error.response.data.errors;

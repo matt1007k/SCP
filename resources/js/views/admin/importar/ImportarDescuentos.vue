@@ -96,7 +96,7 @@ export default {
         var message = res.data.msg;
         if (message) {
           this.resetInputFile();
-          this.$root.$snackbar.show(message, { color: "warning" });
+          this.$swal("Mensaje de operación", message, "info");
         }
       } catch (error) {
         this.errors = error.response.data.errors;
@@ -110,9 +110,10 @@ export default {
           error == "Undefined index: HABERES" ||
           error == "Undefined index: DESCUENTOS"
         ) {
-          this.$root.$snackbar.show(
+          this.$swal(
+            "Mensaje de operación",
             "Las hojas HABERES y DESCUENTOS no exiten en el archivo.",
-            { color: "info" }
+            "info"
           );
           this.resetInputFile();
         }

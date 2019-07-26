@@ -28,8 +28,14 @@ class ImportarController extends Controller
         $filename = pathinfo($archivo, PATHINFO_FILENAME);
 
         $estadoExcelNombre = substr($filename, -1);
-        $estado = $this->getEstado($estadoExcelNombre);
 
+        $estado = $this->getEstado($estadoExcelNombre);
+        if ($estado === '') {
+            return response()->json([
+                'msg' => 'El nombre del archivo excel no es correcto',
+                'import' => false,
+            ], 200);
+        }
         try {
             $personasExcel = Excel::toCollection(new PersonasImport(), $request->file('archivo'));
         } catch (\PhpOffice\PhpSpreadsheet\Exception $e) {
@@ -40,8 +46,20 @@ class ImportarController extends Controller
                 ], 200);
             }
         }
+        // return $personasExcel;
         if (count($personasExcel)) {
             foreach ($personasExcel[0] as $personaExcel) {
+                if ($personaExcel['nombres'] == null ||
+                    $personaExcel['apepat'] == null ||
+                    $personaExcel['apemat'] == null ||
+                    $personaExcel['dni'] == null ||
+                    $personaExcel['codmod'] == null ||
+                    $personaExcel['cargo'] == null) {
+                    return response()->json([
+                        'import' => true,
+                        'msg' => 'El archivo excel no tiene datos.',
+                    ], 200);
+                }
                 $DetallesHaber = $this->generarDetallesPago($personaExcel, 'hab', 'mtohab');
                 $DetallesDescuento = $this->generarDetallesPago($personaExcel, "des", "mtodes");
 
@@ -159,7 +177,7 @@ class ImportarController extends Controller
 
     public function getEstado($estadoExcelNombre)
     {
-        $estado = 'activo';
+        $estado = '';
         if ($estadoExcelNombre == 'A') {
             $estado = 'activo';
             return $estado;
@@ -170,10 +188,7 @@ class ImportarController extends Controller
             $estado = 'sobreviviente';
             return $estado;
         } else {
-            return response()->json([
-                'msg' => 'El nombre de archivo excel no es correcto',
-                'import' => false,
-            ], 200);
+            return $estado;
         }
     }
 

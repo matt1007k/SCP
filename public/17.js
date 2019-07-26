@@ -130,7 +130,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 if (message) {
                   this.resetInputFile(); // this.$root.$snackbar.show(message, { color: "warning" });
 
-                  this.$swal("Importar datos de personas", message, "warning");
+                  this.$swal("Mensaje de operación", message, "info");
                 }
 
                 _context.next = 23;
