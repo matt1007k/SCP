@@ -172,7 +172,7 @@ return [
         'codmodular' => 'Código modular',
         'permissions' => 'permisos',
         'persona_id' => 'persona',
-        'anio' => 'año',
+        'anio' => 'El año',
         'anio_anterior' => 'del año',
         'anio_actual' => 'hasta el año',
     ],

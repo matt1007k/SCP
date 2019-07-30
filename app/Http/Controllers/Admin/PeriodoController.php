@@ -17,7 +17,7 @@ class PeriodoController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'anio' => 'required|numeric|unique:periodos, anio',
+            'anio' => 'required|numeric|min:4|unique:periodos,anio',
         ]);
 
         Periodo::create($request->all());
@@ -28,7 +28,7 @@ class PeriodoController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'anio' => 'required|numeric|unique:periodos, anio,' . $id,
+            'anio' => 'required|numeric|min:4|unique:periodos,anio,' . $id,
         ]);
 
         Periodo::findOrfail($id)->update($request->all());

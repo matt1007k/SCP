@@ -72,7 +72,7 @@
           :search="search"
           :loading="loadingData"
           rows-per-page-text="Mostrar"
-          no-data-text="No hay registros"
+          no-data-text="No hay pagos registrados"
           no-results-text="No hay registros encontrados"
           :pagination.sync="pagination"
           class="elevation-1"

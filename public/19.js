@@ -11,7 +11,8 @@
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _services_listMonthsOfTheYear__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../services/listMonthsOfTheYear */ "./resources/js/services/listMonthsOfTheYear.js");
 /* harmony import */ var _components_pagos_Agregar__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../components/pagos/Agregar */ "./resources/js/components/pagos/Agregar.vue");
-/* harmony import */ var _components_pagos_ListaItems__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../components/pagos/ListaItems */ "./resources/js/components/pagos/ListaItems.vue");
+/* harmony import */ var _components_periodos_ModalAgregar__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../components/periodos/ModalAgregar */ "./resources/js/components/periodos/ModalAgregar.vue");
+/* harmony import */ var _components_pagos_ListaItems__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../components/pagos/ListaItems */ "./resources/js/components/pagos/ListaItems.vue");
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { _defineProperty(target, key, source[key]); }); } return target; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
@@ -182,13 +183,22 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
     Agregar: _components_pagos_Agregar__WEBPACK_IMPORTED_MODULE_1__["default"],
-    ListaItems: _components_pagos_ListaItems__WEBPACK_IMPORTED_MODULE_2__["default"]
+    ListaItems: _components_pagos_ListaItems__WEBPACK_IMPORTED_MODULE_3__["default"],
+    ModalAgregar: _components_periodos_ModalAgregar__WEBPACK_IMPORTED_MODULE_2__["default"]
   },
   data: function data() {
     return {
@@ -223,6 +233,7 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
   },
   mounted: function mounted() {
     this.$root.modalAgregarhb = this.$refs.modalAgregarhb;
+    this.$root.modalAgregarPeriodo = this.$refs.modalAgregarPeriodo;
   },
   methods: {
     getItem: function getItem() {
@@ -254,6 +265,9 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
       })["catch"](function (err) {
         return console.log(err);
       });
+    },
+    addPeriodo: function addPeriodo() {
+      this.$root.modalAgregarPeriodo.show();
     },
     addHD: function addHD(tipo) {
       this.$root.modalAgregarhb.showModal();
@@ -641,11 +655,54 @@ var render = function() {
                                 1
                               ),
                               _vm._v(" "),
-                              _c("v-flex", { attrs: { xs12: "" } }, [
-                                _c("span", { staticClass: "body-2 mb-2" }, [
-                                  _vm._v("El periodo del pago")
-                                ])
-                              ]),
+                              _c(
+                                "v-flex",
+                                { attrs: { xs12: "" } },
+                                [
+                                  _c("span", { staticClass: "body-2 mb-2" }, [
+                                    _vm._v("El periodo del pago")
+                                  ]),
+                                  _vm._v(" "),
+                                  _vm.$auth.can("periodos.create") ||
+                                  _vm.$auth.isAdmin()
+                                    ? _c(
+                                        "v-tooltip",
+                                        { attrs: { top: "" } },
+                                        [
+                                          _c(
+                                            "v-btn",
+                                            {
+                                              attrs: {
+                                                slot: "activator",
+                                                color: "primary",
+                                                fab: "",
+                                                small: ""
+                                              },
+                                              on: {
+                                                click: function($event) {
+                                                  return _vm.addPeriodo()
+                                                }
+                                              },
+                                              slot: "activator"
+                                            },
+                                            [
+                                              _c("v-icon", [
+                                                _vm._v("$vuetify.icons.add")
+                                              ])
+                                            ],
+                                            1
+                                          ),
+                                          _vm._v(" "),
+                                          _c("span", [
+                                            _vm._v("Agregar un nuevo año")
+                                          ])
+                                        ],
+                                        1
+                                      )
+                                    : _vm._e()
+                                ],
+                                1
+                              ),
                               _vm._v(" "),
                               _c(
                                 "v-flex",
@@ -943,7 +1000,9 @@ var render = function() {
         1
       ),
       _vm._v(" "),
-      _c("agregar", { ref: "modalAgregarhb", on: { addRow: _vm.addRow } })
+      _c("agregar", { ref: "modalAgregarhb", on: { addRow: _vm.addRow } }),
+      _vm._v(" "),
+      _c("modal-agregar", { ref: "modalAgregarPeriodo" })
     ],
     1
   )

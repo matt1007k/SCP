@@ -511,7 +511,7 @@ var render = function() {
                   search: _vm.search,
                   loading: _vm.loadingData,
                   "rows-per-page-text": "Mostrar",
-                  "no-data-text": "No hay registros",
+                  "no-data-text": "No hay pagos registrados",
                   "no-results-text": "No hay registros encontrados",
                   pagination: _vm.pagination,
                   "rows-per-page-items": _vm.RowsPerPageItems

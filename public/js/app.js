@@ -44412,7 +44412,7 @@ var ParentComponent = {
       path: "",
       name: "admin",
       component: function component() {
-        return Promise.all(/*! import() */[__webpack_require__.e(25), __webpack_require__.e(2), __webpack_require__.e(3)]).then(__webpack_require__.bind(null, /*! ./views/admin/Dashboard.vue */ "./resources/js/views/admin/Dashboard.vue"));
+        return Promise.all(/*! import() */[__webpack_require__.e(0), __webpack_require__.e(2), __webpack_require__.e(3)]).then(__webpack_require__.bind(null, /*! ./views/admin/Dashboard.vue */ "./resources/js/views/admin/Dashboard.vue"));
       }
     }, {
       path: "perfil",
@@ -44511,13 +44511,13 @@ var ParentComponent = {
         path: "haberes-descuentos",
         name: "importar.descuentos",
         component: function component() {
-          return Promise.all(/*! import() */[__webpack_require__.e(25), __webpack_require__.e(16)]).then(__webpack_require__.bind(null, /*! ./views/admin/importar/ImportarDescuentos.vue */ "./resources/js/views/admin/importar/ImportarDescuentos.vue"));
+          return Promise.all(/*! import() */[__webpack_require__.e(0), __webpack_require__.e(16)]).then(__webpack_require__.bind(null, /*! ./views/admin/importar/ImportarDescuentos.vue */ "./resources/js/views/admin/importar/ImportarDescuentos.vue"));
         }
       }, {
         path: "personas-pagos",
         name: "importar.personas",
         component: function component() {
-          return Promise.all(/*! import() */[__webpack_require__.e(25), __webpack_require__.e(17)]).then(__webpack_require__.bind(null, /*! ./views/admin/importar/ImportarPersonas.vue */ "./resources/js/views/admin/importar/ImportarPersonas.vue"));
+          return Promise.all(/*! import() */[__webpack_require__.e(0), __webpack_require__.e(17)]).then(__webpack_require__.bind(null, /*! ./views/admin/importar/ImportarPersonas.vue */ "./resources/js/views/admin/importar/ImportarPersonas.vue"));
         }
       }]
     }, {

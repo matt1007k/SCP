@@ -66,6 +66,12 @@
                 </v-flex>
                 <v-flex xs12>
                   <span class="body-2 mb-2">El periodo del pago</span>
+                  <v-tooltip top v-if="$auth.can('periodos.create') || $auth.isAdmin()">
+                    <v-btn color="primary" fab small @click="addPeriodo()" slot="activator">
+                      <v-icon>$vuetify.icons.add</v-icon>
+                    </v-btn>
+                    <span>Agregar un nuevo año</span>
+                  </v-tooltip>
                 </v-flex>
                 <v-flex xs12 sm6 md3>
                   <div class="pr-2">
@@ -150,15 +156,17 @@
       </v-layout>
     </form>
     <agregar ref="modalAgregarhb" @addRow="addRow"></agregar>
+    <modal-agregar ref="modalAgregarPeriodo"></modal-agregar>
   </v-container>
 </template>
 
 <script>
 import { months } from "../../../services/listMonthsOfTheYear";
 import Agregar from "../../../components/pagos/Agregar";
+import ModalAgregar from "../../../components/periodos/ModalAgregar";
 import ListaItems from "../../../components/pagos/ListaItems";
 export default {
-  components: { Agregar, ListaItems },
+  components: { Agregar, ListaItems, ModalAgregar },
   data() {
     return {
       form: {
@@ -190,6 +198,7 @@ export default {
   },
   mounted() {
     this.$root.modalAgregarhb = this.$refs.modalAgregarhb;
+    this.$root.modalAgregarPeriodo = this.$refs.modalAgregarPeriodo;
   },
   methods: {
     customFilter(item, queryText, itemText) {
@@ -215,6 +224,9 @@ export default {
     addHD(tipo) {
       this.$root.modalAgregarhb.showModal();
       this.$root.modalAgregarhb.tipo = tipo;
+    },
+    addPeriodo() {
+      this.$root.modalAgregarPeriodo.show();
     },
     addRow(item, tipo) {
       if (tipo == "haber") {
