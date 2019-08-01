@@ -192,14 +192,14 @@ export default {
     },
     deleteData(usuario) {
       this.$swal({
-        title: "Esta seguro de cambiar el estado?",
+        title: "¿Está seguro de cambiar el estado?",
         text: "Esta operación va a cambiar el estado del registro",
         type: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
         cancelButtonText: "Cancelar",
-        confirmButtonText: "Si, cambiar"
+        confirmButtonText: "Sí, cambiar"
       }).then(result => {
         if (result.value) {
           axios

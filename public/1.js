@@ -850,9 +850,7 @@ var render = function() {
                       1
                     ),
                     _vm._v(" "),
-                    _c("small", [
-                      _vm._v("*indicado todos los campos son obligatorios.")
-                    ])
+                    _c("small", [_vm._v("Ingrese el campo obligatorio.")])
                   ],
                   1
                 ),

@@ -185,14 +185,14 @@ export default {
     },
     deleteData(haber) {
       this.$swal({
-        title: "Esta seguro de cambiar el estado del registro?",
+        title: "¿Está seguro de cambiar el estado del registro?",
         text: "Esta operación va a cambiar a ser asegurable o no el haber",
         type: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
         cancelButtonText: "Cancelar",
-        confirmButtonText: "Si, cambiar"
+        confirmButtonText: "Sí, cambiar"
       }).then(result => {
         if (result.value) {
           axios
@@ -230,6 +230,3 @@ export default {
   }
 };
 </script>
-
-<style>
-</style>

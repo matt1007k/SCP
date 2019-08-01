@@ -146,7 +146,29 @@ __webpack_require__.r(__webpack_exports__);
         }
       });
     },
-    viewPDF: function viewPDF() {}
+    viewPDF: function viewPDF(historial) {
+      var anio = historial.anio;
+      var meses = historial.meses;
+      var dni = historial.dni;
+      var certificado = historial.certificado;
+      var tipo = historial.tipo;
+      console.log(historial);
+
+      if (tipo == "rango") {
+        var array_years = anio.split("-");
+        var anio_anterior = array_years[0];
+        var anio_actual = array_years[1];
+        window.open("/reporte/por-anios?ver=1&anio_anterior=".concat(anio_anterior, "&anio_actual=").concat(anio_actual, "&dni=").concat(dni, "&certificado=").concat(certificado), "_blank");
+      }
+
+      if (tipo == "anio") {
+        window.open("/reporte/por-anio?ver=1&anio=".concat(anio, "&dni=").concat(dni, "&certificado=").concat(certificado), "_blank");
+      }
+
+      if (tipo == "mes") {
+        window.open("/reporte/por-mes?ver=1&anio=".concat(anio, "&mes=").concat(meses, "&dni=").concat(dni, "&certificado=").concat(certificado), "_blank");
+      }
+    }
   },
   computed: {
     pages: function pages() {
@@ -197,9 +219,7 @@ var render = function() {
                         [
                           _c("v-flex", { attrs: { xs12: "" } }, [
                             _c("span", { staticClass: "headline" }, [
-                              _vm._v(
-                                "Lista de Historial de Constancias Entregadas"
-                              )
+                              _vm._v("Lista de Historial de Constancias")
                             ])
                           ])
                         ],

@@ -441,14 +441,14 @@ __webpack_require__.r(__webpack_exports__);
       var _this2 = this;
 
       this.$swal({
-        title: "Esta seguro de eliminar el registro?",
+        title: "¿Está seguro de eliminar el registro?",
         text: "Esta operación va a eliminar el registro",
         type: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
         cancelButtonText: "Cancelar",
-        confirmButtonText: "Si, eliminar"
+        confirmButtonText: "Sí, eliminar"
       }).then(function (result) {
         if (result.value) {
           axios["delete"]("/roles/".concat(rol.id)).then(function (res) {
@@ -676,9 +676,7 @@ var render = function() {
                       1
                     ),
                     _vm._v(" "),
-                    _c("small", [
-                      _vm._v("*indicado todos los campos son obligatorios.")
-                    ])
+                    _c("small", [_vm._v("Ingrese los campos obligatorios.")])
                   ],
                   1
                 ),
@@ -925,9 +923,7 @@ var render = function() {
                       1
                     ),
                     _vm._v(" "),
-                    _c("small", [
-                      _vm._v("*indicado todos los campos son obligatorios.")
-                    ])
+                    _c("small", [_vm._v("Ingrese los campos obligatorios.")])
                   ],
                   1
                 ),

@@ -274,7 +274,12 @@ export default {
       axios({
         url: "/reporte/por-anio",
         method: "GET",
-        params: { anio, dni, certificado: this.form.certificado },
+        params: { 
+          anio, 
+          dni, 
+          certificado: this.form.certificado, 
+          ver: 1 
+        },
         responseType: "blob" // important
       }).then(response => {
         const url = window.URL.createObjectURL(new Blob([response.data]));
@@ -291,7 +296,8 @@ export default {
         anio_anterior: this.form.anio_anterior,
         anio_actual: this.form.anio_actual,
         dni: this.form.persona.dni,
-        certificado: this.form.certificado
+        certificado: this.form.certificado,
+        ver: 0
       };
       axios({
         url: "/reporte/por-anios",
@@ -311,7 +317,7 @@ export default {
     viewPDF(anio, dni) {
       const certificado = this.form.certificado;
       window.open(
-        `/reporte/por-anio?anio=${anio}&dni=${dni}&certificado=${certificado}`,
+        `/reporte/por-anio?ver=1&anio=${anio}&dni=${dni}&certificado=${certificado}`,
         "_blank"
       );
     },
@@ -321,7 +327,7 @@ export default {
       const dni = this.form.persona.dni;
       const certificado = this.form.certificado;
       window.open(
-        `/reporte/por-anios?anio_anterior=${anio_anterior}&anio_actual=${anio_actual}&dni=${dni}&certificado=${certificado}`,
+        `/reporte/por-anios?ver=0&anio_anterior=${anio_anterior}&anio_actual=${anio_actual}&dni=${dni}&certificado=${certificado}`,
         "_blank"
       );
     },

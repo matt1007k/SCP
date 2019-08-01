@@ -248,7 +248,13 @@ export default {
       axios({
         url: "/reporte/por-mes",
         method: "GET",
-        params: { anio, mes, dni, certificado: this.form.certificado },
+        params: {
+          anio,
+          mes,
+          dni,
+          certificado: this.form.certificado,
+          ver: 0
+        },
         responseType: "blob" // important
       }).then(response => {
         const url = window.URL.createObjectURL(new Blob([response.data]));
@@ -263,7 +269,7 @@ export default {
     viewPDF(anio, mes, dni) {
       const certificado = this.form.certificado;
       window.open(
-        `/reporte/por-mes?anio=${anio}&mes=${mes}&dni=${dni}&certificado=${certificado}`,
+        `/reporte/por-mes?ver=0&anio=${anio}&mes=${mes}&dni=${dni}&certificado=${certificado}`,
         "_blank"
       );
     },

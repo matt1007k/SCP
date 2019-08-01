@@ -75,7 +75,7 @@
                 </v-flex>
               </v-layout>
             </v-container>
-            <small>*indicado todos los campos son obligatorios.</small>
+            <small>Ingrese los campos obligatorios.</small>
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
@@ -114,10 +114,10 @@ export default {
           this.$parent.getData();
           this.open = false;
           this.$swal(
-                "Mensaje de operación",
-                "Datos registrados correctamente",
-                "success"
-              );
+            "Mensaje de operación",
+            "Datos registrados correctamente",
+            "success"
+          );
           this.resetInputs();
         })
         .catch(err => {

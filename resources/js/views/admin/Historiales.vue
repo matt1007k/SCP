@@ -6,7 +6,7 @@
           <v-container fill-height fluid>
             <v-layout row wrap>
               <v-flex xs12>
-                <span class="headline">Lista de Historial de Constancias Entregadas</span>
+                <span class="headline">Lista de Historial de Constancias</span>
               </v-flex>
             </v-layout>
           </v-container>
@@ -124,7 +124,36 @@ export default {
           }
         });
     },
-    viewPDF() {}
+    viewPDF(historial) {
+      const anio = historial.anio;
+      const meses = historial.meses;
+      const dni = historial.dni;
+      const certificado = historial.certificado;
+      const tipo = historial.tipo;
+      console.log(historial);
+
+      if (tipo == "rango") {
+        var array_years = anio.split("-");
+        var anio_anterior = array_years[0];
+        var anio_actual = array_years[1];
+        window.open(
+          `/reporte/por-anios?ver=1&anio_anterior=${anio_anterior}&anio_actual=${anio_actual}&dni=${dni}&certificado=${certificado}`,
+          "_blank"
+        );
+      }
+      if (tipo == "anio") {
+        window.open(
+          `/reporte/por-anio?ver=1&anio=${anio}&dni=${dni}&certificado=${certificado}`,
+          "_blank"
+        );
+      }
+      if (tipo == "mes") {
+        window.open(
+          `/reporte/por-mes?ver=1&anio=${anio}&mes=${meses}&dni=${dni}&certificado=${certificado}`,
+          "_blank"
+        );
+      }
+    }
   },
   computed: {
     pages() {

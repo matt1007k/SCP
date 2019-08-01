@@ -260,7 +260,8 @@ __webpack_require__.r(__webpack_exports__);
           anio: anio,
           mes: mes,
           dni: dni,
-          certificado: this.form.certificado
+          certificado: this.form.certificado,
+          ver: 0
         },
         responseType: "blob" // important
 
@@ -277,7 +278,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     viewPDF: function viewPDF(anio, mes, dni) {
       var certificado = this.form.certificado;
-      window.open("/reporte/por-mes?anio=".concat(anio, "&mes=").concat(mes, "&dni=").concat(dni, "&certificado=").concat(certificado), "_blank");
+      window.open("/reporte/por-mes?ver=0&anio=".concat(anio, "&mes=").concat(mes, "&dni=").concat(dni, "&certificado=").concat(certificado), "_blank");
     },
     getName: function getName() {
       return "".concat(this.form.persona.apellido_paterno, " ").concat(this.form.persona.apellido_materno, ", ").concat(this.form.persona.nombre, " ");

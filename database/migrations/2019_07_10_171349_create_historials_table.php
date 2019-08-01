@@ -15,10 +15,11 @@ class CreateHistorialsTable extends Migration
     {
         Schema::create('historiales', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('anio', 4);
+            $table->string('anio', 10);
             $table->string('meses', 100);
             $table->string('dni', 8);
             $table->string('certificado', 20);
+            $table->string('tipo', 20);
             $table->timestamps();
         });
     }

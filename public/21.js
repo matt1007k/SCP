@@ -285,7 +285,8 @@ __webpack_require__.r(__webpack_exports__);
         params: {
           anio: anio,
           dni: dni,
-          certificado: this.form.certificado
+          certificado: this.form.certificado,
+          ver: 1
         },
         responseType: "blob" // important
 
@@ -307,7 +308,8 @@ __webpack_require__.r(__webpack_exports__);
         anio_anterior: this.form.anio_anterior,
         anio_actual: this.form.anio_actual,
         dni: this.form.persona.dni,
-        certificado: this.form.certificado
+        certificado: this.form.certificado,
+        ver: 0
       };
       axios({
         url: "/reporte/por-anios",
@@ -328,14 +330,14 @@ __webpack_require__.r(__webpack_exports__);
     },
     viewPDF: function viewPDF(anio, dni) {
       var certificado = this.form.certificado;
-      window.open("/reporte/por-anio?anio=".concat(anio, "&dni=").concat(dni, "&certificado=").concat(certificado), "_blank");
+      window.open("/reporte/por-anio?ver=1&anio=".concat(anio, "&dni=").concat(dni, "&certificado=").concat(certificado), "_blank");
     },
     viewAllPDF: function viewAllPDF() {
       var anio_anterior = this.form.anio_anterior;
       var anio_actual = this.form.anio_actual;
       var dni = this.form.persona.dni;
       var certificado = this.form.certificado;
-      window.open("/reporte/por-anios?anio_anterior=".concat(anio_anterior, "&anio_actual=").concat(anio_actual, "&dni=").concat(dni, "&certificado=").concat(certificado), "_blank");
+      window.open("/reporte/por-anios?ver=0&anio_anterior=".concat(anio_anterior, "&anio_actual=").concat(anio_actual, "&dni=").concat(dni, "&certificado=").concat(certificado), "_blank");
     },
     getName: function getName() {
       return "".concat(this.form.persona.apellido_paterno, " ").concat(this.form.persona.apellido_materno, ", ").concat(this.form.persona.nombre, " ");

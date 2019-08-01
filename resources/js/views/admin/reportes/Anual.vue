@@ -231,7 +231,12 @@ export default {
       axios({
         url: "/reporte/por-anio",
         method: "GET",
-        params: { anio, dni, certificado: this.form.certificado },
+        params: {
+          anio,
+          dni,
+          certificado: this.form.certificado,
+          ver: 0
+        },
         responseType: "blob" // important
       }).then(response => {
         const url = window.URL.createObjectURL(new Blob([response.data]));
@@ -260,7 +265,7 @@ export default {
       // window.open("data:application/pdf;base64," + encodeURI(response.data));
       const certificado = this.form.certificado;
       window.open(
-        `/reporte/por-anio?anio=${anio}&dni=${dni}&certificado=${certificado}`,
+        `/reporte/por-anio?ver=0&anio=${anio}&dni=${dni}&certificado=${certificado}`,
         "_blank"
       );
       // location.href = `/reporte/por-anio?anio=${anio}&dni=${dni}`;

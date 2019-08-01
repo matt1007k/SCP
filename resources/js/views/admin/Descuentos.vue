@@ -161,14 +161,14 @@ export default {
     },
     deleteData(descuento) {
       this.$swal({
-        title: "Esta seguro de eliminar el registro?",
+        title: "¿Está seguro de eliminar el registro?",
         text: "Esta operación va a eliminar el registro",
         type: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
         cancelButtonText: "Cancelar",
-        confirmButtonText: "Si, eliminar"
+        confirmButtonText: "Sí, eliminar"
       }).then(result => {
         if (result.value) {
           axios
@@ -206,6 +206,3 @@ export default {
   }
 };
 </script>
-
-<style>
-</style>

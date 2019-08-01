@@ -470,14 +470,14 @@ __webpack_require__.r(__webpack_exports__);
       var _this2 = this;
 
       this.$swal({
-        title: "Esta seguro de cambiar el estado del registro?",
+        title: "¿Está seguro de cambiar el estado del registro?",
         text: "Esta operación va a cambiar a ser asegurable o no el haber",
         type: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
         cancelButtonText: "Cancelar",
-        confirmButtonText: "Si, cambiar"
+        confirmButtonText: "Sí, cambiar"
       }).then(function (result) {
         if (result.value) {
           axios["delete"]("/haberes/".concat(haber.id)).then(function (res) {
@@ -720,9 +720,7 @@ var render = function() {
                       1
                     ),
                     _vm._v(" "),
-                    _c("small", [
-                      _vm._v("*indicado todos los campos son obligatorios.")
-                    ])
+                    _c("small", [_vm._v("Ingrese los campos obligatorios.")])
                   ],
                   1
                 ),
@@ -986,9 +984,7 @@ var render = function() {
                       1
                     ),
                     _vm._v(" "),
-                    _c("small", [
-                      _vm._v("*indicado todos los campos son obligatorios.")
-                    ])
+                    _c("small", [_vm._v("Ingrese los campos obligatorios.")])
                   ],
                   1
                 ),

@@ -244,7 +244,8 @@ __webpack_require__.r(__webpack_exports__);
         params: {
           anio: anio,
           dni: dni,
-          certificado: this.form.certificado
+          certificado: this.form.certificado,
+          ver: 0
         },
         responseType: "blob" // important
 
@@ -275,7 +276,7 @@ __webpack_require__.r(__webpack_exports__);
       // const url = window.URL.createObjectURL(new Blob([response.data]));
       // window.open("data:application/pdf;base64," + encodeURI(response.data));
       var certificado = this.form.certificado;
-      window.open("/reporte/por-anio?anio=".concat(anio, "&dni=").concat(dni, "&certificado=").concat(certificado), "_blank"); // location.href = `/reporte/por-anio?anio=${anio}&dni=${dni}`;
+      window.open("/reporte/por-anio?ver=0&anio=".concat(anio, "&dni=").concat(dni, "&certificado=").concat(certificado), "_blank"); // location.href = `/reporte/por-anio?anio=${anio}&dni=${dni}`;
       // target = "_blank";
       // done = 1;
       // })

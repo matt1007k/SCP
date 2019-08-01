@@ -26,7 +26,7 @@
                 </v-flex>
               </v-layout>
             </v-container>
-            <small>*indicado todos los campos son obligatorios.</small>
+            <small>Ingrese el campo obligatorio.</small>
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
