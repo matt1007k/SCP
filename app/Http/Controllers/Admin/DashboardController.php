@@ -5,6 +5,7 @@ use App\Http\Controllers\Controller;
 use App\Models\HaberDescuento;
 use App\Models\Pago;
 use App\Models\Persona;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
@@ -163,6 +164,16 @@ class DashboardController extends Controller
                     $query->where('estado', 'like', "%{$estado}%");
                 })->sum('monto_liquido'),
             ];
+        }
+    }
+
+    public function markAllNotifications()
+    {
+        $user = User::find(auth()->user()->id);
+        $user->unreadNotifications->markAsRead();
+
+        if (request()->ajax()) {
+            return auth()->user()->unreadNotifications;
         }
     }
 }

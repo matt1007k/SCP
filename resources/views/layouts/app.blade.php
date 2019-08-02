@@ -24,7 +24,7 @@
         @isset(Auth::user()->roles)
         window.user = @json(
         [
-            'user' => Auth::user(),
+            'user' => Auth::user()->load('notifications'),
             'roles' => Auth::user()->roles,
             'permissions' => Auth::user()->permissions
         ]

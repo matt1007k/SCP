@@ -75,6 +75,7 @@ Route::namespace ('Admin')->group(function () {
 
         Route::get('/boleta/por-mes', 'ReporteController@boletaPorMes')->name('admin.boleta.pormes');
 
+        Route::get('/mark-all-read', 'DashboardController@markAllNotifications');
     });
 
 });

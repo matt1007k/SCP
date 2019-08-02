@@ -8,9 +8,13 @@ use App\Models\Detalle;
 use App\Models\HaberDescuento;
 use App\Models\Pago;
 use App\Models\Persona;
+use App\Models\User;
+use App\Notifications\DataImported;
 use App\Services\HaberesImponiblesService;
+use App\Services\MesesService;
 use Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Notification;
 use Maatwebsite\Excel\Facades\Excel;
 
 class ImportarController extends Controller
@@ -46,8 +50,8 @@ class ImportarController extends Controller
                 ], 200);
             }
         }
-        // return $personasExcel;
-        if (count($personasExcel)) {
+        // return $personasExcel[0];
+        if (count($personasExcel[0])) {
             foreach ($personasExcel[0] as $personaExcel) {
                 if ($personaExcel['nombres'] == null ||
                     $personaExcel['apepat'] == null ||
@@ -136,6 +140,28 @@ class ImportarController extends Controller
                 }
 
             }
+            $mesesService = new MesesService();
+
+            $personal = User::all()->filter(function ($user) {
+                return $user->roles('Personal');
+            });
+
+            $totalPagos = count($personasExcel[0]);
+            $anio = substr($filename, 0, 4);
+            $mes_estado = substr($filename, -3);
+            $mes_numero = substr($mes_estado, 0, 2);
+            $nombre_mes = '';
+
+            foreach ($mesesService->getMeses() as $mes_service) {
+                if ($mes_numero == $mes_service['numero']) {
+                    $nombre_mes = $mes_service['nombre'];
+                }
+            }
+            // Total de pagos subidos (121), de Julio del 2019
+            $message = "Total de pagos subidos ($totalPagos), de $nombre_mes del $anio";
+
+            Notification::send($personal, new DataImported($message));
+
             return response()->json([
                 'import' => true,
             ]);
@@ -276,6 +302,7 @@ class ImportarController extends Controller
         }
 
         if (count($hdescuentosExcel) > 0) {
+
             foreach ($hdescuentosExcel['HABERES'] as $haber) {
 
                 $codigo = 'H' . $haber['codigo'];
@@ -314,6 +341,20 @@ class ImportarController extends Controller
                 }
 
             }
+
+            // Total de haberes subidos (121)
+            // Total de descuentos subidos (121)
+            $totalHaberes = count($hdescuentosExcel['HABERES']);
+            $totalDescuentos = count($hdescuentosExcel['DESCUENTOS']);
+
+            $personal = User::all()->filter(function ($user) {
+                return $user->roles('Personal');
+            });
+            $message1 = "Total de haberes subidos ($totalHaberes)";
+            $message2 = "Total de descuentos subidos ($totalDescuentos)";
+
+            Notification::send($personal, new DataImported($message1));
+            Notification::send($personal, new DataImported($message2));
 
             return response()->json([
                 'import' => true,

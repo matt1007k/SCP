@@ -9,16 +9,52 @@
 
       <v-spacer></v-spacer>
 
-      <v-btn icon @click="snackbar = true">
+      <!-- <v-btn icon @click="snackbar = true">
         <v-icon>$vuetify.icons.search</v-icon>
-      </v-btn>
+      </v-btn>-->
 
-      <v-btn icon>
-        <v-badge color="accent" rigth overlap>
-          <template v-slot:badge>0</template>
-          <v-icon>$vuetify.icons.bell</v-icon>
-        </v-badge>
-      </v-btn>
+      <v-menu
+        offset-y
+        origin="center center"
+        class="elelvation-1"
+        :nudge-bottom="0"
+        transition="scale-transition"
+        bottom
+      >
+        <v-btn @click="markAsRead" icon flat slot="activator">
+          <v-badge color="indigo" rigth overlap>
+            <template v-slot:badge>{{unreadNotifications.length}}</template>
+            <v-icon>$vuetify.icons.bell</v-icon>
+          </v-badge>
+        </v-btn>
+        <v-list>
+          <v-subheader class="indigo">
+            <h2 class="text-white">Notificaciones</h2>
+          </v-subheader>
+          <template v-if="unreadNotifications.length > 0">
+            <v-list-tile
+              :class="{'white': notification.read_at == null}"
+              @click="markAsRead"
+              v-for="notification in unreadNotifications"
+              :key="notification.id"
+              style="padding: 8px 5px"
+            >
+              <v-list-tile-content>
+                <v-list-tile-title>{{notification.data.message}}</v-list-tile-title>
+                <v-list-tile-sub-title>{{getFormaterDate(notification.created_at)}}</v-list-tile-sub-title>
+              </v-list-tile-content>
+            </v-list-tile>
+          </template>
+          <template v-else>
+            <v-list-tile style="padding: 8px 5px">
+              <v-list-tile-content>
+                <v-list-tile-sub-title>No tienes notificaciones</v-list-tile-sub-title>
+              </v-list-tile-content>
+            </v-list-tile>
+          </template>
+        </v-list>
+      </v-menu>
+
       <v-btn flat @click="LogOut">
         <v-icon>$vuetify.icons.exit</v-icon>
         <span>Salir</span>
@@ -27,20 +63,23 @@
 
     <v-content>
       <transition name="slide-fade">
-        <router-view :key="$route.fullPath"/>
+        <router-view :key="$route.fullPath" />
       </transition>
     </v-content>
   </v-app>
 </template>
 
 <script>
+import moment from "moment";
 import SidebarAdminLeft from "./SidebarAdminLeft";
 import Snackbar from "../messages/Snackbar";
 export default {
   components: { SidebarAdminLeft, Snackbar },
   name: "LayoutAdmin",
   data: () => ({
-    drawer: true
+    drawer: true,
+    allNotifications: [],
+    unreadNotifications: []
   }),
   methods: {
     OpenSidebar() {
@@ -62,10 +101,39 @@ export default {
         .catch(err => {
           console.log(err);
         });
+    },
+    markAsRead() {
+      axios.get("/mark-all-read").then(res => console.log(res));
+    },
+    getFormaterDate(date) {
+      moment.locale("es");
+      return moment(date).fromNow();
     }
   },
   mounted() {
     this.$root.$snackbar = this.$refs.snackbar;
+  },
+  watch: {
+    allNotifications(val) {
+      this.unreadNotifications = this.allNotifications.filter(notification => {
+        return notification.read_at == null;
+      });
+    }
+  },
+  created() {
+    // console.log(this.$auth.user.user.id);
+
+    this.allNotifications = this.$auth.user.user.notifications;
+    this.unreadNotifications = this.allNotifications.filter(notification => {
+      return notification.read_at == null;
+    });
+    Echo.private(`App.User.${this.$auth.user.user.id}`).notification(
+      notification => {
+        console.log(notification, "connect");
+
+        this.allNotifications.unshift(notification.notification);
+      }
+    );
   }
 };
 </script>
