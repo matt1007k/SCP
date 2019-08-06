@@ -167,6 +167,13 @@ class DashboardController extends Controller
         }
     }
 
+    public function getUnReadNotifications()
+    {
+        return response()->json([
+            auth()->user()->unreadNotifications,
+        ], 200);
+    }
+
     public function markAllNotifications()
     {
         $user = User::find(auth()->user()->id);

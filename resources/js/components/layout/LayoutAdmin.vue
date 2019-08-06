@@ -102,6 +102,12 @@ export default {
           console.log(err);
         });
     },
+    getUnReadNotifications() {
+      axios
+        .get("/unread-notifications")
+        .then(res => (this.unreadNotifications = res.data[0]))
+        .catch(error => console.log(error));
+    },
     markAsRead() {
       axios.get("/mark-all-read").then(res => console.log(res));
     },
@@ -112,28 +118,35 @@ export default {
   },
   mounted() {
     this.$root.$snackbar = this.$refs.snackbar;
+    this.getUnReadNotifications();
   },
-  watch: {
-    allNotifications(val) {
-      this.unreadNotifications = this.allNotifications.filter(notification => {
-        return notification.read_at == null;
-      });
+  sockets: {
+    connect() {
+      console.log("Socket connect");
+    },
+    message(value) {
+      this.getUnReadNotifications();
     }
   },
+  // watch: {
+  //   allNotifications(val) {
+  //     this.unreadNotifications = this.allNotifications.filter(notification => {
+  //       return notification.read_at == null;
+  //     });
+  //   }
+  // },
   created() {
     // console.log(this.$auth.user.user.id);
-
-    this.allNotifications = this.$auth.user.user.notifications;
-    this.unreadNotifications = this.allNotifications.filter(notification => {
-      return notification.read_at == null;
-    });
-    Echo.private(`App.User.${this.$auth.user.user.id}`).notification(
-      notification => {
-        console.log(notification, "connect");
-
-        this.allNotifications.unshift(notification.notification);
-      }
-    );
+    // this.allNotifications = this.$auth.user.user.notifications;
+    // this.unreadNotifications = this.allNotifications.filter(notification => {
+    //   return notification.read_at == null;
+    // });
+    // Echo.private(`App.User.${this.$auth.user.user.id}`).notification(
+    //   notification => {
+    //     console.log(notification, "connect");
+    //     this.allNotifications.unshift(notification.notification);
+    //   }
+    // );
   }
 };
 </script>

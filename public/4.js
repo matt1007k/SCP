@@ -117,6 +117,15 @@ __webpack_require__.r(__webpack_exports__);
         console.log(err);
       });
     },
+    getUnReadNotifications: function getUnReadNotifications() {
+      var _this = this;
+
+      axios.get("/unread-notifications").then(function (res) {
+        return _this.unreadNotifications = res.data[0];
+      })["catch"](function (error) {
+        return console.log(error);
+      });
+    },
     markAsRead: function markAsRead() {
       axios.get("/mark-all-read").then(function (res) {
         return console.log(res);
@@ -129,27 +138,34 @@ __webpack_require__.r(__webpack_exports__);
   },
   mounted: function mounted() {
     this.$root.$snackbar = this.$refs.snackbar;
+    this.getUnReadNotifications();
   },
-  watch: {
-    allNotifications: function allNotifications(val) {
-      this.unreadNotifications = this.allNotifications.filter(function (notification) {
-        return notification.read_at == null;
-      });
+  sockets: {
+    connect: function connect() {
+      console.log("Socket connect");
+    },
+    message: function message(value) {
+      this.getUnReadNotifications();
     }
   },
-  created: function created() {
-    var _this = this;
-
-    // console.log(this.$auth.user.user.id);
-    this.allNotifications = this.$auth.user.user.notifications;
-    this.unreadNotifications = this.allNotifications.filter(function (notification) {
-      return notification.read_at == null;
-    });
-    Echo["private"]("App.User.".concat(this.$auth.user.user.id)).notification(function (notification) {
-      console.log(notification, "connect");
-
-      _this.allNotifications.unshift(notification.notification);
-    });
+  // watch: {
+  //   allNotifications(val) {
+  //     this.unreadNotifications = this.allNotifications.filter(notification => {
+  //       return notification.read_at == null;
+  //     });
+  //   }
+  // },
+  created: function created() {// console.log(this.$auth.user.user.id);
+    // this.allNotifications = this.$auth.user.user.notifications;
+    // this.unreadNotifications = this.allNotifications.filter(notification => {
+    //   return notification.read_at == null;
+    // });
+    // Echo.private(`App.User.${this.$auth.user.user.id}`).notification(
+    //   notification => {
+    //     console.log(notification, "connect");
+    //     this.allNotifications.unshift(notification.notification);
+    //   }
+    // );
   }
 });
 
