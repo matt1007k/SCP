@@ -20,6 +20,12 @@ use Redis;
 
 class ImportarController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:importar.personas')->only(['personas']);
+        $this->middleware('permission:importar.descuentos')->only(['descuentos']);
+    }
+
     public function personas(Request $request)
     {
         $request->validate([

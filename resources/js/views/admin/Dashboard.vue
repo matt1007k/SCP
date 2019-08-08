@@ -26,7 +26,7 @@
                   :items="items"
                   v-model="anio"
                   item-text="anio"
-                    item-value="anio"
+                  item-value="anio"
                   @input="filterByYear()"
                   label="Seleccionar el año"
                 ></v-select>
@@ -41,7 +41,17 @@
       <v-flex xs12 sm6>
         <v-card>
           <v-card-text>
-            <pie-chart :chart-data="dataPersonas"></pie-chart>
+            <pie-chart :chart-data="dataPersonas" title="Cantidad de personas por estado"></pie-chart>
+          </v-card-text>
+        </v-card>
+      </v-flex>
+      <v-flex xs12 sm6>
+        <v-card>
+          <v-card-text>
+            <pie-chart
+              :chart-data="dataConstancias"
+              title="Cantidad de constancias por tipo de reporte"
+            ></pie-chart>
           </v-card-text>
         </v-card>
       </v-flex>
@@ -59,6 +69,7 @@ export default {
     count_items: [],
     dataPagos: {},
     dataPersonas: {},
+    dataConstancias: {},
     anio: String(new Date().getFullYear()),
     estado: "activo",
     items: []
@@ -68,6 +79,7 @@ export default {
     this.getCount();
     this.getTotalPagos();
     this.getTotalPersonas();
+    this.getTotalConstancias();
     this.getYears();
   },
   mounted() {
@@ -122,6 +134,17 @@ export default {
           this.dataPersonas = {
             labels: ["Activos", "Cesantes", "Sobrevivientes"],
             datasets: res.data.total_personas
+          };
+        })
+        .catch(err => console.log(err));
+    },
+    getTotalConstancias() {
+      axios
+        .get("/getTotalConstancias")
+        .then(res => {
+          this.dataConstancias = {
+            labels: ["Por rango de años", "Por año", "Por mes"],
+            datasets: res.data.total_constancias
           };
         })
         .catch(err => console.log(err));

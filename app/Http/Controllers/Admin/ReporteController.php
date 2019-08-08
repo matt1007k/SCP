@@ -10,6 +10,18 @@ use PDF;
 
 class ReporteController extends Controller
 {
+    public function __construct(){
+        $this->middleware('permission:pagos.consultar')
+                ->only([
+                    'searchByYears', 
+                    'porAnios',
+                    'searchByYear', 
+                    'porAnio',
+                    'searchByYearAndMonth',
+                    'porMes',
+                ]);
+    }
+    
     public function searchByYears(Request $request)
     {
         $request->validate([

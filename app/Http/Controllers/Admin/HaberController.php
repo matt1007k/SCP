@@ -8,6 +8,14 @@ use Illuminate\Http\Request;
 
 class HaberController extends Controller
 {
+    public function __contruct()
+    {
+        $this->middleware('permission:pagos.consultar')->only(['search']);
+        $this->middleware('permission:haberes.index')->only(['index']);
+        $this->middleware('permission:haberes.create')->only(['store']);
+        $this->middleware('permission:haberes.edit')->only(['update']);
+        $this->middleware('permission:haberes.destroy')->only(['destroy']);
+    }
     public function search()
     {
         $es_imponible = request('imponible') ?? request('imponible');

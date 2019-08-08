@@ -3,7 +3,7 @@ import { Pie, mixins } from "vue-chartjs";
 const { reactiveProp } = mixins;
 export default {
   extends: Pie,
-  // props: { datasets: Array },
+  props: { title: String },
   mixins: [reactiveProp],
   data() {
     return {
@@ -11,7 +11,7 @@ export default {
       options: {
         title: {
           display: true,
-          text: "Cantidad de personas por estado"
+          text: this.title
         },
         legend: {
           display: true
@@ -30,6 +30,8 @@ export default {
     };
   },
   mounted() {
+    console.log(this.title);
+
     //renderChart function renders the chart with the datacollection and options object.
     this.renderChart(this.chartData, this.options);
   }

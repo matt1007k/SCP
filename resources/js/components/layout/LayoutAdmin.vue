@@ -78,15 +78,10 @@ export default {
   name: "LayoutAdmin",
   data: () => ({
     drawer: true,
-    allNotifications: [],
     unreadNotifications: []
   }),
   methods: {
     OpenSidebar() {
-      // this.$children[0].$children[0].drawer = !this.$children[0].$children[0]
-      // .drawer;
-      // console.log(event.target);
-
       this.drawer = !this.drawer;
     },
     goTo(url) {
@@ -127,26 +122,6 @@ export default {
     message(value) {
       this.getUnReadNotifications();
     }
-  },
-  // watch: {
-  //   allNotifications(val) {
-  //     this.unreadNotifications = this.allNotifications.filter(notification => {
-  //       return notification.read_at == null;
-  //     });
-  //   }
-  // },
-  created() {
-    // console.log(this.$auth.user.user.id);
-    // this.allNotifications = this.$auth.user.user.notifications;
-    // this.unreadNotifications = this.allNotifications.filter(notification => {
-    //   return notification.read_at == null;
-    // });
-    // Echo.private(`App.User.${this.$auth.user.user.id}`).notification(
-    //   notification => {
-    //     console.log(notification, "connect");
-    //     this.allNotifications.unshift(notification.notification);
-    //   }
-    // );
   }
 };
 </script>

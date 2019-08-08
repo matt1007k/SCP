@@ -96,15 +96,11 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       drawer: true,
-      allNotifications: [],
       unreadNotifications: []
     };
   },
   methods: {
     OpenSidebar: function OpenSidebar() {
-      // this.$children[0].$children[0].drawer = !this.$children[0].$children[0]
-      // .drawer;
-      // console.log(event.target);
       this.drawer = !this.drawer;
     },
     goTo: function goTo(url) {
@@ -147,25 +143,6 @@ __webpack_require__.r(__webpack_exports__);
     message: function message(value) {
       this.getUnReadNotifications();
     }
-  },
-  // watch: {
-  //   allNotifications(val) {
-  //     this.unreadNotifications = this.allNotifications.filter(notification => {
-  //       return notification.read_at == null;
-  //     });
-  //   }
-  // },
-  created: function created() {// console.log(this.$auth.user.user.id);
-    // this.allNotifications = this.$auth.user.user.notifications;
-    // this.unreadNotifications = this.allNotifications.filter(notification => {
-    //   return notification.read_at == null;
-    // });
-    // Echo.private(`App.User.${this.$auth.user.user.id}`).notification(
-    //   notification => {
-    //     console.log(notification, "connect");
-    //     this.allNotifications.unshift(notification.notification);
-    //   }
-    // );
   }
 });
 

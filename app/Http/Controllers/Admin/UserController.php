@@ -13,16 +13,18 @@ class UserController extends Controller
     public function __construct()
     {
         $this->middleware('permission:users.index')->only(['index']);
-        // $this->middleware('permission:users.show')->only(['show']);
+        $this->middleware('permission:users.create')->only(['store']);
         $this->middleware('permission:users.edit')->only(['update']);
         $this->middleware('permission:users.destroy')->only(['destroy']);
     }
+    
     public function index()
     {
         $usuarios = User::With(['roles', 'permissions'])->get();
 
         return response()->json(['usuarios' => $usuarios], 200);
     }
+
     public function store(Request $request)
     {
         $request->validate([

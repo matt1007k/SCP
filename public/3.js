@@ -124,7 +124,9 @@ __webpack_require__.r(__webpack_exports__);
 var reactiveProp = vue_chartjs__WEBPACK_IMPORTED_MODULE_0__["mixins"].reactiveProp;
 /* harmony default export */ __webpack_exports__["default"] = ({
   "extends": vue_chartjs__WEBPACK_IMPORTED_MODULE_0__["Pie"],
-  // props: { datasets: Array },
+  props: {
+    title: String
+  },
   mixins: [reactiveProp],
   data: function data() {
     return {
@@ -132,7 +134,7 @@ var reactiveProp = vue_chartjs__WEBPACK_IMPORTED_MODULE_0__["mixins"].reactivePr
       options: {
         title: {
           display: true,
-          text: "Cantidad de personas por estado"
+          text: this.title
         },
         legend: {
           display: true
@@ -151,7 +153,8 @@ var reactiveProp = vue_chartjs__WEBPACK_IMPORTED_MODULE_0__["mixins"].reactivePr
     };
   },
   mounted: function mounted() {
-    //renderChart function renders the chart with the datacollection and options object.
+    console.log(this.title); //renderChart function renders the chart with the datacollection and options object.
+
     this.renderChart(this.chartData, this.options);
   }
 });
@@ -229,6 +232,16 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -243,6 +256,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       count_items: [],
       dataPagos: {},
       dataPersonas: {},
+      dataConstancias: {},
       anio: String(new Date().getFullYear()),
       estado: "activo",
       items: []
@@ -253,6 +267,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     this.getCount();
     this.getTotalPagos();
     this.getTotalPersonas();
+    this.getTotalConstancias();
     this.getYears();
   },
   mounted: function mounted() {
@@ -330,6 +345,18 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         _this3.dataPersonas = {
           labels: ["Activos", "Cesantes", "Sobrevivientes"],
           datasets: res.data.total_personas
+        };
+      })["catch"](function (err) {
+        return console.log(err);
+      });
+    },
+    getTotalConstancias: function getTotalConstancias() {
+      var _this4 = this;
+
+      axios.get("/getTotalConstancias").then(function (res) {
+        _this4.dataConstancias = {
+          labels: ["Por rango de años", "Por año", "Por mes"],
+          datasets: res.data.total_constancias
         };
       })["catch"](function (err) {
         return console.log(err);
@@ -893,7 +920,36 @@ var render = function() {
                     "v-card-text",
                     [
                       _c("pie-chart", {
-                        attrs: { "chart-data": _vm.dataPersonas }
+                        attrs: {
+                          "chart-data": _vm.dataPersonas,
+                          title: "Cantidad de personas por estado"
+                        }
+                      })
+                    ],
+                    1
+                  )
+                ],
+                1
+              )
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "v-flex",
+            { attrs: { xs12: "", sm6: "" } },
+            [
+              _c(
+                "v-card",
+                [
+                  _c(
+                    "v-card-text",
+                    [
+                      _c("pie-chart", {
+                        attrs: {
+                          "chart-data": _vm.dataConstancias,
+                          title: "Cantidad de constancias por tipo de reporte"
+                        }
                       })
                     ],
                     1

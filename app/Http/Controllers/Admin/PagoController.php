@@ -10,6 +10,13 @@ use Illuminate\Http\Request;
 
 class PagoController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:pagos.index')->only(['index']);
+        $this->middleware('permission:pagos.create')->only(['store']);
+        $this->middleware('permission:pagos.edit')->only(['update', 'edit']);
+        $this->middleware('permission:pagos.destroy')->only(['destroy']);
+    }
     public function index()
     {
         $anio = request('anio');

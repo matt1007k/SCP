@@ -1,12 +1,13 @@
 <?php
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
-use App\Models\HaberDescuento;
 use App\Models\Pago;
-use App\Models\Persona;
 use App\Models\User;
+use App\Models\Persona;
+use App\Models\Historial;
 use Illuminate\Http\Request;
+use App\Models\HaberDescuento;
+use App\Http\Controllers\Controller;
 
 class DashboardController extends Controller
 {
@@ -165,6 +166,24 @@ class DashboardController extends Controller
                 })->sum('monto_liquido'),
             ];
         }
+    }
+
+    public function getTotalConstancias()
+    {
+        set_time_limit(0);
+        $total_rango = Historial::where('tipo', 'rango')->count();
+        $total_anio = Historial::where('tipo', 'anio')->count();
+        $total_mes = Historial::where('tipo', 'mes')->count();
+
+        $total_constancias = array();
+
+        array_push($total_constancias, (object) [
+            "backgroundColor" => ["#2196F3", "#FF5252", "#3F51B5"],
+            "data" => [$total_rango, $total_anio, $total_mes],
+        ]);
+        return response()->json([
+            'total_constancias' => $total_constancias,
+        ], 200);
     }
 
     public function getUnReadNotifications()

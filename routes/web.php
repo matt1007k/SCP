@@ -36,6 +36,7 @@ Route::namespace ('Admin')->group(function () {
         Route::get('/getCount', 'DashboardController@getCount')->name('admin.count');
         Route::get('/getTotalPagos', 'DashboardController@getTotalPagos')->name('admin.total_pagos');
         Route::get('/getTotalPersonas', 'DashboardController@getTotalPersonas')->name('admin.total_personas');
+        Route::get('/getTotalConstancias', 'DashboardController@getTotalConstancias')->name('admin.total_constancias');
 
         Route::resource('periodos', 'PeriodoController')
             ->except(['show', 'create', 'edit']);

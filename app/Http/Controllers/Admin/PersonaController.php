@@ -12,10 +12,10 @@ class PersonaController extends Controller
     public function __construct()
     {
         $this->middleware('permission:personas.index')->only(['index']);
-        // // $this->middleware('permission:personas.show')->only(['show']);
-        // $this->middleware('permission:personas.create')->only(['create', 'store']);
-        // $this->middleware('permission:personas.edit')->only(['edit', 'update']);
-        // $this->middleware('permission:personas.destroy')->only(['destroy']);
+        $this->middleware('permission:personas.show')->only(['show']);
+        $this->middleware('permission:personas.create')->only(['create', 'store']);
+        $this->middleware('permission:personas.edit')->only(['edit', 'update']);
+        $this->middleware('permission:personas.destroy')->only(['destroy']);
     }
 
     public function search(Request $request)

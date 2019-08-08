@@ -7,6 +7,11 @@ use Illuminate\Http\Request;
 
 class PeriodoController extends Controller
 {
+    public function __construct()
+    {
+
+    }
+
     public function index()
     {
         $years = Periodo::orderBy('anio', 'DESC')->get(['id', 'anio']);
