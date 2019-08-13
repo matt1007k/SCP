@@ -29,9 +29,6 @@
     .text-center{
         text-align: center;
     }
-    .text-center{
-        text-align: center;
-    }
     .text-left{
         text-align: left;
     }
@@ -50,11 +47,20 @@
     .fs-header{        
         font-size: 10px;
     }
-    .no-margin{
-        margin: 0;
+    .fs-header2{        
+        font-size: 13px;
     }
+    .bb-1{
+        border-bottom: 1px solid #000;
+    }
+    .position-absolute{
+        position: absolute;
+    }    
     .page-break { 
         page-break-after: always; 
+    }
+    .no-margin{
+        margin: 0;
     }
     </style>
 </head>
@@ -66,39 +72,66 @@
             <table class="w-80">
                 <tbody>
                     <tr>
+                        <td colspan="4"></td>    
+                        <td class="text-right fs-header2">
+                                <b>CERTIFICADO N°:</b>
+                            </td>
+                        <td class="fs-header2 bb-1">{{$pago['certificado']}}</td>                   
+                        <td class="text-right" >
+                            <img style="position: absolute; top:0; right: 0" src="data:image/png;base64, {!! base64_encode(QrCode::format('png')->size(74)->generate($pago['certificado'].'|'.$pago['pago']->persona->dni.'|'.date('d/m/Y H:i:s').'|'.$pago['user']->name)) !!} ">
+                        </td>
+                        <td>
+                            <tr>
+                                {{-- <td class="fs-header text-right">
+                                        <b>Responsable:</b>
+                                    </td> --}}
+                                <td class="fs-header text-right">
+                                    <span style="position: absolute; top:20; right: 100; width: 200px">{{$pago['user']->name}} &nbsp;</span>    
+                                </td>    
+                            </tr>     
+                            <tr>
+                                <td class="fs-header text-right">
+                                    {{-- <b>FECHA DE IMPRESIÓN:</b> --}}
+                                </td>
+                                <td class="fs-header text-right">
+                                    <span style="position: absolute; top:10; right: 80; width: 200px">{{date('d/m/Y H:i')}} &nbsp;</span>
+                                </td>
+                            </tr>
+                            
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="w-80">
+                <tbody>
+                    <tr>
                         <td class="text-left fs-header">
                             <b>DNI:</b>
                         </td>
                         <td class="fs-header">{{$pago['pago']->persona->dni}}</td>
-                        <td class="text-left fs-header">
+                        <td class="text-right fs-header">
                             <b>CARGO:</b>
                         </td>
                         <td class="fs-header">{{$pago['pago']->persona->cargo}}</td>
+                        <td class="text-right fs-header">
+                            <b>ESTADO:</b>
+                        </td>
+                        <td class="fs-header text-uppercase">{{$pago['pago']->persona->estado}}</td>
                     </tr>
                     <tr>
                         <td class="text-left fs-header">
                             <b>APELLIDOS Y NOMBRES:</b>
                         </td>
-                        <td class="fs-header" >{{$pago['pago']->persona->apellido_paterno}} {{$pago['pago']->persona->apellido_materno}}, {{$pago['pago']->persona->nombre}}</td>
+                        <td class="fs-header" colspan="2">{{$pago['pago']->persona->apellido_paterno}} {{$pago['pago']->persona->apellido_materno}}, {{$pago['pago']->persona->nombre}}</td>
+                        
                     </tr>
                     <tr>
                         <td class="text-left fs-header">
                             <b>AÑO:</b>
                         </td>
                         <td class="fs-header">{{$pago['pago']->anio}}</td>
-                        <td>
-                            <td class="text-left fs-header">
-                                <b>CERTIFICADO N°:</b>
-                            </td>
-                            <td class="fs-header">{{$pago['certificado']}}</td>                   
-                            <td class="fs-header text-right">
-                                {{-- <b>FECHA DE IMPRESIÓN:</b> --}}
-                                <b>Fecha de Impresión:</b>
-                            </td>
-                            <td class="fs-header text-right">
-                                {{date('d/m/Y')}}
-                            </td>
-                        </td>
+            
+                        
                         
                     </tr>
                 </tbody>

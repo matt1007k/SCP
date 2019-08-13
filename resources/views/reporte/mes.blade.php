@@ -40,20 +40,72 @@
         height: 20px;
     }
     .fs-header{        
-        font-size: 13px;
+        font-size: 12px;
+    }
+    .fs-header2{        
+        font-size: 14px;
     }
     .fw-bold{
         font-weight: bold;
     }
+    .text-uppercase{
+        text-transform: uppercase;
+    }    
+    .bb-1{
+        border-bottom: 1px solid #000;
+    }
+    .position-absolute{
+        position: absolute;
+    }
+    footer {
+        position: fixed; 
+        bottom: -60px; 
+        left: 0px; 
+        right: 0px;
+        height: 50px; 
+
+        /** Extra personal styles **/
+        background-color: #03a9f4;
+        color: white;
+        text-align: center;
+        line-height: 35px;
+    }
     </style>
 </head>
 <body>
-    <header>
-        
+    <header>        
         
         <img src="{{ public_path().'/img/cabecera.png' }}" class="w-100" height="120"  alt="">
         
         <h4 class="text-center" style="text-decoration: underline">CONSTANCIA DE PAGOS DE HABERES Y DESCUENTOS</h4>
+        <table class="w-100">
+            <tbody>
+                <tr>                 
+                    <td class="text-right">
+                        <img class="position-absolute" style="top:95%; right: 0" src="data:image/png;base64, {!! base64_encode(QrCode::format('png')->size(74)->generate($certificado.'|'.$pago->persona->dni.'|'.date('d/m/Y H:i:s').'|'.$user->name)) !!} ">
+                    </td>
+                    <td>
+                        <tr>
+                            {{-- <td class="fs-header text-right">
+                                    <b>Responsable:</b>
+                                </td> --}}
+                            <td class="fs-header text-right">
+                                <span class="position-absolute" style="top:98%; right: 60; width: 200px">{{$user->name}} &nbsp;</span>    
+                            </td>    
+                        </tr>     
+                        <tr>
+                            <td class="fs-header text-right">
+                                {{-- <b>FECHA DE IMPRESIÓN:</b> --}}
+                            </td>
+                            <td class="fs-header text-right">
+                                <span class="position-absolute" style="top:96%; right: 60; width: 200px">{{date('d/m/Y H:i')}} &nbsp;</span>
+                            </td>
+                        </tr>
+                        
+                    </td>
+                </tr>
+            </tbody>
+        </table>
         <table class="w-100">
             <tbody>
                 <tr>
@@ -61,10 +113,14 @@
                         <b>DNI:</b>
                     </td>
                     <td class="fs-header">{{$pago->persona->dni}}</td> 
-                    <td class="text-left fs-header">
+                    <td class="text-right fs-header">
                         <b>CARGO:</b>
                     </td>
                     <td class="fs-header">{{$pago->persona->cargo}}</td>
+                    <td class="text-right fs-header">
+                        <b>ESTADO:</b>
+                    </td>
+                    <td class="fs-header text-uppercase">{{$pago->persona->estado}}</td>
                 </tr>
                 <tr>
                     <td class="text-left fs-header">
@@ -77,22 +133,18 @@
                         <b>AÑO:</b>
                     </td>
                     <td class="fs-header">{{$pago->anio}}</td>
-                    <td class="text-left fs-header">
+                    <td class="text-right fs-header">
                         <b>MES:</b>
                     </td>
                     <td class="fs-header">{{$nombre_mes}}</td>
                 </tr>
-                <tr style="height: 80px">
-                    <td class="text-left fs-header">
+                <tr>
+                    <td  colspan="2"></td>
+                    <td class="text-right fs-header2">
                         <b>CERTIFICADO N°:</b>
+                        <span class="bb-1">{{$certificado}}</span>
                     </td>
-                    <td class="fs-header">{{$certificado}}</td>
-                    <td class="fs-header">
-                        <b>Fecha de Impresión:</b>
-                    </td>
-                    <td class="fs-header">
-                        {{date('d/m/Y')}}
-                    </td>
+                    {{-- <td class="fs-header2 bb-1">{{$certificado}}</td> --}}
                 </tr>
             </tbody>
         </table>
@@ -1178,6 +1230,9 @@
             </tbody>
         </table>
     </div>
+    {{-- <footer>
+        fidd
+    </footer> --}}
 
 </body>
 </html>

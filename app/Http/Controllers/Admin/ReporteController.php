@@ -1,12 +1,13 @@
 <?php
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
-use App\Models\HaberDescuento;
+use PDF;
 use App\Models\Pago;
+use App\Models\User;
 use App\Models\Historial;
 use Illuminate\Http\Request;
-use PDF;
+use App\Models\HaberDescuento;
+use App\Http\Controllers\Controller;
 
 class ReporteController extends Controller
 {
@@ -73,7 +74,8 @@ class ReporteController extends Controller
         $years_exist_unique = $this->getYearsUnique($pagos);
         // return $pagos;
         if (count($years_exist_unique) > 0) {
-            $pagos_with_detalles = array();
+            $pagos_with_detalles_create = array();
+            $pagos_with_detalles_view = array();
         
             foreach ($years_exist_unique as $key => $year) {                            
                 $pago = Pago::With(['persona'])->where('anio', $year)
@@ -92,18 +94,42 @@ class ReporteController extends Controller
                 $total_descuentos = $this->getTotalByYear($year, $request->dni, 'descuentos');
                 $total_liquidos = $this->getTotalByYear($year, $request->dni, 'liquidos');
                 $total_imponibles = $this->getTotalByYear($year, $request->dni, 'imponibles');
-    
-                array_push($pagos_with_detalles, [                    
+
+                // Order list
+                $order_haberes = collect($haberes)->sortBy('nombre');
+                $order_descuentos = collect($descuentos)->sortBy('nombre');
+
+                array_push($pagos_with_detalles_create, [                    
                     'pago' => $pago,
-                    'haberes' => (object)$haberes,
-                    'descuentos' => (object)$descuentos,
+                    'haberes' => (object)$order_haberes,
+                    'descuentos' => (object)$order_descuentos,
                     'total_haberes' => (object)$total_haberes,
                     'total_descuentos' => (object)$total_descuentos,
                     'liquidos' => (object)$total_liquidos,
                     'imponibles' => (object)$total_imponibles,
                     'meses' => $meses,
-                    'certificado' => $certificado                    
+                    'certificado' => $certificado,
+                    'user' => auth()->user()                
                 ]);
+
+                if($ver == 1){
+
+                    $historial = Historial::where('certificado', $certificado)->first();
+                    $user_view = User::where('dni', $historial->dni_user)->first();
+                    
+                    array_push($pagos_with_detalles_view, [                    
+                        'pago' => $pago,
+                        'haberes' => (object)$order_haberes,
+                        'descuentos' => (object)$order_descuentos,
+                        'total_haberes' => (object)$total_haberes,
+                        'total_descuentos' => (object)$total_descuentos,
+                        'liquidos' => (object)$total_liquidos,
+                        'imponibles' => (object)$total_imponibles,
+                        'meses' => $meses,
+                        'certificado' => $certificado,
+                        'user' => $user_view                
+                    ]);
+                }
             }  
             
             if ($ver == 0) {
@@ -114,10 +140,11 @@ class ReporteController extends Controller
                     'dni' => $request->dni,
                     'certificado' => $certificado,
                     'tipo' => 'rango',
+                    'dni_user' => auth()->user()->dni
                 ]);  
 
                 // return $pagos_with_detalles;
-                $pdf = PDF::loadView('reporte.anios', ['pagos' => $pagos_with_detalles]);
+                $pdf = PDF::loadView('reporte.anios', ['pagos' => $pagos_with_detalles_create]);
                 $pdf->setPaper('a4', 'landscape');
                 
                 return $pdf->stream();
@@ -125,7 +152,7 @@ class ReporteController extends Controller
             }elseif ($ver == 1) { 
                 $historial = Historial::where('certificado', $certificado)->first();
                 if($historial){
-                    $pdf = PDF::loadView('reporte.anios', ['pagos' => $pagos_with_detalles]);
+                    $pdf = PDF::loadView('reporte.anios', ['pagos' => $pagos_with_detalles_view]);
                     $pdf->setPaper('a4', 'landscape');
                     
                     return $pdf->stream();
@@ -222,7 +249,7 @@ class ReporteController extends Controller
             })->first();
 
         if ($pago) {
-            if ($pago->monto_liquido != '0.00') {
+            // if ($pago->monto_liquido != '0.00') {
                 // Detalles por mes
                 $meses = $this->getMesesAndCount($anio, $request->dni);
                 
@@ -236,7 +263,10 @@ class ReporteController extends Controller
                 $total_liquidos = $this->getTotalByYear($anio, $request->dni, 'liquidos');
                 $total_imponibles = $this->getTotalByYear($anio, $request->dni, 'imponibles');
     
-                
+                // Order list
+                $order_haberes = collect($haberes)->sortBy('nombre');
+                $order_descuentos = collect($descuentos)->sortBy('nombre');
+
                 // $array_test = array([
                 //     "nombre_haber"=> "reunifica",
                 //     "monto_enero1"=> "150.00",  
@@ -254,18 +284,20 @@ class ReporteController extends Controller
                         'dni' => $request->dni,
                         'certificado' => $certificado,
                         'tipo' => 'anio',
+                        'dni_user' => auth()->user()->dni
                     ]);  
                 
                     $pdf = PDF::loadView('reporte.anio', [
                         'pago' => $pago,
-                        'haberes' => (object)$haberes,
-                        'descuentos' => (object)$descuentos,
+                        'haberes' => (object)$order_haberes,
+                        'descuentos' => (object)$order_descuentos,
                         'total_haberes' => (object)$total_haberes,
                         'total_descuentos' => (object)$total_descuentos,
                         'liquidos' => (object)$total_liquidos,
                         'imponibles' => (object)$total_imponibles,
                         'meses' => $meses,
-                        'certificado' => $certificado
+                        'certificado' => $certificado,
+                        'user' => auth()->user()
                     ]);
                     $pdf->setPaper('a4', 'landscape');
                     
@@ -274,16 +306,18 @@ class ReporteController extends Controller
                 }elseif ($ver == 1) {     
                     $historial = Historial::where('certificado', $certificado)->first();
                     if($historial){
+                        $user = User::where('dni', $historial->dni_user)->first();
                         $pdf = PDF::loadView('reporte.anio', [
                             'pago' => $pago,
-                            'haberes' => (object)$haberes,
-                            'descuentos' => (object)$descuentos,
+                            'haberes' => (object)$order_haberes,
+                            'descuentos' => (object)$order_descuentos,
                             'total_haberes' => (object)$total_haberes,
                             'total_descuentos' => (object)$total_descuentos,
                             'liquidos' => (object)$total_liquidos,
                             'imponibles' => (object)$total_imponibles,
                             'meses' => $meses,
-                            'certificado' => $certificado
+                            'certificado' => $certificado, 
+                            'user' => $user
                         ]);
                         $pdf->setPaper('a4', 'landscape');
                         
@@ -300,11 +334,11 @@ class ReporteController extends Controller
                     ], 404);
                 }
                 
-            }else {
-                return response()->json([
-                    'msg' => 'Pago no tiene datos.',
-                ], 404);
-            }
+            // }else {
+            //     return response()->json([
+            //         'msg' => 'Pago no tiene datos.',
+            //     ], 404);
+            // }
         } else {
             return response()->json([
                 'msg' => 'Pago no ha sido encontrado',
@@ -902,8 +936,11 @@ class ReporteController extends Controller
                 $total_imponibles = $this->getTotalByMes($anio, $dni, 'imponibles', $mes);
                 
                 $nombre_mes = strtoupper($this->getNameMonth($mes));
-                // return $descuentos;
+                // Order list
+                $order_haberes = collect($haberes)->sortBy('nombre');
+                $order_descuentos = collect($descuentos)->sortBy('nombre');
                 
+                // return $descuentos;
                 if ($ver == 0) {
                     //create historial
                     Historial::create([
@@ -912,6 +949,7 @@ class ReporteController extends Controller
                         'dni' => $request->dni,
                         'certificado' => $certificado,
                         'tipo' => 'mes',
+                        'dni_user' => auth()->user()->dni
                     ]);  
     
                     // return $pagos_with_detalles;
@@ -919,13 +957,14 @@ class ReporteController extends Controller
                         'pago' => $pago,
                         'nombre_mes' => $nombre_mes,
                         'total_pagos' => $total_pagos,
-                        'haberes' => $haberes,
-                        'descuentos' => $descuentos,
+                        'haberes' => $order_haberes,
+                        'descuentos' => $order_descuentos,
                         'total_haberes' => $total_haberes,
                         'total_descuentos' => $total_descuentos,
                         'liquidos' => $total_liquidos,
                         'imponibles' => $total_imponibles,
-                        'certificado' => $certificado
+                        'certificado' => $certificado,
+                        'user' => auth()->user()
                     ]);
                     $pdf->setPaper('a4');
                     return $pdf->stream();
@@ -934,17 +973,20 @@ class ReporteController extends Controller
                     $historial = Historial::where('certificado', $certificado)->first();
 
                     if($historial)   {
+                        $user = User::where('dni', $historial->dni_user)->first();
+
                         $pdf = PDF::loadView('reporte.mes', [
                             'pago' => $pago,
                             'nombre_mes' => $nombre_mes,
                             'total_pagos' => $total_pagos,
-                            'haberes' => $haberes,
-                            'descuentos' => $descuentos,
+                            'haberes' => $order_haberes,
+                            'descuentos' => $order_descuentos,
                             'total_haberes' => $total_haberes,
                             'total_descuentos' => $total_descuentos,
                             'liquidos' => $total_liquidos,
                             'imponibles' => $total_imponibles,
-                            'certificado' => $certificado
+                            'certificado' => $certificado,
+                            'user' => $user
                         ]);
                         $pdf->setPaper('a4');
                         return $pdf->stream();

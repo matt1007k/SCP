@@ -18,6 +18,7 @@ class CreateHistorialsTable extends Migration
             $table->string('anio', 10);
             $table->string('meses', 100);
             $table->string('dni', 8);
+            $table->string('dni_user', 8);
             $table->string('certificado', 20);
             $table->string('tipo', 20);
             $table->timestamps();

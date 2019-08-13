@@ -140,7 +140,7 @@
                   <div class="caption">DNI: {{form.persona.dni}}</div>
                 </div>
                 <div class="actions">
-                  <v-tooltip bottom>
+                  <!-- <v-tooltip bottom>
                     <template v-slot:activator="{ on }">
                       <v-btn
                         color="success"
@@ -159,7 +159,7 @@
                       </v-btn>
                     </template>
                     <span>Imprimir constancia de pago del año ({{pago.anio}})</span>
-                  </v-tooltip>
+                  </v-tooltip> -->
                 </div>
               </v-card-text>
             </v-card>

@@ -86,6 +86,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -113,6 +114,9 @@ __webpack_require__.r(__webpack_exports__);
       }, {
         text: "DNI de la persona",
         value: "dni"
+      }, {
+        text: "DNI del responsable",
+        value: "dni_user"
       }, {
         text: "Fecha de entrega",
         value: "created_at",
@@ -347,6 +351,10 @@ var render = function() {
                         _vm._v(" "),
                         _c("td", { staticClass: "text-xs-center" }, [
                           _vm._v(_vm._s(props.item.dni))
+                        ]),
+                        _vm._v(" "),
+                        _c("td", { staticClass: "text-xs-center" }, [
+                          _vm._v(_vm._s(props.item.dni_user))
                         ]),
                         _vm._v(" "),
                         _c("td", { staticClass: "text-xs-center" }, [

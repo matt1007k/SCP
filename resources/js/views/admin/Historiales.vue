@@ -50,6 +50,7 @@
             <td class="text-xs-center">{{ props.item.anio }}</td>
             <td class="text-xs-center">{{props.item.meses}}</td>
             <td class="text-xs-center">{{props.item.dni}}</td>
+            <td class="text-xs-center">{{props.item.dni_user}}</td>
             <td class="text-xs-center">{{props.item.created_at}}</td>
             <td>
               <v-tooltip bottom v-if="$auth.can('pagos.consultar') || $auth.isAdmin()">
@@ -95,6 +96,7 @@ export default {
         },
         { text: "El Mes o Meses", value: "meses" },
         { text: "DNI de la persona", value: "dni" },
+        { text: "DNI del responsable", value: "dni_user" },
         { text: "Fecha de entrega", value: "created_at", sortable: false }
       ],
       historiales: []
