@@ -70,12 +70,14 @@
 <body>
     <header>
         <h5 class="text-center" style="margin-top: -20px;text-decoration: underline">CONSTANCIA DE PAGOS DE HABERES Y DESCUENTOS</h5>
+        <img style="margin-top: -15px; margin-bottom: 0" src="{{public_path().'/img/LogoDREA.png'}}" width="70" alt="">    
+        
         <div class="header-cert">
             <span class="fs-header2"><b>CERTIFICADO N°:</b></span>
             <span class="fs-header2 bb-1">{{$certificado.'-'.$pago->anio.'-GRA/GG-GRDS-DREA-OA-AT'}}</span>
         </div>
         
-        <table class="w-80">
+        <table class="w-80" style="margin-top: -40%">
             <tbody>
                 <tr>                                           
                     <td class="text-right" >
@@ -1273,6 +1275,19 @@
             </tbody>
         </table>
     </div>
-
+    <script type="text/php">
+        if (isset($pdf)) {
+            $x = 765;
+            $y = 10;
+            $text = "Página {PAGE_NUM}";
+            $font = null;
+            $size = 10;
+            $color = array(0,0,0);
+            $word_space = 0.0;  //  default
+            $char_space = 0.0;  //  default
+            $angle = 0.0;   //  default
+            $pdf->page_text($x, $y, $text, $font, $size, $color, $word_space, $char_space, $angle);
+        }
+    </script>
 </body>
 </html>

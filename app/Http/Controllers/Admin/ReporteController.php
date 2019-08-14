@@ -114,26 +114,34 @@ class ReporteController extends Controller
 
                 if($ver == 1){
 
-                    $historial = Historial::where('certificado', $certificado)->first();
-                    $user_view = User::where('dni', $historial->dni_user)->first();
-                    
-                    array_push($pagos_with_detalles_view, [                    
-                        'pago' => $pago,
-                        'haberes' => (object)$order_haberes,
-                        'descuentos' => (object)$order_descuentos,
-                        'total_haberes' => (object)$total_haberes,
-                        'total_descuentos' => (object)$total_descuentos,
-                        'liquidos' => (object)$total_liquidos,
-                        'imponibles' => (object)$total_imponibles,
-                        'meses' => $meses,
-                        'certificado' => $certificado,
-                        'user' => $user_view                
-                    ]);
+                    $historial = Historial::where('certificado', $certificado)->where('dni', $request->dni)->first();
+                  
+                    if($historial){
+
+                        $user_view = User::where('dni', $historial->dni_user)->first();
+                        
+                        array_push($pagos_with_detalles_view, [                    
+                            'pago' => $pago,
+                            'haberes' => (object)$order_haberes,
+                            'descuentos' => (object)$order_descuentos,
+                            'total_haberes' => (object)$total_haberes,
+                            'total_descuentos' => (object)$total_descuentos,
+                            'liquidos' => (object)$total_liquidos,
+                            'imponibles' => (object)$total_imponibles,
+                            'meses' => $meses,
+                            'certificado' => $certificado,
+                            'user' => $user_view                
+                        ]);
+                    }
                 }
             }  
             
             if ($ver == 0) {
                 //create historial
+                // $historial = Historial::where('certificado', $certificado)->where('dni', $request->dni)->first();
+                // if($historial){
+
+                // }
                 Historial::create([
                     'anio' => $anio_anterior.'-'.$anio_actual,
                     'meses' => '01-12',
@@ -145,21 +153,25 @@ class ReporteController extends Controller
 
                 // return $pagos_with_detalles;
                 $pdf = PDF::loadView('reporte.anios', ['pagos' => $pagos_with_detalles_create]);
+                $pdf->getDomPDF()->set_option("enable_php", true);
                 $pdf->setPaper('a4', 'landscape');
                 
                 return $pdf->stream();
 
             }elseif ($ver == 1) { 
-                $historial = Historial::where('certificado', $certificado)->first();
+                $historial = Historial::where('certificado', $certificado)->where('dni', $request->dni)->first();
                 if($historial){
+                    
                     $pdf = PDF::loadView('reporte.anios', ['pagos' => $pagos_with_detalles_view]);
+                    $pdf->getDomPDF()->set_option("enable_php", true);
                     $pdf->setPaper('a4', 'landscape');
                     
                     return $pdf->stream();
                 }else{
-                    return response()->json([
-                        'msg' => 'El número de certificado es inválido o no existe',
-                    ], 404);        
+                    return redirect('admin/historiales')->with('message', 'La constancia no existe');
+                    // return response()->json([
+                    //     'msg' => 'La constancia no existe',
+                    // ], 404);        
                 }
             }else{
                 return response()->json([
@@ -299,6 +311,7 @@ class ReporteController extends Controller
                         'certificado' => $certificado,
                         'user' => auth()->user()
                     ]);
+                    $pdf->getDomPDF()->set_option("enable_php", true);
                     $pdf->setPaper('a4', 'landscape');
                     
                     return $pdf->stream();
@@ -319,6 +332,7 @@ class ReporteController extends Controller
                             'certificado' => $certificado, 
                             'user' => $user
                         ]);
+                        $pdf->getDomPDF()->set_option("enable_php", true);
                         $pdf->setPaper('a4', 'landscape');
                         
                         return $pdf->stream();
@@ -966,6 +980,8 @@ class ReporteController extends Controller
                         'certificado' => $certificado,
                         'user' => auth()->user()
                     ]);
+                    $pdf->getDomPDF()->set_option("enable_php", true);
+
                     $pdf->setPaper('a4');
                     return $pdf->stream();
     
@@ -988,6 +1004,8 @@ class ReporteController extends Controller
                             'certificado' => $certificado,
                             'user' => $user
                         ]);
+                        $pdf->getDomPDF()->set_option("enable_php", true);
+
                         $pdf->setPaper('a4');
                         return $pdf->stream();
                     } else{

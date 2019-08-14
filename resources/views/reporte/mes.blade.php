@@ -24,7 +24,7 @@
     }
     .body .body-row td{   
         border: 1px solid #c2c2c2;
-        font-size: 13px;
+        font-size: 10px;
         padding: 2px;
     }
     .text-center{
@@ -40,10 +40,10 @@
         height: 20px;
     }
     .fs-header{        
-        font-size: 12px;
+        font-size: 10px;
     }
     .fs-header2{        
-        font-size: 14px;
+        font-size: 13px;
     }
     .fw-bold{
         font-weight: bold;
@@ -1209,11 +1209,11 @@
             </tbody>
         </table>
     </div>
-    <table>
+    <table class="w-100">
         <tbody>
             <tr>                 
                 <td class="text-right">
-                    <img style=" border: 1px solid #000" src="data:image/png;base64, {!! base64_encode(QrCode::format('png')->size(74)->generate($certificado.'|'.$pago->persona->dni.'|'.date('d/m/Y H:i:s').'|'.$user->name)) !!} ">
+                    <img class="position-absolute" style="margin-top: 10px; right: 50; border: 1px solid #000" src="data:image/png;base64, {!! base64_encode(QrCode::format('png')->size(74)->generate('Cert:'.$certificado.'|'.$pago->persona->dni.'|'.date('d/m/Y H:i:s').'|Resp:'.$user->dni)) !!} ">
                 </td>
                 <td>
                     <tr>
@@ -1221,7 +1221,7 @@
                                 <b>Responsable:</b>
                             </td> --}}
                         <td class="fs-header text-right">
-                            <span style="">{{$user->name}} &nbsp;</span>    
+                            <span class="position-absolute" style="width: 200px; margin-top: 28px; right: 120">{{$user->name}} &nbsp;</span>    
                         </td>    
                     </tr>     
                     <tr>
@@ -1229,7 +1229,7 @@
                             {{-- <b>FECHA DE IMPRESIÓN:</b> --}}
                         </td>
                         <td class="fs-header text-right">
-                            <span style="">{{date('d/m/Y H:i')}} &nbsp;</span>
+                            <span class="position-absolute" style="width: 200px; margin-top: 10px; right: 120">{{date('d/m/Y H:i')}} &nbsp;</span>
                         </td>
                     </tr>
                     
@@ -1240,6 +1240,19 @@
     {{-- <footer>
         fidd
     </footer> --}}
-
+    <script type="text/php">
+        if (isset($pdf)) {
+            $x = 510;
+            $y = 10;
+            $text = "Página {PAGE_NUM}";
+            $font = null;
+            $size = 10;
+            $color = array(0,0,0);
+            $word_space = 0.0;  //  default
+            $char_space = 0.0;  //  default
+            $angle = 0.0;   //  default
+            $pdf->page_text($x, $y, $text, $font, $size, $color, $word_space, $char_space, $angle);
+        }
+    </script>
 </body>
 </html>
