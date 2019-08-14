@@ -78,34 +78,7 @@
         <img src="{{ public_path().'/img/cabecera.png' }}" class="w-100" height="120"  alt="">
         
         <h4 class="text-center" style="text-decoration: underline">CONSTANCIA DE PAGOS DE HABERES Y DESCUENTOS</h4>
-        <table class="w-100">
-            <tbody>
-                <tr>                 
-                    <td class="text-right">
-                        <img class="position-absolute" style="top:95%; right: 0" src="data:image/png;base64, {!! base64_encode(QrCode::format('png')->size(74)->generate($certificado.'|'.$pago->persona->dni.'|'.date('d/m/Y H:i:s').'|'.$user->name)) !!} ">
-                    </td>
-                    <td>
-                        <tr>
-                            {{-- <td class="fs-header text-right">
-                                    <b>Responsable:</b>
-                                </td> --}}
-                            <td class="fs-header text-right">
-                                <span class="position-absolute" style="top:98%; right: 60; width: 200px">{{$user->name}} &nbsp;</span>    
-                            </td>    
-                        </tr>     
-                        <tr>
-                            <td class="fs-header text-right">
-                                {{-- <b>FECHA DE IMPRESIÓN:</b> --}}
-                            </td>
-                            <td class="fs-header text-right">
-                                <span class="position-absolute" style="top:96%; right: 60; width: 200px">{{date('d/m/Y H:i')}} &nbsp;</span>
-                            </td>
-                        </tr>
-                        
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+        
         <table class="w-100">
             <tbody>
                 <tr>
@@ -114,35 +87,41 @@
                     </td>
                     <td class="fs-header">{{$pago->persona->dni}}</td> 
                     <td class="text-right fs-header">
-                        <b>CARGO:</b>
+                        <b>COD. MODULAR:</b>
                     </td>
-                    <td class="fs-header">{{$pago->persona->cargo}}</td>
-                    <td class="text-right fs-header">
-                        <b>ESTADO:</b>
-                    </td>
-                    <td class="fs-header text-uppercase">{{$pago->persona->estado}}</td>
+                    <td class="fs-header">{{$pago->persona->codigo_modular}}</td>
+                    
                 </tr>
                 <tr>
                     <td class="text-left fs-header">
                         <b>APELLIDOS Y NOMBRES:</b>
                     </td>
-                    <td class="fs-header" colspan="3">{{$pago->persona->apellido_paterno}} {{$pago->persona->apellido_materno}}, {{$pago->persona->nombre}}</td>
+                    <td class="fs-header" colspan="2">{{$pago->persona->apellido_paterno}} {{$pago->persona->apellido_materno}}, {{$pago->persona->nombre}}</td>
+                    <td class="text-right fs-header">
+                        <b>CARGO:</b>
+                    </td>
+                    <td class="fs-header">{{$pago->persona->cargo}}</td>
+                    
                 </tr>
                 <tr>
                     <td class="text-left fs-header">
-                        <b>AÑO:</b>
+                        <b>REPORTE DEL AÑO:</b>
                     </td>
                     <td class="fs-header">{{$pago->anio}}</td>
                     <td class="text-right fs-header">
                         <b>MES:</b>
                     </td>
                     <td class="fs-header">{{$nombre_mes}}</td>
+                    <td class="text-right fs-header">
+                        <b>ESTADO:</b>
+                    </td>
+                    <td class="fs-header text-uppercase">{{$pago->persona->estado}}</td>
                 </tr>
                 <tr>
-                    <td  colspan="2"></td>
-                    <td class="text-right fs-header2">
+                    <td  colspan=""></td>
+                    <td class="text-right fs-header2" colspan="3">
                         <b>CERTIFICADO N°:</b>
-                        <span class="bb-1">{{$certificado}}</span>
+                        <span class="bb-1">{{$certificado.'-'.$pago->anio.'-GRA/GG-GRDS-DREA-OA-AT'}}</span>
                     </td>
                     {{-- <td class="fs-header2 bb-1">{{$certificado}}</td> --}}
                 </tr>
@@ -1230,6 +1209,34 @@
             </tbody>
         </table>
     </div>
+    <table>
+        <tbody>
+            <tr>                 
+                <td class="text-right">
+                    <img style=" border: 1px solid #000" src="data:image/png;base64, {!! base64_encode(QrCode::format('png')->size(74)->generate($certificado.'|'.$pago->persona->dni.'|'.date('d/m/Y H:i:s').'|'.$user->name)) !!} ">
+                </td>
+                <td>
+                    <tr>
+                        {{-- <td class="fs-header text-right">
+                                <b>Responsable:</b>
+                            </td> --}}
+                        <td class="fs-header text-right">
+                            <span style="">{{$user->name}} &nbsp;</span>    
+                        </td>    
+                    </tr>     
+                    <tr>
+                        <td class="fs-header text-right">
+                            {{-- <b>FECHA DE IMPRESIÓN:</b> --}}
+                        </td>
+                        <td class="fs-header text-right">
+                            <span style="">{{date('d/m/Y H:i')}} &nbsp;</span>
+                        </td>
+                    </tr>
+                    
+                </td>
+            </tr>
+        </tbody>
+    </table>
     {{-- <footer>
         fidd
     </footer> --}}

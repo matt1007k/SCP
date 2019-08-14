@@ -1,11 +1,11 @@
 <template>
   <v-layout row justify-center>
-    <v-dialog v-model="open" persistent small width="800px">
+    <v-dialog v-model="open" persistent small width="500px">
       <v-card>
         <form @submit.prevent="Submit">
           <v-card-title wrap class="blue-grey darken-2 white--text">
             <v-flex xs11>
-              <span class="headline">Editar usuario</span>
+              <span class="headline">Editar mis datos</span>
             </v-flex>
             <v-flex xs1 class="d-flex justify-end">
               <v-btn color="error" @click="open = false">
@@ -16,7 +16,7 @@
           <v-card-text>
             <v-container grid-list-md>
               <v-layout wrap>
-                <v-flex xs12 sm6>
+                <v-flex xs12>
                   <v-text-field
                     label="Nombre completo"
                     required
@@ -24,7 +24,7 @@
                     :error-messages="errors.name"
                   ></v-text-field>
                 </v-flex>
-                <v-flex xs12 sm6>
+                <v-flex xs12>
                   <v-text-field
                     label="El DNI"
                     required
@@ -33,7 +33,7 @@
                     :error-messages="errors.dni"
                   ></v-text-field>
                 </v-flex>
-                <v-flex xs12 sm6>
+                <v-flex xs12>
                   <v-text-field
                     label="Correo Electrónico"
                     required
@@ -42,7 +42,7 @@
                     :error-messages="errors.email"
                   ></v-text-field>
                 </v-flex>
-                <v-flex xs12 sm6>
+                <v-flex xs12>
                   <v-btn color="primary" @click="showPassword">Cambiar Contraseña</v-btn>
                   <div :class="{'d-none': hidePassword}">
                     <v-text-field
@@ -53,43 +53,8 @@
                     ></v-text-field>
                   </div>
                 </v-flex>
-
-                <v-flex xs12>
-                  <div class="body-2">Estado del usuario</div>
-                  <v-radio-group v-model="form.estado" row :error-messages="errors.estado">
-                    <v-radio label="Activo" value="activo" color="success"></v-radio>
-                    <v-radio label="Inactivo" value="inactivo" color="error"></v-radio>
-                  </v-radio-group>
-                </v-flex>
-              </v-layout>
-              <v-layout wrap>
-                <v-flex xs12>
-                  <h4>Asignar Roles</h4>
-                  <v-select
-                    v-model="form.roles"
-                    :items="items_roles"
-                    item-text="name"
-                    return-object
-                    chips
-                    label="Roles"
-                    multiple
-                  ></v-select>
-                </v-flex>
-                <v-flex xs12>
-                  <h4>Asignar Permisos</h4>
-                  <v-select
-                    v-model="form.permissions"
-                    :items="items_permissions"
-                    item-text="name"
-                    return-object
-                    chips
-                    label="Permisos"
-                    multiple
-                  ></v-select>
-                </v-flex>
               </v-layout>
             </v-container>
-            <small>Ingrese los campos obligatorios.</small>
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
@@ -112,25 +77,15 @@ export default {
       name: "",
       dni: "",
       email: "",
-      password: "",
-      estado: "activo",
-      roles: [],
-      permissions: []
+      password: ""
     },
-    errors: {},
-    items_roles: [],
-    items_permissions: []
+    errors: {}
   }),
-  created() {
-    this.getRoles();
-    this.getPermissions();
-  },
   methods: {
     Submit() {
       axios
-        .put(`/usuarios/${this.form.id}`, this.form)
+        .put(`/usuario/${this.form.id}`, this.form)
         .then(res => {
-          this.$parent.getData();
           this.resetInput();
           this.$swal(
             "Mensaje de operación",
@@ -145,22 +100,6 @@ export default {
     show() {
       this.open = true;
       this.errors = {};
-    },
-    getRoles() {
-      axios
-        .get("/getRoles")
-        .then(res => {
-          this.items_roles = res.data.roles;
-        })
-        .catch(err => console.log(err));
-    },
-    getPermissions() {
-      axios
-        .get("/getPermissions")
-        .then(res => {
-          this.items_permissions = res.data.permissions;
-        })
-        .catch(err => console.log(err));
     },
     showPassword() {
       this.hidePassword = !this.hidePassword;

@@ -27,7 +27,7 @@
             <v-icon>$vuetify.icons.bell</v-icon>
           </v-badge>
         </v-btn>
-        <v-list>
+        <v-list style="max-height: 400px" class="scroll-y">
           <v-subheader class="indigo">
             <h2 class="text-white">Notificaciones</h2>
           </v-subheader>

@@ -1,13 +1,13 @@
 <?php
 namespace App\Http\Controllers\Admin;
 
-use App\Models\Pago;
-use App\Models\User;
-use App\Models\Persona;
-use App\Models\Historial;
-use Illuminate\Http\Request;
-use App\Models\HaberDescuento;
 use App\Http\Controllers\Controller;
+use App\Models\HaberDescuento;
+use App\Models\Historial;
+use App\Models\Pago;
+use App\Models\Persona;
+use App\Models\User;
+use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
@@ -183,6 +183,35 @@ class DashboardController extends Controller
         ]);
         return response()->json([
             'total_constancias' => $total_constancias,
+        ], 200);
+    }
+
+    public function getTotalConstanciasByUsers()
+    {
+        $users = User::all()->filter(function ($user) {
+            return $user->roles->contains('name', 'Tesoreria');
+        });
+
+        $total_constancias_by_users = array();
+
+        foreach ($users as $user) {
+            array_push($total_constancias_by_users, [
+                'nombre' => $user->name,
+                'dni' => $user->dni,
+                'total' => Historial::where('dni_user', $user->dni)->count(),
+            ]);
+        }
+
+        return response()->json([
+            'totales' => $total_constancias_by_users,
+        ], 200);
+    }
+
+    public function getMyTotalConstancias()
+    {
+        $total = Historial::where('dni_user', auth()->user()->dni)->count();
+        return response()->json([
+            'total' => $total,
         ], 200);
     }
 

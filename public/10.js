@@ -330,7 +330,7 @@ __webpack_require__.r(__webpack_exports__);
       axios.put("/usuarios/".concat(this.form.id), this.form).then(function (res) {
         _this.$parent.getData();
 
-        _this.open = false;
+        _this.resetInput();
 
         _this.$swal("Mensaje de operación", "Datos editados correctamente.", "success");
       })["catch"](function (err) {
@@ -361,6 +361,11 @@ __webpack_require__.r(__webpack_exports__);
     },
     showPassword: function showPassword() {
       this.hidePassword = !this.hidePassword;
+    },
+    resetInput: function resetInput() {
+      this.open = false;
+      this.hidePassword = true;
+      this.form.password = "";
     }
   }
 });

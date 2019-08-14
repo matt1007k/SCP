@@ -11,6 +11,31 @@
       </v-flex>
     </v-layout>
     <v-layout row wrap>
+      <template v-if="$auth.isAdmin()">
+        <v-flex xs12>
+          <v-card>
+            <v-list>
+              <v-subheader>
+                <h2>Cantidad de constancias de pago entregadas por usuario</h2>
+              </v-subheader>
+              <v-list-tile v-for="user in dataConstanciasByUsers" :key="user.dni">
+                <v-list-tile-content>
+                  <v-list-tile-title>Nombre completo: {{ user.nombre }}</v-list-tile-title>
+                  <v-list-tile-sub-title>DNI: {{ user.dni }}</v-list-tile-sub-title>
+                </v-list-tile-content>
+
+                <v-list-tile-action>
+                  <v-chip color="teal" text-color="white">
+                    <h3>{{user.total}}</h3>
+                    <v-icon right>$vuetify.icons.file</v-icon>
+                  </v-chip>
+                </v-list-tile-action>
+              </v-list-tile>
+            </v-list>
+          </v-card>
+        </v-flex>
+      </template>
+
       <v-flex xs12>
         <v-card>
           <v-card-title class="no-padding-bottom">
@@ -67,6 +92,7 @@ export default {
   components: { CountItem, BarChart, PieChart },
   data: () => ({
     count_items: [],
+    dataConstanciasByUsers: [],
     dataPagos: {},
     dataPersonas: {},
     dataConstancias: {},
@@ -80,6 +106,7 @@ export default {
     this.getTotalPagos();
     this.getTotalPersonas();
     this.getTotalConstancias();
+    this.getTotalConstanciasByUsers();
     this.getYears();
   },
   mounted() {
@@ -146,6 +173,14 @@ export default {
             labels: ["Por rango de años", "Por año", "Por mes"],
             datasets: res.data.total_constancias
           };
+        })
+        .catch(err => console.log(err));
+    },
+    getTotalConstanciasByUsers() {
+      axios
+        .get("/getTotalConstanciasByUsers")
+        .then(res => {
+          this.dataConstanciasByUsers = res.data.totales;
         })
         .catch(err => console.log(err));
     },

@@ -54233,7 +54233,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var SocketInstance = socket_io_client__WEBPACK_IMPORTED_MODULE_2___default.a.connect("http://localhost:6999");
+var SocketInstance = socket_io_client__WEBPACK_IMPORTED_MODULE_2___default.a.connect("http://127.0.0.1:6999");
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(new vue_socket_io__WEBPACK_IMPORTED_MODULE_1___default.a({
   debug: true,
   connection: SocketInstance
@@ -54323,7 +54323,7 @@ var ParentComponent = {
   }, {
     path: "/auth",
     component: function component() {
-      return __webpack_require__.e(/*! import() */ 13).then(__webpack_require__.bind(null, /*! ./components/layout/LayoutClient.vue */ "./resources/js/components/layout/LayoutClient.vue"));
+      return __webpack_require__.e(/*! import() */ 14).then(__webpack_require__.bind(null, /*! ./components/layout/LayoutClient.vue */ "./resources/js/components/layout/LayoutClient.vue"));
     },
     children: [{
       path: "login",
@@ -54349,7 +54349,7 @@ var ParentComponent = {
         titulo: "Perfil"
       },
       component: function component() {
-        return __webpack_require__.e(/*! import() */ 15).then(__webpack_require__.bind(null, /*! ./views/admin/Perfil.vue */ "./resources/js/views/admin/Perfil.vue"));
+        return __webpack_require__.e(/*! import() */ 11).then(__webpack_require__.bind(null, /*! ./views/admin/Perfil.vue */ "./resources/js/views/admin/Perfil.vue"));
       }
     }, {
       path: "usuarios",
@@ -54385,7 +54385,7 @@ var ParentComponent = {
       path: "historiales",
       name: "historiales",
       component: function component() {
-        return __webpack_require__.e(/*! import() */ 14).then(__webpack_require__.bind(null, /*! ./views/admin/Historiales.vue */ "./resources/js/views/admin/Historiales.vue"));
+        return __webpack_require__.e(/*! import() */ 15).then(__webpack_require__.bind(null, /*! ./views/admin/Historiales.vue */ "./resources/js/views/admin/Historiales.vue"));
       }
     }, {
       path: "pagos",
@@ -54397,7 +54397,7 @@ var ParentComponent = {
       children: [{
         path: "lista",
         component: function component() {
-          return __webpack_require__.e(/*! import() */ 11).then(__webpack_require__.bind(null, /*! ./views/admin/pagos/Index.vue */ "./resources/js/views/admin/pagos/Index.vue"));
+          return __webpack_require__.e(/*! import() */ 12).then(__webpack_require__.bind(null, /*! ./views/admin/pagos/Index.vue */ "./resources/js/views/admin/pagos/Index.vue"));
         }
       }, {
         path: "crear",
@@ -54467,7 +54467,7 @@ var ParentComponent = {
         path: "mensual",
         name: "reporte.mensual",
         component: function component() {
-          return __webpack_require__.e(/*! import() */ 12).then(__webpack_require__.bind(null, /*! ./views/admin/reportes/Mensual.vue */ "./resources/js/views/admin/reportes/Mensual.vue"));
+          return __webpack_require__.e(/*! import() */ 13).then(__webpack_require__.bind(null, /*! ./views/admin/reportes/Mensual.vue */ "./resources/js/views/admin/reportes/Mensual.vue"));
         }
       }]
     }, {

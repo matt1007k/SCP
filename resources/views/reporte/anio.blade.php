@@ -59,23 +59,27 @@
     .no-margin{
         margin: 0;
     }
+    .header-cert{
+        position: fixed;
+        left: 0;
+        right: 0;
+        text-align: center;
+    }
     </style>
 </head>
 <body>
     <header>
         <h5 class="text-center" style="margin-top: -20px;text-decoration: underline">CONSTANCIA DE PAGOS DE HABERES Y DESCUENTOS</h5>
+        <div class="header-cert">
+            <span class="fs-header2"><b>CERTIFICADO N°:</b></span>
+            <span class="fs-header2 bb-1">{{$certificado.'-'.$pago->anio.'-GRA/GG-GRDS-DREA-OA-AT'}}</span>
+        </div>
+        
         <table class="w-80">
             <tbody>
-                <tr>
-                    <td colspan="4"></td>    
-                    <td class="text-right fs-header2">
-                            <b>CERTIFICADO N°:</b>
-                        </td>
-                    <td class="fs-header2 bb-1">
-                        <span>{{$certificado}}</span>    
-                    </td>                   
-                    <td class="text-right">
-                        <img style="position: absolute; top:0; right: 0" src="data:image/png;base64, {!! base64_encode(QrCode::format('png')->size(74)->generate($certificado.'|'.$pago->persona->dni.'|'.date('d/m/Y H:i:s').'|'.$user->name)) !!} ">
+                <tr>                                           
+                    <td class="text-right" >
+                        <img class="position-absolute" style="top:0; right: 0; border: 1px solid #000" src="data:image/png;base64, {!! base64_encode(QrCode::format('png')->size(74)->generate($certificado.'|'.$pago->persona->dni.'|'.date('d/m/Y H:i:s').'|'.$user->name)) !!} ">
                     </td>
                     <td>
                         <tr>
@@ -83,7 +87,7 @@
                                     <b>Responsable:</b>
                                 </td> --}}
                             <td class="fs-header text-right">
-                                <span style="position: absolute; top:20; right: 100; width: 200px">{{$user->name}} &nbsp;</span>    
+                                <span class="position-absolute" style="top:20; right: 65">{{$user->name}}</span>    
                             </td>    
                         </tr>     
                         <tr>
@@ -91,7 +95,7 @@
                                 {{-- <b>FECHA DE IMPRESIÓN:</b> --}}
                             </td>
                             <td class="fs-header text-right">
-                                <span style="position: absolute; top:10; right: 80; width: 200px">{{date('d/m/Y H:i')}} &nbsp;</span>
+                                <span class="position-absolute" style="top:10; right: 65; width: 200px">{{date('d/m/Y H:i')}}</span>
                             </td>
                         </tr>
                         
@@ -106,6 +110,10 @@
                         <b>DNI:</b>
                     </td>
                     <td class="fs-header">{{$pago->persona->dni}}</td>
+                    <td class="text-right fs-header">
+                        <b>COD. MODULAR:</b>
+                    </td>
+                    <td class="fs-header">{{$pago->persona->codigo_modular}}</td>
                     <td class="text-right fs-header">
                         <b>CARGO:</b>
                     </td>
@@ -124,10 +132,10 @@
                 </tr>
                 <tr>
                     <td class="text-left fs-header">
-                        <b>AÑO:</b>
+                        <b>REPORTE DEL AÑO:</b>
                     </td>
-                    <td class="fs-header">{{$pago->anio}}</td>                   
-                    
+                    <td class="fs-header">{{$pago->anio}}</td>
+        
                 </tr>
             </tbody>
         </table>

@@ -17,7 +17,7 @@ class UserController extends Controller
         $this->middleware('permission:users.edit')->only(['update']);
         $this->middleware('permission:users.destroy')->only(['destroy']);
     }
-    
+
     public function index()
     {
         $usuarios = User::With(['roles', 'permissions'])->get();
@@ -30,6 +30,7 @@ class UserController extends Controller
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'dni' => 'required|numeric|min:8|unique:users',
+            'password' => ['required'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'estado' => ['required'],
         ]);
@@ -38,9 +39,8 @@ class UserController extends Controller
         $user->dni = $request->dni;
         $user->email = $request->email;
         $user->estado = $request->estado;
-        if ($request->has('password')) {
-            $user->password = Hash::make($request->password);
-        }
+        $user->password = Hash::make($request->password);
+
         if ($user->save()) {
             if ($request->has('roles')) {
                 $user->roles()->sync(collect($request->roles)->pluck('id')->toArray());
@@ -70,6 +70,9 @@ class UserController extends Controller
         $user->name = $request->name;
         $user->dni = $request->dni;
         $user->estado = $request->estado;
+        if ($request->has('password')) {
+            $user->password = Hash::make($request->password);
+        }
         if ($user->save()) {
             if ($request->has('roles')) {
                 $user->roles()->sync(collect($request->roles)->pluck('id')->toArray());
@@ -102,5 +105,30 @@ class UserController extends Controller
             ]);
         }
 
+    }
+
+    public function editarAuth(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+
+        $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'dni' => ['required', 'numeric', 'min:8', Rule::unique('users')->ignore($user->id)],
+            'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
+        ]);
+        $user->name = $request->name;
+        $user->dni = $request->dni;
+        if ($request->has('password')) {
+            $user->password = Hash::make($request->password);
+        }
+        if ($user->save()) {
+            return response()->json([
+                'updated' => true,
+            ], 201);
+        } else {
+            return response()->json([
+                'updated' => false,
+            ], 201);
+        }
     }
 }

@@ -242,6 +242,31 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -254,6 +279,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   data: function data() {
     return {
       count_items: [],
+      dataConstanciasByUsers: [],
       dataPagos: {},
       dataPersonas: {},
       dataConstancias: {},
@@ -268,6 +294,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     this.getTotalPagos();
     this.getTotalPersonas();
     this.getTotalConstancias();
+    this.getTotalConstanciasByUsers();
     this.getYears();
   },
   mounted: function mounted() {
@@ -358,6 +385,15 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           labels: ["Por rango de años", "Por año", "Por mes"],
           datasets: res.data.total_constancias
         };
+      })["catch"](function (err) {
+        return console.log(err);
+      });
+    },
+    getTotalConstanciasByUsers: function getTotalConstanciasByUsers() {
+      var _this5 = this;
+
+      axios.get("/getTotalConstanciasByUsers").then(function (res) {
+        _this5.dataConstanciasByUsers = res.data.totales;
       })["catch"](function (err) {
         return console.log(err);
       });
@@ -811,6 +847,91 @@ var render = function() {
         "v-layout",
         { attrs: { row: "", wrap: "" } },
         [
+          _vm.$auth.isAdmin()
+            ? [
+                _c(
+                  "v-flex",
+                  { attrs: { xs12: "" } },
+                  [
+                    _c(
+                      "v-card",
+                      [
+                        _c(
+                          "v-list",
+                          [
+                            _c("v-subheader", [
+                              _c("h2", [
+                                _vm._v(
+                                  "Cantidad de constancias de pago entregadas por usuario"
+                                )
+                              ])
+                            ]),
+                            _vm._v(" "),
+                            _vm._l(_vm.dataConstanciasByUsers, function(user) {
+                              return _c(
+                                "v-list-tile",
+                                { key: user.dni },
+                                [
+                                  _c(
+                                    "v-list-tile-content",
+                                    [
+                                      _c("v-list-tile-title", [
+                                        _vm._v(
+                                          "Nombre completo: " +
+                                            _vm._s(user.nombre)
+                                        )
+                                      ]),
+                                      _vm._v(" "),
+                                      _c("v-list-tile-sub-title", [
+                                        _vm._v("DNI: " + _vm._s(user.dni))
+                                      ])
+                                    ],
+                                    1
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "v-list-tile-action",
+                                    [
+                                      _c(
+                                        "v-chip",
+                                        {
+                                          attrs: {
+                                            color: "teal",
+                                            "text-color": "white"
+                                          }
+                                        },
+                                        [
+                                          _c("h3", [
+                                            _vm._v(_vm._s(user.total))
+                                          ]),
+                                          _vm._v(" "),
+                                          _c(
+                                            "v-icon",
+                                            { attrs: { right: "" } },
+                                            [_vm._v("$vuetify.icons.file")]
+                                          )
+                                        ],
+                                        1
+                                      )
+                                    ],
+                                    1
+                                  )
+                                ],
+                                1
+                              )
+                            })
+                          ],
+                          2
+                        )
+                      ],
+                      1
+                    )
+                  ],
+                  1
+                )
+              ]
+            : _vm._e(),
+          _vm._v(" "),
           _c(
             "v-flex",
             { attrs: { xs12: "" } },
@@ -961,7 +1082,7 @@ var render = function() {
             1
           )
         ],
-        1
+        2
       )
     ],
     1

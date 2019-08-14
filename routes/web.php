@@ -37,10 +37,10 @@ Route::namespace ('Admin')->group(function () {
         Route::get('/getTotalPagos', 'DashboardController@getTotalPagos')->name('admin.total_pagos');
         Route::get('/getTotalPersonas', 'DashboardController@getTotalPersonas')->name('admin.total_personas');
         Route::get('/getTotalConstancias', 'DashboardController@getTotalConstancias')->name('admin.total_constancias');
+        Route::get('/getTotalConstanciasByUsers', 'DashboardController@getTotalConstanciasByUsers')->name('admin.total_constancias_by_users');
 
         Route::resource('periodos', 'PeriodoController')
             ->except(['show', 'create', 'edit']);
-
         Route::resource('usuarios', 'UserController')
             ->except(['show', 'create', 'edit']);
         Route::resource('roles', 'RoleController')
@@ -55,6 +55,7 @@ Route::namespace ('Admin')->group(function () {
             ->except(['show', 'create', 'edit']);
         Route::resource('pagos', 'PagoController')
             ->except(['show', 'create']);
+
         Route::get('/historiales', 'HistorialController@index')->name('historiales.index');
 
         Route::get('/search-personas', 'PersonaController@search')->name('personas.search');
@@ -78,6 +79,9 @@ Route::namespace ('Admin')->group(function () {
 
         Route::get('/unread-notifications', 'DashboardController@getUnReadNotifications');
         Route::get('/mark-all-read', 'DashboardController@markAllNotifications');
+
+        Route::get('/get-my-total-constancias', 'DashboardController@getMyTotalConstancias');
+        Route::put('/usuario/{id}', 'UserController@editarAuth');
     });
 
 });

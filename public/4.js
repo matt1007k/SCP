@@ -732,6 +732,10 @@ var render = function() {
               _vm._v(" "),
               _c(
                 "v-list",
+                {
+                  staticClass: "scroll-y",
+                  staticStyle: { "max-height": "400px" }
+                },
                 [
                   _c("v-subheader", { staticClass: "indigo" }, [
                     _c("h2", { staticClass: "text-white" }, [
