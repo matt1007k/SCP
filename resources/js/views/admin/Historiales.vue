@@ -97,7 +97,7 @@ export default {
         { text: "El Mes o Meses", value: "meses" },
         { text: "DNI de la persona", value: "dni" },
         { text: "DNI del responsable", value: "dni_user" },
-        { text: "Fecha de entrega", value: "created_at", sortable: false }
+        { text: "Fecha de entrega", value: "created_at", sortable: true }
       ],
       historiales: []
     };
@@ -132,28 +132,42 @@ export default {
       const dni = historial.dni;
       const certificado = historial.certificado;
       const tipo = historial.tipo;
-      console.log(historial);
 
       if (tipo == "rango") {
         var array_years = anio.split("-");
         var anio_anterior = array_years[0];
         var anio_actual = array_years[1];
-        window.open(
-          `/reporte/por-anios?ver=1&anio_anterior=${anio_anterior}&anio_actual=${anio_actual}&dni=${dni}&certificado=${certificado}`,
-          "_blank"
-        );
+
+        let params = {
+          anio_anterior: anio_anterior,
+          anio_actual: anio_actual,
+          dni: dni,
+          certificado: certificado,
+          ver: 1
+        };
+        const params_code = window.btoa(JSON.stringify(params));
+        window.open(`/reporte/por-anios/${params_code}`, "_blank");
       }
       if (tipo == "anio") {
-        window.open(
-          `/reporte/por-anio?ver=1&anio=${anio}&dni=${dni}&certificado=${certificado}`,
-          "_blank"
-        );
+        let params = {
+          anio: anio,
+          dni: dni,
+          certificado: certificado,
+          ver: 1
+        };
+        const params_code = window.btoa(JSON.stringify(params));
+        window.open(`/reporte/por-anio/${params_code}`, "_blank");
       }
       if (tipo == "mes") {
-        window.open(
-          `/reporte/por-mes?ver=1&anio=${anio}&mes=${meses}&dni=${dni}&certificado=${certificado}`,
-          "_blank"
-        );
+        let params = {
+          anio: anio,
+          mes: meses,
+          dni: dni,
+          certificado: certificado,
+          ver: 1
+        };
+        const params_code = window.btoa(JSON.stringify(params));
+        window.open(`/reporte/por-mes/${params_code}`, "_blank");
       }
     }
   },

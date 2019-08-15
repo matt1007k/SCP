@@ -52,24 +52,19 @@ class ReporteController extends Controller
         }
     }
 
-    public function porAnios(Request $request)
+    public function porAnios($params_code)
     {
-        $request->validate([
-            'dni' => 'required|exists:personas,dni',
-            'anio_anterior' => 'required|exists:periodos,anio',
-            'anio_actual' => 'required|exists:periodos,anio',
-            'certificado' => 'required|numeric',
-            'ver' => 'required|numeric',
-        ]);
-
-        $anio_anterior = $request->anio_anterior;
-        $anio_actual = $request->anio_actual;
-        $ver = $request->ver;
-        $certificado = $request->certificado;
+        $params = base64_decode($params_code);
+        
+        $dni = json_decode($params)->dni;
+        $anio_anterior = json_decode($params)->anio_anterior;
+        $anio_actual = json_decode($params)->anio_actual;
+        $ver = json_decode($params)->ver;
+        $certificado = json_decode($params)->certificado;
 
         $pagos = Pago::whereBetween('anio', [$anio_anterior, $anio_actual])
-            ->whereHas('persona', function ($query) use ($request) {
-                $query->where('dni', 'like', "%{$request->dni}%");
+            ->whereHas('persona', function ($query) use ($dni) {
+                $query->where('dni', 'like', "%{$dni}%");
             })->orderBy('anio', 'DESC')->get();
         $years_exist_unique = $this->getYearsUnique($pagos);
         // return $pagos;
@@ -79,21 +74,21 @@ class ReporteController extends Controller
         
             foreach ($years_exist_unique as $key => $year) {                            
                 $pago = Pago::With(['persona'])->where('anio', $year)
-                                ->whereHas('persona', function ($query) use ($request) {
-                                    $query->where('dni', 'like', "%{$request->dni}%");
+                                ->whereHas('persona', function ($query) use ($dni) {
+                                    $query->where('dni', 'like', "%{$dni}%");
                                 })->first();
                 // Detalles por mes
-                $meses = $this->getMesesAndCount($year, $request->dni);
+                $meses = $this->getMesesAndCount($year, $dni);
                 
                 // Detalles por haberes y descuentos
-                $haberes = $this->getAllDetailsByType($year, $request->dni, 'haber');
-                $descuentos = $this->getAllDetailsByType($year, $request->dni, 'descuento');
+                $haberes = $this->getAllDetailsByType($year, $dni, 'haber');
+                $descuentos = $this->getAllDetailsByType($year, $dni, 'descuento');
     
                 // Detalles totales
-                $total_haberes = $this->getTotalByYear($year, $request->dni, 'haberes');
-                $total_descuentos = $this->getTotalByYear($year, $request->dni, 'descuentos');
-                $total_liquidos = $this->getTotalByYear($year, $request->dni, 'liquidos');
-                $total_imponibles = $this->getTotalByYear($year, $request->dni, 'imponibles');
+                $total_haberes = $this->getTotalByYear($year, $dni, 'haberes');
+                $total_descuentos = $this->getTotalByYear($year, $dni, 'descuentos');
+                $total_liquidos = $this->getTotalByYear($year, $dni, 'liquidos');
+                $total_imponibles = $this->getTotalByYear($year, $dni, 'imponibles');
 
                 // Order list
                 $order_haberes = collect($haberes)->sortBy('nombre');
@@ -114,7 +109,7 @@ class ReporteController extends Controller
 
                 if($ver == 1){
 
-                    $historial = Historial::where('certificado', $certificado)->where('dni', $request->dni)->first();
+                    $historial = Historial::where('certificado', $certificado)->where('dni', $dni)->first();
                   
                     if($historial){
 
@@ -138,19 +133,26 @@ class ReporteController extends Controller
             
             if ($ver == 0) {
                 //create historial
-                // $historial = Historial::where('certificado', $certificado)->where('dni', $request->dni)->first();
-                // if($historial){
-
-                // }
-                Historial::create([
-                    'anio' => $anio_anterior.'-'.$anio_actual,
-                    'meses' => '01-12',
-                    'dni' => $request->dni,
-                    'certificado' => $certificado,
-                    'tipo' => 'rango',
-                    'dni_user' => auth()->user()->dni
-                ]);  
-
+                $historial = Historial::where('certificado', $certificado)->where('dni', $dni)->first();
+                $certificado_hist = Historial::where('certificado', $certificado)->first();
+                // Incriptamos los parametros
+                $hash_code = "{\"anio_anterior\":\"$anio_anterior\",\"anio_actual\":\"$anio_actual\",\"dni\":\"$dni\",\"certificado\":\"$certificado\",\"ver\":1}";
+                $base64_code = base64_encode($hash_code);
+                if($historial){                    
+                    return redirect('reporte/por-anios/'.$base64_code);
+                }elseif($certificado_hist){
+                    return redirect('reporte/por-anios/'.$base64_code);                    
+                }else{
+                    Historial::create([
+                        'anio' => $anio_anterior.'-'.$anio_actual,
+                        'meses' => '01-12',
+                        'dni' => $dni,
+                        'certificado' => $certificado,
+                        'tipo' => 'rango',
+                        'dni_user' => auth()->user()->dni
+                    ]); 
+                }
+                
                 // return $pagos_with_detalles;
                 $pdf = PDF::loadView('reporte.anios', ['pagos' => $pagos_with_detalles_create]);
                 $pdf->getDomPDF()->set_option("enable_php", true);
@@ -159,24 +161,18 @@ class ReporteController extends Controller
                 return $pdf->stream();
 
             }elseif ($ver == 1) { 
-                $historial = Historial::where('certificado', $certificado)->where('dni', $request->dni)->first();
-                if($historial){
-                    
+                $historial = Historial::where('certificado', $certificado)->where('dni', $dni)->first();
+                if($historial){                    
                     $pdf = PDF::loadView('reporte.anios', ['pagos' => $pagos_with_detalles_view]);
                     $pdf->getDomPDF()->set_option("enable_php", true);
                     $pdf->setPaper('a4', 'landscape');
                     
                     return $pdf->stream();
                 }else{
-                    return redirect('admin/historiales')->with('message', 'La constancia no existe');
-                    // return response()->json([
-                    //     'msg' => 'La constancia no existe',
-                    // ], 404);        
+                    return redirect('admin/historiales')->with('message', 'La constancia de pagos no existe');       
                 }
             }else{
-                return response()->json([
-                    'msg' => 'Ver es inválido',
-                ], 404);
+                return redirect('admin/historiales')->with('message', 'La operación no es inválida.');
             }
         } else {
             return response()->json([
@@ -238,42 +234,37 @@ class ReporteController extends Controller
     }
 
 
-    public function porAnio(Request $request)
+    public function porAnio($params_code)
     {
-        $request->validate([
-            'dni' => 'required|exists:personas,dni',
-            'anio' => 'required|exists:periodos,anio',
-            'certificado' => 'required|numeric',
-            'ver' => 'required|numeric',
-        ]);
-
-        $mes = $request->mes;
-        $anio = $request->anio;
-        $ver = $request->ver;
-        $certificado = $request->certificado;
+        $params = base64_decode($params_code);
+        
+        $dni = json_decode($params)->dni;
+        $anio = json_decode($params)->anio;
+        $certificado = json_decode($params)->certificado;
+        $ver = json_decode($params)->ver;
 
         $haberes = array();
         $descuentos = array();
 
-        $pago = Pago::where('anio', $request->anio)
-            ->whereHas('persona', function ($query) use ($request) {
-                $query->where('dni', 'like', "%{$request->dni}%");
+        $pago = Pago::where('anio', $anio)
+            ->whereHas('persona', function ($query) use ($dni) {
+                $query->where('dni', 'like', "%{$dni}%");
             })->first();
 
         if ($pago) {
             // if ($pago->monto_liquido != '0.00') {
                 // Detalles por mes
-                $meses = $this->getMesesAndCount($anio, $request->dni);
+                $meses = $this->getMesesAndCount($anio, $dni);
                 
                 // Detalles por haberes y descuentos
-                $haberes = $this->getAllDetailsByType($anio, $request->dni, 'haber');
-                $descuentos = $this->getAllDetailsByType($anio, $request->dni, 'descuento');
+                $haberes = $this->getAllDetailsByType($anio, $dni, 'haber');
+                $descuentos = $this->getAllDetailsByType($anio, $dni, 'descuento');
     
                 // Detalles totales
-                $total_haberes = $this->getTotalByYear($anio, $request->dni, 'haberes');
-                $total_descuentos = $this->getTotalByYear($anio, $request->dni, 'descuentos');
-                $total_liquidos = $this->getTotalByYear($anio, $request->dni, 'liquidos');
-                $total_imponibles = $this->getTotalByYear($anio, $request->dni, 'imponibles');
+                $total_haberes = $this->getTotalByYear($anio, $dni, 'haberes');
+                $total_descuentos = $this->getTotalByYear($anio, $dni, 'descuentos');
+                $total_liquidos = $this->getTotalByYear($anio, $dni, 'liquidos');
+                $total_imponibles = $this->getTotalByYear($anio, $dni, 'imponibles');
     
                 // Order list
                 $order_haberes = collect($haberes)->sortBy('nombre');
@@ -290,14 +281,25 @@ class ReporteController extends Controller
                 
                 if ($ver == 0) {
                     //create historial
-                    Historial::create([
-                        'anio' => $anio,
-                        'meses' => '01-12',
-                        'dni' => $request->dni,
-                        'certificado' => $certificado,
-                        'tipo' => 'anio',
-                        'dni_user' => auth()->user()->dni
-                    ]);  
+                    $historial = Historial::where('certificado', $certificado)->where('dni', $dni)->first();
+                    $certificado_hist = Historial::where('certificado', $certificado)->first();
+                    
+                    $hash_code = "{\"anio\":\"$anio\",\"dni\":\"$dni\",\"certificado\":\"$certificado\",\"ver\":1}";
+                    $base64_code = base64_encode($hash_code);
+                    if($historial){
+                        return redirect('reporte/por-anio/'.$base64_code);
+                    }elseif($certificado_hist){
+                        return redirect('reporte/por-anio/'.$base64_code);
+                    }else{
+                        Historial::create([
+                            'anio' => $anio,
+                            'meses' => '01-12',
+                            'dni' => $dni,
+                            'certificado' => $certificado,
+                            'tipo' => 'anio',
+                            'dni_user' => auth()->user()->dni
+                        ]);  
+                    }
                 
                     $pdf = PDF::loadView('reporte.anio', [
                         'pago' => $pago,
@@ -317,7 +319,7 @@ class ReporteController extends Controller
                     return $pdf->stream();
     
                 }elseif ($ver == 1) {     
-                    $historial = Historial::where('certificado', $certificado)->first();
+                    $historial = Historial::where('certificado', $certificado)->where('dni', $dni)->first();
                     if($historial){
                         $user = User::where('dni', $historial->dni_user)->first();
                         $pdf = PDF::loadView('reporte.anio', [
@@ -337,15 +339,11 @@ class ReporteController extends Controller
                         
                         return $pdf->stream();
                     }else{
-                        return response()->json([
-                            'msg' => 'El número de certificado es inválido o no existe',
-                        ], 404);        
+                        return redirect('admin/historiales')->with('message', 'La constancia de pagos no existe.');                    
                     }
                     
                 }else{
-                    return response()->json([
-                        'msg' => 'Ver es inválido',
-                    ], 404);
+                    return redirect('admin/historiales')->with('message', 'La operación no es inválida.');
                 }
                 
             // }else {
@@ -910,30 +908,23 @@ class ReporteController extends Controller
         return $nombre;
     }
 
-    public function porMes(Request $request)
-    {
-        $request->validate([
-            'dni' => 'required|exists:personas,dni',
-            'anio' => 'required|exists:periodos,anio',
-            'mes' => 'required',
-            'certificado' => 'required|numeric',
-            'ver' => 'required|numeric',
-        ]);
-
-        $mes = $request->mes;
-        $anio = $request->anio;
-        $dni = $request->dni;
-        $ver = $request->ver;
-        $certificado = $request->certificado;
+    public function porMes($params_code)
+    {        
+        $params = base64_decode($params_code);
+        
+        $dni = json_decode($params)->dni;
+        $anio = json_decode($params)->anio;
+        $mes = json_decode($params)->mes;
+        $certificado = json_decode($params)->certificado;
+        $ver = json_decode($params)->ver;
 
         $pago = Pago::where('anio', $anio)->mes($mes)
-            ->whereHas('persona', function ($query) use ($request) {
-                $query->where('dni', 'like', "%{$request->dni}%");
+            ->whereHas('persona', function ($query) use ($dni) {
+                $query->where('dni', 'like', "%{$dni}%");
             })->first();
                 
         if ($pago) {
-            if ($pago->monto_liquido != '0.00') {
-
+            
                 $total_pagos = Pago::where('anio', $anio)->mes($mes)
                                     ->whereHas('persona', function ($query) use ($dni) {
                                         $query->where('dni', 'like', "%{$dni}%");
@@ -956,15 +947,26 @@ class ReporteController extends Controller
                 
                 // return $descuentos;
                 if ($ver == 0) {
-                    //create historial
-                    Historial::create([
-                        'anio' => $anio,
-                        'meses' => $mes,
-                        'dni' => $request->dni,
-                        'certificado' => $certificado,
-                        'tipo' => 'mes',
-                        'dni_user' => auth()->user()->dni
-                    ]);  
+                    $historial = Historial::where('certificado', $certificado)->where('dni', $dni)->first();
+                    $certificado_hist = Historial::where('certificado', $certificado)->first();
+                    
+                    $hash_code = "{\"anio\":\"$anio\",\"mes\":\"$mes\",\"dni\":\"$dni\",\"certificado\":\"$certificado\",\"ver\":1}";
+                    $base64_code = base64_encode($hash_code);
+                    if($historial){
+                        return redirect('reporte/por-mes/'.$base64_code);
+                    }elseif($certificado_hist){
+                        return redirect('reporte/por-mes/'.$base64_code);
+                    }else{
+                        //create historial
+                        Historial::create([
+                            'anio' => $anio,
+                            'meses' => $mes,
+                            'dni' => $dni,
+                            'certificado' => $certificado,
+                            'tipo' => 'mes',
+                            'dni_user' => auth()->user()->dni
+                        ]); 
+                    }   
     
                     // return $pagos_with_detalles;
                     $pdf = PDF::loadView('reporte.mes', [
@@ -986,7 +988,7 @@ class ReporteController extends Controller
                     return $pdf->stream();
     
                 }elseif ($ver == 1) {   
-                    $historial = Historial::where('certificado', $certificado)->first();
+                    $historial = Historial::where('certificado', $certificado)->where('dni', $dni)->first();
 
                     if($historial)   {
                         $user = User::where('dni', $historial->dni_user)->first();
@@ -1009,22 +1011,14 @@ class ReporteController extends Controller
                         $pdf->setPaper('a4');
                         return $pdf->stream();
                     } else{
-                        return response()->json([
-                            'msg' => 'El número de certificado es inválido o no existe.',
-                        ], 404);
-                    }             
+                        return redirect('admin/historiales')->with('message', 'La constancia de pagos no existe.');                    
+                    }
                     
                 }else{
-                    return response()->json([
-                        'msg' => 'Ver es inválido',
-                    ], 404);
+                    return redirect('admin/historiales')->with('message', 'La operación no es inválida.');
                 }
 
-            }else {
-                return response()->json([
-                    'msg' => 'Pago no tiene datos.',
-                ], 404);
-            }
+            
         } else {
             return response()->json([
                 'msg' => 'Pago no ha sido encontrado',
@@ -1063,7 +1057,5 @@ class ReporteController extends Controller
             ], 200);
         }
     }
-
-
 
 }

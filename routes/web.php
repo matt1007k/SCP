@@ -71,11 +71,9 @@ Route::namespace ('Admin')->group(function () {
         Route::get('/search/por-anio', 'ReporteController@searchByYear')->name('admin.search.poranio');
         Route::get('/search/por-mes', 'ReporteController@searchByYearAndMonth')->name('admin.search.poranio');
 
-        Route::get('/reporte/por-anios', 'ReporteController@porAnios')->name('admin.reporte.poranios');
-        Route::get('/reporte/por-anio', 'ReporteController@porAnio')->name('admin.reporte.poranio');
-        Route::get('/reporte/por-mes', 'ReporteController@porMes')->name('admin.reporte.pormes');
-
-        Route::get('/boleta/por-mes', 'ReporteController@boletaPorMes')->name('admin.boleta.pormes');
+        Route::get('/reporte/por-anios/{params_code}', 'ReporteController@porAnios')->name('admin.reporte.poranios');
+        Route::get('/reporte/por-anio/{params_code}', 'ReporteController@porAnio')->name('admin.reporte.poranio');
+        Route::get('/reporte/por-mes/{params_code}', 'ReporteController@porMes')->name('admin.reporte.pormes');
 
         Route::get('/unread-notifications', 'DashboardController@getUnReadNotifications');
         Route::get('/mark-all-read', 'DashboardController@markAllNotifications');

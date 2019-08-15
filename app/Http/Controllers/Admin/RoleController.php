@@ -28,16 +28,7 @@ class RoleController extends Controller
 
         return response()->json(['roles' => $roles], 200);
     }
-    // public function show($id)
-    // {
-    //     $role = Role::findOrFail($id);
-    //     return view('admin.roles.show', ['role' => $role]);
-    // }
-    // public function create()
-    // {
-    //     $permissions = Permission::all();
-    //     return view('admin.roles.create', ['permissions' => $permissions]);
-    // }
+
     public function store(Request $request)
     {
         $request->validate([
@@ -50,7 +41,7 @@ class RoleController extends Controller
         $role->slug = $request->identificador;
         $role->description = $request->descripcion;
         if ($role->save()) {
-            $role->permissions()->sync(collect($request->permissions)->pluck('id')->toArray());
+            // $role->permissions()->sync(collect($request->permissions)->pluck('id')->toArray());
             return response()->json([
                 'created' => true,
             ], 200);
@@ -60,12 +51,7 @@ class RoleController extends Controller
             ], 500);
         }
     }
-    // public function edit($id)
-    // {
-    //     $role = Role::findOrFail($id);
-    //     $permissions = Permission::all();
-    //     return view('admin.roles.edit', ['role' => $role, 'permissions' => $permissions]);
-    // }
+
     public function update(Request $request, $id)
     {
         $request->validate([
@@ -78,7 +64,7 @@ class RoleController extends Controller
         $role->slug = $request->identificador;
         $role->description = $request->descripcion;
         if ($role->save()) {
-            $role->permissions()->sync(collect($request->permissions)->pluck('id')->toArray());
+            // $role->permissions()->sync(collect($request->permissions)->pluck('id')->toArray());
             return response()->json([
                 'updated' => true,
             ], 200);

@@ -245,16 +245,17 @@ export default {
         });
     },
     downloadPDF(anio, mes, dni) {
+      let params = {
+        anio: this.form.anio,
+        mes: this.form.mes,
+        dni: this.form.persona.dni,
+        certificado: this.form.certificado,
+        ver: 0
+      };
+      const params_code = window.btoa(JSON.stringify(params));
       axios({
-        url: "/reporte/por-mes",
+        url: `/reporte/por-mes/${params_code}`,
         method: "GET",
-        params: {
-          anio,
-          mes,
-          dni,
-          certificado: this.form.certificado,
-          ver: 0
-        },
         responseType: "blob" // important
       }).then(response => {
         const url = window.URL.createObjectURL(new Blob([response.data]));
@@ -267,11 +268,15 @@ export default {
       });
     },
     viewPDF(anio, mes, dni) {
-      const certificado = this.form.certificado;
-      window.open(
-        `/reporte/por-mes?ver=0&anio=${anio}&mes=${mes}&dni=${dni}&certificado=${certificado}`,
-        "_blank"
-      );
+      let params = {
+        anio: this.form.anio,
+        mes: this.form.mes,
+        dni: this.form.persona.dni,
+        certificado: this.form.certificado,
+        ver: 0
+      };
+      const params_code = window.btoa(JSON.stringify(params));
+      window.open(`/reporte/por-mes/${params_code}`, "_blank");
     },
     getName() {
       return `${this.form.persona.apellido_paterno} ${this.form.persona.apellido_materno}, ${this.form.persona.nombre} `;

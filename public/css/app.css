@@ -904,6 +904,18 @@ webpackContext.id = "./node_modules/moment/locale sync recursive ^\\.\\/.*$";* {
   margin: 0;
 }
 
+.alert {
+  font-size: 14px;
+  padding: 2rem;
+  width: 100%;
+  border-radius: 5px;
+}
+
+.alert-info {
+  background: #039be5;
+  color: #fff;
+}
+
 body,
 html {
   font-family: "Roboto", sans-serif;

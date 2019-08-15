@@ -228,15 +228,16 @@ export default {
         });
     },
     downloadPDF(anio, dni) {
+      let params = {
+        anio: this.form.anio,
+        dni: this.form.persona.dni,
+        certificado: this.form.certificado,
+        ver: 0
+      };
+      const params_code = window.btoa(JSON.stringify(params));
       axios({
-        url: "/reporte/por-anio",
+        url: `/reporte/por-anio/${params_code}`,
         method: "GET",
-        params: {
-          anio,
-          dni,
-          certificado: this.form.certificado,
-          ver: 0
-        },
         responseType: "blob" // important
       }).then(response => {
         const url = window.URL.createObjectURL(new Blob([response.data]));
@@ -249,32 +250,14 @@ export default {
       });
     },
     viewPDF(anio, dni) {
-      // axios(`/reporte/por-anio`, {
-      //   method: "GET",
-      //   params: { anio, dni },
-      //   responseType: "blob" //Force to receive data in a Blob Format
-      // })
-      //   .then(response => {
-      //Create a Blob from the PDF Stream
-      // const file = new Blob([response.data], { type: "application/pdf" });
-      //Build a URL from the file
-      // const fileURL = URL.createObjectURL(file);
-      //Open the URL on new Window7
-      // window.open(fileURL, "_blank");
-      // const url = window.URL.createObjectURL(new Blob([response.data]));
-      // window.open("data:application/pdf;base64," + encodeURI(response.data));
-      const certificado = this.form.certificado;
-      window.open(
-        `/reporte/por-anio?ver=0&anio=${anio}&dni=${dni}&certificado=${certificado}`,
-        "_blank"
-      );
-      // location.href = `/reporte/por-anio?anio=${anio}&dni=${dni}`;
-      // target = "_blank";
-      // done = 1;
-      // })
-      // .catch(error => {
-      //   console.log(error);
-      // });
+      let params = {
+        anio: this.form.anio,
+        dni: this.form.persona.dni,
+        certificado: this.form.certificado,
+        ver: 0
+      };
+      const params_code = window.btoa(JSON.stringify(params));
+      window.open(`/reporte/por-anio/${params_code}`, "_blank");
     },
     getName() {
       return `${this.form.persona.apellido_paterno} ${this.form.persona.apellido_materno}, ${this.form.persona.nombre} `;

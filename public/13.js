@@ -253,16 +253,17 @@ __webpack_require__.r(__webpack_exports__);
     downloadPDF: function downloadPDF(anio, mes, dni) {
       var _this3 = this;
 
+      var params = {
+        anio: this.form.anio,
+        mes: this.form.mes,
+        dni: this.form.persona.dni,
+        certificado: this.form.certificado,
+        ver: 0
+      };
+      var params_code = window.btoa(JSON.stringify(params));
       axios({
-        url: "/reporte/por-mes",
+        url: "/reporte/por-mes/".concat(params_code),
         method: "GET",
-        params: {
-          anio: anio,
-          mes: mes,
-          dni: dni,
-          certificado: this.form.certificado,
-          ver: 0
-        },
         responseType: "blob" // important
 
       }).then(function (response) {
@@ -277,8 +278,15 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     viewPDF: function viewPDF(anio, mes, dni) {
-      var certificado = this.form.certificado;
-      window.open("/reporte/por-mes?ver=0&anio=".concat(anio, "&mes=").concat(mes, "&dni=").concat(dni, "&certificado=").concat(certificado), "_blank");
+      var params = {
+        anio: this.form.anio,
+        mes: this.form.mes,
+        dni: this.form.persona.dni,
+        certificado: this.form.certificado,
+        ver: 0
+      };
+      var params_code = window.btoa(JSON.stringify(params));
+      window.open("/reporte/por-mes/".concat(params_code), "_blank");
     },
     getName: function getName() {
       return "".concat(this.form.persona.apellido_paterno, " ").concat(this.form.persona.apellido_materno, ", ").concat(this.form.persona.nombre, " ");

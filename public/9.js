@@ -67,20 +67,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     value: Boolean
@@ -91,15 +77,10 @@ __webpack_require__.r(__webpack_exports__);
       form: {
         nombre: "",
         identificador: "",
-        descripcion: "",
-        permissions: []
+        descripcion: ""
       },
-      errors: {},
-      items_permissions: []
+      errors: {}
     };
-  },
-  created: function created() {
-    this.getPermissions();
   },
   methods: {
     Submit: function Submit() {
@@ -115,15 +96,6 @@ __webpack_require__.r(__webpack_exports__);
         _this.resetInputs();
       })["catch"](function (err) {
         _this.errors = err.response.data.errors;
-      });
-    },
-    getPermissions: function getPermissions() {
-      var _this2 = this;
-
-      axios.get("/getPermissions").then(function (res) {
-        _this2.items_permissions = res.data.permissions;
-      })["catch"](function (err) {
-        return console.log(err);
       });
     },
     resetInputs: function resetInputs() {
@@ -206,20 +178,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -228,15 +186,10 @@ __webpack_require__.r(__webpack_exports__);
         id: "",
         nombre: "",
         identificador: "",
-        descripcion: "",
-        permissions: []
+        descripcion: ""
       },
-      errors: {},
-      items_permissions: []
+      errors: {}
     };
-  },
-  created: function created() {
-    this.getPermissions();
   },
   methods: {
     Submit: function Submit() {
@@ -255,15 +208,6 @@ __webpack_require__.r(__webpack_exports__);
     show: function show() {
       this.open = true;
       this.errors = {};
-    },
-    getPermissions: function getPermissions() {
-      var _this2 = this;
-
-      axios.get("/getPermissions").then(function (res) {
-        _this2.items_permissions = res.data.permissions;
-      })["catch"](function (err) {
-        return console.log(err);
-      });
     }
   }
 });
@@ -635,42 +579,6 @@ var render = function() {
                             )
                           ],
                           1
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "v-layout",
-                          { attrs: { wrap: "" } },
-                          [
-                            _c(
-                              "v-flex",
-                              { attrs: { xs12: "" } },
-                              [
-                                _c("h4", [
-                                  _vm._v("Asignar Permisos Especiales")
-                                ]),
-                                _vm._v(" "),
-                                _c("v-select", {
-                                  attrs: {
-                                    items: _vm.items_permissions,
-                                    "item-text": "name",
-                                    "return-object": "",
-                                    chips: "",
-                                    label: "Permisos",
-                                    multiple: ""
-                                  },
-                                  model: {
-                                    value: _vm.form.permissions,
-                                    callback: function($$v) {
-                                      _vm.$set(_vm.form, "permissions", $$v)
-                                    },
-                                    expression: "form.permissions"
-                                  }
-                                })
-                              ],
-                              1
-                            )
-                          ],
-                          1
                         )
                       ],
                       1
@@ -877,40 +785,6 @@ var render = function() {
                                       _vm.$set(_vm.form, "descripcion", $$v)
                                     },
                                     expression: "form.descripcion"
-                                  }
-                                })
-                              ],
-                              1
-                            )
-                          ],
-                          1
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "v-layout",
-                          { attrs: { wrap: "" } },
-                          [
-                            _c(
-                              "v-flex",
-                              { attrs: { xs12: "" } },
-                              [
-                                _c("h4", [_vm._v("Asignar Permisos")]),
-                                _vm._v(" "),
-                                _c("v-select", {
-                                  attrs: {
-                                    items: _vm.items_permissions,
-                                    "item-text": "name",
-                                    "return-object": "",
-                                    chips: "",
-                                    label: "Permisos",
-                                    multiple: ""
-                                  },
-                                  model: {
-                                    value: _vm.form.permissions,
-                                    callback: function($$v) {
-                                      _vm.$set(_vm.form, "permissions", $$v)
-                                    },
-                                    expression: "form.permissions"
                                   }
                                 })
                               ],

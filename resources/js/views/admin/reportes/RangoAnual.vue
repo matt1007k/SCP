@@ -159,7 +159,7 @@
                       </v-btn>
                     </template>
                     <span>Imprimir constancia de pago del año ({{pago.anio}})</span>
-                  </v-tooltip> -->
+                  </v-tooltip>-->
                 </div>
               </v-card-text>
             </v-card>
@@ -274,11 +274,11 @@ export default {
       axios({
         url: "/reporte/por-anio",
         method: "GET",
-        params: { 
-          anio, 
-          dni, 
-          certificado: this.form.certificado, 
-          ver: 1 
+        params: {
+          anio,
+          dni,
+          certificado: this.form.certificado,
+          ver: 1
         },
         responseType: "blob" // important
       }).then(response => {
@@ -299,10 +299,10 @@ export default {
         certificado: this.form.certificado,
         ver: 0
       };
+      const params_code = window.btoa(JSON.stringify(params));
       axios({
-        url: "/reporte/por-anios",
+        url: `/reporte/por-anios/${params_code}`,
         method: "GET",
-        params,
         responseType: "blob" // important
       }).then(response => {
         const url = window.URL.createObjectURL(new Blob([response.data]));
@@ -322,14 +322,15 @@ export default {
       );
     },
     viewAllPDF() {
-      const anio_anterior = this.form.anio_anterior;
-      const anio_actual = this.form.anio_actual;
-      const dni = this.form.persona.dni;
-      const certificado = this.form.certificado;
-      window.open(
-        `/reporte/por-anios?ver=0&anio_anterior=${anio_anterior}&anio_actual=${anio_actual}&dni=${dni}&certificado=${certificado}`,
-        "_blank"
-      );
+      let params = {
+        anio_anterior: this.form.anio_anterior,
+        anio_actual: this.form.anio_actual,
+        dni: this.form.persona.dni,
+        certificado: this.form.certificado,
+        ver: 0
+      };
+      const params_code = window.btoa(JSON.stringify(params));
+      window.open(`/reporte/por-anios/${params_code}`, "_blank");
     },
     getName() {
       return `${this.form.persona.apellido_paterno} ${this.form.persona.apellido_materno}, ${this.form.persona.nombre} `;

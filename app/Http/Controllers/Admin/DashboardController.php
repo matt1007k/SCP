@@ -198,7 +198,9 @@ class DashboardController extends Controller
             array_push($total_constancias_by_users, [
                 'nombre' => $user->name,
                 'dni' => $user->dni,
-                'total' => Historial::where('dni_user', $user->dni)->count(),
+                'total_anios' => Historial::where('dni_user', $user->dni)->where('tipo', 'rango')->count(),
+                'total_anio' => Historial::where('dni_user', $user->dni)->where('tipo', 'anio')->count(),
+                'total_mes' => Historial::where('dni_user', $user->dni)->where('tipo', 'mes')->count(),
             ]);
         }
 

@@ -238,15 +238,16 @@ __webpack_require__.r(__webpack_exports__);
     downloadPDF: function downloadPDF(anio, dni) {
       var _this3 = this;
 
+      var params = {
+        anio: this.form.anio,
+        dni: this.form.persona.dni,
+        certificado: this.form.certificado,
+        ver: 0
+      };
+      var params_code = window.btoa(JSON.stringify(params));
       axios({
-        url: "/reporte/por-anio",
+        url: "/reporte/por-anio/".concat(params_code),
         method: "GET",
-        params: {
-          anio: anio,
-          dni: dni,
-          certificado: this.form.certificado,
-          ver: 0
-        },
         responseType: "blob" // important
 
       }).then(function (response) {
@@ -261,28 +262,14 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     viewPDF: function viewPDF(anio, dni) {
-      // axios(`/reporte/por-anio`, {
-      //   method: "GET",
-      //   params: { anio, dni },
-      //   responseType: "blob" //Force to receive data in a Blob Format
-      // })
-      //   .then(response => {
-      //Create a Blob from the PDF Stream
-      // const file = new Blob([response.data], { type: "application/pdf" });
-      //Build a URL from the file
-      // const fileURL = URL.createObjectURL(file);
-      //Open the URL on new Window7
-      // window.open(fileURL, "_blank");
-      // const url = window.URL.createObjectURL(new Blob([response.data]));
-      // window.open("data:application/pdf;base64," + encodeURI(response.data));
-      var certificado = this.form.certificado;
-      window.open("/reporte/por-anio?ver=0&anio=".concat(anio, "&dni=").concat(dni, "&certificado=").concat(certificado), "_blank"); // location.href = `/reporte/por-anio?anio=${anio}&dni=${dni}`;
-      // target = "_blank";
-      // done = 1;
-      // })
-      // .catch(error => {
-      //   console.log(error);
-      // });
+      var params = {
+        anio: this.form.anio,
+        dni: this.form.persona.dni,
+        certificado: this.form.certificado,
+        ver: 0
+      };
+      var params_code = window.btoa(JSON.stringify(params));
+      window.open("/reporte/por-anio/".concat(params_code), "_blank");
     },
     getName: function getName() {
       return "".concat(this.form.persona.apellido_paterno, " ").concat(this.form.persona.apellido_materno, ", ").concat(this.form.persona.nombre, " ");

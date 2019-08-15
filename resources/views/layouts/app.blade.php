@@ -21,8 +21,11 @@
     <script src="{{ asset('js/app.js') }}" defer></script>
 
     @if (session('message'))
-        <div class="alert alert-success">
-            {{ session('message') }}
+        <div class="d-flex justify-center align-center w-100 h-100vh">
+            <div class="alert alert-info">
+                <h1>Mensaje de operación</h1>
+                <h2>{{ session('message') }}</h2>
+            </div>
         </div>
     @endif
     <script>

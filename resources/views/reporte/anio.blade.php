@@ -81,7 +81,7 @@
             <tbody>
                 <tr>                                           
                     <td class="text-right" >
-                        <img class="position-absolute" style="top:0; right: 0; border: 1px solid #000" src="data:image/png;base64, {!! base64_encode(QrCode::format('png')->size(74)->generate($certificado.'|'.$pago->persona->dni.'|'.date('d/m/Y H:i:s').'|'.$user->name)) !!} ">
+                        <img class="position-absolute" style="top:0; right: 0; border: 1px solid #000" src="data:image/png;base64, {!! base64_encode(QrCode::format('png')->size(74)->generate('Cert:'.$certificado.'|'.$pago->persona->dni.'|'.date('d/m/Y H:i:s').'|Resp:'.$user->dni)) !!} ">
                     </td>
                     <td>
                         <tr>

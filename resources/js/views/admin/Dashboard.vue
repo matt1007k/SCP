@@ -1,16 +1,23 @@
 <template>
   <v-container fluid grid-list-md>
     <v-layout row wrap class="mb-3">
-      <v-flex xs12>
+      <v-flex xs12 v-if="$auth.can('admin.index') || $auth.isAdmin()">
         <span class="headline">Tablero de resumenes</span>
       </v-flex>
+      <v-flex xs12 v-else>
+        <v-alert :value="true" type="info">
+          <span
+            class="headline"
+          >Usted no tiene ningún permiso, comuníquese con el administrador del sistema.</span>
+        </v-alert>
+      </v-flex>
     </v-layout>
-    <v-layout row wrap class="mb-2">
+    <v-layout row wrap class="mb-2" v-if="$auth.can('admin.index') || $auth.isAdmin()">
       <v-flex xs12 sm4 md3 v-for="(item, index) in count_items" :key="index">
         <count-item :color="item.color" :icon="item.icon" :label="item.label" :total="item.total"></count-item>
       </v-flex>
     </v-layout>
-    <v-layout row wrap>
+    <v-layout row wrap v-if="$auth.can('admin.index') || $auth.isAdmin()">
       <template v-if="$auth.isAdmin()">
         <v-flex xs12>
           <v-card>
@@ -20,16 +27,25 @@
               </v-subheader>
               <v-list-tile v-for="user in dataConstanciasByUsers" :key="user.dni">
                 <v-list-tile-content>
-                  <v-list-tile-title>Nombre completo: {{ user.nombre }}</v-list-tile-title>
+                  <v-list-tile-title>{{ user.nombre }}</v-list-tile-title>
                   <v-list-tile-sub-title>DNI: {{ user.dni }}</v-list-tile-sub-title>
                 </v-list-tile-content>
-
-                <v-list-tile-action>
-                  <v-chip color="teal" text-color="white">
-                    <h3>{{user.total}}</h3>
+                <v-spacer></v-spacer>
+                <div>
+                  <v-chip color="info" text-color="white">
+                    <h3>Por años: {{user.total_anios}}</h3>
                     <v-icon right>$vuetify.icons.file</v-icon>
                   </v-chip>
-                </v-list-tile-action>
+                  <v-chip color="error" text-color="white">
+                    <h3>Por año: {{user.total_anio}}</h3>
+                    <v-icon right>$vuetify.icons.file</v-icon>
+                  </v-chip>
+                  <v-chip color="indigo" text-color="white">
+                    <h3>Por mes: {{user.total_mes}}</h3>
+                    <v-icon right>$vuetify.icons.file</v-icon>
+                  </v-chip>
+                </div>
+                <!-- <v-list-tile-action></v-list-tile-action> -->
               </v-list-tile>
             </v-list>
           </v-card>

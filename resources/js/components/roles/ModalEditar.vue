@@ -41,20 +41,6 @@
                   ></v-textarea>
                 </v-flex>
               </v-layout>
-              <v-layout wrap>
-                <v-flex xs12>
-                  <h4>Asignar Permisos</h4>
-                  <v-select
-                    v-model="form.permissions"
-                    :items="items_permissions"
-                    item-text="name"
-                    return-object
-                    chips
-                    label="Permisos"
-                    multiple
-                  ></v-select>
-                </v-flex>
-              </v-layout>
             </v-container>
             <small>Ingrese los campos obligatorios.</small>
           </v-card-text>
@@ -77,15 +63,10 @@ export default {
       id: "",
       nombre: "",
       identificador: "",
-      descripcion: "",
-      permissions: []
+      descripcion: ""
     },
-    errors: {},
-    items_permissions: []
+    errors: {}
   }),
-  created() {
-    this.getPermissions();
-  },
   methods: {
     Submit() {
       axios
@@ -106,14 +87,6 @@ export default {
     show() {
       this.open = true;
       this.errors = {};
-    },
-    getPermissions() {
-      axios
-        .get("/getPermissions")
-        .then(res => {
-          this.items_permissions = res.data.permissions;
-        })
-        .catch(err => console.log(err));
     }
   }
 };

@@ -120,7 +120,7 @@ __webpack_require__.r(__webpack_exports__);
       }, {
         text: "Fecha de entrega",
         value: "created_at",
-        sortable: false
+        sortable: true
       }],
       historiales: []
     };
@@ -156,21 +156,47 @@ __webpack_require__.r(__webpack_exports__);
       var dni = historial.dni;
       var certificado = historial.certificado;
       var tipo = historial.tipo;
-      console.log(historial);
 
       if (tipo == "rango") {
         var array_years = anio.split("-");
         var anio_anterior = array_years[0];
         var anio_actual = array_years[1];
-        window.open("/reporte/por-anios?ver=1&anio_anterior=".concat(anio_anterior, "&anio_actual=").concat(anio_actual, "&dni=").concat(dni, "&certificado=").concat(certificado), "_blank");
+        var params = {
+          anio_anterior: anio_anterior,
+          anio_actual: anio_actual,
+          dni: dni,
+          certificado: certificado,
+          ver: 1
+        };
+        var params_code = window.btoa(JSON.stringify(params));
+        window.open("/reporte/por-anios/".concat(params_code), "_blank");
       }
 
       if (tipo == "anio") {
-        window.open("/reporte/por-anio?ver=1&anio=".concat(anio, "&dni=").concat(dni, "&certificado=").concat(certificado), "_blank");
+        var _params = {
+          anio: anio,
+          dni: dni,
+          certificado: certificado,
+          ver: 1
+        };
+
+        var _params_code = window.btoa(JSON.stringify(_params));
+
+        window.open("/reporte/por-anio/".concat(_params_code), "_blank");
       }
 
       if (tipo == "mes") {
-        window.open("/reporte/por-mes?ver=1&anio=".concat(anio, "&mes=").concat(meses, "&dni=").concat(dni, "&certificado=").concat(certificado), "_blank");
+        var _params2 = {
+          anio: anio,
+          mes: meses,
+          dni: dni,
+          certificado: certificado,
+          ver: 1
+        };
+
+        var _params_code2 = window.btoa(JSON.stringify(_params2));
+
+        window.open("/reporte/por-mes/".concat(_params_code2), "_blank");
       }
     }
   },

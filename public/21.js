@@ -311,10 +311,10 @@ __webpack_require__.r(__webpack_exports__);
         certificado: this.form.certificado,
         ver: 0
       };
+      var params_code = window.btoa(JSON.stringify(params));
       axios({
-        url: "/reporte/por-anios",
+        url: "/reporte/por-anios/".concat(params_code),
         method: "GET",
-        params: params,
         responseType: "blob" // important
 
       }).then(function (response) {
@@ -333,11 +333,15 @@ __webpack_require__.r(__webpack_exports__);
       window.open("/reporte/por-anio?ver=1&anio=".concat(anio, "&dni=").concat(dni, "&certificado=").concat(certificado), "_blank");
     },
     viewAllPDF: function viewAllPDF() {
-      var anio_anterior = this.form.anio_anterior;
-      var anio_actual = this.form.anio_actual;
-      var dni = this.form.persona.dni;
-      var certificado = this.form.certificado;
-      window.open("/reporte/por-anios?ver=0&anio_anterior=".concat(anio_anterior, "&anio_actual=").concat(anio_actual, "&dni=").concat(dni, "&certificado=").concat(certificado), "_blank");
+      var params = {
+        anio_anterior: this.form.anio_anterior,
+        anio_actual: this.form.anio_actual,
+        dni: this.form.persona.dni,
+        certificado: this.form.certificado,
+        ver: 0
+      };
+      var params_code = window.btoa(JSON.stringify(params));
+      window.open("/reporte/por-anios/".concat(params_code), "_blank");
     },
     getName: function getName() {
       return "".concat(this.form.persona.apellido_paterno, " ").concat(this.form.persona.apellido_materno, ", ").concat(this.form.persona.nombre, " ");

@@ -267,6 +267,22 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -811,104 +827,179 @@ var render = function() {
         "v-layout",
         { staticClass: "mb-3", attrs: { row: "", wrap: "" } },
         [
-          _c("v-flex", { attrs: { xs12: "" } }, [
-            _c("span", { staticClass: "headline" }, [
-              _vm._v("Tablero de resumenes")
-            ])
-          ])
+          _vm.$auth.can("admin.index") || _vm.$auth.isAdmin()
+            ? _c("v-flex", { attrs: { xs12: "" } }, [
+                _c("span", { staticClass: "headline" }, [
+                  _vm._v("Tablero de resumenes")
+                ])
+              ])
+            : _c(
+                "v-flex",
+                { attrs: { xs12: "" } },
+                [
+                  _c("v-alert", { attrs: { value: true, type: "info" } }, [
+                    _c("span", { staticClass: "headline" }, [
+                      _vm._v(
+                        "Usted no tiene ningún permiso, comuníquese con el administrador del sistema."
+                      )
+                    ])
+                  ])
+                ],
+                1
+              )
         ],
         1
       ),
       _vm._v(" "),
-      _c(
-        "v-layout",
-        { staticClass: "mb-2", attrs: { row: "", wrap: "" } },
-        _vm._l(_vm.count_items, function(item, index) {
-          return _c(
-            "v-flex",
-            { key: index, attrs: { xs12: "", sm4: "", md3: "" } },
-            [
-              _c("count-item", {
-                attrs: {
-                  color: item.color,
-                  icon: item.icon,
-                  label: item.label,
-                  total: item.total
-                }
-              })
-            ],
+      _vm.$auth.can("admin.index") || _vm.$auth.isAdmin()
+        ? _c(
+            "v-layout",
+            { staticClass: "mb-2", attrs: { row: "", wrap: "" } },
+            _vm._l(_vm.count_items, function(item, index) {
+              return _c(
+                "v-flex",
+                { key: index, attrs: { xs12: "", sm4: "", md3: "" } },
+                [
+                  _c("count-item", {
+                    attrs: {
+                      color: item.color,
+                      icon: item.icon,
+                      label: item.label,
+                      total: item.total
+                    }
+                  })
+                ],
+                1
+              )
+            }),
             1
           )
-        }),
-        1
-      ),
+        : _vm._e(),
       _vm._v(" "),
-      _c(
-        "v-layout",
-        { attrs: { row: "", wrap: "" } },
-        [
-          _vm.$auth.isAdmin()
-            ? [
-                _c(
-                  "v-flex",
-                  { attrs: { xs12: "" } },
-                  [
+      _vm.$auth.can("admin.index") || _vm.$auth.isAdmin()
+        ? _c(
+            "v-layout",
+            { attrs: { row: "", wrap: "" } },
+            [
+              _vm.$auth.isAdmin()
+                ? [
                     _c(
-                      "v-card",
+                      "v-flex",
+                      { attrs: { xs12: "" } },
                       [
                         _c(
-                          "v-list",
+                          "v-card",
                           [
-                            _c("v-subheader", [
-                              _c("h2", [
-                                _vm._v(
-                                  "Cantidad de constancias de pago entregadas por usuario"
-                                )
-                              ])
-                            ]),
-                            _vm._v(" "),
-                            _vm._l(_vm.dataConstanciasByUsers, function(user) {
-                              return _c(
-                                "v-list-tile",
-                                { key: user.dni },
-                                [
-                                  _c(
-                                    "v-list-tile-content",
-                                    [
-                                      _c("v-list-tile-title", [
-                                        _vm._v(
-                                          "Nombre completo: " +
-                                            _vm._s(user.nombre)
-                                        )
-                                      ]),
-                                      _vm._v(" "),
-                                      _c("v-list-tile-sub-title", [
-                                        _vm._v("DNI: " + _vm._s(user.dni))
-                                      ])
-                                    ],
-                                    1
-                                  ),
-                                  _vm._v(" "),
-                                  _c(
-                                    "v-list-tile-action",
+                            _c(
+                              "v-list",
+                              [
+                                _c("v-subheader", [
+                                  _c("h2", [
+                                    _vm._v(
+                                      "Cantidad de constancias de pago entregadas por usuario"
+                                    )
+                                  ])
+                                ]),
+                                _vm._v(" "),
+                                _vm._l(_vm.dataConstanciasByUsers, function(
+                                  user
+                                ) {
+                                  return _c(
+                                    "v-list-tile",
+                                    { key: user.dni },
                                     [
                                       _c(
-                                        "v-chip",
-                                        {
-                                          attrs: {
-                                            color: "teal",
-                                            "text-color": "white"
-                                          }
-                                        },
+                                        "v-list-tile-content",
                                         [
-                                          _c("h3", [
-                                            _vm._v(_vm._s(user.total))
+                                          _c("v-list-tile-title", [
+                                            _vm._v(_vm._s(user.nombre))
                                           ]),
                                           _vm._v(" "),
+                                          _c("v-list-tile-sub-title", [
+                                            _vm._v("DNI: " + _vm._s(user.dni))
+                                          ])
+                                        ],
+                                        1
+                                      ),
+                                      _vm._v(" "),
+                                      _c("v-spacer"),
+                                      _vm._v(" "),
+                                      _c(
+                                        "div",
+                                        [
                                           _c(
-                                            "v-icon",
-                                            { attrs: { right: "" } },
-                                            [_vm._v("$vuetify.icons.file")]
+                                            "v-chip",
+                                            {
+                                              attrs: {
+                                                color: "info",
+                                                "text-color": "white"
+                                              }
+                                            },
+                                            [
+                                              _c("h3", [
+                                                _vm._v(
+                                                  "Por años: " +
+                                                    _vm._s(user.total_anios)
+                                                )
+                                              ]),
+                                              _vm._v(" "),
+                                              _c(
+                                                "v-icon",
+                                                { attrs: { right: "" } },
+                                                [_vm._v("$vuetify.icons.file")]
+                                              )
+                                            ],
+                                            1
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "v-chip",
+                                            {
+                                              attrs: {
+                                                color: "error",
+                                                "text-color": "white"
+                                              }
+                                            },
+                                            [
+                                              _c("h3", [
+                                                _vm._v(
+                                                  "Por año: " +
+                                                    _vm._s(user.total_anio)
+                                                )
+                                              ]),
+                                              _vm._v(" "),
+                                              _c(
+                                                "v-icon",
+                                                { attrs: { right: "" } },
+                                                [_vm._v("$vuetify.icons.file")]
+                                              )
+                                            ],
+                                            1
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "v-chip",
+                                            {
+                                              attrs: {
+                                                color: "indigo",
+                                                "text-color": "white"
+                                              }
+                                            },
+                                            [
+                                              _c("h3", [
+                                                _vm._v(
+                                                  "Por mes: " +
+                                                    _vm._s(user.total_mes)
+                                                )
+                                              ]),
+                                              _vm._v(" "),
+                                              _c(
+                                                "v-icon",
+                                                { attrs: { right: "" } },
+                                                [_vm._v("$vuetify.icons.file")]
+                                              )
+                                            ],
+                                            1
                                           )
                                         ],
                                         1
@@ -916,162 +1007,163 @@ var render = function() {
                                     ],
                                     1
                                   )
-                                ],
-                                1
-                              )
-                            })
+                                })
+                              ],
+                              2
+                            )
                           ],
-                          2
+                          1
                         )
                       ],
                       1
                     )
-                  ],
-                  1
-                )
-              ]
-            : _vm._e(),
-          _vm._v(" "),
-          _c(
-            "v-flex",
-            { attrs: { xs12: "" } },
-            [
+                  ]
+                : _vm._e(),
+              _vm._v(" "),
               _c(
-                "v-card",
+                "v-flex",
+                { attrs: { xs12: "" } },
                 [
                   _c(
-                    "v-card-title",
-                    { staticClass: "no-padding-bottom" },
+                    "v-card",
                     [
                       _c(
-                        "v-layout",
-                        { attrs: { row: "", "align-center": "" } },
+                        "v-card-title",
+                        { staticClass: "no-padding-bottom" },
                         [
                           _c(
-                            "v-flex",
-                            { attrs: { xs1: "" } },
+                            "v-layout",
+                            { attrs: { row: "", "align-center": "" } },
                             [
                               _c(
-                                "v-tooltip",
-                                { attrs: { bottom: "" } },
+                                "v-flex",
+                                { attrs: { xs1: "" } },
                                 [
                                   _c(
-                                    "v-icon",
-                                    {
-                                      attrs: { slot: "activator" },
-                                      slot: "activator"
+                                    "v-tooltip",
+                                    { attrs: { bottom: "" } },
+                                    [
+                                      _c(
+                                        "v-icon",
+                                        {
+                                          attrs: { slot: "activator" },
+                                          slot: "activator"
+                                        },
+                                        [_vm._v("$vuetify.icons.filter")]
+                                      ),
+                                      _vm._v(" "),
+                                      _c("span", [
+                                        _vm._v(
+                                          "Filtar o ver los total de pagos por año y estado de personas"
+                                        )
+                                      ])
+                                    ],
+                                    1
+                                  )
+                                ],
+                                1
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "v-flex",
+                                {
+                                  staticClass: "text-center",
+                                  attrs: { xs12: "", sm4: "" }
+                                },
+                                [
+                                  _c("v-select", {
+                                    attrs: {
+                                      items: _vm.items,
+                                      "item-text": "anio",
+                                      "item-value": "anio",
+                                      label: "Seleccionar el año"
                                     },
-                                    [_vm._v("$vuetify.icons.filter")]
-                                  ),
-                                  _vm._v(" "),
-                                  _c("span", [
-                                    _vm._v(
-                                      "Filtar o ver los total de pagos por año y estado de personas"
-                                    )
-                                  ])
+                                    on: {
+                                      input: function($event) {
+                                        return _vm.filterByYear()
+                                      }
+                                    },
+                                    model: {
+                                      value: _vm.anio,
+                                      callback: function($$v) {
+                                        _vm.anio = $$v
+                                      },
+                                      expression: "anio"
+                                    }
+                                  })
                                 ],
                                 1
                               )
-                            ],
-                            1
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "v-flex",
-                            {
-                              staticClass: "text-center",
-                              attrs: { xs12: "", sm4: "" }
-                            },
-                            [
-                              _c("v-select", {
-                                attrs: {
-                                  items: _vm.items,
-                                  "item-text": "anio",
-                                  "item-value": "anio",
-                                  label: "Seleccionar el año"
-                                },
-                                on: {
-                                  input: function($event) {
-                                    return _vm.filterByYear()
-                                  }
-                                },
-                                model: {
-                                  value: _vm.anio,
-                                  callback: function($$v) {
-                                    _vm.anio = $$v
-                                  },
-                                  expression: "anio"
-                                }
-                              })
                             ],
                             1
                           )
                         ],
                         1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-card-text",
+                        { staticClass: "no-padding-top" },
+                        [
+                          _c("bar-chart", {
+                            attrs: { "chart-data": _vm.dataPagos }
+                          })
+                        ],
+                        1
                       )
                     ],
                     1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "v-card-text",
-                    { staticClass: "no-padding-top" },
-                    [
-                      _c("bar-chart", {
-                        attrs: { "chart-data": _vm.dataPagos }
-                      })
-                    ],
-                    1
                   )
                 ],
                 1
-              )
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "v-flex",
-            { attrs: { xs12: "", sm6: "" } },
-            [
+              ),
+              _vm._v(" "),
               _c(
-                "v-card",
+                "v-flex",
+                { attrs: { xs12: "", sm6: "" } },
                 [
                   _c(
-                    "v-card-text",
+                    "v-card",
                     [
-                      _c("pie-chart", {
-                        attrs: {
-                          "chart-data": _vm.dataPersonas,
-                          title: "Cantidad de personas por estado"
-                        }
-                      })
+                      _c(
+                        "v-card-text",
+                        [
+                          _c("pie-chart", {
+                            attrs: {
+                              "chart-data": _vm.dataPersonas,
+                              title: "Cantidad de personas por estado"
+                            }
+                          })
+                        ],
+                        1
+                      )
                     ],
                     1
                   )
                 ],
                 1
-              )
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "v-flex",
-            { attrs: { xs12: "", sm6: "" } },
-            [
+              ),
+              _vm._v(" "),
               _c(
-                "v-card",
+                "v-flex",
+                { attrs: { xs12: "", sm6: "" } },
                 [
                   _c(
-                    "v-card-text",
+                    "v-card",
                     [
-                      _c("pie-chart", {
-                        attrs: {
-                          "chart-data": _vm.dataConstancias,
-                          title: "Cantidad de constancias por tipo de reporte"
-                        }
-                      })
+                      _c(
+                        "v-card-text",
+                        [
+                          _c("pie-chart", {
+                            attrs: {
+                              "chart-data": _vm.dataConstancias,
+                              title:
+                                "Cantidad de constancias por tipo de reporte"
+                            }
+                          })
+                        ],
+                        1
+                      )
                     ],
                     1
                   )
@@ -1079,11 +1171,9 @@ var render = function() {
                 1
               )
             ],
-            1
+            2
           )
-        ],
-        2
-      )
+        : _vm._e()
     ],
     1
   )
