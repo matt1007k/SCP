@@ -15,58 +15,7 @@
                 <v-flex xs12 class="mb-3">
                   <span class="headline">Editar pago</span>
                 </v-flex>
-                <v-flex xs12>
-                  <span class="body-2">Datos de la persona</span>
-                </v-flex>
-                <v-flex xs12 sm6>
-                  <div class="pr-2">
-                    <v-autocomplete
-                      v-model="form.persona"
-                      :items="lista_personas"
-                      :loading="isLoading"
-                      :search-input.sync="search"
-                      no-data-text="Sin resultados"
-                      item-text="nombre"
-                      item-value="API"
-                      label="Nombre"
-                      prepend-icon="mdi-database-search"
-                      :filter="customFilter"
-                      placeholder="Buscar por DNI o nombre completo..."
-                      return-object
-                      :error-messages="errors.persona"
-                    >
-                      <!-- <template
-                      v-slot:selection="data"
-                      >{{data.item.apellido_paterno}} {{data.item.apellido_materno}}, {{data.item.nombre}}</template>-->
-                      <template v-slot:item="data">
-                        <v-list-tile-content>
-                          <v-list-tile-title>{{data.item.apellido_paterno}} {{data.item.apellido_materno}}, {{data.item.nombre}}</v-list-tile-title>
-                          <v-list-tile-sub-title>DNI: {{data.item.dni}}</v-list-tile-sub-title>
-                        </v-list-tile-content>
-                      </template>
-                    </v-autocomplete>
-                  </div>
-                </v-flex>
-                <v-flex xs12 sm6 md3>
-                  <v-text-field
-                    label="Apellido Paterno"
-                    v-model="form.persona.apellido_paterno"
-                    disabled
-                  ></v-text-field>
-                </v-flex>
-                <v-flex xs12 sm6 md3>
-                  <v-text-field
-                    label="Apellido Materno"
-                    v-model="form.persona.apellido_materno"
-                    disabled
-                  ></v-text-field>
-                </v-flex>
-                <v-flex xs12 sm6>
-                  <v-text-field label="El DNI" v-model="form.persona.dni" disabled></v-text-field>
-                </v-flex>
-                <v-flex xs12 sm6>
-                  <v-text-field label="El cargo" v-model="form.persona.cargo" disabled></v-text-field>
-                </v-flex>
+                <SearchPerson :errors="errors" :person="form.persona" @input="onPerson($event)" />
                 <v-flex xs12>
                   <span class="body-2 mb-2">El periodo del pago</span>
                   <v-tooltip top v-if="$auth.can('periodos.create') || $auth.isAdmin()">
@@ -167,10 +116,11 @@
 import { months } from "../../../services/listMonthsOfTheYear";
 import Agregar from "../../../components/pagos/Agregar";
 import ModalAgregar from "../../../components/periodos/ModalAgregar";
+import SearchPerson from "../../../components/personas/SearchPerson";
 
 import ListaItems from "../../../components/pagos/ListaItems";
 export default {
-  components: { Agregar, ListaItems, ModalAgregar },
+  components: { Agregar, ListaItems, ModalAgregar, SearchPerson },
   data() {
     return {
       form: {
@@ -219,20 +169,6 @@ export default {
             this.$router.push("/403");
           }
         });
-    },
-    customFilter(item, queryText, itemText) {
-      const nombre = item.nombre.toLowerCase();
-      const apellido_paterno = item.apellido_paterno.toLowerCase();
-      const apellido_materno = item.apellido_materno.toLowerCase();
-      const dni = item.dni.toLowerCase();
-      const searchText = queryText.toLowerCase();
-
-      return (
-        nombre.indexOf(searchText) > -1 ||
-        apellido_paterno.indexOf(searchText) ||
-        apellido_materno.indexOf(searchText) ||
-        dni.indexOf(searchText) > -1
-      );
     },
     getYears() {
       axios
@@ -327,6 +263,10 @@ export default {
         }, 0);
       return parseFloat(total).toFixed(2);
     },
+    onPerson(e) {
+      this.form.persona = e.target.value;
+      console.log(this.form.persona);
+    },
     onSubmit() {
       const form = {
         anio: this.form.anio,
@@ -358,22 +298,6 @@ export default {
     },
     onCancel() {
       this.$router.push("/admin/pagos/lista");
-    }
-  },
-  watch: {
-    search(value) {
-      if (this.isLoading) return;
-      this.isLoading = true;
-      const params = { q: value };
-      axios
-        .get("/search-personas", { params })
-        .then(res => {
-          this.isLoading = false;
-
-          this.lista_personas = res.data.personas;
-        })
-        .catch(err => console.log(err))
-        .finally(() => (this.isLoading = false));
     }
   }
 };

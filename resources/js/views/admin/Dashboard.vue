@@ -113,7 +113,6 @@ export default {
     dataPersonas: {},
     dataConstancias: {},
     anio: String(new Date().getFullYear()),
-    estado: "activo",
     items: []
   }),
   created() {
@@ -145,8 +144,7 @@ export default {
       try {
         let res = await axios.get("/getTotalPagos", {
           params: {
-            anio: this.anio,
-            estado: this.estado
+            anio: this.anio
           }
         });
         this.dataPagos = {

@@ -22,8 +22,8 @@ class ImportarController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('permission:importar.personas')->only(['personas']);
-        $this->middleware('permission:importar.descuentos')->only(['descuentos']);
+        $this->middleware('has.permission:importar.personas')->only(['personas']);
+        $this->middleware('has.permission:importar.descuentos')->only(['descuentos']);
     }
 
     public function personas(Request $request)
@@ -77,7 +77,7 @@ class ImportarController extends Controller
                 $total_haber = $this->getTotalMonto($DetallesHaber, "mtohab");
                 $total_descuento = $this->getTotalMonto($DetallesDescuento, "mtodes");
 
-                $personaExiste = Persona::where('dni', $personaExcel['dni'])->first();
+                $personaExiste = Persona::where('dni', $personaExcel['dni'])->where('estado', $estado)->first();
 
                 if (!$personaExiste) {
                     $persona = new Persona();

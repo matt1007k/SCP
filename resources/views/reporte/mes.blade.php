@@ -43,7 +43,10 @@
         font-size: 10px;
     }
     .fs-header2{        
-        font-size: 13px;
+        font-size: 16px;
+    }
+    .fs-total{
+        font-size: 12px;
     }
     .fw-bold{
         font-weight: bold;
@@ -57,17 +60,23 @@
     .position-absolute{
         position: absolute;
     }
+    .header-cert{
+        position: absolute;
+        left: 0;
+        right: 0;
+        text-align: center;
+        margin-bottom: 20px;
+        margin-top: 5px;
+    }
     footer {
         position: fixed; 
-        bottom: -60px; 
+        bottom: 20px; 
         left: 0px; 
         right: 0px;
         height: 50px; 
 
         /** Extra personal styles **/
-        background-color: #03a9f4;
-        color: white;
-        text-align: center;
+        text-align: right;
         line-height: 35px;
     }
     </style>
@@ -75,7 +84,7 @@
 <body>
     <header>        
         
-        <img src="{{ public_path().'/img/cabecera.png' }}" class="w-100" height="120"  alt="">
+        <img src="{{ public_path().'/img/cabecera.png' }}" class="w-100" height="90"  alt="" style="margin-top: -40px">
         
         <h4 class="text-center" style="text-decoration: underline">CONSTANCIA DE PAGOS DE HABERES Y DESCUENTOS</h4>
         
@@ -97,10 +106,6 @@
                         <b>APELLIDOS Y NOMBRES:</b>
                     </td>
                     <td class="fs-header" colspan="2">{{$pago->persona->apellido_paterno}} {{$pago->persona->apellido_materno}}, {{$pago->persona->nombre}}</td>
-                    <td class="text-right fs-header">
-                        <b>CARGO:</b>
-                    </td>
-                    <td class="fs-header">{{$pago->persona->cargo}}</td>
                     
                 </tr>
                 <tr>
@@ -117,17 +122,12 @@
                     </td>
                     <td class="fs-header text-uppercase">{{$pago->persona->estado}}</td>
                 </tr>
-                <tr>
-                    <td  colspan=""></td>
-                    <td class="text-right fs-header2" colspan="3">
-                        <b>CERTIFICADO N°:</b>
-                        <span class="bb-1">{{$certificado.'-'.$pago->anio.'-GRA/GG-GRDS-DREA-OA-AT'}}</span>
-                    </td>
-                    {{-- <td class="fs-header2 bb-1">{{$certificado}}</td> --}}
-                </tr>
             </tbody>
         </table>
-
+        <div class="header-cert fs-header2">
+                <b>CERTIFICADO N°:</b>
+                <span class="bb-1" style="margin-left:20px">{{$certificado.'-'.date('Y').'-GRA/GG-GRDS-DREA-OA-AT'}}</span>
+        </div>
     </header>
     <div class="spacer"></div>
     <div class="body w-80" style="margin: auto;">
@@ -516,7 +516,7 @@
                 <?php endforeach;?>
                                           
                 <tr class="body-row">
-                    <td class="text-right"><b>TOTAL HABER</b></td>
+                    <td class="text-right"><b class="fs-total">TOTAL HABER</b></td>
                     @foreach ($total_haberes as $key => $total)
                         {{-- Monto enero --}}
                         @if(isset($total['total_haber_enero1']))
@@ -689,7 +689,7 @@
                     @endforeach
                 </tr>
                 <tr class="body-row">
-                    <td class="text-right"><b>TOTAL DESCUENTO</b></td>
+                    <td class="text-right"><b class="fs-total">TOTAL DESCUENTO</b></td>
                     @foreach ($total_descuentos as $total)
                         {{-- Monto enero --}}
                         @if(isset($total['total_descuento_enero1']))
@@ -861,7 +861,7 @@
                     @endforeach
                 </tr>
                 <tr class="body-row">
-                    <td class="text-right"><b>TOTAL LIQUIDO</b></td>
+                    <td class="text-right"><b class="fs-total">TOTAL LIQUIDO</b></td>
                     @foreach ($liquidos as $total)
                         {{-- Monto enero --}}
                         @if(isset($total['monto_liquido_enero1']))
@@ -1033,7 +1033,7 @@
                     @endforeach
                 </tr>
                 <tr class="body-row">
-                    <td class="text-right"><b>REM. ASEGURABLE</b></td>
+                    <td class="text-right"><b class="fs-total">REM. ASEGURABLE</b></td>
                     @foreach ($imponibles as $total)
                         {{-- Monto enero --}}
                         @if(isset($total['monto_imponible_enero1']))
@@ -1209,27 +1209,22 @@
             </tbody>
         </table>
     </div>
+    <footer>
     <table class="w-100">
         <tbody>
             <tr>                 
                 <td class="text-right">
-                    <img class="position-absolute" style="margin-top: 10px; right: 50; border: 1px solid #000" src="data:image/png;base64, {!! base64_encode(QrCode::format('png')->size(74)->generate('Cert:'.$certificado.'|'.$pago->persona->dni.'|'.date('d/m/Y H:i:s').'|Resp:'.$user->dni)) !!} ">
+                    <img class="position-absolute" style=" right: 0; border: 1px solid #000" src="data:image/png;base64, {!! base64_encode(QrCode::format('png')->size(74)->generate('Cert:'.$certificado.'|'.$pago->persona->dni.'|'.date('d/m/Y H:i:s').'|Resp:'.$user->dni)) !!} ">
                 </td>
                 <td>
                     <tr>
-                        {{-- <td class="fs-header text-right">
-                                <b>Responsable:</b>
-                            </td> --}}
                         <td class="fs-header text-right">
-                            <span class="position-absolute" style="width: 200px; margin-top: 28px; right: 120">{{$user->name}} &nbsp;</span>    
+                            <span class="position-absolute" style="width: 200px; margin-top: -5px; right: 60">{{setInitializeName($user->name)}} &nbsp;</span>    
                         </td>    
                     </tr>     
                     <tr>
                         <td class="fs-header text-right">
-                            {{-- <b>FECHA DE IMPRESIÓN:</b> --}}
-                        </td>
-                        <td class="fs-header text-right">
-                            <span class="position-absolute" style="width: 200px; margin-top: 10px; right: 120">{{date('d/m/Y H:i')}} &nbsp;</span>
+                            <span class="position-absolute" style="width: 200px; margin-top: -20px; right: 60">{{date('d/m/Y H:i')}} &nbsp;</span>
                         </td>
                     </tr>
                     
@@ -1237,12 +1232,13 @@
             </tr>
         </tbody>
     </table>
+</footer>
     {{-- <footer>
         fidd
     </footer> --}}
     <script type="text/php">
         if (isset($pdf)) {
-            $x = 510;
+            $x = 540;
             $y = 10;
             $text = "Página {PAGE_NUM}";
             $font = null;

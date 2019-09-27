@@ -11,36 +11,32 @@ class PersonaController extends Controller
 
     public function __construct()
     {
-        $this->middleware('permission:personas.index')->only(['index']);
-        $this->middleware('permission:personas.show')->only(['show']);
-        $this->middleware('permission:personas.create')->only(['create', 'store']);
-        $this->middleware('permission:personas.edit')->only(['edit', 'update']);
-        $this->middleware('permission:personas.destroy')->only(['destroy']);
+        $this->middleware('has.permission:personas.index')->only(['index']);
+        $this->middleware('has.permission:personas.show')->only(['show']);
+        $this->middleware('has.permission:personas.create')->only(['create', 'store']);
+        $this->middleware('has.permission:personas.edit')->only(['edit', 'update']);
+        $this->middleware('has.permission:personas.destroy')->only(['destroy']);
     }
 
     public function search(Request $request)
     {
-        $personas = Persona::orderBy('apellido_paterno', 'DESC')
-            ->when(request('q'), function ($query, $request) {
+        $personas = Persona::where('estado', request('estado'))
+            ->where(function ($query) use ($request) {
                 $query->where('codigo_modular', 'LIKE', '%' . request('q') . '%')
                     ->orWhere('dni', 'LIKE', '%' . request('q') . '%')
                     ->orWhere('nombre', 'LIKE', '%' . request('q') . '%')
                     ->orWhere('apellido_paterno', 'LIKE', '%' . request('q') . '%')
                     ->orWhere('apellido_materno', 'LIKE', '%' . request('q') . '%');
-            })
-            ->get();
+            })->orderBy('apellido_paterno', 'DESC')->get();
 
         return response()->json(['personas' => $personas], 200);
     }
 
     public function index(Request $request)
     {
-        $tipo = $request->get('tipo') ?? $request->get('tipo');
-        $personas = Persona::all();
-        if ($tipo !== 'Todos') {
-            $personas = Persona::where('estado', $tipo)->get();
+        $estado = $request->get('estado') ?? $request->get('estado');
 
-        }
+        $personas = Persona::where('estado', $estado)->get();
 
         return response()->json(['personas' => $personas], 200);
     }
@@ -51,12 +47,13 @@ class PersonaController extends Controller
             'nombre' => 'required',
             'apellido_paterno' => 'required',
             'apellido_materno' => 'required',
-            'dni' => 'required|min:8|unique:personas,dni',
+            'dni' => 'required|min:8',
             'cargo' => 'required',
-            'codigo_modular' => 'required|min:10|unique:personas,codigo_modular',
+            'codigo_modular' => 'required|min:10',
             'estado' => 'required',
         ]);
         // return $request;
+
         $persona = new Persona();
         $persona->nombre = $request->nombre;
         $persona->apellido_paterno = $request->apellido_paterno;
@@ -72,6 +69,7 @@ class PersonaController extends Controller
                 'persona' => $persona,
             ]);
         }
+
     }
 
     public function update(Request $request, $id)
@@ -85,6 +83,9 @@ class PersonaController extends Controller
             'codigo_modular' => 'required|min:10',
             'estado' => 'required',
         ]);
+
+        // return $request;
+
         $persona = Persona::findOrFail($id);
         $persona->nombre = $request->nombre;
         $persona->apellido_paterno = $request->apellido_paterno;
@@ -100,17 +101,19 @@ class PersonaController extends Controller
                 'persona' => $persona,
             ]);
         }
+
     }
 
     public function destroy($id)
     {
-        $persona = Persona::findOrFail($id);
+        $persona = Persona::find($id);
 
         if ($persona->delete()) {
             return response()->json([
                 'persona' => $persona,
             ]);
         }
+
     }
 
 }

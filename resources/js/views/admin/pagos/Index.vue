@@ -146,6 +146,12 @@ export default {
   created() {
     if (this.$auth.can("pagos.index") || this.$auth.isAdmin()) {
       document.title = "Lista de Pagos";
+      var date_now = new Date();
+      this.anio = String(date_now.getFullYear());
+      this.mes = date_now
+        .getMonth()
+        .toString()
+        .padStart(2, "0");
       this.getData();
       this.getYears();
     } else {

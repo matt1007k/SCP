@@ -110,7 +110,9 @@ export default {
   methods: {
     Submit() {
       axios
-        .put(`/personas/${this.form.id}`, this.form)
+        .put(`/personas/${this.form.id}`, {
+          params: { persona_id: this.form.id }
+        })
         .then(res => {
           this.$parent.getData();
           this.open = false;
@@ -132,14 +134,6 @@ export default {
     getCodigoModular() {
       return (this.form.codigo_modular = "10" + this.form.dni);
     }
-    // show: {
-    //   get() {
-    //     return this.value;
-    //   },
-    //   set(value) {
-    //     this.$emit("input", value);
-    //   }
-    // }
   }
 };
 </script>

@@ -18,7 +18,7 @@ class CreatePersonasTable extends Migration
             $table->string('nombre', 50);
             $table->string('apellido_paterno', 50);
             $table->string('apellido_materno', 50);
-            $table->string('dni', 8);
+            $table->string('dni', 9);
             $table->string('codigo_modular', 10);
             $table->string('cargo', 50);
             $table->enum('estado', ['activo', 'cesante', 'sobreviviente']);

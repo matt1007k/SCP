@@ -1,10 +1,11 @@
 <?php
 
-use App\Models\Detalle;
-use App\Models\Pago;
-use App\Models\Persona;
-use App\Models\User;
 use Faker\Factory;
+use App\Models\Pago;
+use App\Models\User;
+use App\Models\Detalle;
+use App\Models\Persona;
+use Illuminate\Support\Str;
 use Illuminate\Database\Seeder;
 
 class PersonasTableSeeder extends Seeder
@@ -32,7 +33,7 @@ class PersonasTableSeeder extends Seeder
             'email' => 'admin@drea.com',
             'dni' => '12345678',
             'password' => '$2y$10$TKh8H1.PfQx37YgCzwiKb.KjNyWgaHb9cbcoQgdIVFlYg7B77UdFm', // secret
-            'remember_token' => str_random(10),
+            'remember_token' => Str::random(10),
         ]);
 
         // foreach (range(1, 25) as $i) {

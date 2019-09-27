@@ -6,36 +6,33 @@ use App\Models\Detalle;
 use App\Models\HaberDescuento;
 use App\Models\Pago;
 use Auth;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class PagoController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('permission:pagos.index')->only(['index']);
-        $this->middleware('permission:pagos.create')->only(['store']);
-        $this->middleware('permission:pagos.edit')->only(['update', 'edit']);
-        $this->middleware('permission:pagos.destroy')->only(['destroy']);
+        $this->middleware('has.permission:pagos.index')->only(['index']);
+        $this->middleware('has.permission:pagos.create')->only(['store']);
+        $this->middleware('has.permission:pagos.edit')->only(['update', 'edit']);
+        $this->middleware('has.permission:pagos.destroy')->only(['destroy']);
     }
     public function index()
     {
-        $anio = request('anio');
-        $mes = request('mes');        
-        if ($anio && $mes) {
-            $pagos = Pago::where('anio', $anio)->where('mes', $mes)
-                ->orderBy('created_at', 'desc')
-                ->With(['persona'])->get();
-        } else {
-            $pagos = Pago::orderBy('created_at', 'desc')
-                ->With(['persona'])->get();
-        }
+        $anio = request('anio') ? request('anio') : (String) Carbon::now()->year;
+        $mes = request('mes') ? request('mes') : (String) date('m');
+        $pagos = Pago::where('anio', $anio)->where('mes', $mes)
+            ->orderBy('created_at', 'desc')
+            ->With(['persona'])->get();
+
         return response()->json(['pagos' => $pagos], 200);
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'persona' => 'required',
+            'persona_id' => 'required',
             'mes' => 'required',
             'anio' => 'required',
             'total_haber' => 'required',
@@ -49,7 +46,7 @@ class PagoController extends Controller
         $detalles = array_merge($request->haberes, $request->descuentos);
 
         $pago = new Pago();
-        $pago->persona_id = $request->persona['id'];
+        $pago->persona_id = $request->persona_id;
         $pago->anio = $request->anio;
         $pago->mes = $request->mes;
         $pago->total_haber = $request->total_haber;
@@ -82,8 +79,7 @@ class PagoController extends Controller
     public function edit($id)
     {
         $pago = Pago::findOrfail($id);
-        // $anio = substr($pago->periodo, 0, 4);
-        // $mes = substr($pago->periodo, -2);
+        $persona = array();
         $haberes = array();
         $descuentos = array();
         foreach ($pago->detalles as $detalle) {
@@ -122,6 +118,7 @@ class PagoController extends Controller
                 ]);
             }
         }
+
         $form = [
             'persona' => $pago->persona,
             'haberes' => $haberes,
@@ -142,7 +139,7 @@ class PagoController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'persona_id' => 'required|exists:personas,id',
+            'persona_id' => 'required',
             'mes' => 'required',
             'anio' => 'required',
             'total_haber' => 'required',
@@ -156,7 +153,6 @@ class PagoController extends Controller
         $detalles = array_merge($request->haberes, $request->descuentos);
 
         $pago = Pago::findOrfail($id);
-
         $pago->persona_id = $request->persona_id;
         $pago->anio = $request->anio;
         $pago->mes = $request->mes;

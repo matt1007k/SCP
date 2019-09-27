@@ -25,7 +25,7 @@ class CreatePagosTable extends Migration
             $table->unsignedBigInteger('persona_id');
             $table->foreign('persona_id')->references('id')
                 ->on('personas')
-                ->onDelete('cascade');
+                ->onDelete('cascade');             
 
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')

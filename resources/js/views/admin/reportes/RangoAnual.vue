@@ -9,55 +9,7 @@
                 <span class="headline">Reporte de pagos por años</span>
                 <div class="body-1">Consultar el pago de una persona por rango de años.</div>
               </v-flex>
-              <v-flex xs12>
-                <span class="body-2">Datos de la persona</span>
-              </v-flex>
-              <v-flex xs12 sm6>
-                <div class="pr-2">
-                  <v-autocomplete
-                    v-model="form.persona"
-                    :items="lista_personas"
-                    :loading="isLoading"
-                    :search-input.sync="search"
-                    no-data-text="Sin resultados"
-                    item-text="nombre"
-                    item-value="API"
-                    label="Nombre"
-                    prepend-icon="mdi-database-search"
-                    :filter="customFilter"
-                    placeholder="Buscar por DNI o nombre completo..."
-                    return-object
-                    :error-messages="errors.dni"
-                  >
-                    <template v-slot:item="data">
-                      <v-list-tile-content>
-                        <v-list-tile-title>{{data.item.apellido_paterno}} {{data.item.apellido_materno}}, {{data.item.nombre}}</v-list-tile-title>
-                        <v-list-tile-sub-title>DNI: {{data.item.dni}}</v-list-tile-sub-title>
-                      </v-list-tile-content>
-                    </template>
-                  </v-autocomplete>
-                </div>
-              </v-flex>
-              <v-flex xs12 sm6 md3>
-                <v-text-field
-                  label="Apellido Paterno"
-                  v-model="form.persona.apellido_paterno"
-                  disabled
-                ></v-text-field>
-              </v-flex>
-              <v-flex xs12 sm6 md3>
-                <v-text-field
-                  label="Apellido Materno"
-                  v-model="form.persona.apellido_materno"
-                  disabled
-                ></v-text-field>
-              </v-flex>
-              <v-flex xs12 sm6>
-                <v-text-field label="El DNI" v-model="form.persona.dni" disabled></v-text-field>
-              </v-flex>
-              <v-flex xs12 sm6>
-                <v-text-field label="El cargo" v-model="form.persona.cargo" disabled></v-text-field>
-              </v-flex>
+              <SearchPerson :errors="errors" :person="form.persona" @input="onPerson($event)" />
               <v-flex xs12>
                 <span class="body-2 mb-2">El periodo del pago por años</span>
               </v-flex>
@@ -139,28 +91,6 @@
                   <div class="body-2">Nombre completo: {{getName()}}</div>
                   <div class="caption">DNI: {{form.persona.dni}}</div>
                 </div>
-                <div class="actions">
-                  <!-- <v-tooltip bottom>
-                    <template v-slot:activator="{ on }">
-                      <v-btn
-                        color="success"
-                        @click="downloadPDF(pago.anio, form.persona.dni)"
-                        v-on="on"
-                      >
-                        <v-icon>mdi mdi-cloud-download-outline</v-icon>
-                      </v-btn>
-                    </template>
-                    <span>Descargar constancia de pago del año ({{pago.anio}})</span>
-                  </v-tooltip>
-                  <v-tooltip bottom>
-                    <template v-slot:activator="{ on }">
-                      <v-btn color="info" @click="viewPDF(pago.anio, form.persona.dni)" v-on="on">
-                        <v-icon>mdi mdi-printer</v-icon>
-                      </v-btn>
-                    </template>
-                    <span>Imprimir constancia de pago del año ({{pago.anio}})</span>
-                  </v-tooltip>-->
-                </div>
               </v-card-text>
             </v-card>
           </template>
@@ -187,7 +117,9 @@
 </template>
 
 <script>
+import SearchPerson from "../../../components/personas/SearchPerson";
 export default {
+  components: { SearchPerson },
   data: () => ({
     form: {
       persona: {},
@@ -196,9 +128,6 @@ export default {
       certificado: ""
     },
     items_anio: [],
-    isLoading: false,
-    search: "",
-    lista_personas: [],
     lista_resultado: [],
     loading: false,
     notFound: false,
@@ -214,25 +143,14 @@ export default {
     }
   },
   methods: {
-    customFilter(item, queryText, itemText) {
-      const nombre = item.nombre.toLowerCase();
-      const apellido_paterno = item.apellido_paterno.toLowerCase();
-      const apellido_materno = item.apellido_materno.toLowerCase();
-      const dni = item.dni.toLowerCase();
-      const searchText = queryText.toLowerCase();
-
-      return (
-        nombre.indexOf(searchText) > -1 ||
-        apellido_paterno.indexOf(searchText) ||
-        apellido_materno.indexOf(searchText) ||
-        dni.indexOf(searchText) > -1
-      );
-    },
     getYears() {
       axios
         .get("/periodos")
         .then(res => (this.items_anio = res.data.years))
         .catch(err => console.log(err));
+    },
+    onPerson(e) {
+      this.form.persona = e.target.value;
     },
     buscarPago() {
       this.loading = true;
@@ -248,7 +166,7 @@ export default {
           params: {
             anio_anterior: this.form.anio_anterior,
             anio_actual: this.form.anio_actual,
-            dni: this.form.persona.dni,
+            persona_id: this.form.persona.id,
             certificado: this.form.certificado
           }
         })
@@ -270,32 +188,11 @@ export default {
           this.errors = err.response.data.errors;
         });
     },
-    downloadPDF(anio, dni) {
-      axios({
-        url: "/reporte/por-anio",
-        method: "GET",
-        params: {
-          anio,
-          dni,
-          certificado: this.form.certificado,
-          ver: 1
-        },
-        responseType: "blob" // important
-      }).then(response => {
-        const url = window.URL.createObjectURL(new Blob([response.data]));
-        const link = document.createElement("a");
-        const name_file = `${this.form.persona.codigo_modular}-${this.form.anio}.pdf`;
-        link.href = url;
-        link.setAttribute("download", name_file); //or any other extension
-        document.body.appendChild(link);
-        link.click();
-      });
-    },
     downloadAllPDF() {
       let params = {
         anio_anterior: this.form.anio_anterior,
         anio_actual: this.form.anio_actual,
-        dni: this.form.persona.dni,
+        persona_id: this.form.persona.id,
         certificado: this.form.certificado,
         ver: 0
       };
@@ -314,18 +211,11 @@ export default {
         link.click();
       });
     },
-    viewPDF(anio, dni) {
-      const certificado = this.form.certificado;
-      window.open(
-        `/reporte/por-anio?ver=1&anio=${anio}&dni=${dni}&certificado=${certificado}`,
-        "_blank"
-      );
-    },
     viewAllPDF() {
       let params = {
         anio_anterior: this.form.anio_anterior,
         anio_actual: this.form.anio_actual,
-        dni: this.form.persona.dni,
+        persona_id: this.form.persona.id,
         certificado: this.form.certificado,
         ver: 0
       };
@@ -334,22 +224,6 @@ export default {
     },
     getName() {
       return `${this.form.persona.apellido_paterno} ${this.form.persona.apellido_materno}, ${this.form.persona.nombre} `;
-    }
-  },
-  watch: {
-    search(value) {
-      if (this.isLoading) return;
-      this.isLoading = true;
-      const params = { q: value };
-      axios
-        .get("/search-personas", { params })
-        .then(res => {
-          this.isLoading = false;
-
-          this.lista_personas = res.data.personas;
-        })
-        .catch(err => console.log(err))
-        .finally(() => (this.isLoading = false));
     }
   }
 };

@@ -56,7 +56,8 @@ Route::namespace ('Admin')->group(function () {
         Route::resource('pagos', 'PagoController')
             ->except(['show', 'create']);
 
-        Route::get('/historiales', 'HistorialController@index')->name('historiales.index');
+        Route::resource('historiales', 'HistorialController')
+            ->only(['index', 'destroy']);
 
         Route::get('/search-personas', 'PersonaController@search')->name('personas.search');
         Route::get('/search-descuentos', 'DescuentoController@search')->name('descuentos.search');

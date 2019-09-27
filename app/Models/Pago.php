@@ -23,6 +23,11 @@ class Pago extends Model
     {
         return $this->belongsTo('App\Models\Persona');
     }
+    
+    public function sobreviviente()
+    {
+        return $this->belongsTo('App\Models\Sobreviviente');
+    }
 
     public function detalles()
     {

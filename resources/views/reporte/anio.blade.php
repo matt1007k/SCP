@@ -48,7 +48,7 @@
         font-size: 10px;
     }
     .fs-header2{        
-        font-size: 13px;
+        font-size: 16px;
     }
     .bb-1{
         border-bottom: 1px solid #000;
@@ -74,7 +74,7 @@
         
         <div class="header-cert">
             <span class="fs-header2"><b>CERTIFICADO N°:</b></span>
-            <span class="fs-header2 bb-1">{{$certificado.'-'.$pago->anio.'-GRA/GG-GRDS-DREA-OA-AT'}}</span>
+            <span class="fs-header2 bb-1" style="margin-left:20px">{{$certificado.'-'.date('Y').'-GRA/GG-GRDS-DREA-OA-AT'}}</span>
         </div>
         
         <table class="w-80" style="margin-top: -40%">
@@ -85,19 +85,13 @@
                     </td>
                     <td>
                         <tr>
-                            {{-- <td class="fs-header text-right">
-                                    <b>Responsable:</b>
-                                </td> --}}
                             <td class="fs-header text-right">
-                                <span class="position-absolute" style="top:20; right: 65">{{$user->name}}</span>    
+                                <span class="position-absolute" style="top:-20; right: 0">{{setInitializeName($user->name)}}</span>    
                             </td>    
                         </tr>     
                         <tr>
                             <td class="fs-header text-right">
-                                {{-- <b>FECHA DE IMPRESIÓN:</b> --}}
-                            </td>
-                            <td class="fs-header text-right">
-                                <span class="position-absolute" style="top:10; right: 65; width: 200px">{{date('d/m/Y H:i')}}</span>
+                                <span class="position-absolute" style="top:-10; right: 0; width: 200px">{{date('d/m/Y H:i')}}</span>
                             </td>
                         </tr>
                         
@@ -116,10 +110,6 @@
                         <b>COD. MODULAR:</b>
                     </td>
                     <td class="fs-header">{{$pago->persona->codigo_modular}}</td>
-                    <td class="text-right fs-header">
-                        <b>CARGO:</b>
-                    </td>
-                    <td class="fs-header">{{$pago->persona->cargo}}</td>
                     <td class="text-right fs-header">
                         <b>ESTADO:</b>
                     </td>
@@ -1277,7 +1267,7 @@
     </div>
     <script type="text/php">
         if (isset($pdf)) {
-            $x = 765;
+            $x = 10;
             $y = 10;
             $text = "Página {PAGE_NUM}";
             $font = null;

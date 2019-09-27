@@ -4,9 +4,11 @@ namespace App\Imports;
 
 use App\Models\Persona;
 use Maatwebsite\Excel\Concerns\ToModel;
+use Maatwebsite\Excel\Concerns\WithBatchInserts;
+use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
-class PersonasImport implements ToModel, WithHeadingRow
+class PersonasImport implements ToModel, WithHeadingRow, WithBatchInserts, WithChunkReading
 {
     /**
      * @param array $row
@@ -23,5 +25,15 @@ class PersonasImport implements ToModel, WithHeadingRow
             'codigo_modular' => $row['codmod'],
             'cargo' => $row['cargo'],
         ]);
+    }
+
+    public function batchSize(): int
+    {
+        return 100;
+    }
+
+    public function chunkSize(): int
+    {
+        return 500;
     }
 }

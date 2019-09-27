@@ -36,12 +36,13 @@
             <span class="mb-2">
               <v-tooltip bottom>
                 <v-icon slot="activator">$vuetify.icons.filter</v-icon>
-                <span>Filtar por estado</span>
+                <span>Filtrar por estado</span>
               </v-tooltip>
-              <v-btn flat @click="filterBy('Todos')">Todos</v-btn>
-              <v-btn flat color="success" @click="filterBy('activo')">Activos</v-btn>
-              <v-btn flat color="info" @click="filterBy('sobreviviente')">Sobrevivientes</v-btn>
-              <v-btn flat color="error" @click="filterBy('cesante')">Cesantes</v-btn>
+              <v-btn-toggle light v-model="toggleActiveBtn">
+                <v-btn flat color="success" @click="filterBy('activo')">Activos</v-btn>
+                <v-btn flat color="info" @click="filterBy('sobreviviente')">Sobrevivientes</v-btn>
+                <v-btn flat color="error" @click="filterBy('cesante')">Cesantes</v-btn>
+              </v-btn-toggle>
             </span>
           </v-container>
         </v-card>
@@ -67,30 +68,7 @@
             <td class="text-xs-center">{{ props.item.dni }}</td>
             <td class="text-xs-center">{{ props.item.cargo }}</td>
             <td class="text-xs-center">
-              <template v-if="props.item.estado === 'activo'">
-                <v-chip
-                  text-color="white"
-                  color="success"
-                  class="text-capitalize"
-                  small
-                >{{ props.item.estado }}</v-chip>
-              </template>
-              <template v-if="props.item.estado === 'cesante'">
-                <v-chip
-                  text-color="white"
-                  color="error"
-                  class="text-capitalize"
-                  small
-                >{{ props.item.estado }}</v-chip>
-              </template>
-              <template v-if="props.item.estado === 'sobreviviente'">
-                <v-chip
-                  text-color="white"
-                  color="info"
-                  class="text-capitalize"
-                  small
-                >{{ props.item.estado }}</v-chip>
-              </template>
+              <EstadoChip :estado="props.item.estado" />
             </td>
             <td>
               <v-tooltip bottom v-if="$auth.can('personas.edit') || $auth.isAdmin()">
@@ -122,12 +100,14 @@
 <script>
 import ModalAgregar from "../../components/personas/ModalAgregar";
 import ModalEditar from "../../components/personas/ModalEditar";
+import EstadoChip from "../../components/personas/EstadoChip";
 export default {
-  components: { ModalAgregar, ModalEditar },
+  components: { ModalAgregar, ModalEditar, EstadoChip },
   data() {
     return {
       search: "",
-      tipo: "Todos",
+      estado: "activo",
+      toggleActiveBtn: 0,
       loading: false,
       loadingData: false,
       pagination: {},
@@ -168,7 +148,7 @@ export default {
     getData(url = "/personas") {
       this.loadingData = true;
       axios
-        .get(url, { params: { tipo: this.tipo } })
+        .get(url, { params: { estado: this.estado } })
         .then(res => {
           this.loadingData = false;
           this.personas = res.data.personas;
@@ -181,7 +161,7 @@ export default {
         });
     },
     filterBy(prop) {
-      this.tipo = prop;
+      this.estado = prop;
       this.getData();
     },
     modalAgregar() {

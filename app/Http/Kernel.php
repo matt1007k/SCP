@@ -61,8 +61,8 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
 
-        'role' => \Caffeinated\Shinobi\Middleware\UserHasRole::class,
-        'permission' => \Caffeinated\Shinobi\Middleware\UserHasPermission::class,
+        'has.role' => \Caffeinated\Shinobi\Middleware\UserHasRole::class,
+        'has.permission' => \Caffeinated\Shinobi\Middleware\UserHasPermission::class,
     ];
 
     /**

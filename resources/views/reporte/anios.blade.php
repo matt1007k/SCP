@@ -46,7 +46,7 @@
             font-size: 10px;
         }
         .fs-header2{        
-            font-size: 13px;
+            font-size: 16px;
         }
         .bb-1{
             border-bottom: 1px solid #000;
@@ -69,6 +69,7 @@
         </style>
     </head>
     <body>
+        <div>
         @foreach ($pagos as $pago)
         <div class="page">
             <header>
@@ -77,7 +78,7 @@
                     
                 <div class="header-cert">
                     <span class="fs-header2"><b>CERTIFICADO N°:</b></span>
-                    <span class="fs-header2 bb-1">{{$pago['certificado'].'-'.$pago['pago']->anio.'-GRA/GG-GRDS-DREA-OA-AT'}}</span>
+                    <span class="fs-header2 bb-1" style="margin-left:20px">{{$pago['certificado'].'-'.date('Y').'-GRA/GG-GRDS-DREA-OA-AT'}}</span>
                 </div>
                 
                 <table class="w-80" style="margin-top: -40%">
@@ -88,19 +89,13 @@
                             </td>
                             <td>
                                 <tr>
-                                    {{-- <td class="fs-header text-right">
-                                            <b>Responsable:</b>
-                                        </td> --}}
                                     <td class="fs-header text-right">
-                                        <span class="position-absolute" style="top:20; right: 65">{{$pago['user']->name}}</span>    
+                                        <span class="position-absolute" style="top:-20; right: 0">{{setInitializeName($pago['user']->name)}}</span>    
                                     </td>    
                                 </tr>     
                                 <tr>
                                     <td class="fs-header text-right">
-                                        {{-- <b>FECHA DE IMPRESIÓN:</b> --}}
-                                    </td>
-                                    <td class="fs-header text-right">
-                                        <span class="position-absolute" style="top:10; right: 65; width: 200px">{{date('d/m/Y H:i')}}</span>
+                                        <span class="position-absolute" style="top:-10; right: 0; width: 200px">{{date('d/m/Y H:i')}}</span>
                                     </td>
                                 </tr>
                                 
@@ -120,10 +115,6 @@
                             </td>
                             <td class="fs-header">{{$pago['pago']->persona->codigo_modular}}</td>
                             <td class="text-right fs-header">
-                                <b>CARGO:</b>
-                            </td>
-                            <td class="fs-header">{{$pago['pago']->persona->cargo}}</td>
-                            <td class="text-right fs-header">
                                 <b>ESTADO:</b>
                             </td>
                             <td class="fs-header text-uppercase">{{$pago['pago']->persona->estado}}</td>
@@ -141,8 +132,6 @@
                             </td>
                             <td class="fs-header">{{$pago['pago']->anio}}</td>
                 
-                            
-                            
                         </tr>
                     </tbody>
                 </table>
@@ -1281,10 +1270,10 @@
             </div>
         </div>
         @endforeach 
-        
+        </div>
         <script type="text/php">
             if (isset($pdf)) {
-                $x = 765;
+                $x = 10;
                 $y = 10;
                 $text = "Página {PAGE_NUM}";
                 $font = null;

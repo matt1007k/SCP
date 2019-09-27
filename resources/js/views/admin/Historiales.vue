@@ -52,6 +52,11 @@
             <td class="text-xs-center">{{props.item.dni}}</td>
             <td class="text-xs-center">{{props.item.dni_user}}</td>
             <td class="text-xs-center">{{props.item.created_at}}</td>
+            <template v-if="$auth.isAdmin()">
+              <td class="text-xs-center">
+                <EstadoChip :estado="props.item.estado" />
+              </td>
+            </template>
             <td>
               <v-tooltip bottom v-if="$auth.can('pagos.consultar') || $auth.isAdmin()">
                 <v-btn color="info" fab small slot="activator" @click="viewPDF(props.item)">
@@ -59,12 +64,15 @@
                 </v-btn>
                 <span>Ver constancia</span>
               </v-tooltip>
-              <!-- <v-tooltip bottom v-if="$auth.can('haberes.destroy') || $auth.isAdmin()">
+              <v-tooltip
+                bottom
+                v-if="$auth.user.user.dni == props.item.dni_user || props.item.estado === 'eliminado'"
+              >
                 <v-btn color="error" fab small slot="activator" @click="deleteData(props.item)">
                   <v-icon>$vuetify.icons.delete</v-icon>
                 </v-btn>
-                <span>Cambiar asegurable</span>
-              </v-tooltip>-->
+                <span>Eliminar historial</span>
+              </v-tooltip>
             </td>
           </template>
         </v-data-table>
@@ -77,7 +85,9 @@
 </template>
 
 <script>
+import EstadoChip from "../../components/historiales/EstadoChip";
 export default {
+  components: { EstadoChip },
   data() {
     return {
       search: "",
@@ -126,10 +136,40 @@ export default {
           }
         });
     },
+    deleteData(historial) {
+      this.$swal({
+        title: "¿Está seguro de eliminar el registro?",
+        text: "Esta operación va a eliminar el registro",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        cancelButtonText: "Cancelar",
+        confirmButtonText: "Sí, eliminar"
+      }).then(result => {
+        if (result.value) {
+          axios
+            .delete(`/historiales/${historial.id}`)
+            .then(res => {
+              this.$swal(
+                "Mensaje de operación",
+                "El historial se eliminó correctamente",
+                "success"
+              );
+              this.getData();
+            })
+            .catch(err => {
+              if (err.response.status == 403) {
+                this.$router.push("/403");
+              }
+            });
+        }
+      });
+    },
     viewPDF(historial) {
       const anio = historial.anio;
       const meses = historial.meses;
-      const dni = historial.dni;
+      const persona_id = historial.persona_id;
       const certificado = historial.certificado;
       const tipo = historial.tipo;
 
@@ -141,7 +181,7 @@ export default {
         let params = {
           anio_anterior: anio_anterior,
           anio_actual: anio_actual,
-          dni: dni,
+          persona_id: persona_id,
           certificado: certificado,
           ver: 1
         };
@@ -151,7 +191,7 @@ export default {
       if (tipo == "anio") {
         let params = {
           anio: anio,
-          dni: dni,
+          persona_id: persona_id,
           certificado: certificado,
           ver: 1
         };
@@ -162,7 +202,7 @@ export default {
         let params = {
           anio: anio,
           mes: meses,
-          dni: dni,
+          persona_id: persona_id,
           certificado: certificado,
           ver: 1
         };
