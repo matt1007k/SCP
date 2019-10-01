@@ -265,7 +265,6 @@ export default {
     },
     onPerson(e) {
       this.form.persona = e.target.value;
-      console.log(this.form.persona);
     },
     onSubmit() {
       const form = {

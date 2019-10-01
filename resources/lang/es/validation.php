@@ -175,5 +175,7 @@ return [
         'anio' => 'El año',
         'anio_anterior' => 'del año',
         'anio_actual' => 'hasta el año',
+        'certificado' => 'El núm. de certificado',
+        'identificador' => 'El identificador',
     ],
 ];

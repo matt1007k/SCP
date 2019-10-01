@@ -60,6 +60,7 @@
 </template>
 
 <script>
+import Push from "push.js";
 export default {
   data() {
     return {
@@ -93,6 +94,19 @@ export default {
         this.uploadFile.push(file);
         this.uploading = false;
         this.progress = 0;
+
+        if (res.data.import == true) {
+          Push.create("Mensaje del sistema", {
+            body: `Archivo: ${file.name} importado con éxito`,
+            icon: "/img/LogoDREA.png",
+            timeout: 4000,
+            onClick: function() {
+              window.focus();
+              this.close();
+            }
+          });
+        }
+
         var message = res.data.msg;
         if (message) {
           this.resetInputFile();
@@ -104,6 +118,7 @@ export default {
         this.error = true;
         this.uploading = false;
         this.uploadFile = [];
+
         var error = error.response.data.message;
 
         if (

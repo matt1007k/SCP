@@ -128,6 +128,7 @@ export default {
     },
     show() {
       this.open = true;
+      this.errors = {};
     }
   },
   computed: {
@@ -138,5 +139,3 @@ export default {
 };
 </script>
 
-<style>
-</style>

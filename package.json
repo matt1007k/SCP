@@ -27,6 +27,7 @@
         "chart.js": "^2.8.0",
         "ioredis": "^4.14.0",
         "moment": "^2.24.0",
+        "push.js": "^1.0.12",
         "redis": "^2.8.0",
         "roboto-fontface": "^0.10.0",
         "vue": "^2.6.10",

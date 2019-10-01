@@ -169,11 +169,11 @@ class ImportarController extends Controller
 
             Notification::send($personal, new DataImported($message));
 
-            $redis = Redis::connection();
-            $redis->publish('message', json_encode([
-                'message' => $message,
-                'admin' => auth()->user(),
-            ]));
+            // $redis = Redis::connection();
+            // $redis->publish('message', json_encode([
+            //     'message' => $message,
+            //     'admin' => auth()->user(),
+            // ]));
 
             return response()->json([
                 'import' => true,

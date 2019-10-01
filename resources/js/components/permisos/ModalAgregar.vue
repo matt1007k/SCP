@@ -8,7 +8,7 @@
               <span class="headline">Registrar permiso</span>
             </v-flex>
             <v-flex xs1 class="d-flex justify-end">
-              <v-btn color="error" @click="open = false">
+              <v-btn color="error" @click="close()">
                 <v-icon>$vuetify.icons.close</v-icon>
               </v-btn>
             </v-flex>
@@ -47,7 +47,7 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="error" @click="open = false">Cancelar</v-btn>
+            <v-btn color="error" @click="close()">Cancelar</v-btn>
             <v-btn color="success" type="submit">Guardar</v-btn>
           </v-card-actions>
         </form>
@@ -95,9 +95,14 @@ export default {
       this.form.nombre = "";
       this.form.identificador = "";
       this.form.descripcion = "";
+      this.errors = {};
     },
     show() {
       this.open = true;
+    },
+    close() {
+      this.resetInputs();
+      this.open = false;
     }
   }
 };

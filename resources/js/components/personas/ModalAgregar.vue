@@ -8,7 +8,7 @@
               <span class="headline">Registrar persona</span>
             </v-flex>
             <v-flex xs1 class="d-flex justify-end">
-              <v-btn color="error" @click="open = false">
+              <v-btn color="error" @click="close()">
                 <v-icon>$vuetify.icons.close</v-icon>
               </v-btn>
             </v-flex>
@@ -79,7 +79,7 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="error" @click="open = false">Cancelar</v-btn>
+            <v-btn color="error" @click="close()">Cancelar</v-btn>
             <v-btn color="success" type="submit">Guardar</v-btn>
           </v-card-actions>
         </form>
@@ -132,26 +132,20 @@ export default {
       this.form.codigo_modular = "10";
       this.form.cargo = "";
       this.form.estado = "activo";
+      this.errors = {};
     },
     show() {
       this.open = true;
+    },
+    close() {
+      this.open = false;
+      this.resetInputs();
     }
   },
   computed: {
     getCodigoModular() {
       return (this.form.codigo_modular = "10" + this.form.dni);
     }
-    // show: {
-    //   get() {
-    //     return this.value;
-    //   },
-    //   set(value) {
-    //     this.$emit("input", value);
-    //   }
-    // }
   }
 };
 </script>
-
-<style>
-</style>

@@ -114,15 +114,15 @@ export default {
   mounted() {
     this.$root.$snackbar = this.$refs.snackbar;
     this.getUnReadNotifications();
-  },
-  sockets: {
-    connect() {
-      console.log("Socket connect");
-    },
-    message(value) {
-      this.getUnReadNotifications();
-    }
   }
+  // sockets: {
+  //   connect() {
+  //     console.log("Socket connect");
+  //   },
+  //   message(value) {
+  //     this.getUnReadNotifications();
+  //   }
+  // }
 };
 </script>
 

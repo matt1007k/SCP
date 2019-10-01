@@ -3,7 +3,7 @@ require("./bootstrap");
 import Vue from "vue";
 import "./plugins/vuetify";
 import "./plugins/sweetalert2";
-import "./plugins/socket-io";
+// import "./plugins/socket-io";
 import App from "./App.vue";
 import router from "./router";
 import "@mdi/font/css/materialdesignicons.css";

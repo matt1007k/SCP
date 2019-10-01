@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UserCreatedRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -25,15 +26,8 @@ class UserController extends Controller
         return response()->json(['usuarios' => $usuarios], 200);
     }
 
-    public function store(Request $request)
+    public function store(UserCreatedRequest $request)
     {
-        $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'dni' => 'required|numeric|min:8|unique:users',
-            'password' => ['required'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'estado' => ['required'],
-        ]);
         $user = new User();
         $user->name = $request->name;
         $user->dni = $request->dni;

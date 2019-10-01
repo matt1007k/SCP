@@ -2,6 +2,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\PagoCreatedRequest;
 use App\Models\Detalle;
 use App\Models\HaberDescuento;
 use App\Models\Pago;
@@ -29,20 +30,8 @@ class PagoController extends Controller
         return response()->json(['pagos' => $pagos], 200);
     }
 
-    public function store(Request $request)
+    public function store(PagoCreatedRequest $request)
     {
-        $request->validate([
-            'persona_id' => 'required',
-            'mes' => 'required',
-            'anio' => 'required',
-            'total_haber' => 'required',
-            'total_descuento' => 'required',
-            'monto_liquido' => 'required',
-            'monto_imponible' => 'required',
-            'haberes' => 'required',
-            'descuentos' => 'required',
-        ]);
-
         $detalles = array_merge($request->haberes, $request->descuentos);
 
         $pago = new Pago();
@@ -136,20 +125,8 @@ class PagoController extends Controller
         ], 200);
     }
 
-    public function update(Request $request, $id)
+    public function update(PagoCreatedRequest $request, $id)
     {
-        $request->validate([
-            'persona_id' => 'required',
-            'mes' => 'required',
-            'anio' => 'required',
-            'total_haber' => 'required',
-            'total_descuento' => 'required',
-            'monto_liquido' => 'required',
-            'monto_imponible' => 'required',
-            'haberes' => 'required',
-            'descuentos' => 'required',
-        ]);
-
         $detalles = array_merge($request->haberes, $request->descuentos);
 
         $pago = Pago::findOrfail($id);

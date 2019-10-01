@@ -2,6 +2,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\PersonaCreatedRequest;
 use App\Models\Persona;
 use Auth;
 use Illuminate\Http\Request;
@@ -41,19 +42,8 @@ class PersonaController extends Controller
         return response()->json(['personas' => $personas], 200);
     }
 
-    public function store(Request $request)
+    public function store(PersonaCreatedRequest $request)
     {
-        $request->validate([
-            'nombre' => 'required',
-            'apellido_paterno' => 'required',
-            'apellido_materno' => 'required',
-            'dni' => 'required|min:8',
-            'cargo' => 'required',
-            'codigo_modular' => 'required|min:10',
-            'estado' => 'required',
-        ]);
-        // return $request;
-
         $persona = new Persona();
         $persona->nombre = $request->nombre;
         $persona->apellido_paterno = $request->apellido_paterno;
@@ -72,20 +62,8 @@ class PersonaController extends Controller
 
     }
 
-    public function update(Request $request, $id)
+    public function update(PersonaCreatedRequest $request, $id)
     {
-        $request->validate([
-            'nombre' => 'required',
-            'apellido_paterno' => 'required',
-            'apellido_materno' => 'required',
-            'dni' => 'required|min:8',
-            'cargo' => 'required',
-            'codigo_modular' => 'required|min:10',
-            'estado' => 'required',
-        ]);
-
-        // return $request;
-
         $persona = Persona::findOrFail($id);
         $persona->nombre = $request->nombre;
         $persona->apellido_paterno = $request->apellido_paterno;

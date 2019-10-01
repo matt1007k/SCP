@@ -131,7 +131,6 @@ export default {
         .put(`/usuarios/${this.form.id}`, this.form)
         .then(res => {
           this.$parent.getData();
-          this.resetInput();
           this.$swal(
             "Mensaje de operación",
             "Datos editados correctamente.",
@@ -164,11 +163,6 @@ export default {
     },
     showPassword() {
       this.hidePassword = !this.hidePassword;
-    },
-    resetInput() {
-      this.open = false;
-      this.hidePassword = true;
-      this.form.password = "";
     }
   }
 };

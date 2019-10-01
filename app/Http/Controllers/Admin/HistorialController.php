@@ -3,6 +3,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Historial;
+use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class HistorialController extends Controller
 {
@@ -16,6 +18,20 @@ class HistorialController extends Controller
         }
 
         return response()->json(['historiales' => $historiales]);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $historial = Historial::findOrfail($id);
+
+        $request->validate([
+            'certificado' => ['required', 'numeric', Rule::unique('historiales')->ignore($historial->id)],
+        ]);
+
+        $historial->certificado = $request->certificado;
+        if ($historial->save()) {
+            return response()->json(['updated' => true], 200);
+        }
     }
 
     public function destroy($id)

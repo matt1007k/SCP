@@ -92,7 +92,6 @@ export default {
             "Datos editados correctamente",
             "success"
           );
-          this.resetInputs();
         })
         .catch(err => {
           this.errors = err.response.data.errors;
@@ -101,12 +100,9 @@ export default {
           }
         });
     },
-    resetInputs() {
-      this.errors = {};
-    },
     show() {
       this.open = true;
-      this.resetInputs();
+      this.errors = {};
     }
   }
 };

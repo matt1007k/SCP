@@ -51,7 +51,7 @@
             <td class="text-xs-center">{{props.item.meses}}</td>
             <td class="text-xs-center">{{props.item.dni}}</td>
             <td class="text-xs-center">{{props.item.dni_user}}</td>
-            <td class="text-xs-center">{{props.item.created_at}}</td>
+            <td class="text-xs-center">{{ formatDateTime(props.item.created_at)}}</td>
             <template v-if="$auth.isAdmin()">
               <td class="text-xs-center">
                 <EstadoChip :estado="props.item.estado" />
@@ -66,12 +66,24 @@
               </v-tooltip>
               <v-tooltip
                 bottom
-                v-if="$auth.user.user.dni == props.item.dni_user || props.item.estado === 'eliminado'"
+                v-if="$auth.user.user.dni == props.item.dni_user && props.item.estado === 'creado'"
               >
                 <v-btn color="error" fab small slot="activator" @click="deleteData(props.item)">
                   <v-icon>$vuetify.icons.delete</v-icon>
                 </v-btn>
                 <span>Eliminar historial</span>
+              </v-tooltip>
+              <v-tooltip bottom v-if="$auth.user.user.dni == props.item.dni_user">
+                <v-btn
+                  color="primary"
+                  fab
+                  small
+                  slot="activator"
+                  @click="certificadoEdit(props.item)"
+                >
+                  <v-icon>$vuetify.icons.edit</v-icon>
+                </v-btn>
+                <span>Editar certificado</span>
               </v-tooltip>
             </td>
           </template>
@@ -81,13 +93,16 @@
         </div>
       </v-flex>
     </v-layout>
+    <modal-editar ref="editarCertificado"></modal-editar>
   </v-container>
 </template>
 
 <script>
 import EstadoChip from "../../components/historiales/EstadoChip";
+import ModalEditar from "../../components/historiales/ModalEditar";
+import moment from "moment";
 export default {
-  components: { EstadoChip },
+  components: { EstadoChip, ModalEditar },
   data() {
     return {
       search: "",
@@ -120,6 +135,9 @@ export default {
       this.$router.push("/admin/403");
     }
   },
+  mounted() {
+    this.$root.editarCertificado = this.$refs.editarCertificado;
+  },
   methods: {
     getData(url = "/historiales") {
       this.loadingData = true;
@@ -135,6 +153,11 @@ export default {
             this.$router.push("/admin/403");
           }
         });
+    },
+    formatDateTime(datetime) {
+      return moment(datetime)
+        .locale("es")
+        .format("llll a");
     },
     deleteData(historial) {
       this.$swal({
@@ -165,6 +188,11 @@ export default {
             });
         }
       });
+    },
+    certificadoEdit(historial) {
+      this.$root.editarCertificado.show();
+      this.$root.editarCertificado.form.id = historial.id;
+      this.$root.editarCertificado.form.certificado = historial.certificado;
     },
     viewPDF(historial) {
       const anio = historial.anio;

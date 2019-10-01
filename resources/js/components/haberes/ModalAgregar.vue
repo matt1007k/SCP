@@ -8,7 +8,7 @@
               <span class="headline">Registrar un Haber</span>
             </v-flex>
             <v-flex xs1 class="d-flex justify-end">
-              <v-btn color="error" @click="open = false">
+              <v-btn color="error" @click="close()">
                 <v-icon>$vuetify.icons.close</v-icon>
               </v-btn>
             </v-flex>
@@ -57,7 +57,7 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="error" @click="open = false">Cancelar</v-btn>
+            <v-btn color="error" @click="close()">Cancelar</v-btn>
             <v-btn color="success" type="submit">Guardar</v-btn>
           </v-card-actions>
         </form>
@@ -105,16 +105,17 @@ export default {
       this.form.tipo = "haber";
       this.form.descripcion = "";
       this.form.descripcion_simple = "";
-      this.es_imponible = "0";
+      this.form.es_imponible = "0";
       this.errors = {};
     },
     show() {
       this.open = true;
       this.resetInputs();
+    },
+    close() {
+      this.open = false;
+      this.resetInputs();
     }
   }
 };
 </script>
-
-<style>
-</style>

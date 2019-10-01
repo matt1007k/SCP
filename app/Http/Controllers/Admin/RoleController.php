@@ -2,6 +2,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\RoleCreatedRequest;
+use App\Http\Requests\RoleUpdatedRequest;
 use Caffeinated\Shinobi\Models\Role;
 use Illuminate\Http\Request;
 
@@ -29,13 +31,8 @@ class RoleController extends Controller
         return response()->json(['roles' => $roles], 200);
     }
 
-    public function store(Request $request)
+    public function store(RoleCreatedRequest $request)
     {
-        $request->validate([
-            'nombre' => 'required',
-            'identificador' => 'required',
-            'descripcion' => 'required|max:255',
-        ]);
         $role = new Role();
         $role->name = $request->nombre;
         $role->slug = $request->identificador;
@@ -52,13 +49,8 @@ class RoleController extends Controller
         }
     }
 
-    public function update(Request $request, $id)
+    public function update(RoleUpdatedRequest $request, $id)
     {
-        $request->validate([
-            'nombre' => 'required',
-            'identificador' => 'required',
-            'descripcion' => 'required|max:255',
-        ]);
         $role = Role::findOrFail($id);
         $role->name = $request->nombre;
         $role->slug = $request->identificador;

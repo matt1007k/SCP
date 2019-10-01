@@ -2,6 +2,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\DescuentoCreatedRequest;
 use App\Models\HaberDescuento;
 use Auth;
 use Illuminate\Http\Request;
@@ -35,15 +36,8 @@ class DescuentoController extends Controller
         return response()->json(['descuentos' => $descuentos], 200);
     }
 
-    public function store(Request $request)
+    public function store(DescuentoCreatedRequest $request)
     {
-        $request->validate([
-            'nombre' => 'required',
-            // 'codigo' => 'required|min:6|unique:haber_descuentos, codigo',
-            'tipo' => 'required|string',
-            'descripcion' => 'required',
-            'descripcion_simple' => 'required',
-        ]);
         $codigo = "";
         $totalPorTipo = HaberDescuento::where('tipo', $request->tipo)->get()->count();
 
@@ -68,14 +62,8 @@ class DescuentoController extends Controller
         }
     }
 
-    public function update(Request $request, $id)
+    public function update(DescuentoCreatedRequest $request, $id)
     {
-        $request->validate([
-            'nombre' => 'required',
-            'tipo' => 'required',
-            'descripcion' => 'required',
-            'descripcion_simple' => 'required',
-        ]);
         $descuento = HaberDescuento::findOrFail($id);
         $descuento->nombre = $request->nombre;
         $descuento->codigo = $request->codigo;

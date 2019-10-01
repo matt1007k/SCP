@@ -46,26 +46,22 @@
     </v-flex>
     <v-flex xs12>
       <transition name="slide-fade">
-        <v-card class="pa-2" outlined v-if="Object.keys(person).length !== 0">
-          <v-list-item three-line>
-            <v-list-item-content>
-              <v-list-item-title class="title mb-1">{{getNameComplete(getPersona)}}</v-list-item-title>
-              <v-list-item-subtitle class="subtitle-1">
-                <div>
-                  <span class="font-weight-bold">DNI:</span>
-                  {{getPersona.dni}}
-                </div>
-                <div>
-                  <span class="font-weight-bold">COD. MODULAR:</span>
-                  {{getPersona.codigo_modular}}
-                </div>
-                <div>
-                  <span class="font-weight-bold">ESTADO:</span>
-                  <EstadoChip :estado="getPersona.estado" />
-                </div>
-              </v-list-item-subtitle>
-            </v-list-item-content>
-          </v-list-item>
+        <v-card class="pa-2" outlined v-if="Object.keys(getPersona).length !== 0">
+          <div class="title mb-1">{{getNameComplete(getPersona)}}</div>
+          <div class="subtitle-1">
+            <div>
+              <span class="font-weight-bold">DNI:</span>
+              {{getPersona.dni}}
+            </div>
+            <div>
+              <span class="font-weight-bold">COD. MODULAR:</span>
+              {{getPersona.codigo_modular}}
+            </div>
+            <div>
+              <span class="font-weight-bold">ESTADO:</span>
+              <EstadoChip :estado="getPersona.estado" />
+            </div>
+          </div>
         </v-card>
       </transition>
     </v-flex>

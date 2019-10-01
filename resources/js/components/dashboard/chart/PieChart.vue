@@ -30,13 +30,9 @@ export default {
     };
   },
   mounted() {
-    console.log(this.title);
-
     //renderChart function renders the chart with the datacollection and options object.
     this.renderChart(this.chartData, this.options);
   }
 };
 </script>
 
-<style>
-</style>
