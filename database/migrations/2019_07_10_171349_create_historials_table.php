@@ -18,7 +18,7 @@ class CreateHistorialsTable extends Migration
             $table->string('anio', 10);
             $table->string('meses', 100);
             $table->string('dni', 10);
-            $table->integer('persona_id', 10);
+            $table->unsignedBigInteger('persona_id');
             $table->string('dni_user', 8);
             $table->string('certificado', 20);
             $table->enum('tipo', ['rango', 'anio', 'mes']);
