@@ -1,5 +1,5 @@
 @extends('layouts.auth')
-@section('title', 'Iniciar sesion')
+@section('title', 'Página no encontrada')
 
 @section('content')
 <div class="h-100vh no-margin w-100">

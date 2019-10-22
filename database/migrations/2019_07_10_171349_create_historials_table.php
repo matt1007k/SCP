@@ -20,7 +20,7 @@ class CreateHistorialsTable extends Migration
             $table->string('dni', 10);
             $table->unsignedBigInteger('persona_id');
             $table->string('dni_user', 8);
-            $table->string('certificado', 20);
+            $table->string('certificado', 20)->nullable();
             $table->enum('tipo', ['rango', 'anio', 'mes']);
             $table->enum('estado', ['creado', 'eliminado'])->default('creado');
             $table->timestamps();

@@ -15,6 +15,8 @@ class Persona extends Model
         'estado',
     ];
 
+    protected $appends = ['full_name'];
+
     public function user()
     {
         return $this->belongsTo('App\Models\User');
@@ -23,5 +25,10 @@ class Persona extends Model
     public function pagos()
     {
         return $this->hasMany('App\Models\Pago');
+    }
+
+    public function getFullNameAttribute()
+    {
+        return "$this->apellido_paterno $this->apellido_materno, $this->nombre";
     }
 }

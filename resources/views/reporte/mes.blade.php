@@ -95,17 +95,19 @@
                         <b>DNI:</b>
                     </td>
                     <td class="fs-header">{{$pago->persona->dni}}</td> 
+                    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td> 
+                    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td> 
                     <td class="text-right fs-header">
                         <b>COD. MODULAR:</b>
                     </td>
                     <td class="fs-header">{{$pago->persona->codigo_modular}}</td>
-                    
+                    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td> 
                 </tr>
                 <tr>
                     <td class="text-left fs-header">
                         <b>APELLIDOS Y NOMBRES:</b>
                     </td>
-                    <td class="fs-header" colspan="2">{{$pago->persona->apellido_paterno}} {{$pago->persona->apellido_materno}}, {{$pago->persona->nombre}}</td>
+                    <td class="fs-header" colspan="3">{{$pago->persona->apellido_paterno}} {{$pago->persona->apellido_materno}}, {{$pago->persona->nombre}}</td>
                     
                 </tr>
                 <tr>
@@ -113,21 +115,26 @@
                         <b>REPORTE DEL AÑO:</b>
                     </td>
                     <td class="fs-header">{{$pago->anio}}</td>
+                    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>  
+                    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>  
                     <td class="text-right fs-header">
                         <b>MES:</b>
                     </td>
-                    <td class="fs-header">{{$nombre_mes}}</td>
-                    <td class="text-right fs-header">
-                        <b>ESTADO:</b>
-                    </td>
-                    <td class="fs-header text-uppercase">{{$pago->persona->estado}}</td>
+                    <td class="fs-header">{{$nombre_mes}}</td>                    
                 </tr>
             </tbody>
         </table>
-        <div class="header-cert fs-header2">
+        @if ($certificado != null)
+            <div class="header-cert fs-header2">
                 <b>CERTIFICADO N°:</b>
-                <span class="bb-1" style="margin-left:20px">{{$certificado.'-'.date('Y').'-GRA/GG-GRDS-DREA-OA-AT'}}</span>
-        </div>
+                <span class="bb-1" style="margin-left:5px">{{$certificado.'-'.date('Y').'-GRA/GG-GRDS-DREA-OA-AT'}}</span>
+            </div>
+        @else
+            <div class="header-cert fs-header2">
+                <b>CERTIFICADO N°:</b>
+                <span class="bb-1" style="margin-left:5px;padding-left: 20px">{{'-'.date('Y').'-GRA/GG-GRDS-DREA-OA-AT'}}</span>
+            </div> 
+        @endif
     </header>
     <div class="spacer"></div>
     <div class="body w-80" style="margin: auto;">
@@ -1217,11 +1224,6 @@
                     <img class="position-absolute" style=" right: 0; border: 1px solid #000" src="data:image/png;base64, {!! base64_encode(QrCode::format('png')->size(74)->generate('Cert:'.$certificado.'|'.$pago->persona->dni.'|'.date('d/m/Y H:i:s').'|Resp:'.$user->dni)) !!} ">
                 </td>
                 <td>
-                    <tr>
-                        <td class="fs-header text-right">
-                            <span class="position-absolute" style="width: 200px; margin-top: -5px; right: 60">{{setInitializeName($user->name)}} &nbsp;</span>    
-                        </td>    
-                    </tr>     
                     <tr>
                         <td class="fs-header text-right">
                             <span class="position-absolute" style="width: 200px; margin-top: -20px; right: 60">{{date('d/m/Y H:i')}} &nbsp;</span>

@@ -60,7 +60,6 @@
 </template>
 
 <script>
-import Push from "push.js";
 export default {
   data() {
     return {

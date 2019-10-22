@@ -1,5 +1,6 @@
 window.axios = require("axios");
-
+import Push from "push.js";
+window.Push = Push;
 window.axios.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
 
 let token = document.head.querySelector('meta[name="csrf-token"]');

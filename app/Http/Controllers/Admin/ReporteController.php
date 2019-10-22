@@ -30,7 +30,7 @@ class ReporteController extends Controller
             'persona_id' => 'required|exists:personas,id',
             'anio_anterior' => 'required|exists:periodos,anio',
             'anio_actual' => 'required|exists:periodos,anio',
-            'certificado' => 'required|numeric|unique:historiales,certificado',
+            'certificado' => 'unique:historiales,certificado',
         ]);
         
         $pagos = Pago::whereBetween('anio', [$request->anio_anterior, $request->anio_actual])
@@ -215,7 +215,7 @@ class ReporteController extends Controller
         $request->validate([
             'persona_id' => 'required|exists:personas,id',
             'anio' => 'required|exists:periodos,anio',
-            'certificado' => 'required|numeric|unique:historiales,certificado',
+            'certificado' => 'unique:historiales,certificado',
         ]);
         
         $pago = Pago::where('anio', $request->anio)
@@ -973,26 +973,26 @@ class ReporteController extends Controller
                                 'dni_user' => auth()->user()->dni,
                                 'persona_id' => $persona_id
                             ]); 
+                            // return $pagos_with_detalles;
+                            $pdf = PDF::loadView('reporte.mes', [
+                                'pago' => $pago,
+                                'nombre_mes' => $nombre_mes,
+                                'total_pagos' => $total_pagos,
+                                'haberes' => $order_haberes,
+                                'descuentos' => $order_descuentos,
+                                'total_haberes' => $total_haberes,
+                                'total_descuentos' => $total_descuentos,
+                                'liquidos' => $total_liquidos,
+                                'imponibles' => $total_imponibles,
+                                'certificado' => $certificado,
+                                'user' => auth()->user()
+                            ]);
+                            $pdf->getDomPDF()->set_option("enable_php", true);
+        
+                            $pdf->setPaper('a4');
+                            return $pdf->stream();
                         }   
         
-                        // return $pagos_with_detalles;
-                        $pdf = PDF::loadView('reporte.mes', [
-                            'pago' => $pago,
-                            'nombre_mes' => $nombre_mes,
-                            'total_pagos' => $total_pagos,
-                            'haberes' => $order_haberes,
-                            'descuentos' => $order_descuentos,
-                            'total_haberes' => $total_haberes,
-                            'total_descuentos' => $total_descuentos,
-                            'liquidos' => $total_liquidos,
-                            'imponibles' => $total_imponibles,
-                            'certificado' => $certificado,
-                            'user' => auth()->user()
-                        ]);
-                        $pdf->getDomPDF()->set_option("enable_php", true);
-    
-                        $pdf->setPaper('a4');
-                        return $pdf->stream();
         
                     }elseif ($ver == 1) {   
                         $historial = Historial::where('certificado', $certificado)->where('dni', $dni)->first();
@@ -1041,7 +1041,7 @@ class ReporteController extends Controller
             'persona_id' => 'required|exists:personas,id',
             'anio' => 'required|exists:periodos,anio',
             'mes' => 'required',
-            'certificado' => 'required|numeric|unique:historiales,certificado',
+            'certificado' => 'unique:historiales,certificado',
         ]);
 
         $pago = Pago::With(['persona'])->where('anio', $request->anio)->mes($request->mes)

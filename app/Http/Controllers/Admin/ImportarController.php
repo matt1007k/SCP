@@ -16,7 +16,6 @@ use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Notification;
 use Maatwebsite\Excel\Facades\Excel;
-use Redis;
 
 class ImportarController extends Controller
 {
@@ -368,16 +367,16 @@ class ImportarController extends Controller
 
             Notification::send($personal, new DataImported($message1));
             Notification::send($personal, new DataImported($message2));
-            $redis = Redis::connection();
+            // $redis = Redis::connection();
 
-            $redis->publish('message', json_encode([
-                'message' => $message1,
-                'admin' => auth()->user(),
-            ]));
-            $redis->publish('message', json_encode([
-                'message' => $message2,
-                'admin' => auth()->user(),
-            ]));
+            // $redis->publish('message', json_encode([
+            //     'message' => $message1,
+            //     'admin' => auth()->user(),
+            // ]));
+            // $redis->publish('message', json_encode([
+            //     'message' => $message2,
+            //     'admin' => auth()->user(),
+            // ]));
 
             return response()->json([
                 'import' => true,

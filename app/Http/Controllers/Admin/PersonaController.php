@@ -21,13 +21,12 @@ class PersonaController extends Controller
 
     public function search(Request $request)
     {
+        $concat = "apellido_paterno,' ',apellido_materno,', ', nombre";
         $personas = Persona::where('estado', request('estado'))
-            ->where(function ($query) use ($request) {
+            ->where(function ($query) use ($concat) {
                 $query->where('codigo_modular', 'LIKE', '%' . request('q') . '%')
                     ->orWhere('dni', 'LIKE', '%' . request('q') . '%')
-                    ->orWhere('nombre', 'LIKE', '%' . request('q') . '%')
-                    ->orWhere('apellido_paterno', 'LIKE', '%' . request('q') . '%')
-                    ->orWhere('apellido_materno', 'LIKE', '%' . request('q') . '%');
+                    ->orWhereRaw("CONCAT($concat) LIKE '%" . request('q') . "%'");
             })->orderBy('apellido_paterno', 'DESC')->get();
 
         return response()->json(['personas' => $personas], 200);
