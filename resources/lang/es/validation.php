@@ -169,13 +169,13 @@ return [
         'subject' => 'asunto',
         'message' => 'mensaje',
 
-        'codmodular' => 'Código modular',
+        'codmodular' => 'código modular',
         'permissions' => 'permisos',
         'persona_id' => 'persona',
-        'anio' => 'El año',
+        'anio' => 'el año',
         'anio_anterior' => 'del año',
         'anio_actual' => 'hasta el año',
-        'certificado' => 'El núm. de certificado',
-        'identificador' => 'El identificador',
+        'certificado' => 'el núm. de certificado',
+        'identificador' => 'el identificador',
     ],
 ];

@@ -53,7 +53,7 @@
       </template>
 
       <v-flex xs12>
-        <v-card>
+        <v-card v-if="$auth.isAdmin()">
           <v-card-title class="no-padding-bottom">
             <v-layout row align-center>
               <v-flex xs1>

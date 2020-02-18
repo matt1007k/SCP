@@ -61,10 +61,7 @@ class ImportarController extends Controller
             foreach ($personasExcel[0] as $personaExcel) {
                 if ($personaExcel['nombres'] == null ||
                     $personaExcel['apepat'] == null ||
-                    $personaExcel['apemat'] == null ||
-                    $personaExcel['dni'] == null ||
-                    $personaExcel['codmod'] == null ||
-                    $personaExcel['cargo'] == null) {
+                    $personaExcel['apemat'] == null) {
                     return response()->json([
                         'import' => true,
                         'msg' => 'El archivo excel no tiene datos.',
@@ -76,7 +73,10 @@ class ImportarController extends Controller
                 $total_haber = $this->getTotalMonto($DetallesHaber, "mtohab");
                 $total_descuento = $this->getTotalMonto($DetallesDescuento, "mtodes");
 
-                $personaExiste = Persona::where('dni', $personaExcel['dni'])->where('estado', $estado)->first();
+                $personaExiste = Persona::where('nombre', $personaExcel['nombres'])
+                    ->where('apellido_paterno', $personaExcel['apepat'])
+                    ->where('apellido_materno', $personaExcel['apemat'])
+                    ->where('estado', $estado)->first();
 
                 if (!$personaExiste) {
                     $persona = new Persona();

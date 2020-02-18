@@ -63,8 +63,8 @@ class DashboardController extends Controller
 
     public function getTotalPagos(Request $request)
     {
-        set_time_limit(0);       
-        
+        set_time_limit(0);
+
         $total_pagos = array();
         $total_activo = 0;
         $total_cesante = 0;
@@ -77,11 +77,11 @@ class DashboardController extends Controller
         $color_cesante = "#FF5252";
         $color_sobreviviente = "#2196F3";
 
-        
-        $total_activo = $this->getTotalLiquidoByYear($request, 'activo');
-        $total_cesante = $this->getTotalLiquidoByYear($request, 'cesante');        
-        $total_sobreviviente = $this->getTotalLiquidoByYear($request, 'sobreviviente');
-            
+        if (auth()->user()->hasRole('Admin')) {
+            $total_activo = $this->getTotalLiquidoByYear($request, 'activo');
+            $total_cesante = $this->getTotalLiquidoByYear($request, 'cesante');
+            $total_sobreviviente = $this->getTotalLiquidoByYear($request, 'sobreviviente');
+        }
 
         array_push($total_pagos, (object) [
             "label" => "$request->anio, $activo",
@@ -127,34 +127,33 @@ class DashboardController extends Controller
     }
 
     public function getTotalLiquidoByYear($request, $estado)
-    {   
+    {
         $totales = array();
-        
-        for($i = 1;$i < 13; $i++){
+
+        for ($i = 1; $i < 13; $i++) {
             $numero = $this->addZeroToNumberMenorToTen($i);
-            $total = Pago::where('persona_id','!=', '')->mes($numero)->where('anio', $request->anio)->whereHas('persona', function ($query) use ($estado) {
+            $total = Pago::where('persona_id', '!=', '')->mes($numero)->where('anio', $request->anio)->whereHas('persona', function ($query) use ($estado) {
                 $query->where('estado', 'like', "%{$estado}%");
-            })->count() > 0 
-            ? Pago::where('persona_id','!=', '')->mes($numero)->where('anio', $request->anio)->whereHas('persona', function ($query) use ($estado) {
+            })->count() > 0
+            ? Pago::where('persona_id', '!=', '')->mes($numero)->where('anio', $request->anio)->whereHas('persona', function ($query) use ($estado) {
                 $query->where('estado', 'like', "%{$estado}%");
-            })->sum('monto_liquido') 
+            })->sum('monto_liquido')
             : 0;
-            array_push($totales,  $total);
+            array_push($totales, $total);
         }
         return $totales;
     }
 
-    public function addZeroToNumberMenorToTen(int $num){
+    public function addZeroToNumberMenorToTen(int $num)
+    {
         $numero = 0;
-        if($num < 10){
-            $numero = '0'.$num;
-        }else{
+        if ($num < 10) {
+            $numero = '0' . $num;
+        } else {
             $numero = $num;
-        } 
+        }
         return $numero;
     }
-
-    
 
     public function getTotalConstancias()
     {
