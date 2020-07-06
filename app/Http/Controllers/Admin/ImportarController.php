@@ -21,8 +21,8 @@ class ImportarController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('has.permission:importar.personas')->only(['personas']);
-        $this->middleware('has.permission:importar.descuentos')->only(['descuentos']);
+        $this->middleware('can:importar.personas')->only(['personas']);
+        $this->middleware('can:importar.descuentos')->only(['descuentos']);
     }
 
     public function personas(Request $request)

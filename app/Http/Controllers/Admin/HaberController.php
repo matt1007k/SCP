@@ -11,11 +11,11 @@ class HaberController extends Controller
 {
     public function __contruct()
     {
-        $this->middleware('has.permission:pagos.consultar')->only(['search']);
-        $this->middleware('has.permission:haberes.index')->only(['index']);
-        $this->middleware('has.permission:haberes.create')->only(['store']);
-        $this->middleware('has.permission:haberes.edit')->only(['update']);
-        $this->middleware('has.permission:haberes.destroy')->only(['destroy']);
+        $this->middleware('can:pagos.consultar')->only(['search']);
+        $this->middleware('can:haberes.index')->only(['index']);
+        $this->middleware('can:haberes.create')->only(['store']);
+        $this->middleware('can:haberes.edit')->only(['update']);
+        $this->middleware('can:haberes.destroy')->only(['destroy']);
     }
     public function search()
     {

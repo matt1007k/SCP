@@ -2,8 +2,8 @@
   <v-app>
     <snackbar ref="snackbar"></snackbar>
     <sidebar-admin-left :toggle="drawer"></sidebar-admin-left>
-    <v-toolbar dark color="info" app>
-      <v-toolbar-side-icon @click.stop="OpenSidebar"></v-toolbar-side-icon>
+    <v-app-bar dark color="info" app>
+      <v-app-bar-nav-icon @click.stop="OpenSidebar"></v-app-bar-nav-icon>
 
       <v-toolbar-title class="white--text">SISTEMA DE CONSTANCIA DE PAGOS</v-toolbar-title>
 
@@ -16,55 +16,60 @@
       <v-menu
         offset-y
         origin="center center"
-        class="elelvation-1"
+        class="elevation-1"
         :nudge-bottom="0"
         transition="scale-transition"
         bottom
       >
-        <v-btn @click="markAsRead" icon flat slot="activator">
-          <v-badge color="indigo" rigth overlap>
-            <template v-slot:badge>{{unreadNotifications.length}}</template>
-            <v-icon>$vuetify.icons.bell</v-icon>
-          </v-badge>
-        </v-btn>
+        <template v-slot:activator="{ on }">
+          <v-btn @click="markAsRead" icon v-on="on">
+            <v-badge color="indigo" rigth overlap>
+              <template v-slot:badge>{{unreadNotifications.length}}</template>
+              <v-icon>$vuetify.icons.bell</v-icon>
+            </v-badge>
+          </v-btn>
+        </template>
+
         <v-list style="max-height: 400px" class="scroll-y">
           <v-subheader class="indigo">
             <h2 class="text-white">Notificaciones</h2>
           </v-subheader>
           <template v-if="unreadNotifications.length > 0">
-            <v-list-tile
+            <v-list-item
               :class="{'white': notification.read_at == null}"
               @click="markAsRead"
               v-for="notification in unreadNotifications"
               :key="notification.id"
               style="padding: 8px 5px"
             >
-              <v-list-tile-content>
-                <v-list-tile-title>{{notification.data.message}}</v-list-tile-title>
-                <v-list-tile-sub-title>{{getFormaterDate(notification.created_at)}}</v-list-tile-sub-title>
-              </v-list-tile-content>
-            </v-list-tile>
+              <v-list-item-content>
+                <v-list-item-title>{{notification.data.message}}</v-list-item-title>
+                <v-list-item-sub-title>{{getFormaterDate(notification.created_at)}}</v-list-item-sub-title>
+              </v-list-item-content>
+            </v-list-item>
           </template>
           <template v-else>
-            <v-list-tile style="padding: 8px 5px">
-              <v-list-tile-content>
-                <v-list-tile-sub-title>No tienes notificaciones</v-list-tile-sub-title>
-              </v-list-tile-content>
-            </v-list-tile>
+            <v-list-item style="padding: 8px 5px">
+              <v-list-item-content class="px-3">
+                <v-list-item-sub-title>No tienes notificaciones</v-list-item-sub-title>
+              </v-list-item-content>
+            </v-list-item>
           </template>
         </v-list>
       </v-menu>
 
-      <v-btn flat @click="LogOut">
+      <v-btn outlined small @click="LogOut" class="ml-3">
         <v-icon>$vuetify.icons.exit</v-icon>
         <span>Salir</span>
       </v-btn>
-    </v-toolbar>
+    </v-app-bar>
 
     <v-content>
-      <transition name="slide-fade">
-        <router-view :key="$route.fullPath" />
-      </transition>
+      <v-container fluid>
+        <transition name="slide-fade">
+          <router-view :key="$route.fullPath" />
+        </transition>
+      </v-container>
     </v-content>
   </v-app>
 </template>

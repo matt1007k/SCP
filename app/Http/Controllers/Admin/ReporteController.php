@@ -15,7 +15,7 @@ class ReporteController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('has.permission:pagos.consultar')
+        $this->middleware('can:pagos.consultar')
             ->only([
                 'searchByYears',
                 'porAnios',

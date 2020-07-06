@@ -56,13 +56,15 @@
         <v-card v-if="$auth.isAdmin()">
           <v-card-title class="no-padding-bottom">
             <v-layout row align-center>
-              <v-flex xs1>
+              <div class="mr-4">
                 <v-tooltip bottom>
-                  <v-icon slot="activator">$vuetify.icons.filter</v-icon>
+                  <template v-slot:activator="{ on }">
+                    <v-icon v-on="on">$vuetify.icons.filter</v-icon>
+                  </template>
                   <span>Filtar o ver los total de pagos por año y estado de personas</span>
                 </v-tooltip>
-              </v-flex>
-              <v-flex xs12 sm4 class="text-center">
+              </div>
+              <div class="text-center">
                 <v-select
                   :items="items"
                   v-model="anio"
@@ -71,7 +73,7 @@
                   @input="filterByYear()"
                   label="Seleccionar el año"
                 ></v-select>
-              </v-flex>
+              </div>
             </v-layout>
           </v-card-title>
           <v-card-text class="no-padding-top">

@@ -90,7 +90,7 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="error" @click="close()">Cancelar</v-btn>
+            <v-btn text color="error" @click="close()">Cancelar</v-btn>
             <v-btn color="success" type="submit">Guardar</v-btn>
           </v-card-actions>
         </form>

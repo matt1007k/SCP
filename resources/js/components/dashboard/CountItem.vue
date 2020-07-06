@@ -1,7 +1,7 @@
 <template>
   <v-card>
     <div class="d-flex">
-      <div class="d-flex align-center w-30" :class="color">
+      <div class="d-flex justify-center w-30" :class="color">
         <v-icon dark medium>{{icon}}</v-icon>
       </div>
       <div class="padding-small w-70">

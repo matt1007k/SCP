@@ -5,13 +5,15 @@
     </v-flex>
     <v-flex xs12 class="mb-2 mt-2">
       <v-tooltip bottom>
-        <v-icon slot="activator">$vuetify.icons.filter</v-icon>
+        <template v-slot:activator="{ on }">
+          <v-icon v-on="on">$vuetify.icons.filter</v-icon>
+        </template>
         <span>Filtrar por estado</span>
       </v-tooltip>
-      <v-btn-toggle light v-model="toggleActiveBtn">
-        <v-btn flat color="success" @click="filterBy('activo')">Activos</v-btn>
-        <v-btn flat color="info" @click="filterBy('sobreviviente')">Sobrevivientes</v-btn>
-        <v-btn flat color="error" @click="filterBy('cesante')">Cesantes</v-btn>
+      <v-btn-toggle dark shaped mandatory v-model="toggleActiveBtn">
+        <v-btn outlined color="success" @click="filterBy('activo')">Activos</v-btn>
+        <v-btn outlined color="info" @click="filterBy('sobreviviente')">Sobrevivientes</v-btn>
+        <v-btn outlined color="error" @click="filterBy('cesante')">Cesantes</v-btn>
       </v-btn-toggle>
     </v-flex>
     <v-flex xs12 sm6>

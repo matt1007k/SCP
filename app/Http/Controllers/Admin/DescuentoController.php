@@ -11,11 +11,11 @@ class DescuentoController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('has.permission:pagos.consultar')->only(['search']);
-        $this->middleware('has.permission:descuentos.index')->only(['index']);
-        $this->middleware('has.permission:descuentos.create')->only(['store']);
-        $this->middleware('has.permission:descuentos.edit')->only(['update']);
-        $this->middleware('has.permission:descuentos.destroy')->only(['destroy']);
+        $this->middleware('can:pagos.consultar')->only(['search']);
+        $this->middleware('can:descuentos.index')->only(['index']);
+        $this->middleware('can:descuentos.create')->only(['store']);
+        $this->middleware('can:descuentos.edit')->only(['update']);
+        $this->middleware('can:descuentos.destroy')->only(['destroy']);
     }
 
     public function search()

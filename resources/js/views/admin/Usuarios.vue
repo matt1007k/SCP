@@ -1,26 +1,17 @@
 <template>
   <v-container>
-    <v-layout row wrap class="mb-3">
+    <v-layout class="mb-3">
       <v-flex xs12>
         <v-card>
-          <v-container fill-height fluid>
-            <v-layout row wrap>
-              <v-flex xs12 sm9 md9>
-                <span class="headline">Lista de usuarios</span>
-              </v-flex>
-              <v-flex
-                xs12
-                sm3
-                md3
-                justify-end
-                flexbox
-                v-if="$auth.can('users.create') || $auth.isAdmin()"
-              >
+          <v-container>
+            <div class="d-flex flex-column flex-sm-row justify-sm-space-between align-sm-center">
+              <div class="headline">Lista de usuarios</div>
+              <div v-if="$auth.can('users.create') || $auth.isAdmin()">
                 <v-btn color="primary" @click.stop="modalAgregar">
                   <v-icon>$vuetify.icons.add</v-icon>Agregar usuario
                 </v-btn>
-              </v-flex>
-            </v-layout>
+              </div>
+            </div>
           </v-container>
           <v-container fluid style="padding-bottom: 0; padding-top: 0">
             <v-text-field v-model="search" clearable label="Buscar" type="text">
@@ -37,81 +28,88 @@
         </v-card>
       </v-flex>
     </v-layout>
-    <v-layout wrap>
-      <v-flex xs12>
-        <v-data-table
-          :headers="headers"
-          :items="usuarios"
-          :search="search"
-          :loading="loadingData"
-          rows-per-page-text="Mostrar"
-          no-data-text="No hay registros"
-          no-results-text="No hay registros encontrados"
-          :pagination.sync="pagination"
-          class="elevation-1"
-          :rows-per-page-items="RowsPerPageItems"
-        >
-          <v-progress-linear v-slot:progress color="error" indeterminate></v-progress-linear>
-          <template v-slot:items="props">
-            <td class="text-xs-center">{{ props.item.dni }}</td>
-            <td>{{ props.item.name }}</td>
-            <td>{{ props.item.email }}</td>
-            <template v-if="props.item.roles.length > 0">
-              <td>
-                <v-chip
-                  v-for="(rol, index) in props.item.roles"
-                  :key="index"
-                  text-color="white"
-                  color="info"
-                  class="text-capitalize"
-                  small
-                >{{ rol.name }}</v-chip>
-              </td>
-            </template>
-            <template v-else>
-              <td class="text-xs-center">N/A</td>
-            </template>
-            <template v-if="props.item.estado === 'activo'">
-              <td>
-                <v-chip
-                  text-color="white"
-                  color="success"
-                  class="text-capitalize"
-                  small
-                >{{ props.item.estado }}</v-chip>
-              </td>
-            </template>
-            <template v-if="props.item.estado === 'inactivo'">
-              <td>
-                <v-chip
-                  text-color="white"
-                  color="error"
-                  class="text-capitalize"
-                  small
-                >{{ props.item.estado }}</v-chip>
-              </td>
-            </template>
+    <div>
+      <v-data-table
+        :headers="headers"
+        :items="usuarios"
+        :search="search"
+        :loading="loadingData"
+        no-data-text="No hay registros"
+        no-results-text="No hay registros encontrados"
+        class="elevation-1"
+      >
+        <v-progress-linear v-slot:progress color="error" indeterminate></v-progress-linear>
+        <template v-slot:items="props">
+          <td class="text-xs-center">{{ props.item.dni }}</td>
+          <td>{{ props.item.name }}</td>
+          <td>{{ props.item.email }}</td>
+          <template v-if="props.item.roles.length > 0">
             <td>
-              <v-tooltip bottom v-if="$auth.can('users.edit') || $auth.isAdmin()">
-                <v-btn color="info" fab small slot="activator" @click="modalEditar(props.item)">
-                  <v-icon>$vuetify.icons.edit</v-icon>
-                </v-btn>
-                <span>Editar registro</span>
-              </v-tooltip>
-              <v-tooltip bottom v-if="$auth.can('users.destroy') || $auth.isAdmin()">
-                <v-btn color="error" fab small slot="activator" @click="deleteData(props.item)">
-                  <v-icon>$vuetify.icons.delete</v-icon>
-                </v-btn>
-                <span>Cambiar estado</span>
-              </v-tooltip>
+              <v-chip
+                v-for="(rol, index) in props.item.roles"
+                :key="index"
+                text-color="white"
+                color="info"
+                class="text-capitalize"
+                small
+              >{{ rol.name }}</v-chip>
             </td>
           </template>
-        </v-data-table>
-        <div class="text-xs-center pt-2">
-          <v-pagination v-model="pagination.page" :length="pages"></v-pagination>
-        </div>
-      </v-flex>
-    </v-layout>
+          <template v-else>
+            <td class="text-xs-center">N/A</td>
+          </template>
+          <td>
+            <v-chip class="ma-2" color="indigo" text-color="white">
+              <v-avatar left>
+                <v-icon>mdi-account-circle</v-icon>
+              </v-avatar>Ranee
+            </v-chip>
+          </td>
+          <template v-if="props.item.estado === 'activo'">
+            <td>
+              <v-chip
+                text-color="white"
+                color="success"
+                class="text-capitalize"
+                small
+              >{{ props.item.estado }}</v-chip>
+            </td>
+          </template>
+          <template v-if="props.item.estado === 'inactivo'">
+            <td>
+              <v-chip
+                text-color="white"
+                color="error"
+                class="text-capitalize"
+                small
+              >{{ props.item.estado }}</v-chip>
+            </td>
+          </template>
+          <td>
+            <v-tooltip bottom v-if="$auth.can('users.edit') || $auth.isAdmin()">
+              <template v-slot:activator="{ on }">
+                <v-btn color="info" fab small v-on="on" @click="modalEditar(props.item)">
+                  <v-icon>$vuetify.icons.edit</v-icon>
+                </v-btn>
+              </template>
+              <span>Editar registro</span>
+            </v-tooltip>
+            <v-tooltip bottom v-if="$auth.can('users.destroy') || $auth.isAdmin()">
+              <template v-slot:activator="{ on }">
+                <v-btn color="error" fab small v-on="on" @click="deleteData(props.item)">
+                  <v-icon>$vuetify.icons.delete</v-icon>
+                </v-btn>
+              </template>
+              <span>Cambiar estado</span>
+            </v-tooltip>
+          </td>
+        </template>
+        <v-data-footer :rows-per-page-items="RowsPerPageItems" rows-per-page-text="Mostrar"></v-data-footer>
+      </v-data-table>
+      <div class="text-xs-center pt-2">
+        <v-pagination v-model="pagination.page" :length="pages"></v-pagination>
+      </div>
+    </div>
     <modal-agregar ref="agregarUsuario"></modal-agregar>
     <modal-editar ref="editarUsuario"></modal-editar>
   </v-container>

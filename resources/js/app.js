@@ -1,7 +1,7 @@
 require("./bootstrap");
 
 import Vue from "vue";
-import "./plugins/vuetify";
+import Vuetify from "./plugins/vuetify";
 import "./plugins/sweetalert2";
 // import "./plugins/socket-io";
 import App from "./App.vue";
@@ -12,7 +12,8 @@ import Auth from "./helpers/auth";
 
 Vue.prototype.$auth = new Auth(window.user);
 
-const app = new Vue({
+new Vue({
+    vuetify: Vuetify,
     render: h => h(App),
     router
 }).$mount("#app");

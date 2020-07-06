@@ -1,26 +1,17 @@
 <template>
   <v-container>
-    <v-layout row wrap class="mb-3">
+    <v-layout class="mb-3">
       <v-flex xs12>
         <v-card>
-          <v-container fill-height fluid>
-            <v-layout row wrap>
-              <v-flex xs12 sm9 md9>
-                <span class="headline">Lista de personas</span>
-              </v-flex>
-              <v-flex
-                xs12
-                sm3
-                md3
-                justify-end
-                flexbox
-                v-if="$auth.can('personas.create') || $auth.isAdmin()"
-              >
+          <v-container>
+            <div class="d-flex flex-column flex-sm-row justify-sm-space-between align-sm-center">
+              <div class="headline">Lista de personas</div>
+              <div v-if="$auth.can('personas.create') || $auth.isAdmin()">
                 <v-btn color="primary" @click.stop="modalAgregar">
                   <v-icon>$vuetify.icons.add</v-icon>Agregar persona
                 </v-btn>
-              </v-flex>
-            </v-layout>
+              </div>
+            </div>
           </v-container>
           <v-container fluid style="padding-bottom: 0; padding-top: 0">
             <v-text-field v-model="search" clearable label="Buscar" type="text">
@@ -35,13 +26,15 @@
             </v-text-field>
             <span class="mb-2">
               <v-tooltip bottom>
-                <v-icon slot="activator">$vuetify.icons.filter</v-icon>
+                <template v-slot:activator="{ on }">
+                  <v-icon v-on="on">$vuetify.icons.filter</v-icon>
+                </template>
                 <span>Filtrar por estado</span>
               </v-tooltip>
-              <v-btn-toggle light v-model="toggleActiveBtn">
-                <v-btn flat color="success" @click="filterBy('activo')">Activos</v-btn>
-                <v-btn flat color="info" @click="filterBy('sobreviviente')">Sobrevivientes</v-btn>
-                <v-btn flat color="error" @click="filterBy('cesante')">Cesantes</v-btn>
+              <v-btn-toggle dark shaped mandatory v-model="toggleActiveBtn">
+                <v-btn outlined color="success" @click="filterBy('activo')">Activos</v-btn>
+                <v-btn outlined color="info" @click="filterBy('sobreviviente')">Sobrevivientes</v-btn>
+                <v-btn outlined color="error" @click="filterBy('cesante')">Cesantes</v-btn>
               </v-btn-toggle>
             </span>
           </v-container>

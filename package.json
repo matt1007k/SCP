@@ -10,30 +10,30 @@
         "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
     },
     "devDependencies": {
-        "@babel/plugin-syntax-dynamic-import": "^7.2.0",
+        "@babel/plugin-syntax-dynamic-import": "^7.8.3",
         "axios": "^0.19",
-        "cross-env": "^5.2.1",
-        "laravel-mix": "^4.0.7",
-        "resolve-url-loader": "^2.3.1",
-        "sass": "^1.15.2",
-        "sass-loader": "^7.1.0",
-        "socket.io": "^2.2.0",
-        "socket.io-client": "^2.2.0",
-        "vue-socket.io": "^3.0.7",
-        "vue-template-compiler": "^2.6.10"
+        "cross-env": "^7.0.2",
+        "laravel-mix": "^5.0.4",
+        "resolve-url-loader": "^3.1.1",
+        "sass": "^1.26.7",
+        "sass-loader": "^8.0.2",
+        "socket.io": "^2.3.0",
+        "socket.io-client": "^2.3.0",
+        "vue-socket.io": "^3.0.9",
+        "vue-template-compiler": "^2.6.11"
     },
     "dependencies": {
-        "@mdi/font": "^3.6.95",
-        "chart.js": "^2.8.0",
-        "ioredis": "^4.14.0",
-        "moment": "^2.24.0",
+        "@mdi/font": "^5.3.45",
+        "chart.js": "^2.9.3",
+        "ioredis": "^4.17.3",
+        "moment": "^2.26.0",
         "push.js": "^1.0.12",
-        "redis": "^2.8.0",
+        "redis": "^3.0.2",
         "roboto-fontface": "^0.10.0",
-        "vue": "^2.6.10",
-        "vue-chartjs": "^3.4.2",
-        "vue-router": "^3.0.6",
-        "vue-sweetalert2": "^2.0.5",
-        "vuetify": "^1.5.14"
+        "vue": "^2.6.11",
+        "vue-chartjs": "^3.5.0",
+        "vue-router": "^3.3.2",
+        "vue-sweetalert2": "^3.0.5",
+        "vuetify": "^2.2.32"
     }
 }
