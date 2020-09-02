@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use PDO;
 
 class Persona extends Model
 {
@@ -30,5 +32,16 @@ class Persona extends Model
     public function getFullNameAttribute()
     {
         return "$this->apellido_paterno $this->apellido_materno, $this->nombre";
+    }
+
+    public function scopeSearch(Builder $query)
+    {
+        $concat = "apellido_paterno,' ',apellido_materno,', ', nombre";
+
+        return $query->where(function ($query) use ($concat) {
+            $query->where('codigo_modular', 'LIKE', '%' . request('q') . '%')
+                ->orWhere('dni', 'LIKE', '%' . request('q') . '%')
+                ->orWhereRaw("CONCAT($concat) LIKE '%" . request('q') . "%'");
+        });
     }
 }

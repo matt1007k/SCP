@@ -8,6 +8,10 @@ use App\Models\Historial;
 use App\Models\Pago;
 use App\Models\Persona;
 use App\Models\User;
+use App\Services\EncryptService;
+use App\Services\JsonParseService;
+use App\Services\MesesService;
+use App\Services\ReportService;
 use Illuminate\Http\Request;
 use PDF;
 
@@ -37,7 +41,7 @@ class ReporteController extends Controller
 
         $pagos = Pago::whereBetween('anio', [$request->anio_anterior, $request->anio_actual])
             ->whereHas('persona', function ($query) use ($request) {
-                $query->where('id', 'like', "%{$request->persona_id}%");
+                $query->where('id', $request->persona_id);
             })->orderBy('anio', 'DESC')->get();
         $years_exist_unique = $this->getYearsUnique($pagos);
 
@@ -67,7 +71,7 @@ class ReporteController extends Controller
 
         $pagos = Pago::whereBetween('anio', [$anio_anterior, $anio_actual])
             ->whereHas('persona', function ($query) use ($persona_id) {
-                $query->where('id', 'like', "%{$persona_id}%");
+                $query->where('id', $persona_id);
             })->orderBy('anio', 'DESC')->get();
         $years_exist_unique = $this->getYearsUnique($pagos);
         $dni = Persona::find($persona_id)->dni;
@@ -81,7 +85,7 @@ class ReporteController extends Controller
                 foreach ($years_exist_unique as $key => $year) {
                     $pago = Pago::With(['persona'])->where('anio', $year)
                         ->whereHas('persona', function ($query) use ($persona_id) {
-                            $query->where('id', 'like', "%{$persona_id}%");
+                            $query->where('id', $persona_id);
                         })->first();
                     // Detalles por mes
                     $meses = $this->getMesesAndCount($year, $persona_id);
@@ -216,7 +220,7 @@ class ReporteController extends Controller
 
         $pago = Pago::where('anio', $request->anio)
             ->whereHas('persona', function ($query) use ($request) {
-                $query->where('id', 'like', "%{$request->persona_id}%");
+                $query->where('id', $request->persona_id);
             })->first();
 
         if ($pago) {
@@ -250,7 +254,7 @@ class ReporteController extends Controller
 
             $pago = Pago::where('anio', $anio)
                 ->whereHas('persona', function ($query) use ($persona_id) {
-                    $query->where('id', 'like', "%{$persona_id}%");
+                    $query->where('id', $persona_id);
                 })->first();
 
             if ($pago) {
@@ -643,9 +647,8 @@ class ReporteController extends Controller
         $descuentos = array();
 
         $pagos = Pago::where('anio', $anio)->mes($mes)
-            ->whereHas('persona', function ($query) use ($persona_id) {
-                $query->where('id', 'like', "%{$persona_id}%");
-            })->get();
+            ->where('persona_id', $persona_id)
+            ->get();
         // return $pagos->detalles->count();
         $nombre_mes = strtolower($this->getNameMonth($mes));
         $monto = [];
@@ -703,9 +706,8 @@ class ReporteController extends Controller
         $total_imponibles = array();
 
         $pagos = Pago::where('anio', $anio)->mes($mes)
-            ->whereHas('persona', function ($query) use ($persona_id) {
-                $query->where('persona_id', 'like', "%{$persona_id}%");
-            })->get();
+            ->where('persona_id', $persona_id)
+            ->get();
         // return $pagos;
         $mes_nombre = strtolower($this->getNameMonth($mes));
 
@@ -813,53 +815,41 @@ class ReporteController extends Controller
     public function getMesesAndCount($anio, $persona_id)
     {
         $enero_count = Pago::where('anio', $anio)->where('mes', '01')
-            ->whereHas('persona', function ($query) use ($persona_id) {
-                $query->where('id', 'like', "%{$persona_id}%");
-            })->count();
+            ->where('persona_id', $persona_id)
+            ->count();
         $febrero_count = Pago::where('anio', $anio)->where('mes', '02')
-            ->whereHas('persona', function ($query) use ($persona_id) {
-                $query->where('id', 'like', "%{$persona_id}%");
-            })->count();
+            ->where('persona_id', $persona_id)
+            ->count();
         $marzo_count = Pago::where('anio', $anio)->where('mes', '03')
-            ->whereHas('persona', function ($query) use ($persona_id) {
-                $query->where('id', 'like', "%{$persona_id}%");
-            })->count();
+            ->where('persona_id', $persona_id)
+            ->count();
         $abril_count = Pago::where('anio', $anio)->where('mes', '04')
-            ->whereHas('persona', function ($query) use ($persona_id) {
-                $query->where('id', 'like', "%{$persona_id}%");
-            })->count();
+            ->where('persona_id', $persona_id)
+            ->count();
         $mayo_count = Pago::where('anio', $anio)->where('mes', '05')
-            ->whereHas('persona', function ($query) use ($persona_id) {
-                $query->where('id', 'like', "%{$persona_id}%");
-            })->count();
+            ->where('persona_id', $persona_id)
+            ->count();
         $junio_count = Pago::where('anio', $anio)->where('mes', '06')
-            ->whereHas('persona', function ($query) use ($persona_id) {
-                $query->where('id', 'like', "%{$persona_id}%");
-            })->count();
+            ->where('persona_id', $persona_id)
+            ->count();
         $julio_count = Pago::where('anio', $anio)->where('mes', '07')
-            ->whereHas('persona', function ($query) use ($persona_id) {
-                $query->where('id', 'like', "%{$persona_id}%");
-            })->count();
+            ->where('persona_id', $persona_id)
+            ->count();
         $agosto_count = Pago::where('anio', $anio)->where('mes', '08')
-            ->whereHas('persona', function ($query) use ($persona_id) {
-                $query->where('id', 'like', "%{$persona_id}%");
-            })->count();
+            ->where('persona_id', $persona_id)
+            ->count();
         $septiembre_count = Pago::where('anio', $anio)->where('mes', '09')
-            ->whereHas('persona', function ($query) use ($persona_id) {
-                $query->where('id', 'like', "%{$persona_id}%");
-            })->count();
+            ->where('persona_id', $persona_id)
+            ->count();
         $octubre_count = Pago::where('anio', $anio)->where('mes', '10')
-            ->whereHas('persona', function ($query) use ($persona_id) {
-                $query->where('id', 'like', "%{$persona_id}%");
-            })->count();
+            ->where('persona_id', $persona_id)
+            ->count();
         $noviembre_count = Pago::where('anio', $anio)->where('mes', '11')
-            ->whereHas('persona', function ($query) use ($persona_id) {
-                $query->where('id', 'like', "%{$persona_id}%");
-            })->count();
+            ->where('persona_id', $persona_id)
+            ->count();
         $diciembre_count = Pago::where('anio', $anio)->where('mes', '12')
-            ->whereHas('persona', function ($query) use ($persona_id) {
-                $query->where('id', 'like', "%{$persona_id}%");
-            })->count();
+            ->where('persona_id', $persona_id)
+            ->count();
 
         return [
             ['numero' => '01', 'nombre' => 'Enero', 'cantidad' => $enero_count],
@@ -909,114 +899,120 @@ class ReporteController extends Controller
 
     public function porMes($params_code)
     {
-        $params = base64_decode($params_code);
+        // $params = base64_decode($params_code);
+        $params_decode = (new EncryptService($params_code))->getDecodeEncrypt();
+        $params = (new JsonParseService($params_decode))->getJsonDecode();
+        $reportService = new ReportService($params);
 
-        $persona_id = json_decode($params)->persona_id;
-        $anio = json_decode($params)->anio;
-        $mes = json_decode($params)->mes;
-        $certificado = json_decode($params)->certificado;
-        $ver = json_decode($params)->ver;
-
-        $dni = Persona::find($persona_id)->dni;
+        $dni = Persona::find($params->persona_id)->dni;
         if ($dni) {
 
-            $pago = Pago::where('anio', $anio)->mes($mes)
-                ->whereHas('persona', function ($query) use ($persona_id) {
-                    $query->where('id', 'like', "%{$persona_id}%");
-                })->first();
+            $pago = Pago::where('anio', $params->anio)->mes($params->mes)
+                ->where('persona_id', $params->persona_id)->first();
 
             if ($pago) {
 
-                $total_pagos = Pago::where('anio', $anio)->mes($mes)
-                    ->whereHas('persona', function ($query) use ($persona_id) {
-                        $query->where('id', 'like', "%{$persona_id}%");
-                    })->count();
+                $total_pagos = Pago::where('anio', $params->anio)->mes($params->mes)
+                    ->where('persona_id', $params->persona_id)
+                    ->count();
+
 
                 //detalles de haberes y descuentos
-                $haberes = $this->getOneDetailsByType($anio, $mes, $persona_id, 'haber');
-                $descuentos = $this->getOneDetailsByType($anio, $mes, $persona_id, 'descuento');
+                $haberes = $reportService->getOneDetailsByType('haber');
+                $descuentos = $reportService->getOneDetailsByType('descuento');
+                // return $haberes;
 
                 //totales
-                $total_haberes = $this->getTotalByMes($anio, $persona_id, 'haberes', $mes);
-                $total_descuentos = $this->getTotalByMes($anio, $persona_id, 'descuentos', $mes);
-                $total_liquidos = $this->getTotalByMes($anio, $persona_id, 'liquidos', $mes);
-                $total_imponibles = $this->getTotalByMes($anio, $persona_id, 'imponibles', $mes);
+                $total_haberes = $reportService->getTotalByMes('haberes');
+                $total_descuentos = $reportService->getTotalByMes('descuentos');
+                $total_liquidos = $reportService->getTotalByMes('liquidos');
+                $total_imponibles = $reportService->getTotalByMes('imponibles');
 
-                $nombre_mes = strtoupper($this->getNameMonth($mes));
+                $nombre_mes = strtoupper((new MesesService)->getNameMonth($params->mes));
                 // Order list
                 $order_haberes = collect($haberes)->sortBy('nombre');
                 $order_descuentos = collect($descuentos)->sortBy('nombre');
 
-                // return $descuentos;
-                if ($ver == 0) {
-                    $historial = Historial::where('certificado', $certificado)->where('dni', $dni)->first();
-                    $certificado_hist = Historial::where('certificado', $certificado)->first();
+                $pdf = PDF::loadView('reporte.mes', [
+                    'pago' => $pago,
+                    'nombre_mes' => $nombre_mes,
+                    'total_pagos' => $total_pagos,
+                    'haberes' => $order_haberes,
+                    'descuentos' => $order_descuentos,
+                    'total_haberes' => $total_haberes,
+                    'total_descuentos' => $total_descuentos,
+                    'liquidos' => $total_liquidos,
+                    'imponibles' => $total_imponibles,
+                    'certificado' => $params->certificado,
+                    'user' => auth()->user(),
+                ]);
+                $pdf->getDomPDF()->set_option("enable_php", true);
 
-                    $hash_code = "{\"anio\":\"$anio\",\"mes\":\"$mes\",\"persona_id\":\"$persona_id\",\"certificado\":\"$certificado\",\"ver\":1}";
-                    $base64_code = base64_encode($hash_code);
-                    if ($historial) {
-                        return redirect('reporte/por-mes/' . $base64_code);
-                    } elseif ($certificado_hist) {
-                        return redirect('reporte/por-mes/' . $base64_code);
-                    } else {
-                        //create historial
-                        Historial::create([
-                            'anio' => $anio,
-                            'meses' => $mes,
-                            'dni' => $dni,
-                            'certificado' => $certificado,
-                            'tipo' => 'mes',
-                            'dni_user' => auth()->user()->dni,
-                            'persona_id' => $persona_id,
-                        ]);
-                        // return $pagos_with_detalles;
-                        $pdf = PDF::loadView('reporte.mes', [
-                            'pago' => $pago,
-                            'nombre_mes' => $nombre_mes,
-                            'total_pagos' => $total_pagos,
-                            'haberes' => $order_haberes,
-                            'descuentos' => $order_descuentos,
-                            'total_haberes' => $total_haberes,
-                            'total_descuentos' => $total_descuentos,
-                            'liquidos' => $total_liquidos,
-                            'imponibles' => $total_imponibles,
-                            'certificado' => $certificado,
-                            'user' => auth()->user(),
-                        ]);
-                        $pdf->getDomPDF()->set_option("enable_php", true);
+                $pdf->setPaper('a4');
+                return $pdf->stream();
+            } else {
+                return response()->json([
+                    'msg' => 'Pago no ha sido encontrado',
+                ], 404);
+            }
+        }
+    }
 
-                        $pdf->setPaper('a4');
-                        return $pdf->stream();
-                    }
-                } elseif ($ver == 1) {
-                    $historial = Historial::where('certificado', $certificado)->where('dni', $dni)->first();
+    public function byMesApi($params_code)
+    {
+        // $params = base64_decode($params_code);
+        $params_decode = (new EncryptService($params_code))->getDecodeEncrypt();
+        $params = (new JsonParseService($params_decode))->getJsonDecode();
+        // $params = json_decode($params_decode, false);
+        // return var_dump($params);
+        $reportService = new ReportService($params);
 
-                    if ($historial) {
-                        $user = User::where('dni', $historial->dni_user)->first();
+        $dni = Persona::find($params->persona_id)->dni;
+        if ($dni) {
 
-                        $pdf = PDF::loadView('reporte.mes', [
-                            'pago' => $pago,
-                            'nombre_mes' => $nombre_mes,
-                            'total_pagos' => $total_pagos,
-                            'haberes' => $order_haberes,
-                            'descuentos' => $order_descuentos,
-                            'total_haberes' => $total_haberes,
-                            'total_descuentos' => $total_descuentos,
-                            'liquidos' => $total_liquidos,
-                            'imponibles' => $total_imponibles,
-                            'certificado' => $certificado,
-                            'user' => $user,
-                        ]);
-                        $pdf->getDomPDF()->set_option("enable_php", true);
+            $pago = Pago::where('anio', $params->anio)->mes($params->mes)
+                ->where('persona_id', $params->persona_id)->first();
 
-                        $pdf->setPaper('a4');
-                        return $pdf->stream();
-                    } else {
-                        return redirect('admin/historiales')->with('message', 'La constancia de pagos no existe.');
-                    }
-                } else {
-                    return redirect('admin/historiales')->with('message', 'La operación no es inválida.');
-                }
+            if ($pago) {
+
+                $total_pagos = Pago::where('anio', $params->anio)->mes($params->mes)
+                    ->where('persona_id', $params->persona_id)
+                    ->count();
+
+
+                //detalles de haberes y descuentos
+                $haberes = $reportService->getOneDetailsByType('haber');
+                $descuentos = $reportService->getOneDetailsByType('descuento');
+                // return $haberes;
+
+                //totales
+                $total_haberes = $reportService->getTotalByMes('haberes');
+                $total_descuentos = $reportService->getTotalByMes('descuentos');
+                $total_liquidos = $reportService->getTotalByMes('liquidos');
+                $total_imponibles = $reportService->getTotalByMes('imponibles');
+
+                $nombre_mes = strtoupper((new MesesService)->getNameMonth($params->mes));
+                // Order list
+                $order_haberes = collect($haberes)->sortBy('nombre');
+                $order_descuentos = collect($descuentos)->sortBy('nombre');
+
+                $pdf = PDF::loadView('reporte.mesApi', [
+                    'pago' => $pago,
+                    'nombre_mes' => $nombre_mes,
+                    'total_pagos' => $total_pagos,
+                    'haberes' => $order_haberes,
+                    'descuentos' => $order_descuentos,
+                    'total_haberes' => $total_haberes,
+                    'total_descuentos' => $total_descuentos,
+                    'liquidos' => $total_liquidos,
+                    'imponibles' => $total_imponibles,
+                    'certificado' => $params->certificado,
+                    'user' => auth()->user(),
+                ]);
+                $pdf->getDomPDF()->set_option("enable_php", true);
+
+                $pdf->setPaper('a4');
+                return $pdf->stream();
             } else {
                 return response()->json([
                     'msg' => 'Pago no ha sido encontrado',
@@ -1034,9 +1030,8 @@ class ReporteController extends Controller
         ]);
 
         $pago = Pago::With(['persona'])->where('anio', $request->anio)->mes($request->mes)
-            ->whereHas('persona', function ($query) use ($request) {
-                $query->where('id', 'like', "%{$request->persona_id}%");
-            })->first();
+            ->where('id', $request->persona_id)
+            ->first();
 
         if ($pago) {
             return response()->json([
