@@ -1,5 +1,8 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -12,18 +15,9 @@
  */
 
 Auth::routes();
-Route::get('/users/sign_in', 'Auth\SignInController@showLoginForm')->name('users.signin');
-Route::post('/users/sign_in', 'Auth\SignInController@login')->name('users.signin');
-Route::post('/users/logout', 'Auth\SignInController@logout')->name('users.logout');
 
 Route::get('/', function () {
     return redirect()->route('login');
-});
-
-Route::namespace('Pages')->group(function () {
-    Route::middleware(['auth', 'role:docente'])->group(function () {
-        Route::get('consulta-pagos', 'ConsultaController@consulta')->name('consulta.index');
-    });
 });
 
 Route::namespace('Admin')->group(function () {
@@ -68,6 +62,8 @@ Route::namespace('Admin')->group(function () {
         Route::get('/getPermissions', 'PermissionController@getPermissions')->name('getPermissions');
 
         Route::post('/importar/personas', 'ImportarController@personas')->name('admin.importar.personas');
+        Route::post('/importar/update-people', 'ImportarController@updateDataPersonas')->name('admin.importar.update-personas');
+
         Route::post('/importar/descuentos', 'ImportarController@descuentos')->name('admin.importar.descuentos');
 
         Route::get('/search/por-anios', 'ReporteController@searchByYears')->name('admin.search.poranios');

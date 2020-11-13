@@ -1,10 +1,11 @@
 import Vue from "vue";
 import Vuetify from "vuetify";
 import "vuetify/dist/vuetify.min.css";
+import colors from "vuetify/lib/util/colors";
 import mdi_icons from "./mdi-icons";
 
 Vue.use(Vuetify);
-
+const border = 4;
 const opts = {
     theme: {
         dark: true,
@@ -17,7 +18,11 @@ const opts = {
                 info: "#2196F3",
                 success: "#4CAF50",
                 warning: "#FFC107"
-            }
+            },
+            dark:{
+                primary: colors.lightBlue.darken1
+                
+            },
         }
     },
     icons: {

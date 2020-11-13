@@ -15,6 +15,7 @@ class PagoResource extends JsonResource
     public function toArray($request)
     {
         return [
+            'id' =>  $this->id,
             'periodo' =>  $this->getPeriodo(),
             'total_haber' => $this->total_haber,
             'total_descuento' => $this->total_descuento,

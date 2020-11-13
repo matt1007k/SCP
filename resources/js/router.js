@@ -130,6 +130,14 @@ export default new Router({
                                 import(
                                     "./views/admin/importar/ImportarPersonas.vue"
                                 )
+                        },
+                        {
+                            path: "actualizar-personas",
+                            name: "importar.update-personas",
+                            component: () =>
+                                import(
+                                    "./views/admin/importar/ImportarUpdatePersonas.vue"
+                                )
                         }
                     ]
                 },

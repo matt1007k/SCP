@@ -91,6 +91,11 @@ export const listItemsSidebar = [
                 title: "Personas y Pagos",
                 url: "/admin/importar/personas-pagos",
                 permission: "importar.personas"
+            },
+            {
+                title: "Personas",
+                url: "/admin/importar/actualizar-personas",
+                permission: "importar.personas"
             }
         ]
     },

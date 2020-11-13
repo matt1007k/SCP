@@ -1,11 +1,10 @@
 <template>
   <v-app>
-    <snackbar ref="snackbar"></snackbar>
+    <!-- <snackbar ref="snackbar"></snackbar> -->
     <sidebar-admin-left :toggle="drawer"></sidebar-admin-left>
-    <v-app-bar dark color="info" app>
+    <v-app-bar  color="dark" elevation="0" app>
       <v-app-bar-nav-icon @click.stop="OpenSidebar"></v-app-bar-nav-icon>
 
-      <v-toolbar-title class="white--text">SISTEMA DE CONSTANCIA DE PAGOS</v-toolbar-title>
 
       <v-spacer></v-spacer>
 
@@ -64,13 +63,13 @@
       </v-btn>
     </v-app-bar>
 
-    <v-content>
+    <v-main>
       <v-container fluid>
         <transition name="slide-fade">
           <router-view :key="$route.fullPath" />
         </transition>
       </v-container>
-    </v-content>
+    </v-main>
   </v-app>
 </template>
 
@@ -132,7 +131,7 @@ export default {
 </script>
 
 <style>
-.v-list__tile--active {
+/* .v-list__tile--active {
   border-right: 6px solid #01579b;
-}
+} */
 </style>

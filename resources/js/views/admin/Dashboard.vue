@@ -20,7 +20,7 @@
     <v-layout row wrap v-if="$auth.can('admin.index') || $auth.isAdmin()">
       <template v-if="$auth.isAdmin()">
         <v-flex xs12>
-          <v-card>
+          <v-card class="rounded-xl">
             <v-list>
               <v-subheader>
                 <h2>Cantidad de constancias de pago entregadas por usuario</h2>

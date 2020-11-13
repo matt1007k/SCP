@@ -10,8 +10,10 @@ use App\Models\Pago;
 use App\Models\Persona;
 use App\Models\User;
 use App\Notifications\DataImported;
+use App\Services\DateTimeService;
 use App\Services\HaberesImponiblesService;
 use App\Services\MesesService;
+use App\Services\PersonasService;
 use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Notification;
@@ -19,10 +21,104 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class ImportarController extends Controller
 {
+    protected $personaService;
     public function __construct()
     {
         $this->middleware('can:importar.personas')->only(['personas']);
         $this->middleware('can:importar.descuentos')->only(['descuentos']);
+        $this->personaService = new PersonasService;
+    }
+
+    public function updateDataPersonas(Request $request){
+        $request->validate([
+            'archivo' => 'required|mimes:xls,xlsx',
+        ]);
+        set_time_limit(0);
+        // ini_set('memory_limit', '20.97152M');
+        ini_set('memory_limit', '-1');
+        $archivo = $request->file('archivo')->getClientOriginalName();
+        $filename = pathinfo($archivo, PATHINFO_FILENAME);
+
+        $estadoExcelNombre = substr($filename, -1);    
+
+        $estado = $this->personaService->getEstado($estadoExcelNombre);
+        if ($estado === '') {
+            return response()->json([
+                'msg' => 'El nombre del archivo excel no es correcto',
+                'import' => false,
+            ], 200);
+        }
+        try {
+            $personasExcel = Excel::toCollection(new PersonasImport(), $request->file('archivo'));
+        } catch (\PhpOffice\PhpSpreadsheet\Exception $e) {
+            if ($e) {
+                return response()->json([
+                    'import' => true,
+                    'msg' => 'El archivo excel no tiene datos.',
+                ], 200);
+            }
+        }
+        if($personasExcel[0]){
+            // return $personasExcel[0];
+            foreach($personasExcel[0] as $personaExcel){
+                if ($personaExcel['nombres'] == null ||
+                    $personaExcel['apepat'] == null ||
+                    $personaExcel['apemat'] == null) {
+                    return response()->json([
+                        'import' => true,
+                        'msg' => 'El archivo excel no tiene datos.',
+                    ], 200);
+                }
+
+                $mesesService = new MesesService();
+                
+                $totalPersonas = count($personasExcel[0]);
+
+                $personal = User::all()->filter(function ($user) {
+                    return $user->roles('Personal');
+                });
+
+                $anio = substr($filename, 0, 4);
+                $mes_estado = substr($filename, -3);
+                $mes_numero = substr($mes_estado, 0, 2);
+                $nombre_mes = '';
+
+                foreach ($mesesService->getMeses() as $mes_service) {
+                    if ($mes_numero == $mes_service['numero']) {
+                        $nombre_mes = $mes_service['nombre'];
+                    }
+                }
+
+                $personaExiste = Persona::where('nombre', $personaExcel['nombres'])
+                        ->where('apellido_paterno', $personaExcel['apepat'])
+                        ->where('apellido_materno', $personaExcel['apemat'])
+                        ->where('estado', $estado)->first();
+
+                if (!$personaExiste) {
+                    $this->personaService->createPersona($personaExcel);
+            
+                } else {
+                    
+                    $this->personaService->updatePersona($personaExiste, $personaExcel);
+                }
+
+            }
+            
+            // Total de personas subidos (121), de Julio del 2019
+            $message = "Total de personas subidos ($totalPersonas), de $nombre_mes del $anio";
+
+            Notification::send($personal, new DataImported($message));
+
+            return response()->json([
+                'import' => true
+            ]);
+
+        }else{
+            return response()->json([
+                'import' => false,
+                'msg' => 'El archivo excel no tiene datos.',
+            ], 200); 
+        }
     }
 
     public function personas(Request $request)
@@ -38,8 +134,7 @@ class ImportarController extends Controller
         $filename = pathinfo($archivo, PATHINFO_FILENAME);
 
         $estadoExcelNombre = substr($filename, -1);
-
-        $estado = $this->getEstado($estadoExcelNombre);
+        $estado = $this->personaService->getEstado($estadoExcelNombre);
         if ($estado === '') {
             return response()->json([
                 'msg' => 'El nombre del archivo excel no es correcto',
@@ -79,16 +174,8 @@ class ImportarController extends Controller
                     ->where('estado', $estado)->first();
 
                 if (!$personaExiste) {
-                    $persona = new Persona();
-                    $persona->nombre = $personaExcel['nombres'];
-                    $persona->apellido_paterno = $personaExcel['apepat'];
-                    $persona->apellido_materno = $personaExcel['apemat'];
-                    $persona->dni = $personaExcel['dni'];
-                    $persona->codigo_modular = $personaExcel['codmod'];
-                    $persona->cargo = $personaExcel['cargo'];
-                    $persona->estado = $estado;
-                    $persona->user_id = Auth::user()->id;
-                    if ($persona->save()) {
+                    $persona = $this->personaService->createPersona($personaExcel);
+                    if ($persona) {
                         $totalHD = HaberDescuento::all()->count();
                         if ($totalHD > 0) {
                             $anio = substr($personaExcel['periodo'], 0, 4);
