@@ -40,7 +40,12 @@ class Persona extends Model
         'situacion', 
     ];
 
-    protected $appends = ['full_name'];
+    protected $appends = ['full_name', 'fecha_nac'];
+    protected $dates = ['fecha_nacimiento'];
+
+    public function getFechaNacAttribute(){
+        return $this->fecha_nacimiento->format('d/m/Y');
+    }
 
     public function user()
     {

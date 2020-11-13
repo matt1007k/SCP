@@ -69995,7 +69995,7 @@ var ParentComponent = {
     children: [{
       path: "login",
       component: function component() {
-        return __webpack_require__.e(/*! import() */ 24).then(__webpack_require__.bind(null, /*! ./views/auth/Login.vue */ "./resources/js/views/auth/Login.vue"));
+        return __webpack_require__.e(/*! import() */ 25).then(__webpack_require__.bind(null, /*! ./views/auth/Login.vue */ "./resources/js/views/auth/Login.vue"));
       }
     }]
   }, {
@@ -70069,12 +70069,12 @@ var ParentComponent = {
       }, {
         path: "crear",
         component: function component() {
-          return Promise.all(/*! import() */[__webpack_require__.e(0), __webpack_require__.e(3), __webpack_require__.e(20)]).then(__webpack_require__.bind(null, /*! ./views/admin/pagos/Crear.vue */ "./resources/js/views/admin/pagos/Crear.vue"));
+          return Promise.all(/*! import() */[__webpack_require__.e(0), __webpack_require__.e(3), __webpack_require__.e(21)]).then(__webpack_require__.bind(null, /*! ./views/admin/pagos/Crear.vue */ "./resources/js/views/admin/pagos/Crear.vue"));
         }
       }, {
         path: "editar/:id",
         component: function component() {
-          return Promise.all(/*! import() */[__webpack_require__.e(0), __webpack_require__.e(3), __webpack_require__.e(21)]).then(__webpack_require__.bind(null, /*! ./views/admin/pagos/Editar.vue */ "./resources/js/views/admin/pagos/Editar.vue"));
+          return Promise.all(/*! import() */[__webpack_require__.e(0), __webpack_require__.e(3), __webpack_require__.e(22)]).then(__webpack_require__.bind(null, /*! ./views/admin/pagos/Editar.vue */ "./resources/js/views/admin/pagos/Editar.vue"));
         }
       }]
     }, {
@@ -70118,7 +70118,7 @@ var ParentComponent = {
         path: "actualizar-personas",
         name: "importar.update-personas",
         component: function component() {
-          return Promise.all(/*! import() */[__webpack_require__.e(1), __webpack_require__.e(27)]).then(__webpack_require__.bind(null, /*! ./views/admin/importar/ImportarUpdatePersonas.vue */ "./resources/js/views/admin/importar/ImportarUpdatePersonas.vue"));
+          return Promise.all(/*! import() */[__webpack_require__.e(1), __webpack_require__.e(20)]).then(__webpack_require__.bind(null, /*! ./views/admin/importar/ImportarUpdatePersonas.vue */ "./resources/js/views/admin/importar/ImportarUpdatePersonas.vue"));
         }
       }]
     }, {
@@ -70128,13 +70128,13 @@ var ParentComponent = {
         path: "rango-anual",
         name: "reporte.rango-anual",
         component: function component() {
-          return Promise.all(/*! import() */[__webpack_require__.e(0), __webpack_require__.e(23)]).then(__webpack_require__.bind(null, /*! ./views/admin/reportes/RangoAnual.vue */ "./resources/js/views/admin/reportes/RangoAnual.vue"));
+          return Promise.all(/*! import() */[__webpack_require__.e(0), __webpack_require__.e(24)]).then(__webpack_require__.bind(null, /*! ./views/admin/reportes/RangoAnual.vue */ "./resources/js/views/admin/reportes/RangoAnual.vue"));
         }
       }, {
         path: "anual",
         name: "reporte.anual",
         component: function component() {
-          return Promise.all(/*! import() */[__webpack_require__.e(0), __webpack_require__.e(22)]).then(__webpack_require__.bind(null, /*! ./views/admin/reportes/Anual.vue */ "./resources/js/views/admin/reportes/Anual.vue"));
+          return Promise.all(/*! import() */[__webpack_require__.e(0), __webpack_require__.e(23)]).then(__webpack_require__.bind(null, /*! ./views/admin/reportes/Anual.vue */ "./resources/js/views/admin/reportes/Anual.vue"));
         }
       }, {
         path: "mensual",
@@ -70146,12 +70146,12 @@ var ParentComponent = {
     }, {
       path: "403",
       component: function component() {
-        return __webpack_require__.e(/*! import() */ 26).then(__webpack_require__.bind(null, /*! ./views/errors/Unauthorize.vue */ "./resources/js/views/errors/Unauthorize.vue"));
+        return __webpack_require__.e(/*! import() */ 27).then(__webpack_require__.bind(null, /*! ./views/errors/Unauthorize.vue */ "./resources/js/views/errors/Unauthorize.vue"));
       }
     }, {
       path: "**",
       component: function component() {
-        return __webpack_require__.e(/*! import() */ 25).then(__webpack_require__.bind(null, /*! ./views/errors/NotFoundPage.vue */ "./resources/js/views/errors/NotFoundPage.vue"));
+        return __webpack_require__.e(/*! import() */ 26).then(__webpack_require__.bind(null, /*! ./views/errors/NotFoundPage.vue */ "./resources/js/views/errors/NotFoundPage.vue"));
       }
     }]
   }]

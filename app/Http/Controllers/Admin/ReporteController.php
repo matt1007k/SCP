@@ -1007,6 +1007,7 @@ class ReporteController extends Controller
                     'liquidos' => $total_liquidos,
                     'imponibles' => $total_imponibles,
                     'certificado' => $params->certificado,
+                    'meses' => (new MesesService)->getMeses(),
                     'user' => auth()->user(),
                 ]);
                 $pdf->getDomPDF()->set_option("enable_php", true);

@@ -37,7 +37,7 @@ class PersonasService{
         'codigo_afp' => 'cod_afp',
         'fafiliacion' => 'fec_afil_afp',
         'fdevengue' => 'fdevengue', // falta
-        'cvariable' => 'cvariable', // falta rlq_mpension
+        'cvariable' => 'rlq_mpension', // falta rlq_mpension
         'cfija' => 'rlq_comisionmtofijafp',
         'seguro' => 'rlq_mtoseguro',
         'codigo_establecimiento' => 'cae_codunidad',
