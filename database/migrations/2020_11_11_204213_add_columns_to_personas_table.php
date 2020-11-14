@@ -26,6 +26,7 @@ class AddColumnsToPersonasTable extends Migration
             $table->string('numero_cuenta', 20)->nullable();
             $table->string('leyenda_permanente', 100)->nullable();
             $table->string('leyenda_mensual', 100)->nullable();
+            $table->string('codigo_fiscal', 50)->nullable();
             $table->string('codigo_afp', 30)->nullable();
             $table->date('fafiliacion')->nullable();
             $table->date('fdevengue')->nullable();
@@ -59,6 +60,7 @@ class AddColumnsToPersonasTable extends Migration
                 'numero_cuenta', 
                 'leyenda_permanente', 
                 'leyenda_mensual', 
+                'codigo_fiscal', 
                 'codigo_afp', 
                 'fafiliacion', 
                 'fdevengue', 

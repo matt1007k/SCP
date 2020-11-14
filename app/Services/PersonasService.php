@@ -6,11 +6,13 @@ use Illuminate\Support\Facades\Auth;
 
 class PersonasService{
     protected $datetimeService;
+    protected $importElementsService;
     protected $estado = '';
 
     public function __construct()
     {
        $this->datetimeService = new DateTimeService(); 
+       $this->importElementsService = new ImportElementsService(); 
     }
 
     public const FIELDS_EXCEL = [
@@ -34,10 +36,11 @@ class PersonasService{
         'numero_cuenta' => 'cuenta',
         'leyenda_permanente' => 'leyenda',
         'leyenda_mensual' => 'leymes',
+        'codigo_fiscal' => 'cae_codfiscal',
         'codigo_afp' => 'cod_afp',
         'fafiliacion' => 'fec_afil_afp',
         'fdevengue' => 'fdevengue', // falta
-        'cvariable' => 'rlq_mpension', // falta rlq_mpension
+        'cvariable' => 'rlq_mpension', // rlq_mpension
         'cfija' => 'rlq_comisionmtofijafp',
         'seguro' => 'rlq_mtoseguro',
         'codigo_establecimiento' => 'cae_codunidad',
@@ -46,45 +49,19 @@ class PersonasService{
     ];
 
     public function createPersona($row): Persona{
-        // return $row[self::FIELDS_EXCEL['apellido_paterno']];
-        $persona = Persona::create([
-            'nombre' => $row[self::FIELDS_EXCEL['nombre']],
-            'apellido_paterno' => $row[self::FIELDS_EXCEL['apellido_paterno']],
-            'apellido_materno' => $row[self::FIELDS_EXCEL['apellido_materno']],
-            'dni' => $row[self::FIELDS_EXCEL['dni']],
-            'user_id' => Auth::id(),
-            'codigo_modular' => $row[self::FIELDS_EXCEL['codigo_modular']],
-            'cargo' => $row[self::FIELDS_EXCEL['cargo']],
-            'estado' => $this->estado,
-            'fecha_nacimiento' => $this->datetimeService->convertIntToDate($row[self::FIELDS_EXCEL['fecha_nacimiento']]),
-            'establecimiento' => $row[self::FIELDS_EXCEL['establecimiento']],
-            'tipo_servidor' => $row[self::FIELDS_EXCEL['tipo_servidor']],
-            'regimen_laboral' => $row[self::FIELDS_EXCEL['regimen_laboral']],
-            'nivel_magisterial' => $row[self::FIELDS_EXCEL['nivel_magisterial']],
-            'grupo_ocupacion' => $row[self::FIELDS_EXCEL['grupo_ocupacion']],
-            'horas' => $row[self::FIELDS_EXCEL['horas']],
-            'fecha_inicio' =>  $this->datetimeService->convertStringToDate($row[self::FIELDS_EXCEL['fecha_inicio']]),
-            'fecha_fin' =>  $this->datetimeService->convertStringToDate($row[self::FIELDS_EXCEL['fecha_fin']]),
-            'numero_cuenta' => $row[self::FIELDS_EXCEL['numero_cuenta']],
-            'leyenda_permanente' => $row[self::FIELDS_EXCEL['leyenda_permanente']],
-            'leyenda_mensual' => $row[self::FIELDS_EXCEL['leyenda_mensual']],
-            'codigo_afp' => $row[self::FIELDS_EXCEL['codigo_afp']],
-            'fafiliacion' => $this->datetimeService->convertIntToDate($row[self::FIELDS_EXCEL['fafiliacion']]),
-            'fdevengue' => $this->datetimeService->convertIntToDate($row[self::FIELDS_EXCEL['fdevengue']]),
-            'cvariable' => $row[self::FIELDS_EXCEL['cvariable']],
-            'cfija' => $row[self::FIELDS_EXCEL['cfija']],
-            'seguro' => $row[self::FIELDS_EXCEL['seguro']],
-            'codigo_establecimiento' => $row[self::FIELDS_EXCEL['codigo_establecimiento']],
-            'numero_cargo' => $row[self::FIELDS_EXCEL['numero_cargo']],
-            'situacion' => $row[self::FIELDS_EXCEL['situacion']],
-        ]);
+        $persona = Persona::create($this->getItemPersona($row));
 
         return $persona;
     }
 
     public function updatePersona(Persona $persona, $row): Persona{
-        // return $row[self::FIELDS_EXCEL['apellido_paterno']];
-        $persona->update([
+        $persona->update($this->getItemPersona($row));
+
+        return $persona;
+    }
+
+    public function getItemPersona($row): array{
+        return [
             'nombre' => $row[self::FIELDS_EXCEL['nombre']],
             'apellido_paterno' => $row[self::FIELDS_EXCEL['apellido_paterno']],
             'apellido_materno' => $row[self::FIELDS_EXCEL['apellido_materno']],
@@ -95,8 +72,8 @@ class PersonasService{
             'estado' => $this->estado,
             'fecha_nacimiento' => $this->datetimeService->convertIntToDate($row[self::FIELDS_EXCEL['fecha_nacimiento']]),
             'establecimiento' => $row[self::FIELDS_EXCEL['establecimiento']],
-            'tipo_servidor' => $row[self::FIELDS_EXCEL['tipo_servidor']],
-            'regimen_laboral' => $row[self::FIELDS_EXCEL['regimen_laboral']],
+            'tipo_servidor' => $this->importElementsService->getTitleServidor($row[self::FIELDS_EXCEL['tipo_servidor']]),
+            'regimen_laboral' => $this->importElementsService->getTitleRegimenLaboral($row[self::FIELDS_EXCEL['regimen_laboral']]),
             'nivel_magisterial' => $row[self::FIELDS_EXCEL['nivel_magisterial']],
             'grupo_ocupacion' => $row[self::FIELDS_EXCEL['grupo_ocupacion']],
             'horas' => $row[self::FIELDS_EXCEL['horas']],
@@ -105,6 +82,7 @@ class PersonasService{
             'numero_cuenta' => $row[self::FIELDS_EXCEL['numero_cuenta']],
             'leyenda_permanente' => $row[self::FIELDS_EXCEL['leyenda_permanente']],
             'leyenda_mensual' => $row[self::FIELDS_EXCEL['leyenda_mensual']],
+            'codigo_fiscal' => $this->importElementsService->getTitleCodeFiscal($row[self::FIELDS_EXCEL['codigo_fiscal']]),
             'codigo_afp' => $row[self::FIELDS_EXCEL['codigo_afp']],
             'fafiliacion' => $this->datetimeService->convertIntToDate($row[self::FIELDS_EXCEL['fafiliacion']]),
             'fdevengue' => $this->datetimeService->convertIntToDate($row[self::FIELDS_EXCEL['fdevengue']]),
@@ -113,11 +91,9 @@ class PersonasService{
             'seguro' => $row[self::FIELDS_EXCEL['seguro']],
             'codigo_establecimiento' => $row[self::FIELDS_EXCEL['codigo_establecimiento']],
             'numero_cargo' => $row[self::FIELDS_EXCEL['numero_cargo']],
-            'situacion' => $row[self::FIELDS_EXCEL['situacion']],
-        ]);
-
-        return $persona;
-    }
+            'situacion' => $this->importElementsService->getTitleSituacion($row[self::FIELDS_EXCEL['situacion']])
+        ];
+    } 
 
     public function getEstado($estadoExcelNombre)
     {

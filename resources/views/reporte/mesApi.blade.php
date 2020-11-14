@@ -234,8 +234,8 @@
                         <p>{{ $pago->persona->cargo }}</p>
                     </td>
                     <td class="text-left fs-header border">
-                        <b>dd</b>
-                        <p class="text-uppercase">{{ $pago->persona->estado }}</p>
+                        <b>REGIMEN LABORAL</b>
+                        <p class="text-uppercase">{{ $pago->persona->regimen_laboral }}</p>
                     </td> 
                 </tr>                
             </tbody>
@@ -298,7 +298,6 @@
                         <span class="w-50"><?php echo ''?></span>
                     @endif
                     @foreach($meses as $mes)
-                    {{-- Monto {{$mes[]}} --}}
                     @php
                         $nombre_mes = strtolower($mes['nombre']);
                     @endphp
@@ -439,9 +438,6 @@
         </tbody>
     </table>
 </footer>
-    {{-- <footer>
-        fidd
-    </footer> --}}
     <script type="text/php">
         if (isset($pdf)) {
             $x = 540;
