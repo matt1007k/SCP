@@ -37,6 +37,7 @@ class PersonasService{
         'leyenda_permanente' => 'leyenda',
         'leyenda_mensual' => 'leymes',
         'codigo_fiscal' => 'cae_codfiscal',
+        'codigo_essalud' => 'codessalud',
         'codigo_afp' => 'cod_afp',
         'fafiliacion' => 'fec_afil_afp',
         'fdevengue' => 'fdevengue', // falta
@@ -83,6 +84,7 @@ class PersonasService{
             'leyenda_permanente' => $row[self::FIELDS_EXCEL['leyenda_permanente']],
             'leyenda_mensual' => $row[self::FIELDS_EXCEL['leyenda_mensual']],
             'codigo_fiscal' => $this->importElementsService->getTitleCodeFiscal($row[self::FIELDS_EXCEL['codigo_fiscal']]),
+            'codigo_essalud' => $row[self::FIELDS_EXCEL['codigo_essalud']],
             'codigo_afp' => $row[self::FIELDS_EXCEL['codigo_afp']],
             'fafiliacion' => $this->datetimeService->convertIntToDate($row[self::FIELDS_EXCEL['fafiliacion']]),
             'fdevengue' => $this->datetimeService->convertIntToDate($row[self::FIELDS_EXCEL['fdevengue']]),

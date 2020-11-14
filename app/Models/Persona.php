@@ -30,6 +30,7 @@ class Persona extends Model
         'leyenda_permanente', 
         'leyenda_mensual', 
         'codigo_fiscal', 
+        'codigo_essalud', 
         'codigo_afp', 
         'fafiliacion', 
         'fdevengue', 
