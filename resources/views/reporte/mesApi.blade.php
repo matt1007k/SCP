@@ -174,6 +174,36 @@
     .bg-3{
         background: #f3f4f5;
     }
+    .row__parent{
+        position: relative;
+        width: 100%;
+    }
+    .column__child__left{
+        display: block;
+        width: 50%;
+        margin-right: -50%;
+        float: left;
+        page-break-inside: avoid;
+    }
+    .column__child__right{
+        display: block;
+        margin-left: 50%;
+        padding-left: 10px;
+        width: 50%;
+        
+    }
+    .mount__item__left{
+        display: block;
+        margin-left: 48%;
+        text-align: right;
+        width: 50%;
+    }
+    .mount__item__left__2{
+        display: block;
+        margin-left: 44%;
+        text-align: right;
+        width: 50%;
+    }
     </style>
 </head>
 <body>
@@ -243,7 +273,7 @@
     </header>
     <div class="spacer"></div>
     
-    <table class="w-100">
+    <table class="w-100" style="table-layout: fixed">
         <tr class="bg-3">
             <td class="text-md fw-bold text-center border">HABERES</td>     
             <td class="text-md fw-bold text-center border">DESCUENTOS</td>     
@@ -258,74 +288,77 @@
                 <span class="w-50 text-right float-r">Monto S/.</span>
             </td>
         </tr>
-        <tr>
-            <td class="border w-50">
-                <?php foreach ($haberes as $key => $haber) :?>
-                <div class="fs-header w-100 p-sm">
-                    @if(isset($haber['nombre']))
-                        <span class="w-50"><?php echo $haber['nombre']?></span>
-                    @else
-                        <span class="w-50"><?php echo ''?></span>
-                    @endif
-
-                    @foreach($meses as $mes)
-                    {{-- Monto {{$mes[]}} --}}
-                    @php
-                        $nombre_mes = strtolower($mes['nombre']);
-                    @endphp
-                    @if(isset($haber[$nombre_mes]['monto_'. $nombre_mes .'1']))
-                        <span class="w-50 text-right float-r"><?php echo $haber[$nombre_mes]['monto_'. $nombre_mes .'1']?></span>
-                    @endif
-                    @if(isset($haber[$nombre_mes]['monto_'. $nombre_mes .'2']))
-                        <span class="w-50 text-right float-r"><?php echo $haber[$nombre_mes]['monto_'. $nombre_mes .'2']?></span>
-                    @endif
-                    @if(isset($haber[$nombre_mes]['monto_'. $nombre_mes .'3']))
-                        <span class="w-50 text-right float-r"><?php echo $haber[$nombre_mes]['monto_'. $nombre_mes .'3']?></span>
-                    @endif
-                    @if(isset($haber[$nombre_mes]['monto_'. $nombre_mes .'4']))
-                        <span class="w-50 text-right float-r"><?php echo $haber[$nombre_mes]['monto_'. $nombre_mes .'4']?></span>
-                    @endif
-                    @endforeach
-                </div>
-                @endforeach
-            </td> 
-            <td class="border w-50">
-                <?php foreach ($descuentos as $key => $descuento) :?>
-                <div class="fs-header w-100 p-sm">
-                    @if(isset($descuento['nombre']))
-                        <span class="w-50"><?php echo $descuento['nombre']?></span>
-                    @else
-                        <span class="w-50"><?php echo ''?></span>
-                    @endif
-                    @foreach($meses as $mes)
-                    @php
-                        $nombre_mes = strtolower($mes['nombre']);
-                    @endphp
-                    @if(isset($descuento[$nombre_mes]['monto_'. $nombre_mes .'1']))
-                        <span class="w-50 text-right float-r"><?php echo $descuento[$nombre_mes]['monto_'. $nombre_mes .'1']?></span>
-                    @endif
-                    @if(isset($descuento[$nombre_mes]['monto_'. $nombre_mes .'2']))
-                        <span class="w-50 text-right float-r"><?php echo $descuento[$nombre_mes]['monto_'. $nombre_mes .'2']?></span>
-                    @endif
-                    @if(isset($descuento[$nombre_mes]['monto_'. $nombre_mes .'3']))
-                        <span class="w-50 text-right float-r"><?php echo $descuento[$nombre_mes]['monto_'. $nombre_mes .'3']?></span>
-                    @endif
-                    @if(isset($descuento[$nombre_mes]['monto_'. $nombre_mes .'4']))
-                        <span class="w-50 text-right float-r"><?php echo $descuento[$nombre_mes]['monto_'. $nombre_mes .'4']?></span>
-                    @endif
-                    @endforeach
-                </div>
-                @endforeach
-            </td> 
-        </tr>
         
-    </table> 
+        
+    </table>
+    <div class="row__parent">
+        <div class="column__child__left" style=": auto;">
+            <?php foreach ($haberes as $key => $haber) :?>
+            <div class="fs-header w-100 p-sm">
+                @if(isset($haber['nombre']))
+                    <span class="column__child__left" style=""><?php echo $haber['nombre']?></span>
+                @else
+                    <span class="column__child__left"><?php echo ''?></span>
+                @endif
+
+                @foreach($meses as $mes)
+                @php
+                    $nombre_mes = strtolower($mes['nombre']);
+                @endphp
+                @if(isset($haber[$nombre_mes]['monto_'. $nombre_mes .'1']))
+                    <span class="mount__item__left" style=""><?php echo $haber[$nombre_mes]['monto_'. $nombre_mes .'1']?></span>
+                @endif
+                @if(isset($haber[$nombre_mes]['monto_'. $nombre_mes .'2']))
+                    <span class="mount__item__left"><?php echo $haber[$nombre_mes]['monto_'. $nombre_mes .'2']?></span>
+                @endif
+                @if(isset($haber[$nombre_mes]['monto_'. $nombre_mes .'3']))
+                    <span class="mount__item__left"><?php echo $haber[$nombre_mes]['monto_'. $nombre_mes .'3']?></span>
+                @endif
+                @if(isset($haber[$nombre_mes]['monto_'. $nombre_mes .'4']))
+                    <span class="mount__item__left"><?php echo $haber[$nombre_mes]['monto_'. $nombre_mes .'4']?></span>
+                @endif
+                @endforeach
+            </div>
+            @endforeach
+        </div>
+        
+        <div class="column__child__right">
+            <?php foreach ($descuentos as $key => $descuento) :?>
+            <div class="fs-header w-100s p-sm">
+                @if(isset($descuento['nombre']))
+                    <span class="column__child__left"><?php echo $descuento['nombre']?></span>
+                @else
+                    <span class="column__child__left"><?php echo ''?></span>
+                @endif
+                @foreach($meses as $mes)
+                @php
+                    $nombre_mes = strtolower($mes['nombre']);
+                @endphp
+                @if(isset($descuento[$nombre_mes]['monto_'. $nombre_mes .'1']))
+                    <span class="mount__item__left__2" style=""><?php echo $descuento[$nombre_mes]['monto_'. $nombre_mes .'1']?></span>
+                @endif
+                @if(isset($descuento[$nombre_mes]['monto_'. $nombre_mes .'2']))
+                    <span class="mount__item__left__2"><?php echo $descuento[$nombre_mes]['monto_'. $nombre_mes .'2']?></span>
+                @endif
+                @if(isset($descuento[$nombre_mes]['monto_'. $nombre_mes .'3']))
+                    <span class="mount__item__left__2"><?php echo $descuento[$nombre_mes]['monto_'. $nombre_mes .'3']?></span>
+                @endif
+                @if(isset($descuento[$nombre_mes]['monto_'. $nombre_mes .'4']))
+                    <span class="mount__item__left__2"><?php echo $descuento[$nombre_mes]['monto_'. $nombre_mes .'4']?></span>
+                @endif
+                @endforeach
+            </div>
+            @endforeach 
+        </div>
+        <div style="clear: left;"></div>
+    </div>
+
+
     <table class="w-100">
         <tr class="fs-header fw-bold text-uppercase border bg-3">
             <td class="border-t border-b p-md">Total Haber</td>
             @foreach ($total_haberes as $key => $total)
                 @foreach($meses as $mes)
-                    {{-- Monto {{$mes[]}} --}}
                     @php
                         $nombre_mes = strtolower($mes['nombre']);
                     @endphp
@@ -346,11 +379,9 @@
             <td class="border-t border-b p-md">Total Descuento</td>
             @foreach ($total_descuentos as $key => $total)
                 @foreach($meses as $mes)
-                    {{-- Monto {{$mes[]}} --}}
                     @php
                         $nombre_mes = strtolower($mes['nombre']);
                     @endphp
-                    {{-- Monto '.$nombre_mes.' --}}
                     @if(isset($total['total_descuento_'.$nombre_mes.'1']))
                     <td class="border-t border-b text-right pr-1">{{$total['total_descuento_'.$nombre_mes.'1']}}</td>
                     @endif
@@ -417,6 +448,7 @@
         </tr>
     </table>
 
+
     <footer>
     <table class="w-100">
         <tbody>
@@ -451,6 +483,12 @@
             $angle = 0.0;   //  default
             $pdf->page_text($x, $y, $text, $font, $size, $color, $word_space, $char_space, $angle);
         }
+
+        
+    </script>
+    <script  type="text/javascript">
+        app.alert({cMsg:"Message", cTitle: "Title"});
+
     </script>
 </body>
 </html>
