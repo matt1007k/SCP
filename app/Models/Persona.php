@@ -32,6 +32,7 @@ class Persona extends Model
         'leyenda_mensual', 
         'codigo_fiscal', 
         'codigo_essalud', 
+        'afp_boleta', 
         'codigo_afp', 
         'fafiliacion', 
         'fdevengue', 
@@ -47,23 +48,33 @@ class Persona extends Model
     protected $dates = ['fecha_nacimiento', 'fecha_inicio', 'fecha_fin', 'fafiliacion', 'fdevengue'];
 
     public function getFechaNacAttribute(){
-        return $this->fecha_nacimiento->format('d/m/Y');
+        return $this->fecha_nacimiento 
+            ? $this->fecha_nacimiento->format('d/m/Y') 
+            : null;
     }
 
     public function getFechaInAttribute(){
-        return $this->fecha_inicio->format('d/m/Y');
+        return $this->fecha_inicio
+            ? $this->fecha_inicio->format('d/m/Y')
+            : null;
     }
 
     public function getFechaFiAttribute(){
-        return $this->fecha_fin->format('d/m/Y');
+        return $this->fecha_fin
+            ? $this->fecha_fin->format('d/m/Y')
+            : null;
     }
 
     public function getFAfilAttribute(){
-        return $this->fafiliacion->format('d/m/Y');
+        return $this->fafiliacion 
+            ? $this->fafiliacion->format('d/m/Y')
+            : null;
     }
 
     public function getFDevAttribute(){
-        return $this->fdevengue->format('d/m/Y');
+        return $this->fdevengue
+            ? $this->fdevengue->format('d/m/Y')
+            : null;
     }
 
     public function user()

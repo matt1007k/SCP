@@ -223,6 +223,58 @@ class ImportElementsService{
         ];
     }
 
+    public function getAfpBoletas(){
+        return [
+            [
+                'id' => 0,
+                'title' => 'Sin información',
+            ],
+            [
+                'id' => 1,
+                'title' => 'Horizonte',
+            ],
+            [
+                'id' => 2,
+                'title' => 'Integra',
+            ],
+            [
+                'id' => 4,
+                'title' => 'Unión Vida',
+            ],
+            [
+                'id' => 5,
+                'title' => 'Profuturo',
+            ],
+            [
+                'id' => 9,
+                'title' => 'Prima',
+            ],
+            [
+                'id' => 10,
+                'title' => 'Horizonte Mixta',
+            ],
+            [
+                'id' => 11,
+                'title' => 'Intrega Mixta',
+            ],
+            [
+                'id' => 12,
+                'title' => 'Profuturo Mixta',
+            ],
+            [
+                'id' => 13,
+                'title' => 'Prima Mixta',
+            ],
+            [
+                'id' => 14,
+                'title' => 'Habital Mixta',
+            ],
+            [
+                'id' => 15,
+                'title' => 'Habital',
+            ],
+        ];
+    }
 
     public function getTitleServidor(int $id): string{
         $servidor = collect($this->getTipoServicios())
@@ -242,6 +294,14 @@ class ImportElementsService{
 
     public function getTitleCodeFiscal(int $id): string{
         $regimen = collect($this->getCodeFiscales())
+                        ->firstWhere('id', $id);
+        
+        return collect($regimen)
+            ->get('title');
+    }
+
+    public function getTitleAfpBoleta(int $id): string{
+        $regimen = collect($this->getAfpBoletas())
                         ->firstWhere('id', $id);
         
         return collect($regimen)

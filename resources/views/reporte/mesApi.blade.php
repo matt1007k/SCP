@@ -329,11 +329,11 @@
                         <p class="text-uppercase">
                             <div>
                                 <span>
-                                    {{ $pago->persona->codigo_fiscal }}/{{ $pago->persona->codigo_afp }}
+                                    {{ $pago->persona->codigo_fiscal }} {{ $pago->persona->afp_boleta }}/{{ $pago->persona->codigo_afp }}
                                 </span>     
-                                <span>
+                                <div>
                                     <b>CFija:</b> {{ $pago->persona->cfija }}
-                                </span>     
+                                </div>     
                             </div>
                         </p>
                     </td> 
