@@ -31,6 +31,7 @@ class PersonasService{
         'nivel_magisterial' => 'nivmag',
         'grupo_ocupacion' => 'grupo', // grado
         'horas' => 'horas',
+        'tiempo_servicio' => 'cae_tiemposerv',
         'fecha_inicio' =>  'inicio',
         'fecha_fin' =>  'fin',
         'numero_cuenta' => 'cuenta',
@@ -78,6 +79,7 @@ class PersonasService{
             'nivel_magisterial' => $row[self::FIELDS_EXCEL['nivel_magisterial']],
             'grupo_ocupacion' => $row[self::FIELDS_EXCEL['grupo_ocupacion']],
             'horas' => $row[self::FIELDS_EXCEL['horas']],
+            'tiempo_servicio' => $this->formatTiempoServicio((string)$row[self::FIELDS_EXCEL['tiempo_servicio']]),
             'fecha_inicio' =>  $this->datetimeService->convertStringToDate($row[self::FIELDS_EXCEL['fecha_inicio']]),
             'fecha_fin' =>  $this->datetimeService->convertStringToDate($row[self::FIELDS_EXCEL['fecha_fin']]),
             'numero_cuenta' => $row[self::FIELDS_EXCEL['numero_cuenta']],
@@ -111,5 +113,17 @@ class PersonasService{
         } else {
             return $this->estado;
         }
+    }
+
+    public function formatTiempoServicio(string $tiempo_servicio): string{
+        $new_format = '';
+        if($tiempo_servicio){
+            $anios = substr($tiempo_servicio, 0, 2);
+            $meses = substr($tiempo_servicio, 2, 2);
+            $dias = substr($tiempo_servicio, 4, 2);
+            $new_format = "{$anios}/{$meses}/{$dias}";
+        }
+
+        return $new_format;
     }
 }

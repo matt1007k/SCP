@@ -41,7 +41,17 @@
         text-align: left;
     }
     .spacer{
-        height: 20px;
+        height: 10px;
+    }
+    .fs-header-sm{        
+        font-size: 10px;
+    }
+    .fs-header-sm b{
+        margin: 0;
+    }
+    .fs-header-sm p{
+        margin: 0; 
+        color:rgba(0,0,0,.7);
     }
     .fs-header{        
         font-size: 12px;
@@ -54,7 +64,7 @@
         color:rgba(0,0,0,.7);
     }
     .text-md{
-        font-size: 14px;
+        font-size: 12px;
     }
     .fs-header2{        
         font-size: 16px;
@@ -142,6 +152,12 @@
         padding: 10px;
         margin: 0;
     }
+    .border-sm{
+        border-bottom: 1px solid rgba(0,0,0,.25);
+        border-top: 1px solid rgba(0,0,0,.25); 
+        padding: 5px;
+        margin: 0;
+    }
     .p-sm{
         /* border-top: 1px solid rgba(0,0,0,.25);  */
         padding: 3px;
@@ -155,6 +171,12 @@
     }
     .pr-2{
         padding-right: 15px;
+    }
+    .pl-1{
+        padding-left: 10px;
+    }
+    .pl-2{
+        padding-left: 15px;
     }
     p{
         color:rgba(0,0,0,.7);
@@ -178,6 +200,7 @@
         position: relative;
         width: 100%;
     }
+    
     .column__child__left{
         display: block;
         width: 50%;
@@ -231,42 +254,109 @@
             </thead>
             <tbody>
                 <tr>
-                    <td class="text-left fs-header border-tl-sm border">
+                    <td class="text-left fs-header-sm border-sm">
                         <b>APELLIDOS Y NOMBRES</b>
                         <p>{{ $pago->persona->full_name }}</p>
                     </td>
-                    <td class="text-left fs-header border">
+                    <td class="text-left fs-header-sm border-sm">
                         <b>DNI</b>
                         <p>{{ $pago->persona->dni }}</p>
                     </td>
-                    <td class="text-left border-tr-sm fs-header border">
+                    <td class="text-left fs-header-sm border-sm">
                         <b>COD. MODULAR</b>
-                        <p class="text-uppercase">{{ $pago->persona->codigo_modular }}</p>
+                        <p class="text-uppercase">{{ $pago->persona->codigo_modular }}-{{ $pago->persona->numero_cargo }}</p>
                     </td> 
                 </tr>
                 <tr>
-                    <td class="text-left fs-header border">
+                    <td class="text-left fs-header-sm border-sm">
                         <b>FECHA DE NACIMIENTO</b>
                         <p>{{ $pago->persona->fecha_nac }}</p>
                     </td>
-                    <td class="text-left fs-header border" colspan="2">
+                    <td class="text-left fs-header-sm border-sm">
                         <b>TIPO DE SERVIDOR</b>
                         <p class="text-uppercase">{{ $pago->persona->tipo_servidor }}</p>
                     </td> 
+                    <td class="text-left fs-header-sm border-sm">
+                        <b>TIEMPO DE SERVICIO</b>
+                        <p>{{ $pago->persona->tiempo_servicio }}</p>
+                    </td>
                 </tr>                
                 <tr>
-                    <td class="text-left fs-header border">
+                    <td class="text-left fs-header-sm border-sm">
                         <b>INSTITUCIÓN</b>
                         <p>{{ $pago->persona->establecimiento }} / {{ $pago->persona->codigo_establecimiento }}</p>
                     </td>
-                    <td class="text-left fs-header border">
+                    <td class="text-left fs-header-sm border-sm">
                         <b>CARGO</b>
                         <p>{{ $pago->persona->cargo }}</p>
                     </td>
-                    <td class="text-left fs-header border">
+                    <td class="text-left fs-header-sm border-sm">
                         <b>REGIMEN LABORAL</b>
                         <p class="text-uppercase">{{ $pago->persona->regimen_laboral }}</p>
                     </td> 
+                </tr>                
+                <tr>
+                    <td class="text-left fs-header-sm border-sm">
+                        <b>FECHA DE REGISTRO</b>
+                        <p>
+                            <span>
+                                Inicio: {{ $pago->persona->fecha_in }}
+                            </span>     
+                            <span>
+                                Termino: {{ $pago->persona->fecha_fi }}
+                            </span>     
+                        </p>
+                    </td>
+                    <td class="text-left fs-header-sm border-sm">
+                        <b>CTA TELEAHORRO o NRO CHEQUE</b>
+                        <p>CTA - {{ $pago->persona->numero_cuenta }}</p>
+                    </td>
+                    <td class="text-left fs-header-sm border-sm">
+                        <b>NIV.MAG./GRUPO OCUP./HORAS</b>
+                        <p class="text-uppercase">
+                            {{ $pago->persona->nivel_magisterial }}/{{ $pago->persona->grupo_ocupacion }}/{{ $pago->persona->horas }}
+                        </p>
+                    </td> 
+                </tr>                
+                <tr>
+                    <td class="text-left fs-header-sm border-sm">
+                        <b>LEYENDA PERMANENTE</b>
+                        <p class="text-uppercase">{{ $pago->persona->leyenda_permanente }}</p>
+                    </td> 
+
+                    <td class="text-left fs-header-sm border-sm">
+                        <b>REG. PENSIONARIO</b>
+                        <p class="text-uppercase">
+                            <div>
+                                <span>
+                                    {{ $pago->persona->codigo_fiscal }}/{{ $pago->persona->codigo_afp }}
+                                </span>     
+                                <span>
+                                    <b>CFija:</b> {{ $pago->persona->cfija }}
+                                </span>     
+                            </div>
+                        </p>
+                    </td> 
+                    <td class="text-left fs-header-sm border-sm">
+                        <p class="text-uppercase">
+                            <div>
+                                <span>
+                                    <b>FAfilia.:</b> {{ $pago->persona->f_afil }}
+                                </span>     
+                                <span>
+                                    <b>CVaria.:</b> {{ $pago->persona->cvariable }}
+                                </span>     
+                            </div>
+                            <div>
+                                <span>
+                                    <b>FDeven.:</b> {{ $pago->persona->f_dev }}
+                                </span>     
+                                <span>
+                                    <b>Seguro:</b> {{ $pago->persona->seguro }}
+                                </span>     
+                            </div>
+                        </p>
+                    </td>
                 </tr>                
             </tbody>
         </table>
@@ -292,13 +382,13 @@
         
     </table>
     <div class="row__parent">
-        <div class="column__child__left" style=": auto;">
+        <div class="column__child__left">
             <?php foreach ($haberes as $key => $haber) :?>
             <div class="fs-header w-100 p-sm">
                 @if(isset($haber['nombre']))
-                    <span class="column__child__left" style=""><?php echo $haber['nombre']?></span>
+                    <span class="column__child__left pl-1"><?php echo $haber['nombre']?></span>
                 @else
-                    <span class="column__child__left"><?php echo ''?></span>
+                    <span class="column__child__left pl-1"><?php echo ''?></span>
                 @endif
 
                 @foreach($meses as $mes)

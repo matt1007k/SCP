@@ -21,6 +21,7 @@ class AddColumnsToPersonasTable extends Migration
             $table->string('nivel_magisterial', 50)->nullable();
             $table->string('grupo_ocupacion', 50)->nullable();
             $table->string('horas', 10)->nullable();
+            $table->string('tiempo_servicio', 20)->nullable();
             $table->date('fecha_inicio')->nullable();
             $table->date('fecha_fin')->nullable();
             $table->string('numero_cuenta', 20)->nullable();
@@ -56,6 +57,7 @@ class AddColumnsToPersonasTable extends Migration
                 'nivel_magisterial', 
                 'grupo_ocupacion', 
                 'horas', 
+                'tiempo_servicio',
                 'fecha_inicio', 
                 'fecha_fin', 
                 'numero_cuenta', 

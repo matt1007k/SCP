@@ -24,6 +24,7 @@ class Persona extends Model
         'nivel_magisterial', 
         'grupo_ocupacion', 
         'horas', 
+        'tiempo_servicio', 
         'fecha_inicio', 
         'fecha_fin', 
         'numero_cuenta', 
@@ -43,10 +44,26 @@ class Persona extends Model
     ];
 
     protected $appends = ['full_name', 'fecha_nac'];
-    protected $dates = ['fecha_nacimiento'];
+    protected $dates = ['fecha_nacimiento', 'fecha_inicio', 'fecha_fin', 'fafiliacion', 'fdevengue'];
 
     public function getFechaNacAttribute(){
         return $this->fecha_nacimiento->format('d/m/Y');
+    }
+
+    public function getFechaInAttribute(){
+        return $this->fecha_inicio->format('d/m/Y');
+    }
+
+    public function getFechaFiAttribute(){
+        return $this->fecha_fin->format('d/m/Y');
+    }
+
+    public function getFAfilAttribute(){
+        return $this->fafiliacion->format('d/m/Y');
+    }
+
+    public function getFDevAttribute(){
+        return $this->fdevengue->format('d/m/Y');
     }
 
     public function user()
