@@ -276,7 +276,8 @@ class ImportElementsService{
         ];
     }
 
-    public function getTitleServidor(int $id): string{
+    public function getTitleServidor($id): string{
+        if(!$id) return "";
         $servidor = collect($this->getTipoServicios())
                         ->firstWhere('id', $id);
         
@@ -284,7 +285,9 @@ class ImportElementsService{
             ->get('title');
     }
 
-    public function getTitleRegimenLaboral(int $id): string{
+    public function getTitleRegimenLaboral($id): string{
+        if(!$id) return "";
+
         $regimen = collect($this->getRegimenLaborales())
                         ->firstWhere('id', $id);
         
@@ -292,23 +295,26 @@ class ImportElementsService{
             ->get('title');
     }
 
-    public function getTitleCodeFiscal(int $id): string{
-        $regimen = collect($this->getCodeFiscales())
+    public function getTitleCodeFiscal($id): string{
+        if(!$id) return "";
+        $code_fiscal = collect($this->getCodeFiscales())
                         ->firstWhere('id', $id);
         
-        return collect($regimen)
+        return collect($code_fiscal)
             ->get('title');
     }
 
-    public function getTitleAfpBoleta(int $id): string{
-        $regimen = collect($this->getAfpBoletas())
+    public function getTitleAfpBoleta($id): string{
+        if(!$id) return "";
+        $afp_boleta = collect($this->getAfpBoletas())
                         ->firstWhere('id', $id);
         
-        return collect($regimen)
+        return collect($afp_boleta)
             ->get('title');
     }
 
-    public function getTitleSituacion(int $id): string{
+    public function getTitleSituacion($id): string{
+        if(!$id) return "";
         $situacion = collect($this->getSituaciones())
                         ->firstWhere('id', $id);
 

@@ -9,9 +9,7 @@ class DateTimeService{
     }
 
     public function convertStringToDate(string $dateString){
-        if(empty($dateString)){
-            return null;
-        }
+        if(empty($dateString) || 'INICIO' || 'FIN' || gettype($dateString) != 'string') return null;
 
         $dateFormat = str_replace('/', '-', $dateString);
 
@@ -20,7 +18,8 @@ class DateTimeService{
         return $date; 
     }
 
-    public function convertIntToDate(int $dateInt){
+    public function convertIntToDate($dateInt){
+        if(empty($dateInt) || gettype($dateInt) != 'int') return null;
         $date = Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($dateInt));
         return $date;
     }

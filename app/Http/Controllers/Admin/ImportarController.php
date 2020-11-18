@@ -64,14 +64,7 @@ class ImportarController extends Controller
         if($personasExcel[0]){
             // return $personasExcel[0];
             foreach($personasExcel[0] as $personaExcel){
-                if ($personaExcel['nombres'] == null ||
-                    $personaExcel['apepat'] == null ||
-                    $personaExcel['apemat'] == null) {
-                    return response()->json([
-                        'import' => true,
-                        'msg' => 'El archivo excel no tiene datos.',
-                    ], 200);
-                }
+                $this->personaService->validateRowExcel($personaExcel);
 
                 $mesesService = new MesesService();
                 
@@ -81,27 +74,18 @@ class ImportarController extends Controller
                     return $user->roles('Personal');
                 });
 
-                $anio = substr($filename, 0, 4);
-                $mes_estado = substr($filename, -3);
-                $mes_numero = substr($mes_estado, 0, 2);
-                $nombre_mes = '';
+                [$anio, $mes_numero] = $this->personaService->getFileNameElements($filename);
+                $nombre_mes = $mesesService->getNameMonth($mes_numero);
 
-                foreach ($mesesService->getMeses() as $mes_service) {
-                    if ($mes_numero == $mes_service['numero']) {
-                        $nombre_mes = $mes_service['nombre'];
-                    }
-                }
-
-                $personaExiste = Persona::where('nombre', $personaExcel['nombres'])
-                        ->where('apellido_paterno', $personaExcel['apepat'])
-                        ->where('apellido_materno', $personaExcel['apemat'])
+                $personaExiste = Persona::where('nombre', $personaExcel[$this->personaService::FIELDS_EXCEL['nombre']])
+                        ->where('apellido_paterno', $personaExcel[$this->personaService::FIELDS_EXCEL['apellido_paterno']])
+                        ->where('apellido_materno', $personaExcel[$this->personaService::FIELDS_EXCEL['apellido_materno']])
                         ->where('estado', $estado)->first();
 
                 if (!$personaExiste) {
                     $this->personaService->createPersona($personaExcel);
             
                 } else {
-                    
                     $this->personaService->updatePersona($personaExiste, $personaExcel);
                 }
 
@@ -157,18 +141,11 @@ class ImportarController extends Controller
         // return $personasExcel[0];
         if (count($personasExcel[0])) {
             foreach ($personasExcel[0] as $personaExcel) {
-                if ($personaExcel['nombres'] == null ||
-                    $personaExcel['apepat'] == null ||
-                    $personaExcel['apemat'] == null) {
-                    return response()->json([
-                        'import' => true,
-                        'msg' => 'El archivo excel no tiene datos.',
-                    ], 200);
-                }
+                $this->personaService->validateRowExcel($personaExcel);
 
-                $personaExiste = Persona::where('nombre', $personaExcel['nombres'])
-                    ->where('apellido_paterno', $personaExcel['apepat'])
-                    ->where('apellido_materno', $personaExcel['apemat'])
+                $personaExiste = Persona::where('nombre', $personaExcel[$this->personaService::FIELDS_EXCEL['nombre']])
+                    ->where('apellido_paterno', $personaExcel[$this->personaService::FIELDS_EXCEL['apellido_paterno']])
+                    ->where('apellido_materno', $personaExcel[$this->personaService::FIELDS_EXCEL['apellido_materno']])
                     ->where('estado', $estado)->first();
 
                 if (!$personaExiste) {
@@ -191,13 +168,8 @@ class ImportarController extends Controller
             $anio = substr($filename, 0, 4);
             $mes_estado = substr($filename, -3);
             $mes_numero = substr($mes_estado, 0, 2);
-            $nombre_mes = '';
+            $nombre_mes = $mesesService->getNameMonth($mes_numero);
 
-            foreach ($mesesService->getMeses() as $mes_service) {
-                if ($mes_numero == $mes_service['numero']) {
-                    $nombre_mes = $mes_service['nombre'];
-                }
-            }
             // Total de pagos subidos (121), de Julio del 2019
             $message = "Total de pagos subidos ($totalPagos), de $nombre_mes del $anio";
 

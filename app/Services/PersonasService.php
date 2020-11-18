@@ -75,7 +75,7 @@ class PersonasService{
             'estado' => $this->estado,
             'fecha_nacimiento' => $this->datetimeService->convertIntToDate($row[self::FIELDS_EXCEL['fecha_nacimiento']]),
             'establecimiento' => $row[self::FIELDS_EXCEL['establecimiento']],
-            'tipo_servidor' => $this->importElementsService->getTitleServidor($row[self::FIELDS_EXCEL['tipo_servidor']]),
+            'tipo_servidor' => isset($row[self::FIELDS_EXCEL['tipo_servidor']]) ? $this->importElementsService->getTitleServidor($row[self::FIELDS_EXCEL['tipo_servidor']]) : null,
             'regimen_laboral' => $this->importElementsService->getTitleRegimenLaboral($row[self::FIELDS_EXCEL['regimen_laboral']]),
             'nivel_magisterial' => $row[self::FIELDS_EXCEL['nivel_magisterial']],
             'grupo_ocupacion' => $row[self::FIELDS_EXCEL['grupo_ocupacion']],
@@ -124,5 +124,24 @@ class PersonasService{
         }
 
         return $new_format;
+    }
+
+    public function validateRowExcel($row){
+        if ($row[self::FIELDS_EXCEL['nombre']] == null ||
+            $row[self::FIELDS_EXCEL['apellido_paterno']] == null ||
+            $row[self::FIELDS_EXCEL['apellido_materno']] == null) {
+            return response()->json([
+                'import' => true,
+                'msg' => 'El archivo excel no tiene datos.',
+            ], 200);
+        }
+    }
+
+    public function getFileNameElements($filename){
+        $anio = substr($filename, 0, 4);
+        $mes_estado = substr($filename, -3);
+        $mes_numero = substr($mes_estado, 0, 2);
+
+        return [$anio, $mes_numero];
     }
 }
