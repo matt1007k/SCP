@@ -332,7 +332,7 @@
                                     {{ $pago->persona->codigo_fiscal }} {{ $pago->persona->afp_boleta }}/{{ $pago->persona->codigo_afp }}
                                 </span>     
                                 <div>
-                                    <b>CFija:</b> {{ $pago->persona->cfija }}
+                                    <b>CFija:</b> {{ $pago->cfija }}
                                 </div>     
                             </div>
                         </p>
@@ -344,7 +344,7 @@
                                     <b>FAfilia.:</b> {{ $pago->persona->f_afil }}
                                 </span>     
                                 <span>
-                                    <b>CVaria.:</b> {{ $pago->persona->cvariable }}
+                                    <b>CVaria.:</b> {{ $pago->cvariable }}
                                 </span>     
                             </div>
                             <div>
@@ -352,7 +352,7 @@
                                     <b>FDeven.:</b> {{ $pago->persona->f_dev }}
                                 </span>     
                                 <span>
-                                    <b>Seguro:</b> {{ $pago->persona->seguro }}
+                                    <b>Seguro:</b> {{ $pago->seguro }}
                                 </span>     
                             </div>
                         </p>

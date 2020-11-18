@@ -16,6 +16,11 @@ class HaberDescuento extends Model
         return $this->belongsTo('App\Models\User');
     }
 
+    public function detalles()
+    {
+        return $this->belongsTo(Detalle::class);
+    }
+
     public function scopeSearch($query, $text)
     {
         if ($text) {

@@ -13,6 +13,7 @@ use App\Notifications\DataImported;
 use App\Services\DateTimeService;
 use App\Services\HaberesImponiblesService;
 use App\Services\MesesService;
+use App\Services\PagosService;
 use App\Services\PersonasService;
 use Auth;
 use Illuminate\Http\Request;
@@ -22,11 +23,13 @@ use Maatwebsite\Excel\Facades\Excel;
 class ImportarController extends Controller
 {
     protected $personaService;
+    protected $pagoService;
     public function __construct()
     {
         $this->middleware('can:importar.personas')->only(['personas']);
         $this->middleware('can:importar.descuentos')->only(['descuentos']);
         $this->personaService = new PersonasService;
+        $this->pagoService = new PagosService;
     }
 
     public function updateDataPersonas(Request $request){
@@ -162,11 +165,6 @@ class ImportarController extends Controller
                         'msg' => 'El archivo excel no tiene datos.',
                     ], 200);
                 }
-                $DetallesHaber = $this->generarDetallesPago($personaExcel, 'hab', 'mtohab');
-                $DetallesDescuento = $this->generarDetallesPago($personaExcel, "des", "mtodes");
-
-                $total_haber = $this->getTotalMonto($DetallesHaber, "mtohab");
-                $total_descuento = $this->getTotalMonto($DetallesDescuento, "mtodes");
 
                 $personaExiste = Persona::where('nombre', $personaExcel['nombres'])
                     ->where('apellido_paterno', $personaExcel['apepat'])
@@ -176,60 +174,10 @@ class ImportarController extends Controller
                 if (!$personaExiste) {
                     $persona = $this->personaService->createPersona($personaExcel);
                     if ($persona) {
-                        $totalHD = HaberDescuento::all()->count();
-                        if ($totalHD > 0) {
-                            $anio = substr($personaExcel['periodo'], 0, 4);
-                            $mes = substr($personaExcel['periodo'], -2);
-
-                            $pago = new Pago();
-                            $pago->anio = $anio;
-                            $pago->mes = $mes;
-                            $pago->total_descuento = $total_descuento;
-                            $pago->total_haber = $total_haber;
-                            $pago->monto_liquido = $personaExcel['rlq_totliqpago'];
-                            $pago->monto_imponible = $personaExcel['rlq_timpopen'];
-                            $pago->persona_id = $persona->id;
-                            $pago->user_id = Auth::user()->id;
-                            if ($pago->save()) {
-                                $this->saveDetailsPayment($pago, $DetallesHaber, 'hab', 'mtohab');
-                                $this->saveDetailsPayment($pago, $DetallesDescuento, 'des', 'mtodes');
-                            }
-                        } else {
-                            return response()->json([
-                                'msg' => 'Los Haberes o Descuentos no han sido registrados.',
-                                'import' => false,
-                            ], 200);
-                        }
-
+                      $this->pagoService->createPago($personaExcel, $persona);
                     }
                 } else {
-                    $totalHD = HaberDescuento::all()->count();
-
-                    if ($totalHD > 0) {
-
-                        $anio = substr($personaExcel['periodo'], 0, 4);
-                        $mes = substr($personaExcel['periodo'], -2);
-
-                        $pago = new Pago();
-                        $pago->anio = $anio;
-                        $pago->mes = $mes;
-                        $pago->total_descuento = $total_descuento;
-                        $pago->total_haber = $total_haber;
-                        $pago->monto_liquido = $personaExcel['rlq_totliqpago'];
-                        $pago->monto_imponible = $personaExcel['rlq_timpopen'];
-                        $pago->persona_id = $personaExiste->id;
-                        $pago->user_id = Auth::user()->id;
-                        if ($pago->save()) {
-                            $this->saveDetailsPayment($pago, $DetallesHaber, 'hab', 'mtohab');
-                            $this->saveDetailsPayment($pago, $DetallesDescuento, 'des', 'mtodes');
-                        }
-                    } else {
-                        return response()->json([
-                            'msg' => 'Los Haberes o Descuentos no han sido registrados.',
-                            'import' => false,
-                        ], 200);
-                    }
-
+                    $this->pagoService->createPago($personaExcel, $personaExiste);
                 }
 
             }
@@ -270,109 +218,6 @@ class ImportarController extends Controller
                 'msg' => 'El archivo excel no tiene datos.',
             ], 200);
         }
-    }
-
-    public function saveDetailsPayment($pago, $detallesPagoExcel, $item_id, $montoItem)
-    {
-
-        foreach ($detallesPagoExcel as $key => $value) {
-
-            // return $value[$montoItem];
-            if ($value[$item_id] !== 0) {
-                $codigo = $this->GetCodigo($value[$item_id], $item_id);
-                $existeHD = HaberDescuento::where('codigo', $codigo)->first();
-                if ($existeHD) {
-                    $detalle = new Detalle();
-                    $detalle->hd_id = $existeHD->id;
-                    $detalle->monto = $value[$montoItem];
-                    $detalle->pago_id = $pago->id;
-
-                    $detalle->save();
-                } else {
-                    return response()->json([
-                        'msg' => 'El Haber o Descuento con el id: ' . $value[$item_id] . ' no ha sido registrado',
-                    ]);
-                }
-            }
-
-        }
-
-        return true;
-    }
-
-    public function getEstado($estadoExcelNombre)
-    {
-        $estado = '';
-        if ($estadoExcelNombre == 'A') {
-            $estado = 'activo';
-            return $estado;
-        } elseif ($estadoExcelNombre == 'C') {
-            $estado = 'cesante';
-            return $estado;
-        } elseif ($estadoExcelNombre == 'S') {
-            $estado = 'sobreviviente';
-            return $estado;
-        } else {
-            return $estado;
-        }
-    }
-
-    public function getTotalMonto($detalles, $montoItem)
-    {
-        $total = 0;
-
-        foreach ($detalles as $key => $value) {
-            $total += $value[$montoItem];
-        }
-
-        return $total;
-    }
-
-    public function GetCodigo($id, $item)
-    {
-        $codigo = "";
-
-        if ($item == 'hab') {
-            $codigo = "H" . $id;
-        } elseif ($item == 'des') {
-            $codigo = "D" . $id;
-        }
-
-        return $codigo;
-    }
-
-    public function generarDetallesPago($itemExcel, $item, $montoItem)
-    {
-        $arrayDetalles = array();
-        $numero = 0;
-        // $itemExcel['hab33'];
-
-        // return count($itemExcel);
-        $excel_id = "";
-        $excel_monto = "";
-        for ($i = 0; $i < count($itemExcel); $i++) {
-            // $numero1;
-
-            if ($i < 10) {
-                $excel_id = $item . '0' . $i;
-                $excel_monto = $montoItem . '0' . $i;
-            } else {
-                $excel_id = $item . $i;
-                $excel_monto = $montoItem . $i;
-            }
-
-            if (isset($itemExcel[$excel_id]) || isset($itemExcel[$excel_monto])) {
-
-                // return $itemExcel[$excel_id];
-                array_push($arrayDetalles, [
-                    $item => $itemExcel[$excel_id],
-                    $montoItem => $itemExcel[$excel_monto],
-                ]);
-            }
-
-        }
-
-        return $arrayDetalles;
     }
 
     public function descuentos(Request $request)
@@ -428,7 +273,7 @@ class ImportarController extends Controller
 
                 $codigo = 'D' . $descuento['codigo'];
                 $descuentoEncontrado = HaberDescuento::where('codigo', $codigo)->first();
-                if (!$haberEncontrado) {
+                if (!$descuentoEncontrado) {
                     $hdescuento = new HaberDescuento();
                     $hdescuento->codigo = $codigo;
                     $hdescuento->tipo = "descuento";

@@ -19,6 +19,10 @@ class Pago extends Model
         'monto_liquido',
         'monto_imponible',
         'user_id',
+        'persona_id',
+        'cvariable', 
+        'cfija', 
+        'seguro', 
     ];
 
     public function persona()

@@ -33,9 +33,6 @@ class AddColumnsToPersonasTable extends Migration
             $table->string('afp_boleta', 30)->nullable();
             $table->date('fafiliacion')->nullable();
             $table->date('fdevengue')->nullable();
-            $table->string('cvariable', 30)->nullable();
-            $table->string('cfija', 30)->nullable();
-            $table->string('seguro', 30)->nullable();
             $table->string('codigo_establecimiento', 30)->nullable();
             $table->string('numero_cargo', 30)->nullable();
             $table->string('situacion', 30)->nullable();
@@ -70,9 +67,6 @@ class AddColumnsToPersonasTable extends Migration
                 'codigo_afp', 
                 'fafiliacion', 
                 'fdevengue', 
-                'cvariable', 
-                'cfija', 
-                'seguro', 
                 'codigo_establecimiento', 
                 'numero_cargo', 
                 'situacion', 

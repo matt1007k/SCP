@@ -43,9 +43,9 @@ class PersonasService{
         'codigo_afp' => 'cod_afp',
         'fafiliacion' => 'fec_afil_afp',
         'fdevengue' => 'fdevengue', // falta
-        'cvariable' => 'rlq_mpension', // rlq_mpension
-        'cfija' => 'rlq_comisionmtofijafp',
-        'seguro' => 'rlq_mtoseguro',
+        // 'cvariable' => 'rlq_mpension', // rlq_mpension
+        // 'cfija' => 'rlq_comisionmtofijafp',
+        // 'seguro' => 'rlq_mtoseguro',
         'codigo_establecimiento' => 'cae_codunidad',
         'numero_cargo' => 'cae_numcarg',
         'situacion' => 'cae_situacion',
@@ -92,9 +92,6 @@ class PersonasService{
             'codigo_afp' => $row[self::FIELDS_EXCEL['codigo_afp']],
             'fafiliacion' => $this->datetimeService->convertIntToDate($row[self::FIELDS_EXCEL['fafiliacion']]),
             'fdevengue' => isset($row[self::FIELDS_EXCEL['fdevengue']]) ? $this->datetimeService->convertIntToDate($row[self::FIELDS_EXCEL['fdevengue']]) : null,
-            'cvariable' => $row[self::FIELDS_EXCEL['cvariable']],
-            'cfija' => $row[self::FIELDS_EXCEL['cfija']],
-            'seguro' => $row[self::FIELDS_EXCEL['seguro']],
             'codigo_establecimiento' => $row[self::FIELDS_EXCEL['codigo_establecimiento']],
             'numero_cargo' => $row[self::FIELDS_EXCEL['numero_cargo']],
             'situacion' => $this->importElementsService->getTitleSituacion($row[self::FIELDS_EXCEL['situacion']])
