@@ -86,7 +86,8 @@ class ImportarController extends Controller
                     $this->personaService->createPersona($personaExcel);
             
                 } else {
-                    $this->personaService->updatePersona($personaExiste, $personaExcel);
+                    // return trim($personaExcel['fdevengue']) ? 'no vacio' : 'vacio'; 
+                     $this->personaService->updatePersona($personaExiste, $personaExcel);
                 }
 
             }
