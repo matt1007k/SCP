@@ -1,12 +1,11 @@
-* {
-    font-family: "Roboto", sans-serif;
-}
-$color-primary: #3aa3e3;
+$color-primary: #1773ee;
 $color-success: #66bb6a;
 $color-error: #e75650;
 $color-warning: #ffc82c;
 $color-info: #9dd1f1;
 $color-grey: #f4f4f4;
+$white: #fff;
+$black: #000;
 
 $text-color: #484746;
 $bg-color: #f8f8f8;
@@ -20,3 +19,6 @@ $font-family: Helvetica, sans-serif;
 $box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
 
 $border-color: #f2f2f2;
+
+$tablet: 640px;
+$desktop: 1024px;

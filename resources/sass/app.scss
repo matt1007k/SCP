@@ -1,6 +1,9 @@
 @import "~roboto-fontface/css/roboto/roboto-fontface.css";
 // Variables
 @import "variables";
+
+@import "./mixins/responsive";
+
 @import "animations_router";
 @import "animations_item";
 @import "dropzone";
@@ -9,7 +12,21 @@
 @import "spacing";
 @import "alert";
 
+@import "button";
+@import "color-text";
+@import "./form/input";
+
+// content
+@import "./content/auth";
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 body,
 html {
     font-family: "Roboto", sans-serif;
+    font-size: 15px;
 }

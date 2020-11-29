@@ -5,7 +5,6 @@ import colors from "vuetify/lib/util/colors";
 import mdi_icons from "./mdi-icons";
 
 Vue.use(Vuetify);
-const border = 4;
 const opts = {
     theme: {
         dark: true,

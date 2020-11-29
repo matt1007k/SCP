@@ -1,0 +1,15 @@
+.form__control {
+    padding: 1rem 1.5rem;
+    background: rgba($black, $alpha: 0.07);
+    border-radius: 8px;
+    border: none;
+    outline: none;
+    width: 100%;
+    display: flex;
+    &::placeholder {
+        color: rgba($black, $alpha: 0.5);
+    }
+    &.input__invalid {
+        border: 2px solid $error;
+    }
+}

@@ -1,0 +1,16 @@
+.btn {
+    padding: 1rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 700;
+    border: none;
+    outline: none;
+    line-height: 1.42857;
+    cursor: pointer;
+    &.btn__primary {
+        background-color: $color-primary;
+        color: $white;
+        &:hover {
+            background-color: $black;
+        }
+    }
+}
