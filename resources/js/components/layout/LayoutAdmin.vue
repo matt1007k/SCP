@@ -11,7 +11,7 @@
       <!-- <v-btn icon @click="snackbar = true">
         <v-icon>$vuetify.icons.search</v-icon>
       </v-btn>-->
-
+      <span class="d-flex align-center">
       <v-menu
         offset-y
         origin="center center"
@@ -29,7 +29,7 @@
           </v-btn>
         </template>
 
-        <v-list style="max-height: 400px" class="scroll-y">
+        <v-list style="max-height: 400px" class="scroll-y" dark>
           <v-subheader class="indigo">
             <h2 class="text-white">Notificaciones</h2>
           </v-subheader>
@@ -57,13 +57,46 @@
         </v-list>
       </v-menu>
 
-      <v-btn outlined small @click="LogOut" class="ml-3">
+      <!-- <v-btn outlined x-small @click="LogOut" class="ml-3">
         <v-icon>$vuetify.icons.exit</v-icon>
         <span>Salir</span>
-      </v-btn>
+      </v-btn> -->
+        <v-menu 
+        offset-y 
+        origin="center center"
+        class="elevation-1"
+        :nudge-bottom="0"
+        transition="scale-transition"
+        bottom>
+          <template v-slot:activator="{ on }">
+            <v-list-item two-line  v-on="on">
+              <v-list-item-avatar>
+                <img src="https://randomuser.me/api/portraits/men/81.jpg" />
+              </v-list-item-avatar>
+
+              <v-list-item-content>
+                <v-list-item-title>{{ $auth.user.user.name }}</v-list-item-title>
+                <v-list-item-subtitle>{{ $auth.user.user.email }}</v-list-item-subtitle>
+              </v-list-item-content>
+            </v-list-item>
+          </template>
+          <v-list>
+            <v-list-item
+              v-for="(item, i) in menuItems"
+              :key="i"
+              @click="item.title == 'Salir' ? LogOut() : goTo(item.url)"
+            >
+              <v-list-item-icon>
+                <v-icon v-text="item.icon"></v-icon>
+              </v-list-item-icon>
+              <v-list-item-title v-text="item.title"></v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-menu>
+      </span>
     </v-app-bar>
 
-    <v-main>
+    <v-main :class="`${!$vuetify.theme.dark ? 'grey lighten-4' : ''}`">
       <v-container fluid>
         <transition name="slide-fade">
           <router-view :key="$route.fullPath" />
@@ -82,7 +115,19 @@ export default {
   name: "LayoutAdmin",
   data: () => ({
     drawer: true,
-    unreadNotifications: []
+    unreadNotifications: [],
+    menuItems: [
+      {
+        title: 'Perfil',
+        url: '/admin/perfil',
+        icon: 'mdi-account'
+      },
+      {
+        title: 'Salir',
+        url: '/outline',
+        icon: 'mdi-exit-to-app'
+      },
+    ]
   }),
   methods: {
     OpenSidebar() {

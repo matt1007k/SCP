@@ -1,15 +1,20 @@
 <template>
   <v-navigation-drawer
-    mobile-break-point="960"
+    mobile-breakpoint="960"
     :value="toggle"
     @input="$emit('input', $event)"
     fixed
     app
   >
     <v-container>
-      <img src="/img/logo-scp.png" />
+      <template v-if="$vuetify.theme.dark">
+        <img src="/img/logo-scp-dark.png" />
+      </template>
+      <template v-else>
+        <img src="/img/logo-scp-light.png" />
+      </template>
     </v-container>
-    <v-list dense>
+    <v-list dense nav>
       <v-list-item two-line>
         <v-list-item-avatar>
           <img src="https://randomuser.me/api/portraits/men/81.jpg" />
@@ -21,37 +26,20 @@
         </v-list-item-content>
       </v-list-item>
       <v-container fluid>
-          <v-spacer></v-spacer>
-          <v-btn color="info" style="margin-left: 0;" @click="goToPerfil()">
-            <v-icon>$vuetify.icons.user</v-icon>Perfil
+          <!-- <v-spacer></v-spacer> -->
+          <v-btn color="info" small style="margin-left: 0;" class="rounded-md" @click="goToPerfil()">
+            Perfil
           </v-btn>
+          <v-switch
+            v-model="dark"
+            inset
+            :label="`${dark ? 'Modo claro' : 'Modo oscuro'}`"
+          ></v-switch>
       </v-container>
 
       <v-divider></v-divider>
 
       <v-subheader>MANTENIMIENTO</v-subheader>
-      <v-list
-        nav
-        dense
-      >
-        <v-list-item-group
-          v-model="selectedItem"
-          color="primary"
-        >
-          <v-list-item
-            v-for="(item, i) in itemsMenu"
-            :key="i"
-          >
-            <v-list-item-icon>
-              <v-icon v-text="item.icon"></v-icon>
-            </v-list-item-icon>
-
-            <v-list-item-content>
-              <v-list-item-title v-text="item.title"></v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-        </v-list-item-group>
-      </v-list>
 
       <template v-for="(item, index) in itemsMenu">
         <template v-if="item.group">
@@ -114,7 +102,7 @@ export default {
   data: () => ({
     drawer: true,
     itemsMenu: listItemsSidebar,
-    selectedItem: 0,
+    dark: false 
   }),
   methods: {
     goTo(url) {
@@ -128,8 +116,34 @@ export default {
       return paths.some(path => {
         return this.$route.path.indexOf(path) === 0; // current path starts with this path string
       });
+    },
+  },
+  created(){
+    this.dark = localStorage.getItem('dark') ? true : false;
+    this.$vuetify.theme.dark = localStorage.getItem('dark') ? true : false;
+    console.log(localStorage.getItem('dark'))
+  },
+  watch: {
+    dark(inputValue){
+      if(inputValue){
+        console.log('dark')
+        this.$vuetify.theme.dark = inputValue;
+        localStorage.setItem('dark', inputValue.toString());
+        console.log(localStorage.getItem('dark'));
+      } else{
+        console.log('light')
+        this.$vuetify.theme.dark = inputValue;
+        localStorage.removeItem('dark');
+        console.log(localStorage.getItem('dark'));
+      }
     }
   }
 };
 </script>
+
+<style>
+.v-list .v-list-item--active, .v-list .v-list-item--active .v-icon{
+  color: #039be5 !important;
+}
+</style>
 

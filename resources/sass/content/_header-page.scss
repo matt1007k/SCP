@@ -1,0 +1,18 @@
+.header-page {
+    overflow: hidden;
+    position: relative;
+}
+.header-img {
+    position: absolute;
+    bottom: -20%;
+    right: 5%;
+    width: 250px;
+    height: auto;
+    background: #fff;
+    padding: 15px 5px;
+    border-radius: 50%;
+    img {
+        width: 100%;
+        height: 100%;
+    }
+}

@@ -2,7 +2,8 @@
   <v-container fluid grid-list-md>
     <v-layout row wrap class="mb-3">
       <v-flex xs12 v-if="$auth.can('admin.index') || $auth.isAdmin()">
-        <span class="headline">Tablero de resumenes</span>
+        <div class="headline">Hola {{ $auth.user.user.name }},</div>
+        <span class="display-2 font-weight-bold">Bienvenido</span>
       </v-flex>
       <v-flex xs12 v-else>
         <v-alert :value="true" type="info">
@@ -13,18 +14,17 @@
       </v-flex>
     </v-layout>
     <v-layout row wrap class="mb-2" v-if="$auth.can('admin.index') || $auth.isAdmin()">
-      <v-flex xs12 sm4 md3 v-for="(item, index) in count_items" :key="index">
+      <v-flex xs12 sm6 md3 v-for="(item, index) in count_items" :key="index">
         <count-item :color="item.color" :icon="item.icon" :label="item.label" :total="item.total"></count-item>
       </v-flex>
     </v-layout>
     <v-layout row wrap v-if="$auth.can('admin.index') || $auth.isAdmin()">
       <template v-if="$auth.isAdmin()">
         <v-flex xs12>
-          <v-card class="rounded-xl">
+          <v-card class="rounded-xl pa-6 mt-5">
             <v-list>
-              <v-subheader>
-                <h2>Cantidad de constancias de pago entregadas por usuario</h2>
-              </v-subheader>
+              <div class="headline font-weight-bold">Constancias Entregadas</div>
+              <div class="body-1 text--secondary">Cantidad de constancias de pago entregadas por usuario</div>
               <v-list-tile v-for="user in dataConstanciasByUsers" :key="user.dni">
                 <v-list-tile-content>
                   <v-list-tile-title>{{ user.nombre }}</v-list-tile-title>
@@ -53,7 +53,7 @@
       </template>
 
       <v-flex xs12>
-        <v-card v-if="$auth.isAdmin()">
+        <v-card v-if="$auth.isAdmin()" class="rounded-xl pa-6 mt-5">
           <v-card-title class="no-padding-bottom">
             <v-layout row align-center>
               <div class="mr-4">
@@ -66,6 +66,9 @@
               </div>
               <div class="text-center">
                 <v-select
+                  dense
+                  filled
+                  shaped
                   :items="items"
                   v-model="anio"
                   item-text="anio"
@@ -82,14 +85,14 @@
         </v-card>
       </v-flex>
       <v-flex xs12 sm6>
-        <v-card>
+        <v-card class="rounded-xl pa-6 mt-5">
           <v-card-text>
             <pie-chart :chart-data="dataPersonas" title="Cantidad de personas por estado"></pie-chart>
           </v-card-text>
         </v-card>
       </v-flex>
       <v-flex xs12 sm6>
-        <v-card>
+        <v-card class="rounded-xl pa-6 mt-5">
           <v-card-text>
             <pie-chart
               :chart-data="dataConstancias"

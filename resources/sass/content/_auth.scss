@@ -24,6 +24,9 @@
         }
         form {
             width: 300px;
+            label {
+                font-size: 14px;
+            }
             .auth__actions {
                 display: flex;
                 justify-content: flex-end;

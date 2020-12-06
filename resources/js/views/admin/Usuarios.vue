@@ -2,18 +2,22 @@
   <v-container>
     <v-layout class="mb-3">
       <v-flex xs12>
-        <v-card>
-          <v-container>
-            <div class="d-flex flex-column flex-sm-row justify-sm-space-between align-sm-center">
-              <div class="headline">Lista de usuarios</div>
+        <div class="py-10 px-6 rounded-xl header-page relative bg-header d-flex justify-between">
+          <!-- <v-container> -->
+            <div class="d-flex flex-column">
+              <div class="display-2 font-weight-bold text-white">Usuarios</div>
+              <div class="text-white body-1 mb-5">Administra los usuarios que ingresen en el sistema.</div>
               <div v-if="$auth.can('users.create') || $auth.isAdmin()">
-                <v-btn color="primary" @click.stop="modalAgregar">
-                  <v-icon>$vuetify.icons.add</v-icon>Agregar usuario
+                <v-btn color="dark" large class="rounded-lg" @click.stop="modalAgregar">
+                  <v-icon>$vuetify.icons.add</v-icon>Agregar Usuario
                 </v-btn>
               </div>
             </div>
-          </v-container>
-          <v-container fluid style="padding-bottom: 0; padding-top: 0">
+            <div class="header-img">
+              <img src="/img/clip-online-consultation.png" alt="Image online">
+            </div>
+          <!-- </v-container> -->
+          <!-- <v-container fluid style="padding-bottom: 0; padding-top: 0">
             <v-text-field v-model="search" clearable label="Buscar" type="text">
               <template v-slot:prepend>
                 <v-icon>$vuetify.icons.search</v-icon>
@@ -24,12 +28,33 @@
                 </v-fade-transition>
               </template>
             </v-text-field>
-          </v-container>
-        </v-card>
+          </v-container> -->
+        </div>
       </v-flex>
     </v-layout>
-    <div>
-      <v-data-table
+    <div class="elevation-1 rounded-xl pa-6 mt-5" :class="`${$vuetify.theme.dark ? 'grey darken-4' : 'white'}`">
+      <v-flex row>
+        <v-col sm="12" md="5">
+          <v-text-field
+              shaped
+              filled 
+              label="Buscar"
+              prepend-inner-icon="mdi-magnify"
+            ></v-text-field>
+        </v-col>
+        <v-spacer></v-spacer>
+        <v-col sm="12" md="2">
+          <v-select
+            :items="RowsPerPageItems"
+            filled
+            label="Mostrar"
+            v-model="perPage"
+            dense
+            shaped
+          ></v-select>
+        </v-col>
+      </v-flex>
+      <!-- <v-data-table
         :headers="headers"
         :items="usuarios"
         :search="search"
@@ -105,7 +130,7 @@
           </td>
         </template>
         <v-data-footer :rows-per-page-items="RowsPerPageItems" rows-per-page-text="Mostrar"></v-data-footer>
-      </v-data-table>
+      </v-data-table> -->
       <div class="text-xs-center pt-2">
         <v-pagination v-model="pagination.page" :length="pages"></v-pagination>
       </div>
@@ -127,7 +152,8 @@ export default {
       loading: false,
       loadingData: false,
       pagination: {},
-      RowsPerPageItems: [9, 15, 25, { text: "Todos", value: -1 }],
+      RowsPerPageItems: [10, 15, 25],
+      perPage: 10,
       selected: [],
       headers: [
         {

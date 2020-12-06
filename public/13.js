@@ -500,6 +500,31 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -514,10 +539,8 @@ __webpack_require__.r(__webpack_exports__);
       loading: false,
       loadingData: false,
       pagination: {},
-      RowsPerPageItems: [9, 15, 25, {
-        text: "Todos",
-        value: -1
-      }],
+      RowsPerPageItems: [10, 15, 25],
+      perPage: 10,
       selected: [],
       headers: [{
         text: "DNI",
@@ -1349,389 +1372,122 @@ var render = function() {
         "v-layout",
         { staticClass: "mb-3" },
         [
-          _c(
-            "v-flex",
-            { attrs: { xs12: "" } },
-            [
-              _c(
-                "v-card",
-                [
-                  _c("v-container", [
-                    _c(
-                      "div",
-                      {
-                        staticClass:
-                          "d-flex flex-column flex-sm-row justify-sm-space-between align-sm-center"
-                      },
-                      [
-                        _c("div", { staticClass: "headline" }, [
-                          _vm._v("Lista de usuarios")
-                        ]),
-                        _vm._v(" "),
-                        _vm.$auth.can("users.create") || _vm.$auth.isAdmin()
-                          ? _c(
-                              "div",
-                              [
-                                _c(
-                                  "v-btn",
-                                  {
-                                    attrs: { color: "primary" },
-                                    on: {
-                                      click: function($event) {
-                                        $event.stopPropagation()
-                                        return _vm.modalAgregar($event)
-                                      }
-                                    }
-                                  },
-                                  [
-                                    _c("v-icon", [
-                                      _vm._v("$vuetify.icons.add")
-                                    ]),
-                                    _vm._v("Agregar usuario\n              ")
-                                  ],
-                                  1
-                                )
-                              ],
-                              1
-                            )
-                          : _vm._e()
-                      ]
+          _c("v-flex", { attrs: { xs12: "" } }, [
+            _c(
+              "div",
+              {
+                staticClass:
+                  "py-10 px-6 rounded-xl header-page relative bg-header d-flex justify-between"
+              },
+              [
+                _c("div", { staticClass: "d-flex flex-column" }, [
+                  _c(
+                    "div",
+                    { staticClass: "display-2 font-weight-bold text-white" },
+                    [_vm._v("Usuarios")]
+                  ),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "text-white body-1 mb-5" }, [
+                    _vm._v(
+                      "Administra los usuarios que ingresen en el sistema."
                     )
                   ]),
                   _vm._v(" "),
-                  _c(
-                    "v-container",
-                    {
-                      staticStyle: {
-                        "padding-bottom": "0",
-                        "padding-top": "0"
-                      },
-                      attrs: { fluid: "" }
-                    },
-                    [
-                      _c("v-text-field", {
-                        attrs: { clearable: "", label: "Buscar", type: "text" },
-                        scopedSlots: _vm._u([
-                          {
-                            key: "prepend",
-                            fn: function() {
-                              return [
-                                _c("v-icon", [_vm._v("$vuetify.icons.search")])
-                              ]
+                  _vm.$auth.can("users.create") || _vm.$auth.isAdmin()
+                    ? _c(
+                        "div",
+                        [
+                          _c(
+                            "v-btn",
+                            {
+                              staticClass: "rounded-lg",
+                              attrs: { color: "dark", large: "" },
+                              on: {
+                                click: function($event) {
+                                  $event.stopPropagation()
+                                  return _vm.modalAgregar($event)
+                                }
+                              }
                             },
-                            proxy: true
-                          },
-                          {
-                            key: "append",
-                            fn: function() {
-                              return [
-                                _c(
-                                  "v-fade-transition",
-                                  { attrs: { "leave-absolute": "" } },
-                                  [
-                                    _vm.loading
-                                      ? _c("v-progress-circular", {
-                                          attrs: {
-                                            size: "24",
-                                            color: "info",
-                                            indeterminate: ""
-                                          }
-                                        })
-                                      : _vm._e()
-                                  ],
-                                  1
-                                )
-                              ]
-                            },
-                            proxy: true
-                          }
-                        ]),
-                        model: {
-                          value: _vm.search,
-                          callback: function($$v) {
-                            _vm.search = $$v
-                          },
-                          expression: "search"
-                        }
-                      })
-                    ],
-                    1
-                  )
-                ],
-                1
-              )
-            ],
-            1
-          )
+                            [
+                              _c("v-icon", [_vm._v("$vuetify.icons.add")]),
+                              _vm._v("Agregar Usuario\n              ")
+                            ],
+                            1
+                          )
+                        ],
+                        1
+                      )
+                    : _vm._e()
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "header-img" }, [
+                  _c("img", {
+                    attrs: {
+                      src: "/img/clip-online-consultation.png",
+                      alt: "Image online"
+                    }
+                  })
+                ])
+              ]
+            )
+          ])
         ],
         1
       ),
       _vm._v(" "),
       _c(
         "div",
+        {
+          staticClass: "elevation-1 rounded-xl pa-6 mt-5",
+          class: "" + (_vm.$vuetify.theme.dark ? "grey darken-4" : "white")
+        },
         [
           _c(
-            "v-data-table",
-            {
-              staticClass: "elevation-1",
-              attrs: {
-                headers: _vm.headers,
-                items: _vm.usuarios,
-                search: _vm.search,
-                loading: _vm.loadingData,
-                "no-data-text": "No hay registros",
-                "no-results-text": "No hay registros encontrados"
-              },
-              scopedSlots: _vm._u([
-                {
-                  key: "items",
-                  fn: function(props) {
-                    return [
-                      _c("td", { staticClass: "text-xs-center" }, [
-                        _vm._v(_vm._s(props.item.dni))
-                      ]),
-                      _vm._v(" "),
-                      _c("td", [_vm._v(_vm._s(props.item.name))]),
-                      _vm._v(" "),
-                      _c("td", [_vm._v(_vm._s(props.item.email))]),
-                      _vm._v(" "),
-                      props.item.roles.length > 0
-                        ? [
-                            _c(
-                              "td",
-                              _vm._l(props.item.roles, function(rol, index) {
-                                return _c(
-                                  "v-chip",
-                                  {
-                                    key: index,
-                                    staticClass: "text-capitalize",
-                                    attrs: {
-                                      "text-color": "white",
-                                      color: "info",
-                                      small: ""
-                                    }
-                                  },
-                                  [_vm._v(_vm._s(rol.name))]
-                                )
-                              }),
-                              1
-                            )
-                          ]
-                        : [
-                            _c("td", { staticClass: "text-xs-center" }, [
-                              _vm._v("N/A")
-                            ])
-                          ],
-                      _vm._v(" "),
-                      _c(
-                        "td",
-                        [
-                          _c(
-                            "v-chip",
-                            {
-                              staticClass: "ma-2",
-                              attrs: { color: "indigo", "text-color": "white" }
-                            },
-                            [
-                              _c(
-                                "v-avatar",
-                                { attrs: { left: "" } },
-                                [_c("v-icon", [_vm._v("mdi-account-circle")])],
-                                1
-                              ),
-                              _vm._v("Ranee\n          ")
-                            ],
-                            1
-                          )
-                        ],
-                        1
-                      ),
-                      _vm._v(" "),
-                      props.item.estado === "activo"
-                        ? [
-                            _c(
-                              "td",
-                              [
-                                _c(
-                                  "v-chip",
-                                  {
-                                    staticClass: "text-capitalize",
-                                    attrs: {
-                                      "text-color": "white",
-                                      color: "success",
-                                      small: ""
-                                    }
-                                  },
-                                  [_vm._v(_vm._s(props.item.estado))]
-                                )
-                              ],
-                              1
-                            )
-                          ]
-                        : _vm._e(),
-                      _vm._v(" "),
-                      props.item.estado === "inactivo"
-                        ? [
-                            _c(
-                              "td",
-                              [
-                                _c(
-                                  "v-chip",
-                                  {
-                                    staticClass: "text-capitalize",
-                                    attrs: {
-                                      "text-color": "white",
-                                      color: "error",
-                                      small: ""
-                                    }
-                                  },
-                                  [_vm._v(_vm._s(props.item.estado))]
-                                )
-                              ],
-                              1
-                            )
-                          ]
-                        : _vm._e(),
-                      _vm._v(" "),
-                      _c(
-                        "td",
-                        [
-                          _vm.$auth.can("users.edit") || _vm.$auth.isAdmin()
-                            ? _c(
-                                "v-tooltip",
-                                {
-                                  attrs: { bottom: "" },
-                                  scopedSlots: _vm._u(
-                                    [
-                                      {
-                                        key: "activator",
-                                        fn: function(ref) {
-                                          var on = ref.on
-                                          return [
-                                            _c(
-                                              "v-btn",
-                                              _vm._g(
-                                                {
-                                                  attrs: {
-                                                    color: "info",
-                                                    fab: "",
-                                                    small: ""
-                                                  },
-                                                  on: {
-                                                    click: function($event) {
-                                                      return _vm.modalEditar(
-                                                        props.item
-                                                      )
-                                                    }
-                                                  }
-                                                },
-                                                on
-                                              ),
-                                              [
-                                                _c("v-icon", [
-                                                  _vm._v("$vuetify.icons.edit")
-                                                ])
-                                              ],
-                                              1
-                                            )
-                                          ]
-                                        }
-                                      }
-                                    ],
-                                    null,
-                                    true
-                                  )
-                                },
-                                [
-                                  _vm._v(" "),
-                                  _c("span", [_vm._v("Editar registro")])
-                                ]
-                              )
-                            : _vm._e(),
-                          _vm._v(" "),
-                          _vm.$auth.can("users.destroy") || _vm.$auth.isAdmin()
-                            ? _c(
-                                "v-tooltip",
-                                {
-                                  attrs: { bottom: "" },
-                                  scopedSlots: _vm._u(
-                                    [
-                                      {
-                                        key: "activator",
-                                        fn: function(ref) {
-                                          var on = ref.on
-                                          return [
-                                            _c(
-                                              "v-btn",
-                                              _vm._g(
-                                                {
-                                                  attrs: {
-                                                    color: "error",
-                                                    fab: "",
-                                                    small: ""
-                                                  },
-                                                  on: {
-                                                    click: function($event) {
-                                                      return _vm.deleteData(
-                                                        props.item
-                                                      )
-                                                    }
-                                                  }
-                                                },
-                                                on
-                                              ),
-                                              [
-                                                _c("v-icon", [
-                                                  _vm._v(
-                                                    "$vuetify.icons.delete"
-                                                  )
-                                                ])
-                                              ],
-                                              1
-                                            )
-                                          ]
-                                        }
-                                      }
-                                    ],
-                                    null,
-                                    true
-                                  )
-                                },
-                                [
-                                  _vm._v(" "),
-                                  _c("span", [_vm._v("Cambiar estado")])
-                                ]
-                              )
-                            : _vm._e()
-                        ],
-                        1
-                      )
-                    ]
-                  }
-                }
-              ])
-            },
+            "v-flex",
+            { attrs: { row: "" } },
             [
-              _c("v-progress-linear", {
-                attrs: { color: "error", indeterminate: "" },
-                scopedSlots: _vm._u([
-                  {
-                    key: "progress",
-                    fn: function() {
-                      return undefined
+              _c(
+                "v-col",
+                { attrs: { sm: "12", md: "5" } },
+                [
+                  _c("v-text-field", {
+                    attrs: {
+                      shaped: "",
+                      filled: "",
+                      label: "Buscar",
+                      "prepend-inner-icon": "mdi-magnify"
+                    }
+                  })
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c("v-spacer"),
+              _vm._v(" "),
+              _c(
+                "v-col",
+                { attrs: { sm: "12", md: "2" } },
+                [
+                  _c("v-select", {
+                    attrs: {
+                      items: _vm.RowsPerPageItems,
+                      filled: "",
+                      label: "Mostrar",
+                      dense: "",
+                      shaped: ""
                     },
-                    proxy: true
-                  }
-                ])
-              }),
-              _vm._v(" "),
-              _vm._v(" "),
-              _c("v-data-footer", {
-                attrs: {
-                  "rows-per-page-items": _vm.RowsPerPageItems,
-                  "rows-per-page-text": "Mostrar"
-                }
-              })
+                    model: {
+                      value: _vm.perPage,
+                      callback: function($$v) {
+                        _vm.perPage = $$v
+                      },
+                      expression: "perPage"
+                    }
+                  })
+                ],
+                1
+              )
             ],
             1
           ),

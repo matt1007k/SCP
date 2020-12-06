@@ -23,6 +23,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ["color", "icon", "label", "total"]
 });
@@ -180,6 +184,9 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
+//
+//
+//
 //
 //
 //
@@ -779,23 +786,29 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("v-card", [
-    _c("div", { staticClass: "d-flex" }, [
-      _c(
-        "div",
-        { staticClass: "d-flex justify-center w-30", class: _vm.color },
-        [
-          _c("v-icon", { attrs: { dark: "", medium: "" } }, [
-            _vm._v(_vm._s(_vm.icon))
-          ])
-        ],
-        1
-      ),
-      _vm._v(" "),
-      _c("div", { staticClass: "padding-small w-70" }, [
-        _c("span", { staticClass: "title" }, [_vm._v(_vm._s(_vm.total))]),
+  return _c("v-card", { staticClass: "rounded-xl" }, [
+    _c("div", { staticClass: "pa-8" }, [
+      _c("div", { staticClass: "d-flex align-center" }, [
+        _c(
+          "div",
+          { staticClass: "rounded py-1 px-2", class: _vm.color },
+          [
+            _c("v-icon", { attrs: { dark: "", medium: "" } }, [
+              _vm._v(_vm._s(_vm.icon))
+            ])
+          ],
+          1
+        ),
         _vm._v(" "),
-        _c("div", { staticClass: "body-2" }, [_vm._v(_vm._s(_vm.label))])
+        _c("div", { staticClass: "body-1 ml-2 text--secondary" }, [
+          _vm._v(_vm._s(_vm.label))
+        ])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "pt-4" }, [
+        _c("span", { staticClass: "display-1 font-weight-bold" }, [
+          _vm._v("\n        " + _vm._s(_vm.total) + " \n      ")
+        ])
       ])
     ])
   ])
@@ -832,8 +845,12 @@ var render = function() {
         [
           _vm.$auth.can("admin.index") || _vm.$auth.isAdmin()
             ? _c("v-flex", { attrs: { xs12: "" } }, [
-                _c("span", { staticClass: "headline" }, [
-                  _vm._v("Tablero de resumenes")
+                _c("div", { staticClass: "headline" }, [
+                  _vm._v("Hola " + _vm._s(_vm.$auth.user.user.name) + ",")
+                ]),
+                _vm._v(" "),
+                _c("span", { staticClass: "display-2 font-weight-bold" }, [
+                  _vm._v("Bienvenido")
                 ])
               ])
             : _c(
@@ -861,7 +878,7 @@ var render = function() {
             _vm._l(_vm.count_items, function(item, index) {
               return _c(
                 "v-flex",
-                { key: index, attrs: { xs12: "", sm4: "", md3: "" } },
+                { key: index, attrs: { xs12: "", sm6: "", md3: "" } },
                 [
                   _c("count-item", {
                     attrs: {
@@ -892,18 +909,26 @@ var render = function() {
                       [
                         _c(
                           "v-card",
-                          { staticClass: "rounded-xl" },
+                          { staticClass: "rounded-xl pa-6 mt-5" },
                           [
                             _c(
                               "v-list",
                               [
-                                _c("v-subheader", [
-                                  _c("h2", [
+                                _c(
+                                  "div",
+                                  { staticClass: "headline font-weight-bold" },
+                                  [_vm._v("Constancias Entregadas")]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "div",
+                                  { staticClass: "body-1 text--secondary" },
+                                  [
                                     _vm._v(
                                       "Cantidad de constancias de pago entregadas por usuario"
                                     )
-                                  ])
-                                ]),
+                                  ]
+                                ),
                                 _vm._v(" "),
                                 _vm._l(_vm.dataConstanciasByUsers, function(
                                   user
@@ -1031,6 +1056,7 @@ var render = function() {
                   _vm.$auth.isAdmin()
                     ? _c(
                         "v-card",
+                        { staticClass: "rounded-xl pa-6 mt-5" },
                         [
                           _c(
                             "v-card-title",
@@ -1092,6 +1118,9 @@ var render = function() {
                                     [
                                       _c("v-select", {
                                         attrs: {
+                                          dense: "",
+                                          filled: "",
+                                          shaped: "",
                                           items: _vm.items,
                                           "item-text": "anio",
                                           "item-value": "anio",
@@ -1143,6 +1172,7 @@ var render = function() {
                 [
                   _c(
                     "v-card",
+                    { staticClass: "rounded-xl pa-6 mt-5" },
                     [
                       _c(
                         "v-card-text",
@@ -1169,6 +1199,7 @@ var render = function() {
                 [
                   _c(
                     "v-card",
+                    { staticClass: "rounded-xl pa-6 mt-5" },
                     [
                       _c(
                         "v-card-text",

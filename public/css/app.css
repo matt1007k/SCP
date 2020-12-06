@@ -325,7 +325,7 @@
 }
 
 .text-secondary {
-  color: #006db3;
+  color: #6c5dd3;
 }
 
 .bg-primary {
@@ -337,7 +337,7 @@
 }
 
 .bg-secondary {
-  background: #006db3;
+  background: #6c5dd3;
 }
 
 .mdc-fz-2 {
@@ -628,6 +628,10 @@
   color: #fff;
 }
 
+.bg-header {
+  background: linear-gradient(45deg, #6c5dd3, #1773ee);
+}
+
 .btn {
   padding: 1rem 1.5rem;
   border-radius: 8px;
@@ -714,6 +718,10 @@
   width: 300px;
 }
 
+.auth__wrapper .auth__form form label {
+  font-size: 14px;
+}
+
 .auth__wrapper .auth__form form .auth__actions {
   display: flex;
   justify-content: flex-end;
@@ -753,6 +761,27 @@
   .auth__wrapper .auth__content img {
     width: 288px;
   }
+}
+
+.header-page {
+  overflow: hidden;
+  position: relative;
+}
+
+.header-img {
+  position: absolute;
+  bottom: -20%;
+  right: 5%;
+  width: 250px;
+  height: auto;
+  background: #fff;
+  padding: 15px 5px;
+  border-radius: 50%;
+}
+
+.header-img img {
+  width: 100%;
+  height: 100%;
 }
 
 * {

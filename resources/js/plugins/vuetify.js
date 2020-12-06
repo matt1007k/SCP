@@ -7,7 +7,7 @@ import mdi_icons from "./mdi-icons";
 Vue.use(Vuetify);
 const opts = {
     theme: {
-        dark: true,
+        dark: false,
         themes: {
             light: {
                 primary: "#01579B",
