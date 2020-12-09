@@ -525,6 +525,61 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -539,15 +594,11 @@ __webpack_require__.r(__webpack_exports__);
       loading: false,
       loadingData: false,
       pagination: {},
+      page: 1,
       RowsPerPageItems: [10, 15, 25],
       perPage: 10,
       selected: [],
       headers: [{
-        text: "DNI",
-        align: "left",
-        sortable: false,
-        value: "dni"
-      }, {
         text: "Nombre completo",
         value: "name"
       }, {
@@ -559,6 +610,9 @@ __webpack_require__.r(__webpack_exports__);
       }, {
         text: "Estado",
         value: "estado"
+      }, {
+        text: "Acciones",
+        value: "acciones"
       }],
       usuarios: []
     };
@@ -1375,21 +1429,22 @@ var render = function() {
           _c("v-flex", { attrs: { xs12: "" } }, [
             _c(
               "div",
-              {
-                staticClass:
-                  "py-10 px-6 rounded-xl header-page relative bg-header d-flex justify-between"
-              },
+              { staticClass: "py-10 px-6 rounded-xl header-page bg-header" },
               [
                 _c("div", { staticClass: "d-flex flex-column" }, [
                   _c(
                     "div",
                     { staticClass: "display-2 font-weight-bold text-white" },
-                    [_vm._v("Usuarios")]
+                    [
+                      _vm._v(
+                        "\n                        Usuarios\n                    "
+                      )
+                    ]
                   ),
                   _vm._v(" "),
                   _c("div", { staticClass: "text-white body-1 mb-5" }, [
                     _vm._v(
-                      "Administra los usuarios que ingresen en el sistema."
+                      "\n                        Administra los usuarios que ingresen en el sistema.\n                    "
                     )
                   ]),
                   _vm._v(" "),
@@ -1411,7 +1466,9 @@ var render = function() {
                             },
                             [
                               _c("v-icon", [_vm._v("$vuetify.icons.add")]),
-                              _vm._v("Agregar Usuario\n              ")
+                              _vm._v(
+                                "Agregar\n                            Usuario\n                        "
+                              )
                             ],
                             1
                           )
@@ -1492,18 +1549,263 @@ var render = function() {
             1
           ),
           _vm._v(" "),
+          _c("table", { staticClass: "table" }, [
+            _c(
+              "thead",
+              {
+                class:
+                  "" +
+                  (_vm.$vuetify.theme.dark ? "secondary" : "grey lighten-4")
+              },
+              [
+                _c(
+                  "tr",
+                  _vm._l(_vm.headers, function(header, i) {
+                    return _c("td", { key: i }, [
+                      _vm._v(
+                        "\n                        " +
+                          _vm._s(header.text) +
+                          "\n                    "
+                      )
+                    ])
+                  }),
+                  0
+                )
+              ]
+            ),
+            _vm._v(" "),
+            _c(
+              "tbody",
+              _vm._l(_vm.usuarios, function(user) {
+                return _c(
+                  "tr",
+                  { key: user.id },
+                  [
+                    _c("td", [
+                      _c("p", { staticClass: "mb-0" }, [
+                        _vm._v(
+                          "\n                            " +
+                            _vm._s(user.name) +
+                            "\n                        "
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("p", { staticClass: "text--secondary text--small" }, [
+                        _vm._v(
+                          "\n                            DNI " +
+                            _vm._s(user.dni) +
+                            "\n                        "
+                        )
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(user.email))]),
+                    _vm._v(" "),
+                    user.roles.length > 0
+                      ? [
+                          _c(
+                            "td",
+                            _vm._l(user.roles, function(rol, index) {
+                              return _c(
+                                "v-chip",
+                                {
+                                  key: index,
+                                  staticClass: "text-capitalize",
+                                  attrs: {
+                                    "text-color": "white",
+                                    color: "info",
+                                    small: ""
+                                  }
+                                },
+                                [_vm._v(_vm._s(rol.name))]
+                              )
+                            }),
+                            1
+                          )
+                        ]
+                      : [
+                          _c("td", { staticClass: "text-xs-center" }, [
+                            _vm._v("N/A")
+                          ])
+                        ],
+                    _vm._v(" "),
+                    user.estado === "activo"
+                      ? [
+                          _c(
+                            "td",
+                            [
+                              _c(
+                                "v-chip",
+                                {
+                                  staticClass: "text-capitalize",
+                                  attrs: {
+                                    "text-color": "white",
+                                    color: "success",
+                                    small: ""
+                                  }
+                                },
+                                [_vm._v(_vm._s(user.estado))]
+                              )
+                            ],
+                            1
+                          )
+                        ]
+                      : _vm._e(),
+                    _vm._v(" "),
+                    user.estado === "inactivo"
+                      ? [
+                          _c(
+                            "td",
+                            [
+                              _c(
+                                "v-chip",
+                                {
+                                  staticClass: "text-capitalize",
+                                  attrs: {
+                                    "text-color": "white",
+                                    color: "error",
+                                    small: ""
+                                  }
+                                },
+                                [_vm._v(_vm._s(user.estado))]
+                              )
+                            ],
+                            1
+                          )
+                        ]
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _c(
+                      "td",
+                      [
+                        _vm.$auth.can("users.edit") || _vm.$auth.isAdmin()
+                          ? _c(
+                              "v-tooltip",
+                              {
+                                attrs: { bottom: "" },
+                                scopedSlots: _vm._u(
+                                  [
+                                    {
+                                      key: "activator",
+                                      fn: function(ref) {
+                                        var on = ref.on
+                                        return [
+                                          _c(
+                                            "v-btn",
+                                            _vm._g(
+                                              {
+                                                attrs: {
+                                                  color: "info",
+                                                  fab: "",
+                                                  "x-small": ""
+                                                },
+                                                on: {
+                                                  click: function($event) {
+                                                    return _vm.modalEditar(user)
+                                                  }
+                                                }
+                                              },
+                                              on
+                                            ),
+                                            [
+                                              _c("v-icon", [
+                                                _vm._v("$vuetify.icons.edit")
+                                              ])
+                                            ],
+                                            1
+                                          )
+                                        ]
+                                      }
+                                    }
+                                  ],
+                                  null,
+                                  true
+                                )
+                              },
+                              [
+                                _vm._v(" "),
+                                _c("span", [_vm._v("Editar registro")])
+                              ]
+                            )
+                          : _vm._e(),
+                        _vm._v(" "),
+                        _vm.$auth.can("users.destroy") || _vm.$auth.isAdmin()
+                          ? _c(
+                              "v-tooltip",
+                              {
+                                attrs: { bottom: "" },
+                                scopedSlots: _vm._u(
+                                  [
+                                    {
+                                      key: "activator",
+                                      fn: function(ref) {
+                                        var on = ref.on
+                                        return [
+                                          _c(
+                                            "v-btn",
+                                            _vm._g(
+                                              {
+                                                attrs: {
+                                                  color: "error",
+                                                  fab: "",
+                                                  "x-small": ""
+                                                },
+                                                on: {
+                                                  click: function($event) {
+                                                    return _vm.deleteData(user)
+                                                  }
+                                                }
+                                              },
+                                              on
+                                            ),
+                                            [
+                                              _c("v-icon", [
+                                                _vm._v("$vuetify.icons.delete")
+                                              ])
+                                            ],
+                                            1
+                                          )
+                                        ]
+                                      }
+                                    }
+                                  ],
+                                  null,
+                                  true
+                                )
+                              },
+                              [
+                                _vm._v(" "),
+                                _c("span", [_vm._v("Cambiar estado")])
+                              ]
+                            )
+                          : _vm._e()
+                      ],
+                      1
+                    )
+                  ],
+                  2
+                )
+              }),
+              0
+            )
+          ]),
+          _vm._v(" "),
           _c(
             "div",
-            { staticClass: "text-xs-center pt-2" },
+            { staticClass: "d-flex justify-between align-center" },
             [
+              _c("p", { staticClass: "caption mb-0" }, [
+                _vm._v("Mostrando 1 al 10 de 57 registros")
+              ]),
+              _vm._v(" "),
               _c("v-pagination", {
-                attrs: { length: _vm.pages },
+                attrs: { length: 15, "total-visible": 7, color: "primary" },
                 model: {
-                  value: _vm.pagination.page,
+                  value: _vm.page,
                   callback: function($$v) {
-                    _vm.$set(_vm.pagination, "page", $$v)
+                    _vm.page = $$v
                   },
-                  expression: "pagination.page"
+                  expression: "page"
                 }
               })
             ],

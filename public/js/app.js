@@ -70185,13 +70185,13 @@ var ParentComponent = {
   }, {
     path: "/admin",
     component: function component() {
-      return Promise.all(/*! import() */[__webpack_require__.e(28), __webpack_require__.e(6)]).then(__webpack_require__.bind(null, /*! ./components/layout/LayoutAdmin.vue */ "./resources/js/components/layout/LayoutAdmin.vue"));
+      return Promise.all(/*! import() */[__webpack_require__.e(2), __webpack_require__.e(5)]).then(__webpack_require__.bind(null, /*! ./components/layout/LayoutAdmin.vue */ "./resources/js/components/layout/LayoutAdmin.vue"));
     },
     children: [{
       path: "",
       name: "admin",
       component: function component() {
-        return Promise.all(/*! import() */[__webpack_require__.e(1), __webpack_require__.e(4), __webpack_require__.e(5)]).then(__webpack_require__.bind(null, /*! ./views/admin/Dashboard.vue */ "./resources/js/views/admin/Dashboard.vue"));
+        return Promise.all(/*! import() */[__webpack_require__.e(1), __webpack_require__.e(4), __webpack_require__.e(6)]).then(__webpack_require__.bind(null, /*! ./views/admin/Dashboard.vue */ "./resources/js/views/admin/Dashboard.vue"));
       }
     }, {
       path: "perfil",
@@ -70236,7 +70236,7 @@ var ParentComponent = {
       path: "historiales",
       name: "historiales",
       component: function component() {
-        return Promise.all(/*! import() */[__webpack_require__.e(28), __webpack_require__.e(8)]).then(__webpack_require__.bind(null, /*! ./views/admin/Historiales.vue */ "./resources/js/views/admin/Historiales.vue"));
+        return Promise.all(/*! import() */[__webpack_require__.e(2), __webpack_require__.e(8)]).then(__webpack_require__.bind(null, /*! ./views/admin/Historiales.vue */ "./resources/js/views/admin/Historiales.vue"));
       }
     }, {
       path: "pagos",

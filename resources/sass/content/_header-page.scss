@@ -1,18 +1,30 @@
 .header-page {
     overflow: hidden;
-    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: column;
 }
 .header-img {
-    position: absolute;
-    bottom: -20%;
-    right: 5%;
-    width: 250px;
+    width: 255px;
     height: auto;
     background: #fff;
     padding: 15px 5px;
     border-radius: 50%;
+    margin-top: 1rem;
+    margin-bottom: -5.2rem;
     img {
         width: 100%;
         height: 100%;
+    }
+}
+@include tablet {
+    .header-page {
+        flex-direction: row;
+    }
+    .header-img {
+        width: 255px;
+        margin-top: -2rem;
+        margin-bottom: -6.2rem;
     }
 }
