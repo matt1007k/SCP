@@ -10,8 +10,8 @@ const opts = {
         dark: false,
         themes: {
             light: {
-                primary: "#01579B",
-                secondary: "#ee44aa",
+                primary: colors.lightBlue.darken1,
+                secondary: colors.grey.lighten2,
                 accent: "#82B1FF",
                 error: "#FF5252",
                 info: "#2196F3",
@@ -20,7 +20,6 @@ const opts = {
             },
             dark:{
                 primary: colors.lightBlue.darken1
-                
             },
         }
     },

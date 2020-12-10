@@ -110,6 +110,58 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     value: Boolean
@@ -730,7 +782,7 @@ var render = function() {
           }
         },
         [
-          _c("v-card", [
+          _c("v-card", { staticClass: "rounded-xl pa-4" }, [
             _c(
               "form",
               {
@@ -744,13 +796,10 @@ var render = function() {
               [
                 _c(
                   "v-card-title",
-                  {
-                    staticClass: "blue-grey darken-2 white--text",
-                    attrs: { wrap: "" }
-                  },
+                  { attrs: { wrap: "" } },
                   [
                     _c("v-flex", { attrs: { xs11: "" } }, [
-                      _c("span", { staticClass: "headline" }, [
+                      _c("span", { staticClass: "h6 font-weight-bold" }, [
                         _vm._v("Registrar usuario")
                       ])
                     ]),
@@ -762,7 +811,12 @@ var render = function() {
                         _c(
                           "v-btn",
                           {
-                            attrs: { color: "error" },
+                            class:
+                              "" +
+                              (_vm.$vuetify.theme.dark
+                                ? "white--text"
+                                : "black--text"),
+                            attrs: { color: "secondary", fab: "", small: "" },
                             on: {
                               click: function($event) {
                                 return _vm.close()
@@ -798,6 +852,8 @@ var render = function() {
                                   attrs: {
                                     label: "Nombre completo",
                                     required: "",
+                                    filled: "",
+                                    shaped: "",
                                     "error-messages": _vm.errors.name
                                   },
                                   model: {
@@ -820,6 +876,8 @@ var render = function() {
                                   attrs: {
                                     label: "El DNI",
                                     required: "",
+                                    filled: "",
+                                    shaped: "",
                                     maxlength: "8",
                                     "error-messages": _vm.errors.dni
                                   },
@@ -843,6 +901,8 @@ var render = function() {
                                   attrs: {
                                     label: "Correo Electrónico",
                                     required: "",
+                                    filled: "",
+                                    shaped: "",
                                     "error-messages": _vm.errors.email
                                   },
                                   model: {
@@ -865,6 +925,8 @@ var render = function() {
                                   attrs: {
                                     label: "Contraseña",
                                     required: "",
+                                    filled: "",
+                                    shaped: "",
                                     type: "password",
                                     "error-messages": _vm.errors.password
                                   },
@@ -946,7 +1008,9 @@ var render = function() {
                                     "return-object": "",
                                     chips: "",
                                     label: "Roles",
-                                    multiple: ""
+                                    multiple: "",
+                                    shaped: "",
+                                    filled: ""
                                   },
                                   model: {
                                     value: _vm.form.roles,
@@ -975,7 +1039,9 @@ var render = function() {
                                     "return-object": "",
                                     chips: "",
                                     label: "Permisos",
-                                    multiple: ""
+                                    multiple: "",
+                                    filled: "",
+                                    shaped: ""
                                   },
                                   model: {
                                     value: _vm.form.permissions,
@@ -1008,7 +1074,13 @@ var render = function() {
                     _c(
                       "v-btn",
                       {
-                        attrs: { text: "", color: "error" },
+                        staticClass: "rounded-lg",
+                        class:
+                          "" +
+                          (_vm.$vuetify.theme.dark
+                            ? "white--text"
+                            : "black--text"),
+                        attrs: { color: "secondary" },
                         on: {
                           click: function($event) {
                             return _vm.close()
@@ -1020,7 +1092,10 @@ var render = function() {
                     _vm._v(" "),
                     _c(
                       "v-btn",
-                      { attrs: { color: "success", type: "submit" } },
+                      {
+                        staticClass: "rounded-lg",
+                        attrs: { color: "primary", type: "submit" }
+                      },
                       [_vm._v("Guardar")]
                     )
                   ],

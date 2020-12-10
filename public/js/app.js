@@ -70124,8 +70124,8 @@ var opts = {
     dark: false,
     themes: {
       light: {
-        primary: "#01579B",
-        secondary: "#ee44aa",
+        primary: vuetify_lib_util_colors__WEBPACK_IMPORTED_MODULE_3__["default"].lightBlue.darken1,
+        secondary: vuetify_lib_util_colors__WEBPACK_IMPORTED_MODULE_3__["default"].grey.lighten2,
         accent: "#82B1FF",
         error: "#FF5252",
         info: "#2196F3",
