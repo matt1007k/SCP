@@ -115,9 +115,7 @@ class UserController extends Controller
         ]);
         $user->name = $request->name;
         $user->dni = $request->dni;
-        if ($request->has('password')) {
-            $user->password = Hash::make($request->password);
-        }
+
         if ($user->save()) {
             return response()->json([
                 'updated' => true,
@@ -127,5 +125,21 @@ class UserController extends Controller
                 'updated' => false,
             ], 201);
         }
+    }
+
+    public function passwordReset(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+
+        $request->validate([
+            'password' => ['required', 'string', 'min:3', 'confirmed'],
+        ]);
+        $user->update([
+            'password' => Hash::make(request('password')),
+        ]);
+
+        return response()->json([
+            'updated' => true,
+        ], 201);
     }
 }

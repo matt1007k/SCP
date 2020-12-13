@@ -74,15 +74,17 @@
                                             $auth.isAdmin()
                                     "
                                 >
-                                    <v-btn
-                                        color="info"
-                                        fab
-                                        small
-                                        slot="activator"
-                                        @click="viewPDF(historial)"
-                                    >
-                                        <v-icon>$vuetify.icons.file</v-icon>
-                                    </v-btn>
+                                    <template v-slot:activator="{ on }">
+                                        <v-btn
+                                            color="info"
+                                            fab
+                                            x-small
+                                            v-on="on"
+                                            @click="viewPDF(historial)"
+                                        >
+                                            <v-icon>$vuetify.icons.file</v-icon>
+                                        </v-btn>
+                                    </template>
                                     <span>Ver constancia</span>
                                 </v-tooltip>
                                 <v-tooltip
@@ -93,15 +95,19 @@
                                             historial.estado === 'creado'
                                     "
                                 >
-                                    <v-btn
-                                        color="error"
-                                        fab
-                                        small
-                                        slot="activator"
-                                        @click="deleteData(historial)"
-                                    >
-                                        <v-icon>$vuetify.icons.delete</v-icon>
-                                    </v-btn>
+                                    <template v-slot:activator="{ on }">
+                                        <v-btn
+                                            color="error"
+                                            fab
+                                            x-small
+                                            v-on="on"
+                                            @click="deleteData(historial)"
+                                        >
+                                            <v-icon
+                                                >$vuetify.icons.delete</v-icon
+                                            >
+                                        </v-btn>
+                                    </template>
                                     <span>Eliminar historial</span>
                                 </v-tooltip>
                                 <v-tooltip
@@ -111,15 +117,17 @@
                                             historial.dni_user
                                     "
                                 >
-                                    <v-btn
-                                        color="primary"
-                                        fab
-                                        small
-                                        slot="activator"
-                                        @click="certificadoEdit(historial)"
-                                    >
-                                        <v-icon>$vuetify.icons.edit</v-icon>
-                                    </v-btn>
+                                    <template v-slot:activator="{ on }">
+                                        <v-btn
+                                            color="primary"
+                                            fab
+                                            x-small
+                                            v-on="on"
+                                            @click="certificadoEdit(historial)"
+                                        >
+                                            <v-icon>$vuetify.icons.edit</v-icon>
+                                        </v-btn>
+                                    </template>
                                     <span>Editar certificado</span>
                                 </v-tooltip>
                             </td>
@@ -177,6 +185,9 @@ export default {
                 { text: "DNI del responsable" },
                 {
                     text: "Fecha de entrega"
+                },
+                {
+                    text: "Tipo"
                 },
                 { text: "Acciones" }
             ],

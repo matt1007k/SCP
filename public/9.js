@@ -278,6 +278,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -306,6 +314,8 @@ __webpack_require__.r(__webpack_exports__);
         text: "DNI del responsable"
       }, {
         text: "Fecha de entrega"
+      }, {
+        text: "Tipo"
       }, {
         text: "Acciones"
       }],
@@ -1156,35 +1166,57 @@ var render = function() {
                                   _vm.$auth.isAdmin()
                                     ? _c(
                                         "v-tooltip",
-                                        { attrs: { bottom: "" } },
-                                        [
-                                          _c(
-                                            "v-btn",
-                                            {
-                                              attrs: {
-                                                slot: "activator",
-                                                color: "info",
-                                                fab: "",
-                                                small: ""
-                                              },
-                                              on: {
-                                                click: function($event) {
-                                                  return _vm.viewPDF(historial)
-                                                }
-                                              },
-                                              slot: "activator"
-                                            },
+                                        {
+                                          attrs: { bottom: "" },
+                                          scopedSlots: _vm._u(
                                             [
-                                              _c("v-icon", [
-                                                _vm._v("$vuetify.icons.file")
-                                              ])
+                                              {
+                                                key: "activator",
+                                                fn: function(ref) {
+                                                  var on = ref.on
+                                                  return [
+                                                    _c(
+                                                      "v-btn",
+                                                      _vm._g(
+                                                        {
+                                                          attrs: {
+                                                            color: "info",
+                                                            fab: "",
+                                                            "x-small": ""
+                                                          },
+                                                          on: {
+                                                            click: function(
+                                                              $event
+                                                            ) {
+                                                              return _vm.viewPDF(
+                                                                historial
+                                                              )
+                                                            }
+                                                          }
+                                                        },
+                                                        on
+                                                      ),
+                                                      [
+                                                        _c("v-icon", [
+                                                          _vm._v(
+                                                            "$vuetify.icons.file"
+                                                          )
+                                                        ])
+                                                      ],
+                                                      1
+                                                    )
+                                                  ]
+                                                }
+                                              }
                                             ],
-                                            1
-                                          ),
+                                            null,
+                                            true
+                                          )
+                                        },
+                                        [
                                           _vm._v(" "),
                                           _c("span", [_vm._v("Ver constancia")])
-                                        ],
-                                        1
+                                        ]
                                       )
                                     : _vm._e(),
                                   _vm._v(" "),
@@ -1193,78 +1225,118 @@ var render = function() {
                                   historial.estado === "creado"
                                     ? _c(
                                         "v-tooltip",
-                                        { attrs: { bottom: "" } },
-                                        [
-                                          _c(
-                                            "v-btn",
-                                            {
-                                              attrs: {
-                                                slot: "activator",
-                                                color: "error",
-                                                fab: "",
-                                                small: ""
-                                              },
-                                              on: {
-                                                click: function($event) {
-                                                  return _vm.deleteData(
-                                                    historial
-                                                  )
-                                                }
-                                              },
-                                              slot: "activator"
-                                            },
+                                        {
+                                          attrs: { bottom: "" },
+                                          scopedSlots: _vm._u(
                                             [
-                                              _c("v-icon", [
-                                                _vm._v("$vuetify.icons.delete")
-                                              ])
+                                              {
+                                                key: "activator",
+                                                fn: function(ref) {
+                                                  var on = ref.on
+                                                  return [
+                                                    _c(
+                                                      "v-btn",
+                                                      _vm._g(
+                                                        {
+                                                          attrs: {
+                                                            color: "error",
+                                                            fab: "",
+                                                            "x-small": ""
+                                                          },
+                                                          on: {
+                                                            click: function(
+                                                              $event
+                                                            ) {
+                                                              return _vm.deleteData(
+                                                                historial
+                                                              )
+                                                            }
+                                                          }
+                                                        },
+                                                        on
+                                                      ),
+                                                      [
+                                                        _c("v-icon", [
+                                                          _vm._v(
+                                                            "$vuetify.icons.delete"
+                                                          )
+                                                        ])
+                                                      ],
+                                                      1
+                                                    )
+                                                  ]
+                                                }
+                                              }
                                             ],
-                                            1
-                                          ),
+                                            null,
+                                            true
+                                          )
+                                        },
+                                        [
                                           _vm._v(" "),
                                           _c("span", [
                                             _vm._v("Eliminar historial")
                                           ])
-                                        ],
-                                        1
+                                        ]
                                       )
                                     : _vm._e(),
                                   _vm._v(" "),
                                   _vm.$auth.user.user.dni == historial.dni_user
                                     ? _c(
                                         "v-tooltip",
-                                        { attrs: { bottom: "" } },
-                                        [
-                                          _c(
-                                            "v-btn",
-                                            {
-                                              attrs: {
-                                                slot: "activator",
-                                                color: "primary",
-                                                fab: "",
-                                                small: ""
-                                              },
-                                              on: {
-                                                click: function($event) {
-                                                  return _vm.certificadoEdit(
-                                                    historial
-                                                  )
-                                                }
-                                              },
-                                              slot: "activator"
-                                            },
+                                        {
+                                          attrs: { bottom: "" },
+                                          scopedSlots: _vm._u(
                                             [
-                                              _c("v-icon", [
-                                                _vm._v("$vuetify.icons.edit")
-                                              ])
+                                              {
+                                                key: "activator",
+                                                fn: function(ref) {
+                                                  var on = ref.on
+                                                  return [
+                                                    _c(
+                                                      "v-btn",
+                                                      _vm._g(
+                                                        {
+                                                          attrs: {
+                                                            color: "primary",
+                                                            fab: "",
+                                                            "x-small": ""
+                                                          },
+                                                          on: {
+                                                            click: function(
+                                                              $event
+                                                            ) {
+                                                              return _vm.certificadoEdit(
+                                                                historial
+                                                              )
+                                                            }
+                                                          }
+                                                        },
+                                                        on
+                                                      ),
+                                                      [
+                                                        _c("v-icon", [
+                                                          _vm._v(
+                                                            "$vuetify.icons.edit"
+                                                          )
+                                                        ])
+                                                      ],
+                                                      1
+                                                    )
+                                                  ]
+                                                }
+                                              }
                                             ],
-                                            1
-                                          ),
+                                            null,
+                                            true
+                                          )
+                                        },
+                                        [
                                           _vm._v(" "),
                                           _c("span", [
                                             _vm._v("Editar certificado")
                                           ])
-                                        ],
-                                        1
+                                        ]
                                       )
                                     : _vm._e()
                                 ],

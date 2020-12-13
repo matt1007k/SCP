@@ -3,7 +3,7 @@
         <v-dialog v-model="open" persistent small width="500px">
             <card>
                 <form @submit.prevent="Submit">
-                    <modal-header title="Editar pefil">
+                    <modal-header title="Cambiar contraseña">
                         <template v-slot:close>
                             <btn-secondary
                                 :onClick="close"
@@ -21,34 +21,25 @@
                             <v-layout wrap>
                                 <v-flex xs12>
                                     <v-text-field
-                                        label="Nombre completo"
+                                        label="Nueva contraseña"
                                         filled
                                         shaped
                                         required
-                                        v-model="form.name"
-                                        :error-messages="errors.name"
+                                        type="password"
+                                        v-model="form.password"
+                                        :error-messages="errors.password"
                                     ></v-text-field>
                                 </v-flex>
                                 <v-flex xs12>
                                     <v-text-field
-                                        label="El DNI"
+                                        label="Repetir contraseña"
                                         filled
                                         shaped
-                                        required
-                                        maxlength="8"
-                                        v-model="form.dni"
-                                        :error-messages="errors.dni"
-                                    ></v-text-field>
-                                </v-flex>
-                                <v-flex xs12>
-                                    <v-text-field
-                                        label="Correo Electrónico"
-                                        filled
-                                        shaped
-                                        required
-                                        type="email"
-                                        v-model="form.email"
-                                        :error-messages="errors.email"
+                                        type="password"
+                                        v-model="form.password_confirmation"
+                                        :error-messages="
+                                            errors.password_confirmation
+                                        "
                                     ></v-text-field>
                                 </v-flex>
                             </v-layout>
@@ -58,7 +49,7 @@
                         <v-spacer></v-spacer>
                         <btn-secondary :onClick="close">Cancelar</btn-secondary>
                         <v-btn class="rounded-lg" color="primary" type="submit"
-                            >Editar</v-btn
+                            >Cambiar</v-btn
                         >
                     </v-card-actions>
                 </form>
@@ -73,17 +64,15 @@ export default {
         open: false,
         form: {
             id: "",
-            name: "",
-            dni: "",
-            email: "",
-            password: ""
+            password: "",
+            password_confirmation: ""
         },
         errors: {}
     }),
     methods: {
         Submit() {
             axios
-                .put(`/usuario/${this.form.id}`, this.form)
+                .put(`/password-reset/${this.form.id}`, this.form)
                 .then(res => {
                     this.resetInput();
                     this.$swal(
@@ -106,6 +95,7 @@ export default {
         },
         resetInput() {
             this.open = false;
+            this.form.new_password = "";
             this.form.password = "";
         }
     }

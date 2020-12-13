@@ -20,7 +20,7 @@ Route::get('/', function () {
     return redirect()->route('login');
 });
 
-Route::namespace('Admin')->group(function () {
+Route::namespace ('Admin')->group(function () {
     Route::redirect('/home', '/admin', 302);
 
     Route::get('/boleta/por-mes/{params_code}', 'ReporteController@byMesApi')->name('admin.reporte.bymesapi');
@@ -74,11 +74,11 @@ Route::namespace('Admin')->group(function () {
         Route::get('/reporte/por-anio/{params_code}', 'ReporteController@porAnio')->name('admin.reporte.poranio');
         Route::get('/reporte/por-mes/{params_code}', 'ReporteController@porMes')->name('admin.reporte.pormes');
 
-
         Route::get('/unread-notifications', 'DashboardController@getUnReadNotifications');
         Route::get('/mark-all-read', 'DashboardController@markAllNotifications');
 
         Route::get('/get-my-total-constancias', 'DashboardController@getMyTotalConstancias');
         Route::put('/usuario/{id}', 'UserController@editarAuth');
+        Route::put('/password-reset/{id}', 'UserController@passwordReset');
     });
 });

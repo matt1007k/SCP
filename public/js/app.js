@@ -70736,7 +70736,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _mdi_font_css_materialdesignicons_css__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_mdi_font_css_materialdesignicons_css__WEBPACK_IMPORTED_MODULE_5__);
 /* harmony import */ var _helpers_auth__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./helpers/auth */ "./resources/js/helpers/auth.js");
 /* harmony import */ var _mixins_pagination__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./mixins/pagination */ "./resources/js/mixins/pagination.js");
-/* harmony import */ var _plugins_global_components__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./plugins/global-components */ "./resources/js/plugins/global-components.js");
+/* harmony import */ var _mixins_utils__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./mixins/utils */ "./resources/js/mixins/utils.js");
+/* harmony import */ var _plugins_global_components__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./plugins/global-components */ "./resources/js/plugins/global-components.js");
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 
@@ -70746,6 +70747,7 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 
  // import "roboto-fontface/css/roboto/roboto-fontface.css";
+
 
 
 
@@ -71224,6 +71226,33 @@ var paginationMixin = {
   }
 };
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.mixin(paginationMixin);
+
+/***/ }),
+
+/***/ "./resources/js/mixins/utils.js":
+/*!**************************************!*\
+  !*** ./resources/js/mixins/utils.js ***!
+  \**************************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
+
+var utilsMixin = {
+  methods: {
+    getInitialName: function getInitialName(string) {
+      var initialArray = string.toString().split(" ");
+      var initials = initialArray.map(function (letter) {
+        return letter.substr(0, 1).toString();
+      });
+      return initials.join("");
+    }
+  }
+};
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.mixin(utilsMixin);
 
 /***/ }),
 

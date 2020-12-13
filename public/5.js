@@ -121,6 +121,43 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -135,13 +172,13 @@ __webpack_require__.r(__webpack_exports__);
       drawer: true,
       unreadNotifications: [],
       menuItems: [{
-        title: 'Perfil',
-        url: '/admin/perfil',
-        icon: 'mdi-account'
+        title: "Perfil",
+        url: "/admin/perfil",
+        icon: "mdi-account"
       }, {
-        title: 'Salir',
-        url: '/outline',
-        icon: 'mdi-exit-to-app'
+        title: "Salir",
+        url: "/outline",
+        icon: "mdi-exit-to-app"
       }]
     };
   },
@@ -296,6 +333,25 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
@@ -328,22 +384,17 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   created: function created() {
-    this.dark = localStorage.getItem('dark') ? true : false;
-    this.$vuetify.theme.dark = localStorage.getItem('dark') ? true : false;
-    console.log(localStorage.getItem('dark'));
+    this.dark = localStorage.getItem("dark") ? true : false;
+    this.$vuetify.theme.dark = localStorage.getItem("dark") ? true : false;
   },
   watch: {
     dark: function dark(inputValue) {
       if (inputValue) {
-        console.log('dark');
         this.$vuetify.theme.dark = inputValue;
-        localStorage.setItem('dark', inputValue.toString());
-        console.log(localStorage.getItem('dark'));
+        localStorage.setItem("dark", inputValue.toString());
       } else {
-        console.log('light');
         this.$vuetify.theme.dark = inputValue;
-        localStorage.removeItem('dark');
-        console.log(localStorage.getItem('dark'));
+        localStorage.removeItem("dark");
       }
     }
   }
@@ -407,7 +458,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* .v-list__tile--active {\n  border-right: 6px solid #01579b;\n} */\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* .v-list__tile--active {\n  border-right: 6px solid #01579b;\n} */\n", ""]);
 
 // exports
 
@@ -426,7 +477,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n.v-list .v-list-item--active, .v-list .v-list-item--active .v-icon{\n  color: #039be5 !important;\n}\n", ""]);
+exports.push([module.i, "\n.v-list .v-list-item--active,\n.v-list .v-list-item--active .v-icon {\n    color: #039be5 !important;\n}\n", ""]);
 
 // exports
 
@@ -908,15 +959,27 @@ var render = function() {
                   _c(
                     "v-list",
                     {
-                      staticClass: "scroll-y",
-                      staticStyle: { "max-height": "400px" }
+                      staticClass: "rounded-xl pa-3",
+                      staticStyle: { "max-height": "400px" },
+                      attrs: { dense: "" }
                     },
                     [
-                      _c("v-subheader", { staticClass: "indigo" }, [
-                        _c("h2", { staticClass: "text-white" }, [
-                          _vm._v("Notificaciones")
-                        ])
+                      _c("x-subheader", { staticClass: " rounded-xl" }, [
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "py-3 caption text-uppercase text--secondary"
+                          },
+                          [
+                            _vm._v(
+                              "\n                            Notificaciones\n                        "
+                            )
+                          ]
+                        )
                       ]),
+                      _vm._v(" "),
+                      _c("v-divider"),
                       _vm._v(" "),
                       _vm.unreadNotifications.length > 0
                         ? _vm._l(_vm.unreadNotifications, function(
@@ -926,11 +989,11 @@ var render = function() {
                               "v-list-item",
                               {
                                 key: notification.id,
+                                staticClass: "mt-3 py-3 rounded-lg scroll-y",
                                 class: {
                                   "text--secondary":
                                     notification.read_at == null
                                 },
-                                staticStyle: { padding: "8px 5px" },
                                 on: { click: _vm.markAsRead }
                               },
                               [
@@ -942,7 +1005,7 @@ var render = function() {
                                     ]),
                                     _vm._v(" "),
                                     _c(
-                                      "v-list-item-sub-title",
+                                      "v-list-item-subtitle",
                                       { staticClass: "text--secondary" },
                                       [
                                         _vm._v(
@@ -970,8 +1033,10 @@ var render = function() {
                                   "v-list-item-content",
                                   { staticClass: "px-3" },
                                   [
-                                    _c("v-list-item-sub-title", [
-                                      _vm._v("No tienes notificaciones")
+                                    _c("v-list-item-subtitle", [
+                                      _vm._v(
+                                        "No tienes\n                                    notificaciones"
+                                      )
                                     ])
                                   ],
                                   1
@@ -1006,16 +1071,30 @@ var render = function() {
                         return [
                           _c(
                             "v-list-item",
-                            _vm._g({ attrs: { "two-line": "" } }, on),
+                            _vm._g(
+                              { attrs: { "two-line": "", dense: "" } },
+                              on
+                            ),
                             [
-                              _c("v-list-item-avatar", [
-                                _c("img", {
-                                  attrs: {
-                                    src:
-                                      "https://randomuser.me/api/portraits/men/81.jpg"
-                                  }
-                                })
-                              ]),
+                              _c(
+                                "v-list-item-avatar",
+                                { attrs: { color: "primary" } },
+                                [
+                                  _c(
+                                    "span",
+                                    { staticClass: "white--text body-1" },
+                                    [
+                                      _vm._v(
+                                        _vm._s(
+                                          _vm.getInitialName(
+                                            _vm.$auth.user.user.name
+                                          )
+                                        )
+                                      )
+                                    ]
+                                  )
+                                ]
+                              ),
                               _vm._v(" "),
                               _c(
                                 "v-list-item-content",
@@ -1026,7 +1105,8 @@ var render = function() {
                                   _vm._v(" "),
                                   _c("v-list-item-subtitle", [
                                     _vm._v(
-                                      "DNI " + _vm._s(_vm.$auth.user.user.dni)
+                                      "DNI\n                                " +
+                                        _vm._s(_vm.$auth.user.user.dni)
                                     )
                                   ])
                                 ],
@@ -1167,12 +1247,10 @@ var render = function() {
             "v-list-item",
             { attrs: { "two-line": "" } },
             [
-              _c("v-list-item-avatar", [
-                _c("img", {
-                  attrs: {
-                    src: "https://randomuser.me/api/portraits/men/81.jpg"
-                  }
-                })
+              _c("v-list-item-avatar", { attrs: { color: "primary" } }, [
+                _c("span", { staticClass: "white--text body-1" }, [
+                  _vm._v(_vm._s(_vm.getInitialName(_vm.$auth.user.user.name)))
+                ])
               ]),
               _vm._v(" "),
               _c(
@@ -1208,7 +1286,7 @@ var render = function() {
                     }
                   }
                 },
-                [_vm._v("\n          Perfil\n        ")]
+                [_vm._v("\n                Perfil\n            ")]
               ),
               _vm._v(" "),
               _c("v-switch", {

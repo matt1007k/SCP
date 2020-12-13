@@ -11,6 +11,7 @@ import "@mdi/font/css/materialdesignicons.css";
 import Auth from "./helpers/auth";
 
 import "./mixins/pagination";
+import "./mixins/utils";
 
 import "./plugins/global-components";
 
