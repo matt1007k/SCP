@@ -2,8 +2,8 @@
 
 namespace App\Services;
 
-use App\Models\Pago;
 use App\Models\HaberDescuento;
+use App\Models\Pago;
 
 class ReportService
 {
@@ -24,7 +24,8 @@ class ReportService
 
     public function getDetalleByMes($tipo)
     {
-        $pagos = Pago::where('anio', $this->params->anio)->mes($this->params->mes)
+        $pagos = Pago::where('anio', $this->params->anio)
+            ->mes($this->params->mes)
             ->where('persona_id', $this->params->persona_id)
             ->get();
 
@@ -184,7 +185,6 @@ class ReportService
 
         return $count_items_this_month;
     }
-
 
     public function getNames($array)
     {

@@ -71388,13 +71388,13 @@ var ParentComponent = {
   }, {
     path: "/admin",
     component: function component() {
-      return Promise.all(/*! import() */[__webpack_require__.e(2), __webpack_require__.e(4)]).then(__webpack_require__.bind(null, /*! ./components/layout/LayoutAdmin.vue */ "./resources/js/components/layout/LayoutAdmin.vue"));
+      return Promise.all(/*! import() */[__webpack_require__.e(2), __webpack_require__.e(5)]).then(__webpack_require__.bind(null, /*! ./components/layout/LayoutAdmin.vue */ "./resources/js/components/layout/LayoutAdmin.vue"));
     },
     children: [{
       path: "",
       name: "admin",
       component: function component() {
-        return Promise.all(/*! import() */[__webpack_require__.e(1), __webpack_require__.e(2), __webpack_require__.e(27), __webpack_require__.e(5)]).then(__webpack_require__.bind(null, /*! ./views/admin/Dashboard.vue */ "./resources/js/views/admin/Dashboard.vue"));
+        return Promise.all(/*! import() */[__webpack_require__.e(1), __webpack_require__.e(2), __webpack_require__.e(27), __webpack_require__.e(6)]).then(__webpack_require__.bind(null, /*! ./views/admin/Dashboard.vue */ "./resources/js/views/admin/Dashboard.vue"));
       }
     }, {
       path: "perfil",
@@ -71412,7 +71412,7 @@ var ParentComponent = {
         titulo: "Usuarios"
       },
       component: function component() {
-        return __webpack_require__.e(/*! import() */ 12).then(__webpack_require__.bind(null, /*! ./views/admin/Usuarios.vue */ "./resources/js/views/admin/Usuarios.vue"));
+        return __webpack_require__.e(/*! import() */ 4).then(__webpack_require__.bind(null, /*! ./views/admin/Usuarios.vue */ "./resources/js/views/admin/Usuarios.vue"));
       }
     }, {
       path: "personas",
@@ -71421,25 +71421,25 @@ var ParentComponent = {
         titulo: "Personas"
       },
       component: function component() {
-        return __webpack_require__.e(/*! import() */ 6).then(__webpack_require__.bind(null, /*! ./views/admin/Personas.vue */ "./resources/js/views/admin/Personas.vue"));
+        return __webpack_require__.e(/*! import() */ 8).then(__webpack_require__.bind(null, /*! ./views/admin/Personas.vue */ "./resources/js/views/admin/Personas.vue"));
       }
     }, {
       path: "descuentos",
       name: "descuentos",
       component: function component() {
-        return __webpack_require__.e(/*! import() */ 8).then(__webpack_require__.bind(null, /*! ./views/admin/Descuentos.vue */ "./resources/js/views/admin/Descuentos.vue"));
+        return __webpack_require__.e(/*! import() */ 10).then(__webpack_require__.bind(null, /*! ./views/admin/Descuentos.vue */ "./resources/js/views/admin/Descuentos.vue"));
       }
     }, {
       path: "haberes",
       name: "haberes",
       component: function component() {
-        return __webpack_require__.e(/*! import() */ 9).then(__webpack_require__.bind(null, /*! ./views/admin/Haberes.vue */ "./resources/js/views/admin/Haberes.vue"));
+        return __webpack_require__.e(/*! import() */ 7).then(__webpack_require__.bind(null, /*! ./views/admin/Haberes.vue */ "./resources/js/views/admin/Haberes.vue"));
       }
     }, {
       path: "historiales",
       name: "historiales",
       component: function component() {
-        return Promise.all(/*! import() */[__webpack_require__.e(2), __webpack_require__.e(7)]).then(__webpack_require__.bind(null, /*! ./views/admin/Historiales.vue */ "./resources/js/views/admin/Historiales.vue"));
+        return Promise.all(/*! import() */[__webpack_require__.e(2), __webpack_require__.e(9)]).then(__webpack_require__.bind(null, /*! ./views/admin/Historiales.vue */ "./resources/js/views/admin/Historiales.vue"));
       }
     }, {
       path: "pagos",
@@ -71474,7 +71474,7 @@ var ParentComponent = {
           titulo: "Roles"
         },
         component: function component() {
-          return __webpack_require__.e(/*! import() */ 11).then(__webpack_require__.bind(null, /*! ./views/admin/seguridad/Roles.vue */ "./resources/js/views/admin/seguridad/Roles.vue"));
+          return __webpack_require__.e(/*! import() */ 12).then(__webpack_require__.bind(null, /*! ./views/admin/seguridad/Roles.vue */ "./resources/js/views/admin/seguridad/Roles.vue"));
         }
       }, {
         path: "permisos",
@@ -71483,7 +71483,7 @@ var ParentComponent = {
           titulo: "Permisos"
         },
         component: function component() {
-          return __webpack_require__.e(/*! import() */ 10).then(__webpack_require__.bind(null, /*! ./views/admin/seguridad/Permisos.vue */ "./resources/js/views/admin/seguridad/Permisos.vue"));
+          return __webpack_require__.e(/*! import() */ 11).then(__webpack_require__.bind(null, /*! ./views/admin/seguridad/Permisos.vue */ "./resources/js/views/admin/seguridad/Permisos.vue"));
         }
       }]
     }, {
