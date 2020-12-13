@@ -36,7 +36,6 @@ class ReporteController extends Controller
             'persona_id' => 'required|exists:personas,id',
             'anio_anterior' => 'required|exists:periodos,anio',
             'anio_actual' => 'required|exists:periodos,anio',
-            'certificado' => 'required|unique:historiales,certificado',
         ]);
 
         $pagos = Pago::whereBetween('anio', [$request->anio_anterior, $request->anio_actual])
@@ -215,7 +214,6 @@ class ReporteController extends Controller
         $request->validate([
             'persona_id' => 'required|exists:personas,id',
             'anio' => 'required|exists:periodos,anio',
-            'certificado' => 'required|unique:historiales,certificado',
         ]);
 
         $pago = Pago::where('anio', $request->anio)
@@ -916,7 +914,6 @@ class ReporteController extends Controller
                     ->where('persona_id', $params->persona_id)
                     ->count();
 
-
                 //detalles de haberes y descuentos
                 $haberes = $reportService->getOneDetailsByType('haber');
                 $descuentos = $reportService->getOneDetailsByType('descuento');
@@ -978,7 +975,6 @@ class ReporteController extends Controller
                 $total_pagos = Pago::where('anio', $params->anio)->mes($params->mes)
                     ->where('persona_id', $params->persona_id)
                     ->count();
-
 
                 //detalles de haberes y descuentos
                 $haberes = $reportService->getOneDetailsByType('haber');

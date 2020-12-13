@@ -117,7 +117,7 @@ export const listItemsSidebar = [
                 permission: "pagos.consultar"
             },
             {
-                title: "Por mes",
+                title: "Boleta de Pago",
                 url: "/admin/reporte/mensual",
                 permission: "pagos.consultar"
             }

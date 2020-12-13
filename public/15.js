@@ -121,6 +121,53 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -211,7 +258,7 @@ __webpack_require__.r(__webpack_exports__);
       };
       var params_code = window.btoa(JSON.stringify(params));
       axios({
-        url: "/reporte/por-mes/".concat(params_code),
+        url: "/boleta/por-mes/".concat(params_code),
         method: "GET",
         responseType: "blob" // important
 
@@ -235,7 +282,7 @@ __webpack_require__.r(__webpack_exports__);
         ver: 0
       };
       var params_code = window.btoa(JSON.stringify(params));
-      window.open("/reporte/por-mes/".concat(params_code), "_blank");
+      window.open("/boleta/por-mes/".concat(params_code), "_blank");
     },
     getName: function getName() {
       return "".concat(this.form.persona.apellido_paterno, " ").concat(this.form.persona.apellido_materno, ", ").concat(this.form.persona.nombre, " ");
@@ -263,166 +310,109 @@ var render = function() {
   return _c(
     "v-container",
     [
+      _c("page-header", {
+        attrs: {
+          title: "Boleta de Pago",
+          subtitle: "Consultar los pagos de una persona por periodo y mes.",
+          img: "/img/clip-web-security.png"
+        }
+      }),
+      _vm._v(" "),
       _c(
-        "v-layout",
-        { staticClass: "mb-3", attrs: { row: "", wrap: "" } },
+        "card",
+        { staticClass: "mt-4" },
         [
+          _c("SearchPerson", {
+            attrs: { errors: _vm.errors, person: _vm.form.persona },
+            on: {
+              input: function($event) {
+                return _vm.onPerson($event)
+              }
+            }
+          }),
+          _vm._v(" "),
           _c(
             "v-flex",
-            { attrs: { xs12: "" } },
+            { attrs: { row: "" } },
             [
+              _c("v-col", { attrs: { xs: "12", md: "12" } }, [
+                _c(
+                  "span",
+                  { staticClass: "body-2 mb-2 font-weight-semibold" },
+                  [_vm._v("El periodo del pago")]
+                )
+              ]),
+              _vm._v(" "),
+              _c("v-col", { attrs: { xs: "12", sm: "6", md: "3" } }, [
+                _c(
+                  "div",
+                  { staticClass: "pr-2" },
+                  [
+                    _c("v-select", {
+                      attrs: {
+                        items: _vm.items_anio,
+                        "item-text": "anio",
+                        "item-value": "anio",
+                        label: "El año",
+                        filled: "",
+                        shaped: "",
+                        "error-messages": _vm.errors.anio
+                      },
+                      model: {
+                        value: _vm.form.anio,
+                        callback: function($$v) {
+                          _vm.$set(_vm.form, "anio", $$v)
+                        },
+                        expression: "form.anio"
+                      }
+                    })
+                  ],
+                  1
+                )
+              ]),
+              _vm._v(" "),
               _c(
-                "v-card",
+                "v-col",
+                { staticClass: "pl-2", attrs: { xs: "12", sm: "6", md: "3" } },
+                [
+                  _c("v-select", {
+                    attrs: {
+                      items: _vm.items_mes,
+                      label: "El mes",
+                      filled: "",
+                      shaped: "",
+                      "error-messages": _vm.errors.mes
+                    },
+                    model: {
+                      value: _vm.form.mes,
+                      callback: function($$v) {
+                        _vm.$set(_vm.form, "mes", $$v)
+                      },
+                      expression: "form.mes"
+                    }
+                  })
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c("v-col", { attrs: { xs: "12", sm: "3", md: "6" } }),
+              _vm._v(" "),
+              _c(
+                "v-col",
+                { attrs: { xs: "12", sm: "3", md: "3" } },
                 [
                   _c(
-                    "v-container",
-                    { attrs: { "fill-height": "", fluid: "" } },
-                    [
-                      _c(
-                        "v-layout",
-                        { attrs: { row: "", wrap: "" } },
-                        [
-                          _c("v-flex", { attrs: { xs12: "" } }, [
-                            _c("span", { staticClass: "headline" }, [
-                              _vm._v("Reporte de pagos por mes")
-                            ]),
-                            _vm._v(" "),
-                            _c("div", { staticClass: "body-1" }, [
-                              _vm._v(
-                                "Consultar los pagos de una persona por un periodo mensual."
-                              )
-                            ])
-                          ]),
-                          _vm._v(" "),
-                          _c("SearchPerson", {
-                            attrs: {
-                              errors: _vm.errors,
-                              person: _vm.form.persona
-                            },
-                            on: {
-                              input: function($event) {
-                                return _vm.onPerson($event)
-                              }
-                            }
-                          }),
-                          _vm._v(" "),
-                          _c("v-flex", { attrs: { xs12: "" } }, [
-                            _c("span", { staticClass: "body-2 mb-2" }, [
-                              _vm._v("El periodo del pago")
-                            ])
-                          ]),
-                          _vm._v(" "),
-                          _c(
-                            "v-flex",
-                            { attrs: { xs12: "", sm6: "", md3: "" } },
-                            [
-                              _c(
-                                "div",
-                                { staticClass: "pr-2" },
-                                [
-                                  _c("v-select", {
-                                    attrs: {
-                                      items: _vm.items_anio,
-                                      "item-text": "anio",
-                                      "item-value": "anio",
-                                      label: "El año",
-                                      "error-messages": _vm.errors.anio
-                                    },
-                                    model: {
-                                      value: _vm.form.anio,
-                                      callback: function($$v) {
-                                        _vm.$set(_vm.form, "anio", $$v)
-                                      },
-                                      expression: "form.anio"
-                                    }
-                                  })
-                                ],
-                                1
-                              )
-                            ]
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "v-flex",
-                            {
-                              staticClass: "pl-2",
-                              attrs: { xs12: "", sm6: "", md3: "" }
-                            },
-                            [
-                              _c("v-select", {
-                                attrs: {
-                                  items: _vm.items_mes,
-                                  label: "El mes",
-                                  "error-messages": _vm.errors.mes
-                                },
-                                model: {
-                                  value: _vm.form.mes,
-                                  callback: function($$v) {
-                                    _vm.$set(_vm.form, "mes", $$v)
-                                  },
-                                  expression: "form.mes"
-                                }
-                              })
-                            ],
-                            1
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "v-flex",
-                            {
-                              staticClass: "pl-2",
-                              attrs: { xs12: "", sm9: "", md3: "" }
-                            },
-                            [
-                              _c("v-text-field", {
-                                attrs: {
-                                  label: "Número de Certificado",
-                                  "error-messages": _vm.errors.certificado
-                                },
-                                model: {
-                                  value: _vm.form.certificado,
-                                  callback: function($$v) {
-                                    _vm.$set(_vm.form, "certificado", $$v)
-                                  },
-                                  expression: "form.certificado"
-                                }
-                              })
-                            ],
-                            1
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "v-flex",
-                            {
-                              staticClass: "d-flex",
-                              attrs: {
-                                xs12: "",
-                                sm3: "",
-                                md3: "",
-                                "justify-end": ""
-                              }
-                            },
-                            [
-                              _c(
-                                "v-btn",
-                                {
-                                  attrs: { color: "success" },
-                                  on: {
-                                    click: function($event) {
-                                      return _vm.buscarPago()
-                                    }
-                                  }
-                                },
-                                [_vm._v("Buscar")]
-                              )
-                            ],
-                            1
-                          )
-                        ],
-                        1
-                      )
-                    ],
-                    1
+                    "v-btn",
+                    {
+                      staticClass: "rounded-lg",
+                      attrs: { block: "", color: "primary" },
+                      on: {
+                        click: function($event) {
+                          return _vm.buscarPago()
+                        }
+                      }
+                    },
+                    [_vm._v("Buscar")]
                   )
                 ],
                 1
@@ -435,36 +425,59 @@ var render = function() {
       ),
       _vm._v(" "),
       _c(
-        "v-layout",
-        { attrs: { wrap: "", row: "" } },
+        "v-flex",
+        { attrs: { row: "" } },
         [
           _c(
-            "v-flex",
-            { attrs: { xs12: "" } },
+            "v-col",
+            { attrs: { xs: "12" } },
             [
               Object.keys(_vm.lista_resultado).length !== 0
                 ? [
-                    _c("div", { staticClass: "title mb-2" }, [
-                      _vm._v("Resultados encontrados")
+                    _c("div", { staticClass: "mb-2" }, [
+                      _c("div", { staticClass: "title" }, [
+                        _vm._v("Resultados encontrados")
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "caption text--secondary" }, [
+                        _vm._v(
+                          "\n                        Descargar o imprimir la boleta de pago\n                    "
+                        )
+                      ])
                     ]),
                     _vm._v(" "),
                     _c(
-                      "v-card",
+                      "card",
                       [
                         _c(
                           "v-card-text",
-                          { staticClass: "d-flex justify-content-between" },
+                          { staticClass: "d-flex justify-between" },
                           [
                             _c("div", { staticClass: "details-info" }, [
-                              _c("div", { staticClass: "heading" }, [
-                                _vm._v(
-                                  _vm._s(
-                                    _vm.getNameMonth(_vm.lista_resultado.mes)
-                                  ) +
-                                    ", " +
-                                    _vm._s(_vm.lista_resultado.anio)
-                                )
-                              ]),
+                              _c(
+                                "div",
+                                {
+                                  staticClass: "display-1 font-weight-bold ",
+                                  class:
+                                    "" +
+                                    (_vm.$vuetify.theme.dark
+                                      ? "white--text"
+                                      : "black--text")
+                                },
+                                [
+                                  _vm._v(
+                                    "\n                                " +
+                                      _vm._s(
+                                        _vm.getNameMonth(
+                                          _vm.lista_resultado.mes
+                                        )
+                                      ) +
+                                      ",\n                                " +
+                                      _vm._s(_vm.lista_resultado.anio) +
+                                      "\n                            "
+                                  )
+                                ]
+                              ),
                               _vm._v(" "),
                               _c("div", { staticClass: "body-2" }, [
                                 _vm._v(_vm._s(_vm.getName()))
@@ -490,7 +503,11 @@ var render = function() {
                                                 "v-btn",
                                                 _vm._g(
                                                   {
-                                                    attrs: { color: "success" },
+                                                    staticClass: "rounded-lg",
+                                                    attrs: {
+                                                      color: "dark",
+                                                      text: ""
+                                                    },
                                                     on: {
                                                       click: function($event) {
                                                         return _vm.downloadPDF(
@@ -508,7 +525,7 @@ var render = function() {
                                                 [
                                                   _c("v-icon", [
                                                     _vm._v(
-                                                      "mdi mdi-cloud-download-outline"
+                                                      "mdi\n                                            mdi-cloud-download-outline"
                                                     )
                                                   ])
                                                 ],
@@ -520,14 +537,12 @@ var render = function() {
                                       ],
                                       null,
                                       false,
-                                      3122493249
+                                      3059866786
                                     )
                                   },
                                   [
                                     _vm._v(" "),
-                                    _c("span", [
-                                      _vm._v("Descargar constancia de pago")
-                                    ])
+                                    _c("span", [_vm._v("Descargar")])
                                   ]
                                 ),
                                 _vm._v(" "),
@@ -546,7 +561,11 @@ var render = function() {
                                                 "v-btn",
                                                 _vm._g(
                                                   {
-                                                    attrs: { color: "info" },
+                                                    staticClass: "rounded-lg",
+                                                    attrs: {
+                                                      color: "dark",
+                                                      text: ""
+                                                    },
                                                     on: {
                                                       click: function($event) {
                                                         return _vm.viewPDF(
@@ -574,14 +593,12 @@ var render = function() {
                                       ],
                                       null,
                                       false,
-                                      293248246
+                                      3764336714
                                     )
                                   },
                                   [
                                     _vm._v(" "),
-                                    _c("span", [
-                                      _vm._v("Imprimir constancia de pago")
-                                    ])
+                                    _c("span", [_vm._v("Imprimir")])
                                   ]
                                 )
                               ],
@@ -596,7 +613,7 @@ var render = function() {
                 : _vm.loading
                 ? [
                     _c(
-                      "v-card",
+                      "card",
                       [
                         _c("v-card-text", [
                           _c(
@@ -617,11 +634,15 @@ var render = function() {
                 : _vm.notFound
                 ? [
                     _c(
-                      "v-card",
+                      "card",
                       [
                         _c("v-card-text", [
                           _c("div", { staticClass: "text-xs-center body-2" }, [
-                            _vm._v(_vm._s(this.msg))
+                            _vm._v(
+                              "\n                            " +
+                                _vm._s(this.msg) +
+                                "\n                        "
+                            )
                           ])
                         ])
                       ],

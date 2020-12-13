@@ -78,6 +78,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -197,50 +203,13 @@ var render = function() {
   return _c(
     "v-container",
     [
-      _c(
-        "v-layout",
-        { staticClass: "mb-3", attrs: { row: "", wrap: "" } },
-        [
-          _c(
-            "v-flex",
-            { attrs: { xs12: "" } },
-            [
-              _c(
-                "v-card",
-                { staticClass: "rounded-xl pa-6" },
-                [
-                  _c(
-                    "v-container",
-                    { attrs: { fluid: "" } },
-                    [
-                      _c(
-                        "v-layout",
-                        { attrs: { row: "", wrap: "" } },
-                        [
-                          _c("v-flex", { attrs: { xs12: "" } }, [
-                            _c("span", { staticClass: "display-1" }, [
-                              _vm._v("Importar Personas y Actualizar Datos")
-                            ]),
-                            _vm._v(" "),
-                            _c("p", [
-                              _vm._v("Actualizar los datos de las personas.")
-                            ])
-                          ])
-                        ],
-                        1
-                      )
-                    ],
-                    1
-                  )
-                ],
-                1
-              )
-            ],
-            1
-          )
-        ],
-        1
-      ),
+      _c("page-header", {
+        attrs: {
+          title: "Importar Personas y Actualizar Datos",
+          subtitle: "Subir o actualizar los datos de las personas.",
+          img: "/img/bermuda-profitable-growth.png"
+        }
+      }),
       _vm._v(" "),
       _c(
         "v-layout",
@@ -251,7 +220,7 @@ var render = function() {
             { attrs: { xs12: "", sm8: "", md6: "" } },
             [
               _c(
-                "v-card",
+                "card",
                 [
                   _c("div", { staticClass: "dropzone" }, [
                     _c("input", {
@@ -265,7 +234,7 @@ var render = function() {
                       ? _c("p", { staticClass: "call-to-action" }, [
                           _c("i", { staticClass: "mdi mdi-upload" }),
                           _vm._v(
-                            "\n            Seleccione un archivo Excel\n          "
+                            "\n                        Seleccione un archivo Excel\n                    "
                           )
                         ])
                       : _vm._e(),
@@ -283,7 +252,7 @@ var render = function() {
                                   size: 100,
                                   width: 15,
                                   value: _vm.progress,
-                                  color: "teal"
+                                  color: "primary"
                                 }
                               },
                               [_vm._v(_vm._s(_vm.progress))]
@@ -296,9 +265,18 @@ var render = function() {
                   _vm._v(" "),
                   _vm.progress === 100
                     ? _c("div", [
-                        _c("p", { staticClass: "text-info subheading" }, [
-                          _vm._v("Subiendo los datos espere:")
-                        ]),
+                        _c(
+                          "p",
+                          {
+                            staticClass:
+                              "text--secondary subheading font-weight-semibold mt-2"
+                          },
+                          [
+                            _vm._v(
+                              "\n                        Subiendo los datos espere:\n                    "
+                            )
+                          ]
+                        ),
                         _vm._v(" "),
                         _c("div", { staticClass: "spinner" }, [
                           _c("div", { staticClass: "rect1" }),
@@ -331,9 +309,9 @@ var render = function() {
                             _vm._l(_vm.uploadFile, function(file) {
                               return _c("li", { key: file.name }, [
                                 _vm._v(
-                                  "El archivo " +
+                                  "\n                            El archivo " +
                                     _vm._s(file.name) +
-                                    " se subio con exito."
+                                    " se subio con exito.\n                        "
                                 )
                               ])
                             }),

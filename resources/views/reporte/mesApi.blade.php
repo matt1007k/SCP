@@ -444,7 +444,7 @@
     </div>
 
 
-    <table class="w-100">
+    <table class="w-100" style="table-layout: fixed">
         <tr class="fs-header fw-bold text-uppercase border bg-3">
             <td class="border-t border-b p-md">Total Haber</td>
             @foreach ($total_haberes as $key => $total)
@@ -453,16 +453,16 @@
                         $nombre_mes = strtolower($mes['nombre']);
                     @endphp
                     @if(isset($total['total_haber_'.$nombre_mes.'1']))
-                    <td class="border-t border-b text-right pr-2">{{$total['total_haber_'.$nombre_mes.'1']}}</td>
+                    <td class="border-t border-b text-right pr-1">{{$total['total_haber_'.$nombre_mes.'1']}}</td>
                     @endif
                     @if(isset($total['total_haber_'.$nombre_mes.'2']))
-                    <td class="border-t border-b text-right pr-2">{{$total['total_haber_'.$nombre_mes.'2']}}</td>
+                    <td class="border-t border-b text-right pr-1">{{$total['total_haber_'.$nombre_mes.'2']}}</td>
                     @endif
                     @if(isset($total['total_haber_'.$nombre_mes.'3']))
-                    <td class="border-t border-b text-right pr-2">{{$total['total_haber_'.$nombre_mes.'3']}}</td>
+                    <td class="border-t border-b text-right pr-1">{{$total['total_haber_'.$nombre_mes.'3']}}</td>
                     @endif
                     @if(isset($total['total_haber_'.$nombre_mes.'4']))
-                    <td class="border-t border-b text-right pr-2">{{$total['total_haber_'.$nombre_mes.'4']}}</td>
+                    <td class="border-t border-b text-right pr-1">{{$total['total_haber_'.$nombre_mes.'4']}}</td>
                     @endif
                 @endforeach
             @endforeach
@@ -495,16 +495,16 @@
                         $nombre_mes = strtolower($mes['nombre']);
                     @endphp
                     @if(isset($total['monto_liquido_'. $nombre_mes .'1']))
-                    <td class="fw-bold text-right pr-2">{{$total['monto_liquido_'. $nombre_mes .'1']}}</td>
+                    <td class="fw-bold text-right pr-1">{{$total['monto_liquido_'. $nombre_mes .'1']}}</td>
                     @endif
                     @if(isset($total['monto_liquido_'. $nombre_mes .'2']))
-                    <td class="fw-bold text-right pr-2">{{$total['monto_liquido_'. $nombre_mes .'2']}}</td>
+                    <td class="fw-bold text-right pr-1">{{$total['monto_liquido_'. $nombre_mes .'2']}}</td>
                     @endif
                     @if(isset($total['monto_liquido_'. $nombre_mes .'3']))
-                    <td class="fw-bold text-right pr-2">{{$total['monto_liquido_'. $nombre_mes .'3']}}</td>
+                    <td class="fw-bold text-right pr-1">{{$total['monto_liquido_'. $nombre_mes .'3']}}</td>
                     @endif
                     @if(isset($total['monto_liquido_'. $nombre_mes .'4']))
-                    <td class="fw-bold text-right pr-2">{{$total['monto_liquido_'. $nombre_mes .'4']}}</td>
+                    <td class="fw-bold text-right pr-1">{{$total['monto_liquido_'. $nombre_mes .'4']}}</td>
                     @endif
                 @endforeach
             @endforeach
@@ -521,16 +521,16 @@
                         $nombre_mes = strtolower($mes['nombre']);
                     @endphp 
                     @if(isset($total['monto_imponible_'. $nombre_mes .'1']))
-                    <td class="fw-bold text-right pr-2">{{$total['monto_imponible_'. $nombre_mes .'1']}}</td>
+                    <td class="fw-bold text-right pr-1">{{$total['monto_imponible_'. $nombre_mes .'1']}}</td>
                     @endif
                     @if(isset($total['monto_imponible_marzo2']))
-                    <td class="fw-bold text-right pr-2">{{$total['monto_imponible_marzo2']}}</td>
+                    <td class="fw-bold text-right pr-1">{{$total['monto_imponible_marzo2']}}</td>
                     @endif
                     @if(isset($total['monto_imponible_marzo3']))
-                    <td class="fw-bold text-right pr-2">{{$total['monto_imponible_marzo3']}}</td>
+                    <td class="fw-bold text-right pr-1">{{$total['monto_imponible_marzo3']}}</td>
                     @endif
                     @if(isset($total['monto_imponible_marzo4']))
-                    <td class="fw-bold text-right pr-2">{{$total['monto_imponible_marzo4']}}</td>
+                    <td class="fw-bold text-right pr-1">{{$total['monto_imponible_marzo4']}}</td>
                     @endif
                 @endforeach
             @endforeach
