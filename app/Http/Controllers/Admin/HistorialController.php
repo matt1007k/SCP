@@ -11,13 +11,17 @@ class HistorialController extends Controller
     public function index()
     {
         if (auth()->user()->hasRole('Admin')) {
-            $historiales = Historial::orderBy('created_at', 'ASC')->get();
+            $historiales = Historial::orderBy('created_at', 'ASC')
+                ->search(request('search', ''))
+                ->paginate(request('perPage', 10));
 
         } else {
-            $historiales = Historial::where('estado', 'creado')->orderBy('created_at', 'ASC')->get();
+            $historiales = Historial::where('estado', 'creado')->orderBy('created_at', 'ASC')
+                ->search(request('search', ''))
+                ->paginate(request('perPage', 10));
         }
 
-        return response()->json(['historiales' => $historiales]);
+        return response()->json($historiales, 200);
     }
 
     public function update(Request $request, $id)

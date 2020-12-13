@@ -21,9 +21,12 @@ class UserController extends Controller
 
     public function index()
     {
-        $usuarios = User::With(['roles', 'permissions'])->get();
+        $search = request('search', '');
+        $usuarios = User::With(['roles', 'permissions'])
+            ->search($search)
+            ->paginate(request('perPage', 10));
 
-        return response()->json(['usuarios' => $usuarios], 200);
+        return response()->json($usuarios, 200);
     }
 
     public function store(UserCreatedRequest $request)

@@ -19,9 +19,15 @@ class RoleController extends Controller
     }
     public function index(Request $request)
     {
-        $roles = Role::With(['permissions'])->orderBy('name', 'ASC')->get();
+        $search = request('search', '');
+        $roles = Role::With(['permissions'])
+            ->where('name', 'LIKE', "%{$search}%")
+            ->orWhere('description', 'LIKE', "%{$search}%")
+            ->orWhere('slug', 'LIKE', "%{$search}%")
+            ->latest()
+            ->paginate(request('perPage', 10));
 
-        return response()->json(['roles' => $roles], 200);
+        return response()->json($roles, 200);
     }
 
     public function getRoles(Request $request)

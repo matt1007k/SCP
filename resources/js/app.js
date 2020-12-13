@@ -10,6 +10,10 @@ import "@mdi/font/css/materialdesignicons.css";
 // import "roboto-fontface/css/roboto/roboto-fontface.css";
 import Auth from "./helpers/auth";
 
+import "./mixins/pagination";
+
+import "./plugins/global-components";
+
 Vue.prototype.$auth = new Auth(window.user);
 
 new Vue({

@@ -54,6 +54,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ["addRow"],
   data: function data() {
@@ -64,22 +70,13 @@ __webpack_require__.r(__webpack_exports__);
       isLoadingD: false,
       tipo: "",
       headers: [{
-        text: "Nombre",
-        align: "left",
-        sortable: false,
-        value: "nombre"
+        text: "Nombre"
       }, {
-        text: "Descripción",
-        value: "descripcion",
-        sortable: false
+        text: "Descripción"
       }, {
-        text: "Descripción simple",
-        value: "descripcion_simple",
-        sortable: false
+        text: "Descripción simple"
       }, {
-        text: "Acción",
-        value: "action",
-        sortable: false
+        text: "Acción"
       }]
     };
   },
@@ -129,6 +126,25 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -262,6 +278,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -298,6 +321,10 @@ __webpack_require__.r(__webpack_exports__);
     },
     show: function show() {
       this.open = true;
+      this.resetInputs();
+    },
+    close: function close() {
+      this.open = false;
       this.resetInputs();
     }
   }
@@ -338,40 +365,34 @@ var render = function() {
         },
         [
           _c(
-            "v-card",
+            "card",
             [
-              _c(
-                "v-card-title",
-                {
-                  staticClass: "blue-grey darken-2 white--text",
-                  attrs: { wrap: "" }
-                },
-                [
-                  _c("v-flex", { attrs: { xs11: "" } }, [
-                    _c("span", { staticClass: "headline" }, [
-                      _vm._v("Agregar " + _vm._s(this.tipo))
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c(
-                    "v-flex",
-                    { staticClass: "d-flex justify-end", attrs: { xs1: "" } },
-                    [
-                      _c(
-                        "v-btn",
-                        {
-                          attrs: { color: "error" },
-                          on: { click: _vm.closeModal }
-                        },
-                        [_c("v-icon", [_vm._v("$vuetify.icons.close")])],
-                        1
-                      )
-                    ],
-                    1
-                  )
-                ],
-                1
-              ),
+              _c("modal-header", {
+                attrs: { title: "Agregar " + this.tipo },
+                scopedSlots: _vm._u([
+                  {
+                    key: "close",
+                    fn: function() {
+                      return [
+                        _c(
+                          "btn-secondary",
+                          {
+                            staticClass: "rounded-circle",
+                            attrs: {
+                              onClick: _vm.closeModal,
+                              fab: "",
+                              small: ""
+                            }
+                          },
+                          [_c("v-icon", [_vm._v("$vuetify.icons.close")])],
+                          1
+                        )
+                      ]
+                    },
+                    proxy: true
+                  }
+                ])
+              }),
               _vm._v(" "),
               _c(
                 "v-container",
@@ -384,7 +405,9 @@ var render = function() {
                       _c("v-text-field", {
                         attrs: {
                           placeholder: "Buscar por nombre",
-                          label: "nombre"
+                          label: "nombre",
+                          filled: "",
+                          shaped: ""
                         },
                         on: {
                           input: function($event) {
@@ -403,53 +426,52 @@ var render = function() {
                         }
                       }),
                       _vm._v(" "),
-                      _c("v-data-table", {
-                        attrs: {
-                          "no-data-text": "No hay resultados",
-                          headers: _vm.headers,
-                          items: _vm.items,
-                          "hide-actions": "",
-                          loading: _vm.isLoadingD
-                        },
+                      _c("data-table", {
+                        attrs: { headers: _vm.headers },
                         scopedSlots: _vm._u([
                           {
-                            key: "items",
-                            fn: function(props) {
-                              return [
-                                _c("td", [_vm._v(_vm._s(props.item.nombre))]),
-                                _vm._v(" "),
-                                _c("td", [
-                                  _vm._v(_vm._s(props.item.descripcion))
-                                ]),
-                                _vm._v(" "),
-                                _c("td", [
-                                  _vm._v(_vm._s(props.item.descripcion_simple))
-                                ]),
-                                _vm._v(" "),
-                                _c(
-                                  "td",
-                                  [
-                                    _c(
-                                      "v-btn",
-                                      {
-                                        attrs: { color: "success" },
-                                        on: {
-                                          click: function($event) {
-                                            return _vm.$emit(
-                                              "addRow",
-                                              props.item,
-                                              _vm.tipo
-                                            )
+                            key: "body",
+                            fn: function() {
+                              return _vm._l(_vm.items, function(item) {
+                                return _c("tr", { key: item.id }, [
+                                  _c("td", [_vm._v(_vm._s(item.nombre))]),
+                                  _vm._v(" "),
+                                  _c("td", [_vm._v(_vm._s(item.descripcion))]),
+                                  _vm._v(" "),
+                                  _c("td", [
+                                    _vm._v(_vm._s(item.descripcion_simple))
+                                  ]),
+                                  _vm._v(" "),
+                                  _c(
+                                    "td",
+                                    [
+                                      _c(
+                                        "v-btn",
+                                        {
+                                          attrs: {
+                                            color: "primary",
+                                            "x-small": "",
+                                            outlined: ""
+                                          },
+                                          on: {
+                                            click: function($event) {
+                                              return _vm.$emit(
+                                                "addRow",
+                                                item,
+                                                _vm.tipo
+                                              )
+                                            }
                                           }
-                                        }
-                                      },
-                                      [_vm._v("Agregar")]
-                                    )
-                                  ],
-                                  1
-                                )
-                              ]
-                            }
+                                        },
+                                        [_vm._v("Agregar")]
+                                      )
+                                    ],
+                                    1
+                                  )
+                                ])
+                              })
+                            },
+                            proxy: true
                           }
                         ])
                       })
@@ -513,7 +535,7 @@ var render = function() {
                 ? _vm._l(_vm.items, function(item, index) {
                     return _c(
                       "v-card",
-                      { key: index },
+                      { key: index, staticClass: "mb-3 rounded-xl" },
                       [
                         _c(
                           "v-card-text",
@@ -528,17 +550,17 @@ var render = function() {
                                   { attrs: { xs12: "", sm6: "", md7: "" } },
                                   [
                                     _c(
-                                      "v-list-tile",
+                                      "v-list-item",
                                       [
                                         _c(
-                                          "v-list-tile-content",
+                                          "v-list-item-content",
                                           [
                                             _c(
                                               "v-container",
                                               { attrs: { fluid: "" } },
                                               [
                                                 _c(
-                                                  "v-list-tile-title",
+                                                  "v-list-item-title",
                                                   {
                                                     staticClass:
                                                       "font-weight-bold"
@@ -546,7 +568,7 @@ var render = function() {
                                                   [_vm._v("Nombre")]
                                                 ),
                                                 _vm._v(" "),
-                                                _c("v-list-tile-sub-title", [
+                                                _c("v-list-item-subtitle", [
                                                   _c(
                                                     "span",
                                                     {
@@ -562,7 +584,7 @@ var render = function() {
                                                     ]
                                                   ),
                                                   _vm._v(
-                                                    "\n                        —\n                        "
+                                                    "\n                                                —\n                                                "
                                                   ),
                                                   _c(
                                                     "span",
@@ -595,18 +617,22 @@ var render = function() {
                                   { attrs: { xs12: "", sm4: "", md3: "" } },
                                   [
                                     _c(
-                                      "v-list-tile",
+                                      "v-list-item",
                                       [
                                         _c(
-                                          "v-list-tile-content",
+                                          "v-list-item-content",
                                           [
                                             _c(
-                                              "v-list-tile-sub-title",
+                                              "v-list-item-subtitle",
                                               [
                                                 _c("v-text-field", {
                                                   attrs: {
                                                     label: "Monto S/.",
-                                                    type: "number"
+                                                    type: "number",
+                                                    filled: "",
+                                                    shaped: "",
+                                                    step: "any",
+                                                    min: "0"
                                                   },
                                                   model: {
                                                     value: item.monto,
@@ -638,54 +664,30 @@ var render = function() {
                                   { attrs: { xs12: "", sm2: "", md2: "" } },
                                   [
                                     _c(
-                                      "v-list-tile",
-                                      [
-                                        _c(
-                                          "v-list-tile-content",
-                                          [
-                                            _c(
-                                              "v-tooltip",
-                                              { attrs: { bottom: "" } },
-                                              [
-                                                _c(
-                                                  "v-btn",
-                                                  {
-                                                    attrs: {
-                                                      slot: "activator",
-                                                      small: "",
-                                                      icon: "",
-                                                      color: "error"
-                                                    },
-                                                    on: {
-                                                      click: function($event) {
-                                                        return _vm.$emit(
-                                                          "remove",
-                                                          index,
-                                                          item.tipo
-                                                        )
-                                                      }
-                                                    },
-                                                    slot: "activator"
-                                                  },
-                                                  [
-                                                    _c("v-icon", [
-                                                      _vm._v(
-                                                        "$vuetify.icons.close"
-                                                      )
-                                                    ])
-                                                  ],
-                                                  1
-                                                ),
-                                                _vm._v(" "),
-                                                _c("span", [
-                                                  _vm._v("Eliminar fila")
-                                                ])
-                                              ],
-                                              1
+                                      "v-btn",
+                                      {
+                                        staticClass: "rounded-xl mt-4",
+                                        attrs: {
+                                          small: "",
+                                          color: "error",
+                                          outlined: ""
+                                        },
+                                        on: {
+                                          click: function($event) {
+                                            return _vm.$emit(
+                                              "remove",
+                                              index,
+                                              item.tipo
                                             )
-                                          ],
-                                          1
-                                        )
+                                          }
+                                        }
+                                      },
+                                      [
+                                        _c("v-icon", [
+                                          _vm._v("$vuetify.icons.close")
+                                        ]),
+                                        _vm._v(" "),
+                                        _c("span", [_vm._v("Eliminar fila")])
                                       ],
                                       1
                                     )
@@ -704,7 +706,7 @@ var render = function() {
                   })
                 : [
                     _c(
-                      "v-card",
+                      "card",
                       [
                         _c("v-card-text", { staticClass: "p-2" }, [
                           _vm._v("No hay " + _vm._s(_vm.title))
@@ -762,7 +764,7 @@ var render = function() {
           }
         },
         [
-          _c("v-card", [
+          _c("card", [
             _c(
               "form",
               {
@@ -774,42 +776,33 @@ var render = function() {
                 }
               },
               [
-                _c(
-                  "v-card-title",
-                  {
-                    staticClass: "blue-grey darken-2 white--text",
-                    attrs: { wrap: "" }
-                  },
-                  [
-                    _c("v-flex", { attrs: { xs11: "" } }, [
-                      _c("span", { staticClass: "headline" }, [
-                        _vm._v("Registrar un nuevo año")
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c(
-                      "v-flex",
-                      { staticClass: "d-flex justify-end", attrs: { xs1: "" } },
-                      [
-                        _c(
-                          "v-btn",
-                          {
-                            attrs: { color: "error" },
-                            on: {
-                              click: function($event) {
-                                _vm.open = false
+                _c("modal-header", {
+                  attrs: { title: "Registrar nuevo año" },
+                  scopedSlots: _vm._u([
+                    {
+                      key: "close",
+                      fn: function() {
+                        return [
+                          _c(
+                            "btn-secondary",
+                            {
+                              staticClass: "rounded-circle",
+                              attrs: {
+                                onClick: _vm.close,
+                                fab: "",
+                                small: "",
+                                color: "primary"
                               }
-                            }
-                          },
-                          [_c("v-icon", [_vm._v("$vuetify.icons.close")])],
-                          1
-                        )
-                      ],
-                      1
-                    )
-                  ],
-                  1
-                ),
+                            },
+                            [_c("v-icon", [_vm._v("$vuetify.icons.close")])],
+                            1
+                          )
+                        ]
+                      },
+                      proxy: true
+                    }
+                  ])
+                }),
                 _vm._v(" "),
                 _c(
                   "v-card-text",
@@ -830,6 +823,8 @@ var render = function() {
                                   attrs: {
                                     label: "Ingrese el nuevo año",
                                     required: "",
+                                    filled: "",
+                                    shaped: "",
                                     "error-messages": _vm.errors.anio
                                   },
                                   model: {
@@ -860,22 +855,16 @@ var render = function() {
                   [
                     _c("v-spacer"),
                     _vm._v(" "),
-                    _c(
-                      "v-btn",
-                      {
-                        attrs: { color: "error" },
-                        on: {
-                          click: function($event) {
-                            _vm.open = false
-                          }
-                        }
-                      },
-                      [_vm._v("Cancelar")]
-                    ),
+                    _c("btn-secondary", { attrs: { onClick: _vm.close } }, [
+                      _vm._v("Cancelar")
+                    ]),
                     _vm._v(" "),
                     _c(
                       "v-btn",
-                      { attrs: { color: "success", type: "submit" } },
+                      {
+                        staticClass: "rounded-lg",
+                        attrs: { color: "primary", type: "submit" }
+                      },
                       [_vm._v("Guardar")]
                     )
                   ],

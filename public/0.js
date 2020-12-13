@@ -109,6 +109,37 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -295,87 +326,79 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "v-layout",
-    { staticClass: "mb-3", attrs: { row: "", wrap: "" } },
+    { staticClass: "mb-4", attrs: { column: "" } },
     [
-      _c("v-flex", { attrs: { xs12: "" } }, [
-        _c("span", { staticClass: "body-2" }, [_vm._v("Datos de la persona")])
-      ]),
+      _c(
+        "v-flex",
+        { attrs: { row: "" } },
+        [
+          _c("v-col", { attrs: { sm: "12" } }, [
+            _c("span", { staticClass: "body-1 font-weight-bold" }, [
+              _vm._v("Datos de la persona")
+            ])
+          ])
+        ],
+        1
+      ),
       _vm._v(" "),
       _c(
         "v-flex",
-        { staticClass: "mb-2 mt-2", attrs: { xs12: "" } },
+        { attrs: { row: "" } },
         [
           _c(
-            "v-tooltip",
-            {
-              attrs: { bottom: "" },
-              scopedSlots: _vm._u([
-                {
-                  key: "activator",
-                  fn: function(ref) {
-                    var on = ref.on
-                    return [
-                      _c("v-icon", _vm._g({}, on), [
-                        _vm._v("$vuetify.icons.filter")
-                      ])
-                    ]
-                  }
-                }
-              ])
-            },
-            [_vm._v(" "), _c("span", [_vm._v("Filtrar por estado")])]
-          ),
-          _vm._v(" "),
-          _c(
-            "v-btn-toggle",
-            {
-              attrs: { dark: "", shaped: "", mandatory: "" },
-              model: {
-                value: _vm.toggleActiveBtn,
-                callback: function($$v) {
-                  _vm.toggleActiveBtn = $$v
-                },
-                expression: "toggleActiveBtn"
-              }
-            },
+            "v-col",
+            { attrs: { sm: "12", md: "5", flex: "" } },
             [
+              _c("span", { staticClass: "font-weight-bold text--secondary" }, [
+                _vm._v("Filtrar por:")
+              ]),
+              _vm._v(" "),
               _c(
-                "v-btn",
+                "v-chip",
                 {
-                  attrs: { outlined: "", color: "success" },
+                  staticClass: "ma-2",
+                  attrs: {
+                    color: "" + (_vm.estado == "activo" ? "primary" : "")
+                  },
                   on: {
                     click: function($event) {
                       return _vm.filterBy("activo")
                     }
                   }
                 },
-                [_vm._v("Activos")]
+                [_vm._v("\n                Activo\n            ")]
               ),
               _vm._v(" "),
               _c(
-                "v-btn",
+                "v-chip",
                 {
-                  attrs: { outlined: "", color: "info" },
+                  staticClass: "ma-2",
+                  attrs: {
+                    color: "" + (_vm.estado == "sobreviviente" ? "primary" : "")
+                  },
                   on: {
                     click: function($event) {
                       return _vm.filterBy("sobreviviente")
                     }
                   }
                 },
-                [_vm._v("Sobrevivientes")]
+                [_vm._v("\n                Sobreviviente\n            ")]
               ),
               _vm._v(" "),
               _c(
-                "v-btn",
+                "v-chip",
                 {
-                  attrs: { outlined: "", color: "error" },
+                  staticClass: "ma-2",
+                  attrs: {
+                    color: "" + (_vm.estado == "cesante" ? "primary" : "")
+                  },
                   on: {
                     click: function($event) {
                       return _vm.filterBy("cesante")
                     }
                   }
                 },
-                [_vm._v("Cesantes")]
+                [_vm._v("\n                Cesante\n            ")]
               )
             ],
             1
@@ -384,83 +407,82 @@ var render = function() {
         1
       ),
       _vm._v(" "),
-      _c("v-flex", { attrs: { xs12: "", sm6: "" } }, [
-        _c(
-          "div",
-          { staticClass: "pr-2" },
-          [
-            _c("v-autocomplete", {
-              attrs: {
-                items: _vm.lista_personas,
-                loading: _vm.isLoading,
-                "search-input": _vm.search,
-                "no-data-text": "Sin resultados",
-                "item-text": "nombre",
-                "item-value": "API",
-                label: "Nombre",
-                "prepend-icon": "mdi-database-search",
-                filter: _vm.customFilter,
-                placeholder:
-                  "Buscar por Cod. Modular, DNI,  o nombre completo...",
-                "return-object": "",
-                "error-messages": _vm.errors.persona_id
+      _c(
+        "div",
+        { staticClass: "pr-2" },
+        [
+          _c("v-autocomplete", {
+            attrs: {
+              items: _vm.lista_personas,
+              loading: _vm.isLoading,
+              "search-input": _vm.search,
+              filled: "",
+              shaped: "",
+              "no-data-text": "Sin resultados",
+              "item-text": "nombre",
+              "item-value": "API",
+              label: "Nombre",
+              "prepend-icon": "mdi-database-search",
+              filter: _vm.customFilter,
+              placeholder:
+                "Buscar por Cod. Modular, DNI,  o nombre completo...",
+              "return-object": "",
+              "error-messages": _vm.errors.persona_id
+            },
+            on: {
+              "update:searchInput": function($event) {
+                _vm.search = $event
               },
-              on: {
-                "update:searchInput": function($event) {
-                  _vm.search = $event
-                },
-                "update:search-input": function($event) {
-                  _vm.search = $event
-                },
-                change: _vm.onSelect
+              "update:search-input": function($event) {
+                _vm.search = $event
               },
-              scopedSlots: _vm._u([
-                {
-                  key: "item",
-                  fn: function(data) {
-                    return [
-                      _c(
-                        "v-list-tile-content",
-                        [
-                          _c("v-list-tile-title", [
-                            _vm._v(_vm._s(_vm.getNameComplete(data.item)))
+              change: _vm.onSelect
+            },
+            scopedSlots: _vm._u([
+              {
+                key: "item",
+                fn: function(data) {
+                  return [
+                    _c(
+                      "v-list-item-content",
+                      [
+                        _c("v-list-item-title", [
+                          _vm._v(_vm._s(_vm.getNameComplete(data.item)))
+                        ]),
+                        _vm._v(" "),
+                        _c("v-list-item-subtitle", [
+                          _c("span", [
+                            _vm._v("DNI: " + _vm._s(data.item.dni) + " -")
                           ]),
                           _vm._v(" "),
-                          _c("v-list-tile-sub-title", [
-                            _c("span", [
-                              _vm._v("DNI: " + _vm._s(data.item.dni) + " -")
-                            ]),
-                            _vm._v(" "),
-                            _c("span", [
-                              _vm._v(
-                                "COD. MODULAR: " +
-                                  _vm._s(data.item.codigo_modular)
-                              )
-                            ])
+                          _c("span", [
+                            _vm._v(
+                              "COD. MODULAR:\n                            " +
+                                _vm._s(data.item.codigo_modular)
+                            )
                           ])
-                        ],
-                        1
-                      )
-                    ]
-                  }
+                        ])
+                      ],
+                      1
+                    )
+                  ]
                 }
-              ]),
-              model: {
-                value: _vm.getPersona,
-                callback: function($$v) {
-                  _vm.getPersona = $$v
-                },
-                expression: "getPersona"
               }
-            })
-          ],
-          1
-        )
-      ]),
+            ]),
+            model: {
+              value: _vm.getPersona,
+              callback: function($$v) {
+                _vm.getPersona = $$v
+              },
+              expression: "getPersona"
+            }
+          })
+        ],
+        1
+      ),
       _vm._v(" "),
       _c(
-        "v-flex",
-        { attrs: { xs12: "" } },
+        "div",
         [
           _c(
             "transition",
@@ -468,11 +490,23 @@ var render = function() {
             [
               Object.keys(_vm.getPersona).length !== 0
                 ? _c(
-                    "v-card",
-                    { staticClass: "pa-2", attrs: { outlined: "" } },
+                    "v-alert",
+                    {
+                      staticClass: "rounded-lg",
+                      attrs: {
+                        color: "cyan",
+                        border: "left",
+                        elevation: "2",
+                        "colored-border": ""
+                      }
+                    },
                     [
                       _c("div", { staticClass: "title mb-1" }, [
-                        _vm._v(_vm._s(_vm.getNameComplete(_vm.getPersona)))
+                        _vm._v(
+                          "\n                    " +
+                            _vm._s(_vm.getNameComplete(_vm.getPersona)) +
+                            "\n                "
+                        )
                       ]),
                       _vm._v(" "),
                       _c("div", { staticClass: "subtitle-1" }, [
@@ -481,9 +515,9 @@ var render = function() {
                             _vm._v("DNI:")
                           ]),
                           _vm._v(
-                            "\n            " +
+                            "\n                        " +
                               _vm._s(_vm.getPersona.dni) +
-                              "\n          "
+                              "\n                    "
                           )
                         ]),
                         _vm._v(" "),
@@ -492,9 +526,9 @@ var render = function() {
                             _vm._v("COD. MODULAR:")
                           ]),
                           _vm._v(
-                            "\n            " +
+                            "\n                        " +
                               _vm._s(_vm.getPersona.codigo_modular) +
-                              "\n          "
+                              "\n                    "
                           )
                         ]),
                         _vm._v(" "),

@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Notifications\Notifiable;
-use Illuminate\Foundation\Auth\User as Authenticatable;
 use Caffeinated\Shinobi\Concerns\HasRolesAndPermissions;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
@@ -41,6 +41,13 @@ class User extends Authenticatable
     public function pagos()
     {
         return $this->hasMany('App\Models\Pago');
+    }
+
+    public function scopeSearch($query, $value)
+    {
+        return $query->where('name', 'LIKE', "%{$value}%")
+            ->orWhere('email', 'LIKE', "%{$value}%")
+            ->orWhere('dni', 'LIKE', "%{$value}%");
     }
 
 }

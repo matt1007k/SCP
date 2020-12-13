@@ -31,14 +31,18 @@ class HaberController extends Controller
     public function index(Request $request)
     {
         $es_imponible = request('imponible') ?? request('imponible');
-        $haberes = HaberDescuento::where('tipo', 'haber')->get();
+        $haberes = HaberDescuento::where('tipo', 'haber')
+            ->search(request('search', ''))
+            ->paginate(request('perPage', 10));
         if ($es_imponible !== 'Todos') {
             $haberes = HaberDescuento::where('tipo', 'haber')
-                ->where('es_imponible', $es_imponible)->get();
+                ->where('es_imponible', $es_imponible)
+                ->search(request('search', ''))
+                ->paginate(request('perPage', 10));
 
         }
 
-        return response()->json(['haberes' => $haberes], 200);
+        return response()->json($haberes, 200);
     }
 
     public function store(HaberCreatedRequest $request)

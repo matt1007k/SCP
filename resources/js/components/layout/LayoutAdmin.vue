@@ -29,13 +29,13 @@
           </v-btn>
         </template>
 
-        <v-list style="max-height: 400px" class="scroll-y" dark>
+        <v-list style="max-height: 400px" class="scroll-y">
           <v-subheader class="indigo">
             <h2 class="text-white">Notificaciones</h2>
           </v-subheader>
           <template v-if="unreadNotifications.length > 0">
             <v-list-item
-              :class="{'white': notification.read_at == null}"
+              :class="{'text--secondary': notification.read_at == null}"
               @click="markAsRead"
               v-for="notification in unreadNotifications"
               :key="notification.id"
@@ -43,7 +43,7 @@
             >
               <v-list-item-content>
                 <v-list-item-title>{{notification.data.message}}</v-list-item-title>
-                <v-list-item-sub-title>{{getFormaterDate(notification.created_at)}}</v-list-item-sub-title>
+                <v-list-item-sub-title class="text--secondary">{{getFormaterDate(notification.created_at)}}</v-list-item-sub-title>
               </v-list-item-content>
             </v-list-item>
           </template>
@@ -76,7 +76,7 @@
 
               <v-list-item-content>
                 <v-list-item-title>{{ $auth.user.user.name }}</v-list-item-title>
-                <v-list-item-subtitle>{{ $auth.user.user.email }}</v-list-item-subtitle>
+                <v-list-item-subtitle>DNI {{ $auth.user.user.dni }}</v-list-item-subtitle>
               </v-list-item-content>
             </v-list-item>
           </template>

@@ -22,7 +22,7 @@
 
         <v-list-item-content>
           <v-list-item-title>{{ $auth.user.user.name }}</v-list-item-title>
-          <v-list-item-subtitle>{{ $auth.user.user.email }}</v-list-item-subtitle>
+          <v-list-item-subtitle>DNI {{ $auth.user.user.dni }}</v-list-item-subtitle>
         </v-list-item-content>
       </v-list-item>
       <v-container fluid>

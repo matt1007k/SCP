@@ -1,34 +1,23 @@
 <template>
     <v-layout row justify-center>
         <v-dialog v-model="open" persistent small width="800px">
-            <v-card class="rounded-xl pa-4">
+            <card>
                 <form @submit.prevent="Submit">
-                    <v-card-title wrap>
-                        <v-flex xs11>
-                            <span class="h6 font-weight-bold"
-                                >Registrar usuario</span
-                            >
-                        </v-flex>
-                        <v-flex xs1 class="d-flex justify-end">
-                            <v-btn
-                                color="secondary"
+                    <modal-header title="Registrar usuario">
+                        <template v-slot:close>
+                            <btn-secondary
+                                :onClick="close"
                                 fab
+                                class="rounded-circle"
                                 small
-                                @click="close()"
-                                :class="
-                                    `${
-                                        $vuetify.theme.dark
-                                            ? 'white--text'
-                                            : 'black--text'
-                                    }`
-                                "
+                                color="primary"
                             >
                                 <v-icon>$vuetify.icons.close</v-icon>
-                            </v-btn>
-                        </v-flex>
-                    </v-card-title>
+                            </btn-secondary>
+                        </template>
+                    </modal-header>
                     <v-card-text>
-                        <v-container grid-list-md>
+                        <v-container grid-list-lg>
                             <v-layout wrap>
                                 <v-flex xs12 sm6>
                                     <v-text-field
@@ -74,7 +63,9 @@
                                 </v-flex>
 
                                 <v-flex xs12>
-                                    <div class="body-2">Estado del usuario</div>
+                                    <div class="body-2 font-weight-bold">
+                                        Estado del usuario
+                                    </div>
                                     <v-radio-group
                                         v-model="form.estado"
                                         row
@@ -128,25 +119,13 @@
                     </v-card-text>
                     <v-card-actions>
                         <v-spacer></v-spacer>
-                        <v-btn
-                            class="rounded-lg"
-                            :class="
-                                `${
-                                    $vuetify.theme.dark
-                                        ? 'white--text'
-                                        : 'black--text'
-                                }`
-                            "
-                            color="secondary"
-                            @click="close()"
-                            >Cancelar</v-btn
-                        >
+                        <btn-secondary :onClick="close">Cancelar</btn-secondary>
                         <v-btn class="rounded-lg" color="primary" type="submit"
                             >Guardar</v-btn
                         >
                     </v-card-actions>
                 </form>
-            </v-card>
+            </card>
         </v-dialog>
     </v-layout>
 </template>

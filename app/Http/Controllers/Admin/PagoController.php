@@ -8,7 +8,6 @@ use App\Models\HaberDescuento;
 use App\Models\Pago;
 use Auth;
 use Carbon\Carbon;
-use Illuminate\Http\Request;
 
 class PagoController extends Controller
 {
@@ -25,9 +24,11 @@ class PagoController extends Controller
         $mes = request('mes') ? request('mes') : (String) date('m');
         $pagos = Pago::where('anio', $anio)->where('mes', $mes)
             ->orderBy('created_at', 'desc')
-            ->With(['persona'])->get();
+            ->With(['persona'])
+            ->search(request('search', ''))
+            ->paginate(request('perPage', ''));
 
-        return response()->json(['pagos' => $pagos], 200);
+        return response()->json($pagos, 200);
     }
 
     public function store(PagoCreatedRequest $request)

@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Helpers\HasManyRelation;
 use App\Services\EncryptService;
 use App\Services\MesesService;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 class Pago extends Model
@@ -20,9 +21,9 @@ class Pago extends Model
         'monto_imponible',
         'user_id',
         'persona_id',
-        'cvariable', 
-        'cfija', 
-        'seguro', 
+        'cvariable',
+        'cfija',
+        'seguro',
     ];
 
     public function persona()
@@ -43,6 +44,19 @@ class Pago extends Model
     public function scopeMes($query, $mes)
     {
         return $query->where('mes', $mes);
+    }
+
+    public function scopeSearch(Builder $query, $value)
+    {
+        $concat = "apellido_paterno,' ',apellido_materno,', ', nombre";
+        return $query
+            ->whereHas('persona', function ($q) use ($value, $concat) {
+                $q->where('codigo_modular', 'LIKE', '%' . $value . '%')
+                    ->orWhere('dni', 'LIKE', '%' . $value . '%')
+                    ->orWhereRaw("CONCAT($concat) LIKE '%" . $value . "%'");
+            })
+            ->orWhere('anio', 'LIKE', "%{$value}%")
+            ->orWhere('mes', 'LIKE', "%{$value}%");
     }
 
     public function getPeriodo()

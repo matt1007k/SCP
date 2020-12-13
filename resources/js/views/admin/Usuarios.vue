@@ -1,56 +1,24 @@
 <template>
     <v-container>
-        <v-layout class="mb-3">
-            <v-flex xs12>
-                <div class="py-10 px-6 rounded-xl header-page bg-header">
-                    <!-- <v-container> -->
-                    <div class="d-flex flex-column">
-                        <div class="display-2 font-weight-bold text-white">
-                            Usuarios
-                        </div>
-                        <div class="text-white body-1 mb-5">
-                            Administra los usuarios que ingresen en el sistema.
-                        </div>
-                        <div
-                            v-if="$auth.can('users.create') || $auth.isAdmin()"
-                        >
-                            <v-btn
-                                color="dark"
-                                large
-                                class="rounded-lg"
-                                @click.stop="modalAgregar"
-                            >
-                                <v-icon>$vuetify.icons.add</v-icon>Agregar
-                                Usuario
-                            </v-btn>
-                        </div>
-                    </div>
-                    <div class="header-img">
-                        <img
-                            src="/img/clip-online-consultation.png"
-                            alt="Image online"
-                        />
-                    </div>
-                    <!-- </v-container> -->
-                    <!-- <v-container fluid style="padding-bottom: 0; padding-top: 0">
-            <v-text-field v-model="search" clearable label="Buscar" type="text">
-              <template v-slot:prepend>
-                <v-icon>$vuetify.icons.search</v-icon>
-              </template>
-              <template v-slot:append>
-                <v-fade-transition leave-absolute>
-                  <v-progress-circular v-if="loading" size="24" color="info" indeterminate></v-progress-circular>
-                </v-fade-transition>
-              </template>
-            </v-text-field>
-          </v-container> -->
-                </div>
-            </v-flex>
-        </v-layout>
-        <div
-            class="elevation-1 rounded-xl pa-6 mt-5"
-            :class="`${$vuetify.theme.dark ? 'grey darken-4' : 'white'}`"
+        <page-header
+            title="Usuarios"
+            subtitle="Administra los usuarios que ingresen en el sistema."
+            img="/img/clip-online-consultation.png"
         >
+            <template v-slot:action>
+                <div v-if="$auth.can('users.create') || $auth.isAdmin()">
+                    <v-btn
+                        color="dark"
+                        large
+                        class="rounded-lg"
+                        @click.stop="modalAgregar"
+                    >
+                        <v-icon>$vuetify.icons.add</v-icon>Agregar Usuario
+                    </v-btn>
+                </div>
+            </template>
+        </page-header>
+        <card class="mt-6">
             <v-flex row>
                 <v-col sm="12" md="5">
                     <v-text-field
@@ -58,6 +26,7 @@
                         filled
                         label="Buscar"
                         prepend-inner-icon="mdi-magnify"
+                        v-model="search"
                     ></v-text-field>
                 </v-col>
                 <v-spacer></v-spacer>
@@ -72,124 +41,97 @@
                     ></v-select>
                 </v-col>
             </v-flex>
-
-            <table class="table">
-                <thead
-                    :class="
-                        `${
-                            $vuetify.theme.dark ? 'secondary' : 'grey lighten-4'
-                        }`
-                    "
-                >
-                    <tr>
-                        <td v-for="(header, i) in headers" :key="i">
-                            {{ header.text }}
-                        </td>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="user in usuarios" :key="user.id">
-                        <td>
-                            <p class="mb-0">
-                                {{ user.name }}
-                            </p>
-                            <p class="text--secondary text--small">
-                                DNI {{ user.dni }}
-                            </p>
-                        </td>
-                        <td>{{ user.email }}</td>
-                        <template v-if="user.roles.length > 0">
+            <v-fade-transition leave-absolute>
+                <v-progress-linear
+                    v-if="loadingData"
+                    size="24"
+                    color="primary"
+                    indeterminate
+                ></v-progress-linear>
+            </v-fade-transition>
+            <data-table :headers="headers">
+                <template v-slot:body>
+                    <template v-if="usuarios.length">
+                        <tr v-for="user in usuarios" :key="user.id">
                             <td>
-                                <v-chip
-                                    v-for="(rol, index) in user.roles"
-                                    :key="index"
-                                    text-color="white"
-                                    color="info"
-                                    class="text-capitalize"
-                                    small
-                                    >{{ rol.name }}</v-chip
-                                >
+                                <p class="mb-0">
+                                    {{ user.name }}
+                                </p>
+                                <p class="text--secondary text--small">
+                                    DNI {{ user.dni }}
+                                </p>
                             </td>
-                        </template>
-                        <template v-else>
-                            <td class="text-xs-center">N/A</td>
-                        </template>
-                        <template v-if="user.estado === 'activo'">
+                            <td>{{ user.email }}</td>
+                            <roles-tag-table :roles="user.roles" />
+                            <status-tag-table :user="user" />
                             <td>
-                                <v-chip
-                                    text-color="white"
-                                    color="success"
-                                    class="text-capitalize"
-                                    small
-                                    >{{ user.estado }}</v-chip
+                                <v-tooltip
+                                    bottom
+                                    v-if="
+                                        $auth.can('users.edit') ||
+                                            $auth.isAdmin()
+                                    "
                                 >
-                            </td>
-                        </template>
-                        <template v-if="user.estado === 'inactivo'">
-                            <td>
-                                <v-chip
-                                    text-color="white"
-                                    color="error"
-                                    class="text-capitalize"
-                                    small
-                                    >{{ user.estado }}</v-chip
+                                    <template v-slot:activator="{ on }">
+                                        <v-btn
+                                            color="info"
+                                            fab
+                                            x-small
+                                            v-on="on"
+                                            @click="modalEditar(user)"
+                                        >
+                                            <v-icon>$vuetify.icons.edit</v-icon>
+                                        </v-btn>
+                                    </template>
+                                    <span>Editar registro</span>
+                                </v-tooltip>
+                                <v-tooltip
+                                    bottom
+                                    v-if="
+                                        $auth.can('users.destroy') ||
+                                            $auth.isAdmin()
+                                    "
                                 >
+                                    <template v-slot:activator="{ on }">
+                                        <v-btn
+                                            color="error"
+                                            fab
+                                            x-small
+                                            v-on="on"
+                                            @click="deleteData(user)"
+                                        >
+                                            <v-icon
+                                                >$vuetify.icons.delete</v-icon
+                                            >
+                                        </v-btn>
+                                    </template>
+                                    <span>Cambiar estado</span>
+                                </v-tooltip>
                             </td>
-                        </template>
-                        <td>
-                            <v-tooltip
-                                bottom
-                                v-if="
-                                    $auth.can('users.edit') || $auth.isAdmin()
-                                "
-                            >
-                                <template v-slot:activator="{ on }">
-                                    <v-btn
-                                        color="info"
-                                        fab
-                                        x-small
-                                        v-on="on"
-                                        @click="modalEditar(user)"
-                                    >
-                                        <v-icon>$vuetify.icons.edit</v-icon>
-                                    </v-btn>
-                                </template>
-                                <span>Editar registro</span>
-                            </v-tooltip>
-                            <v-tooltip
-                                bottom
-                                v-if="
-                                    $auth.can('users.destroy') ||
-                                        $auth.isAdmin()
-                                "
-                            >
-                                <template v-slot:activator="{ on }">
-                                    <v-btn
-                                        color="error"
-                                        fab
-                                        x-small
-                                        v-on="on"
-                                        @click="deleteData(user)"
-                                    >
-                                        <v-icon>$vuetify.icons.delete</v-icon>
-                                    </v-btn>
-                                </template>
-                                <span>Cambiar estado</span>
-                            </v-tooltip>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <div class="d-flex justify-between align-center">
-                <p class="caption mb-0">Mostrando 1 al 10 de 57 registros</p>
+                        </tr>
+                    </template>
+                    <template v-else>
+                        <tr>
+                            <td :colspan="headers.length">No hay registros.</td>
+                        </tr>
+                    </template>
+                </template>
+            </data-table>
+            <div
+                class="d-flex justify-between align-center flex-column flex-md-row"
+            >
+                <p class="caption mb-0">
+                    Mostrando {{ pagination.from }} al {{ pagination.to }} de
+                    {{ pagination.total }} registros
+                </p>
                 <v-pagination
                     v-model="page"
-                    :length="15"
+                    :length="pagination.last_page"
                     :total-visible="7"
                     color="primary"
                 ></v-pagination>
             </div>
-        </div>
+        </card>
         <modal-agregar ref="agregarUsuario"></modal-agregar>
         <modal-editar ref="editarUsuario"></modal-editar>
     </v-container>
@@ -198,28 +140,26 @@
 <script>
 import ModalAgregar from "../../components/usuarios/ModalAgregar";
 import ModalEditar from "../../components/usuarios/ModalEditar";
-import Vue from "vue";
+import RolesTagTable from "../../components/usuarios/RolesTagTable.vue";
+import StatusTagTable from "../../components/usuarios/StatusTagTable.vue";
 export default {
-    components: { ModalAgregar, ModalEditar },
+    components: { ModalAgregar, ModalEditar, RolesTagTable, StatusTagTable },
     data() {
         return {
             search: "",
-            loading: false,
             loadingData: false,
             pagination: {},
             page: 1,
             RowsPerPageItems: [10, 15, 25],
             perPage: 10,
-            selected: [],
             headers: [
                 {
-                    text: "Nombre completo",
-                    value: "name"
+                    text: "Nombre completo"
                 },
-                { text: "Correo Electrónico", value: "email" },
-                { text: "Roles", value: "roles.name" },
-                { text: "Estado", value: "estado" },
-                { text: "Acciones", value: "acciones" }
+                { text: "Correo Electrónico" },
+                { text: "Roles" },
+                { text: "Estado" },
+                { text: "Acciones" }
             ],
             usuarios: []
         };
@@ -237,12 +177,15 @@ export default {
         this.$root.editarUsuario = this.$refs.editarUsuario;
     },
     methods: {
-        getData(url = "/usuarios") {
+        getData(
+            url = `/usuarios?perPage=${this.perPage}&search=${this.search}&page=${this.page}`
+        ) {
             this.loadingData = true;
             axios
                 .get(url)
                 .then(res => {
-                    this.usuarios = res.data.usuarios;
+                    this.usuarios = res.data.data;
+                    this.pagination = this.getPaginateElement(res.data);
                     this.loadingData = false;
                 })
                 .catch(err => {
@@ -295,22 +238,23 @@ export default {
                         });
                 }
             });
+        },
+        resetPage() {
+            this.page = 1;
         }
     },
-    computed: {
-        pages() {
-            if (
-                this.pagination.rowsPerPage == null ||
-                this.pagination.totalItems == null
-            )
-                return 0;
-
-            return Math.ceil(
-                this.pagination.totalItems / this.pagination.rowsPerPage
-            );
+    watch: {
+        search(value) {
+            this.resetPage();
+            this.getData();
+        },
+        perPage(value) {
+            this.resetPage();
+            this.getData();
+        },
+        page(value) {
+            this.getData();
         }
     }
 };
 </script>
-
-<style></style>

@@ -21,13 +21,9 @@ class PersonaController extends Controller
 
     public function search(Request $request)
     {
-        $concat = "apellido_paterno,' ',apellido_materno,', ', nombre";
         $personas = Persona::where('estado', request('estado'))
-            ->where(function ($query) use ($concat) {
-                $query->where('codigo_modular', 'LIKE', '%' . request('q') . '%')
-                    ->orWhere('dni', 'LIKE', '%' . request('q') . '%')
-                    ->orWhereRaw("CONCAT($concat) LIKE '%" . request('q') . "%'");
-            })->orderBy('apellido_paterno', 'DESC')->get();
+            ->search(request('q', ''))
+            ->orderBy('apellido_paterno', 'DESC')->get();
 
         return response()->json(['personas' => $personas], 200);
     }
@@ -36,9 +32,11 @@ class PersonaController extends Controller
     {
         $estado = $request->get('estado') ?? $request->get('estado');
 
-        $personas = Persona::where('estado', $estado)->get();
+        $personas = Persona::where('estado', $estado)
+            ->search(request('search', ''))
+            ->paginate(request('perPage', 10));
 
-        return response()->json(['personas' => $personas], 200);
+        return response()->json($personas, 200);
     }
 
     public function store(PersonaCreatedRequest $request)

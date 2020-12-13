@@ -19,9 +19,15 @@ class PermissionController extends Controller
     }
     public function index(Request $request)
     {
-        $permissions = Permission::orderBy('name', 'ASC')->get();
+        $search = request('search', '');
+        $permissions = Permission::
+            where('name', 'LIKE', "%{$search}%")
+            ->orWhere('description', 'LIKE', "%{$search}%")
+            ->orWhere('slug', 'LIKE', "%{$search}%")
+            ->latest()
+            ->paginate(request('perPage', 10));
 
-        return response()->json(['permissions' => $permissions], 200);
+        return response()->json($permissions, 200);
     }
 
     public function getPermissions(Request $request)

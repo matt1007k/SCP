@@ -24,6 +24,7 @@ class DescuentoController extends Controller
         $descuentos = HaberDescuento::orderBy('nombre', 'DESC')
             ->where('tipo', $tipo)
             ->search(request('q'))
+            ->take(5)
             ->get();
 
         return response()->json(['descuentos' => $descuentos], 200);
@@ -31,9 +32,11 @@ class DescuentoController extends Controller
 
     public function index()
     {
-        $descuentos = HaberDescuento::where('tipo', 'descuento')->get();
+        $descuentos = HaberDescuento::where('tipo', 'descuento')
+            ->search(request('search', ''))
+            ->paginate(request('perPage', 10));
 
-        return response()->json(['descuentos' => $descuentos], 200);
+        return response()->json($descuentos, 200);
     }
 
     public function store(DescuentoCreatedRequest $request)
