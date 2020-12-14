@@ -68,7 +68,7 @@
         </v-flex>
       </template> -->
 
-            <v-flex xs12 v-if="$auth.isAdmin()">
+            <!-- <v-flex xs12 v-if="$auth.isAdmin()">
                 <v-card class="rounded-xl pa-6 mt-5">
                     <v-card-title class="no-padding-bottom">
                         <v-layout row align-center>
@@ -104,7 +104,7 @@
                         <bar-chart :chart-data="dataPagos"></bar-chart>
                     </v-card-text>
                 </v-card>
-            </v-flex>
+            </v-flex> -->
             <v-flex xs12 sm6>
                 <v-card class="rounded-xl pa-6 mt-5">
                     <v-card-text>

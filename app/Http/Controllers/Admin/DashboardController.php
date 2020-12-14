@@ -77,11 +77,11 @@ class DashboardController extends Controller
         $color_cesante = "#FF5252";
         $color_sobreviviente = "#2196F3";
 
-        if (auth()->user()->hasRole('Admin')) {
-            $total_activo = $this->getTotalLiquidoByYear($request, 'activo');
-            $total_cesante = $this->getTotalLiquidoByYear($request, 'cesante');
-            $total_sobreviviente = $this->getTotalLiquidoByYear($request, 'sobreviviente');
-        }
+        // if (auth()->user()->hasRole('Admin')) {
+        //     $total_activo = $this->getTotalLiquidoByYear($request, 'activo');
+        //     $total_cesante = $this->getTotalLiquidoByYear($request, 'cesante');
+        //     $total_sobreviviente = $this->getTotalLiquidoByYear($request, 'sobreviviente');
+        // }
 
         array_push($total_pagos, (object) [
             "label" => "$request->anio, $activo",
