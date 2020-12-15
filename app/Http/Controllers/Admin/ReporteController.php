@@ -347,7 +347,7 @@ class ReporteController extends Controller
         ]);
 
         $pago = Pago::With(['persona'])->where('anio', $request->anio)->mes($request->mes)
-            ->where('id', $request->persona_id)
+            ->where('persona_id', $request->persona_id)
             ->first();
 
         if ($pago) {

@@ -71432,7 +71432,7 @@ var ParentComponent = {
         titulo: "Perfil"
       },
       component: function component() {
-        return __webpack_require__.e(/*! import() */ 13).then(__webpack_require__.bind(null, /*! ./views/admin/Perfil.vue */ "./resources/js/views/admin/Perfil.vue"));
+        return __webpack_require__.e(/*! import() */ 11).then(__webpack_require__.bind(null, /*! ./views/admin/Perfil.vue */ "./resources/js/views/admin/Perfil.vue"));
       }
     }, {
       path: "usuarios",
@@ -71503,7 +71503,7 @@ var ParentComponent = {
           titulo: "Roles"
         },
         component: function component() {
-          return __webpack_require__.e(/*! import() */ 12).then(__webpack_require__.bind(null, /*! ./views/admin/seguridad/Roles.vue */ "./resources/js/views/admin/seguridad/Roles.vue"));
+          return __webpack_require__.e(/*! import() */ 13).then(__webpack_require__.bind(null, /*! ./views/admin/seguridad/Roles.vue */ "./resources/js/views/admin/seguridad/Roles.vue"));
         }
       }, {
         path: "permisos",
@@ -71512,7 +71512,7 @@ var ParentComponent = {
           titulo: "Permisos"
         },
         component: function component() {
-          return __webpack_require__.e(/*! import() */ 11).then(__webpack_require__.bind(null, /*! ./views/admin/seguridad/Permisos.vue */ "./resources/js/views/admin/seguridad/Permisos.vue"));
+          return __webpack_require__.e(/*! import() */ 12).then(__webpack_require__.bind(null, /*! ./views/admin/seguridad/Permisos.vue */ "./resources/js/views/admin/seguridad/Permisos.vue"));
         }
       }]
     }, {
@@ -71594,8 +71594,8 @@ var ParentComponent = {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /Users/max/Sites/scp/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /Users/max/Sites/scp/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /var/www/html/SCP/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /var/www/html/SCP/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

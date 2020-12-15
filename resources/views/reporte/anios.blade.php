@@ -93,88 +93,70 @@
         @foreach ($pagos as $pago)
         <div class="page">
             <header>
-                <h5 class="text-center" style="margin-top: -20px;text-decoration: underline">CONSTANCIA DE PAGOS DE
-                    HABERES Y DESCUENTOS</h5>
-                <img style="margin-top: -15px; margin-bottom: 0" src="{{public_path().'/img/LogoDREA.png'}}" width="70"
-                    alt="">
-
+                <h5 class="text-center" style="margin-top: -20px;text-decoration: underline">CONSTANCIA DE PAGOS DE HABERES Y DESCUENTOS</h5>
+                <img style="margin-top: -15px; margin-bottom: 0" src="{{public_path().'/img/LogoDREA.png'}}" width="65" alt="">    
+                
                 @if ($pago['certificado'] != null)
-                <div class="header-cert" style="margin-top:20px">
-                    <span class="fs-header2"><b>CERTIFICADO N°:</b></span>
-                    <span class="fs-header2 bb-1"
-                        style="margin-left:5px">{{$pago['certificado'].'-'.date('Y').'-GRA/GG-GRDS-DREA-OA-AT'}}</span>
-                </div>
+                    <div class="header-cert" >
+                        <span class="fs-header2"><b>CERTIFICADO N°:</b></span>
+                        <span class="fs-header2 bb-1" style="margin-left:5px">{{$pago['certificado'].'-'.date('Y').'-GRA/GG-GRDS-DREA-OA-AT'}}</span>
+                    </div>
                 @else
-                <div class="header-cert" style="margin-top:20px">
-                    <span class="fs-header2"><b>CERTIFICADO N°:</b></span>
-                    <span class="fs-header2 bb-1"
-                        style="margin-left:5px;padding-left:80px">{{'-'.date('Y').'-GRA/GG-GRDS-DREA-OA-AT'}}</span>
-                </div>
+                    <div class="header-cert" >
+                        <span class="fs-header2"><b>CERTIFICADO N°:</b></span>
+                        <span class="fs-header2 bb-1" style="margin-left:5px;padding-left:40px">{{'-'.date('Y').'-GRA/GG-GRDS-DREA-OA-AT'}}</span>
+                    </div> 
                 @endif
-
-
+                
                 <table class="w-80" style="margin-top: -40%">
                     <tbody>
-                        <tr>
-                            <td class="text-right">
-                                <img class="position-absolute" style="top:0; right: 0; border: 1px solid #000"
-                                    src="data:image/png;base64, {!! base64_encode(QrCode::format('png')->size(74)->generate('Cert:'.$pago['certificado'].'|'.$pago['pago']->persona->dni.'|'.date('d/m/Y H:i:s').'|Resp:'.$pago['user']->dni)) !!} ">
+                        <tr>                                           
+                            <td class="text-right" >
+                                <img class="position-absolute" style="top:0; right: 0; border: 1px solid #000" src="data:image/png;base64, {!! base64_encode(QrCode::format('png')->size(74)->generate('Cert:'.$pago['certificado'].'|'.$pago['pago']->persona->dni.'|'.date('d/m/Y H:i:s').'|Resp:'.$pago['user']->dni)) !!} ">
                             </td>
                             <td>
-                        <tr>
-                            <td class="fs-header text-right">
-                                <span class="position-absolute"
-                                    style="top:-10; right: 0; width: 200px">{{date('d/m/Y H:i')}}</span>
+                                <tr>
+                                    <td class="fs-header text-right">
+                                        <span class="position-absolute" style="top:-10; right: 0; width: 200px">{{date('d/m/Y H:i')}}</span>
+                                    </td>
+                                </tr>
+                                
                             </td>
-                        </tr>
-
-                        </td>
                         </tr>
                     </tbody>
                 </table>
                 <table class="w-80">
                     <tbody>
-                        <tr>
-                            <td class="text-left fs-header">
-                                <b>DNI:</b>
-                            </td>
-                            <td class="fs-header">{{$pago['pago']->persona->dni}}</td>
-                            <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            </td>
-                            <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            </td>
-                            <td class="text-right fs-header">
-                                <b>COD. MODULAR:</b>
-                            </td>
-                            <td class="fs-header">{{$pago['pago']->persona->codigo_modular}}</td>
-                            <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            </td>
-                            <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            </td>
-                            <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            </td>
-                            <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="text-left fs-header">
-                                <b>APELLIDOS Y NOMBRES:</b>
-                            </td>
-                            <td class="fs-header" colspan="3">{{$pago['pago']->persona->apellido_paterno}}
-                                {{$pago['pago']->persona->apellido_materno}}, {{$pago['pago']->persona->nombre}}</td>
-
-                        </tr>
-                        <tr>
-                            <td class="text-left fs-header">
-                                <b>REPORTE DEL AÑO:</b>
-                            </td>
-                            <td class="fs-header">{{$pago['pago']->anio}}</td>
-
-                        </tr>
+                    <tr>
+                                    <td class="text-right fs-header">
+                                        <b>DNI:</b>
+                                    </td>
+                                    <td class="fs-header">{{$pago['pago']->persona->dni}}</td>
+                                    <td class="text-right fs-header">
+                                        <b>APELLIDOS Y NOMBRES:</b>
+                                    </td>
+                                    <td class="fs-header" colspan="2">{{$pago['pago']->persona->apellido_paterno}} {{$pago['pago']->persona->apellido_materno}}, {{$pago['pago']->persona->nombre}}</td>
+                                    
+                                    
+                                    <td class="text-right fs-header">
+                                        <b>REPORTE DEL AÑO:</b>
+                                    </td>
+                                    <td class="fs-header">{{$pago['pago']->anio}}</td>
+        
+                                    
+                                    
+                                    <!-- <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>  -->
+                                    <td class="text-right fs-header">
+                                        <b>COD. MODULAR:</b>
+                                    </td>
+                                    <td class="fs-header">{{$pago['pago']->persona->codigo_modular}}</td>
+                                
+                                </tr>
                     </tbody>
                 </table>
-
+                
             </header>
+ 
             <div class="spacer"></div>
             <div class="body">
                 <table class="w-100">

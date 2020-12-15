@@ -23,7 +23,7 @@ class PersonaController extends Controller
     {
         $personas = Persona::where('estado', request('estado'))
             ->search(request('q', ''))
-            ->orderBy('apellido_paterno', 'DESC')->get();
+            ->orderBy('apellido_paterno', 'DESC')->take(5)->get();
 
         return response()->json(['personas' => $personas], 200);
     }

@@ -12,7 +12,7 @@ class VerifyUserController extends Controller
     public function index()
     {
         return PersonaResource::collection(
-            Persona::search()
+            Persona::search(request('q'))
                 ->take(4)
                 ->get()
         );

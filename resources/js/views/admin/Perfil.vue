@@ -107,7 +107,7 @@
 
 <script>
 import ModalEditar from "../../components/perfil/ModalEditar";
-import modalPassword from "../../components/perfil/modalPassword";
+import modalPassword from "../../components/perfil/ModalPassword";
 export default {
     components: { ModalEditar, modalPassword },
     data() {

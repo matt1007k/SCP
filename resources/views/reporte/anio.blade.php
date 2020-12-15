@@ -42,13 +42,13 @@
         font-weight: bold;
     }
     .spacer{
-        height: 20px;
+        height: 5px;
     }
     .fs-header{        
-        font-size: 10px;
+        font-size: 8px;
     }
     .fs-header2{        
-        font-size: 16px;
+        font-size: 10px;
     }
     .bb-1{
         border-bottom: 1px solid #000;
@@ -70,15 +70,15 @@
 <body>
     <header>
         <h5 class="text-center" style="margin-top: -20px;text-decoration: underline">CONSTANCIA DE PAGOS DE HABERES Y DESCUENTOS</h5>
-        <img style="margin-top: -15px; margin-bottom: 0" src="{{public_path().'/img/LogoDREA.png'}}" width="70" alt="">    
+        <img style="margin-top: -15px; margin-bottom: 0" src="{{public_path().'/img/LogoDREA.png'}}" width="65" alt="">    
         
         @if ($certificado != null)
-            <div class="header-cert" style="margin-top:20px">
+            <div class="header-cert" >
                 <span class="fs-header2"><b>CERTIFICADO N°:</b></span>
                 <span class="fs-header2 bb-1" style="margin-left:5px">{{$certificado.'-'.date('Y').'-GRA/GG-GRDS-DREA-OA-AT'}}</span>
             </div>
         @else
-            <div class="header-cert" style="margin-top:20px">
+            <div class="header-cert" >
                 <span class="fs-header2"><b>CERTIFICADO N°:</b></span>
                 <span class="fs-header2 bb-1" style="margin-left:5px;padding-left:40px">{{'-'.date('Y').'-GRA/GG-GRDS-DREA-OA-AT'}}</span>
             </div> 
@@ -103,36 +103,31 @@
         </table>
         <table class="w-80">
             <tbody>
-                <tr>
-                    <td class="text-left fs-header">
-                        <b>DNI:</b>
-                    </td>
-                    <td class="fs-header">{{$pago->persona->dni}}</td>
-                    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td> 
-                    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td> 
-                    <td class="text-right fs-header">
-                        <b>COD. MODULAR:</b>
-                    </td>
-                    <td class="fs-header">{{$pago->persona->codigo_modular}}</td>
-                    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-                    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-                    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-                    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-                </tr>
-                <tr>
-                    <td class="text-left fs-header">
-                        <b>APELLIDOS Y NOMBRES:</b>
-                    </td>
-                    <td class="fs-header" colspan="4">{{$pago->persona->apellido_paterno}} {{$pago->persona->apellido_materno}}, {{$pago->persona->nombre}}</td>
-                    
-                </tr>
-                <tr>
-                    <td class="text-left fs-header">
-                        <b>REPORTE DEL AÑO:</b>
-                    </td>
-                    <td class="fs-header">{{$pago->anio}}</td>
-        
-                </tr>
+            <tr>
+                            <td class="text-right fs-header">
+                                <b>DNI:</b>
+                            </td>
+                            <td class="fs-header">{{$pago->persona->dni}}</td>
+                            <td class="text-right fs-header">
+                                <b>APELLIDOS Y NOMBRES:</b>
+                            </td>
+                            <td class="fs-header" colspan="2">{{$pago->persona->apellido_paterno}} {{$pago->persona->apellido_materno}}, {{$pago->persona->nombre}}</td>
+                            
+                            
+                            <td class="text-right fs-header">
+                                <b>REPORTE DEL AÑO:</b>
+                            </td>
+                            <td class="fs-header">{{$pago->anio}}</td>
+
+                            
+                            
+                            <!-- <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>  -->
+                            <td class="text-right fs-header">
+                                <b>COD. MODULAR:</b>
+                            </td>
+                            <td class="fs-header">{{$pago->persona->codigo_modular}}</td>
+                        
+                        </tr>
             </tbody>
         </table>
         

@@ -44,6 +44,9 @@
         height: 10px;
     }
     .fs-header-sm{        
+        font-size: 9px;
+    }
+    .fs-header-smx{        
         font-size: 10px;
     }
     .fs-header-sm b{
@@ -551,7 +554,7 @@
                         <td class="fs-header">
                             {{-- <span class="position-absolute" style="width: 200px; margin-top: -20px; right: 60">{{date('d/m/Y H:i')}} &nbsp;</span> --}}
                             <h4 style="margin: 0">Mensaje:</h4>
-                            Para más información contactános con nosotros www.dreayacucho.gob.pe.
+                            Para mayor información puede contactarse con nosotros a través de: www.dreayacucho.gob.pe .
                         </td>
                     </tr>
                     
