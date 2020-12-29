@@ -96,6 +96,11 @@ export const listItemsSidebar = [
                 title: "Personas",
                 url: "/admin/importar/actualizar-personas",
                 permission: "importar.personas"
+            },
+            {
+                title: "Personas Judiciales",
+                url: "/admin/importar/personas-judiciales",
+                permission: "importar.personas"
             }
         ]
     },
@@ -119,6 +124,11 @@ export const listItemsSidebar = [
             {
                 title: "Boleta de Pago",
                 url: "/admin/reporte/mensual",
+                permission: "pagos.consultar"
+            },
+            {
+                title: "Judicial",
+                url: "/admin/reporte/judicial",
                 permission: "pagos.consultar"
             }
         ]

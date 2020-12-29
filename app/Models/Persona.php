@@ -78,16 +78,6 @@ class Persona extends Model
         : null;
     }
 
-    public function user()
-    {
-        return $this->belongsTo('App\Models\User');
-    }
-
-    public function pagos()
-    {
-        return $this->hasMany('App\Models\Pago');
-    }
-
     public function getFullNameAttribute()
     {
         return "$this->apellido_paterno $this->apellido_materno, $this->nombre";
@@ -102,5 +92,20 @@ class Persona extends Model
                 ->orWhere('dni', 'LIKE', '%' . $value . '%')
                 ->orWhereRaw("CONCAT($concat) LIKE '%" . $value . "%'");
         });
+    }
+
+    public function user()
+    {
+        return $this->belongsTo('App\Models\User');
+    }
+
+    public function pagos()
+    {
+        return $this->hasMany('App\Models\Pago');
+    }
+
+    public function judiciales()
+    {
+        return $this->hasMany('App\Models\Judicial');
     }
 }

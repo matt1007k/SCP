@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Judicial;
 use App\Models\Pago;
 use App\Models\Persona;
 use App\Services\EncryptService;
@@ -147,6 +148,33 @@ class ReporteController extends Controller
             return response()->json([
                 'msg' => 'El pago no ha sido encontrado',
                 'pagos' => (object) [],
+                'status' => false,
+            ], 200);
+        }
+    }
+
+    public function searchByJudicial(Request $request)
+    {
+        $request->validate([
+            'persona_id' => 'required|exists:personas,id',
+            'anio' => 'required|exists:periodos,anio',
+            'mes' => 'required',
+        ]);
+        $periodo = (string) request('anio') . request('mes');
+
+        $judiciales = Judicial::where('periodo', $periodo)
+            ->where('persona_id', $request->persona_id)
+            ->get();
+
+        if ($judiciales) {
+            return response()->json([
+                'judiciales' => $judiciales,
+                'status' => true,
+            ], 200);
+        } else {
+            return response()->json([
+                'msg' => 'No hay judiciales encontrados',
+                'judiciales' => (object) [],
                 'status' => false,
             ], 200);
         }
@@ -359,6 +387,34 @@ class ReporteController extends Controller
                 'msg' => 'Pago no ha sido encontrado',
                 'pagos' => (object) [],
             ], 200);
+        }
+    }
+
+    public function byJudicial($params_code)
+    {
+        // $params = base64_decode($params_code);
+        $params_decode = (new EncryptService($params_code))->getDecodeEncrypt();
+        $params = (new JsonParseService($params_decode))->getJsonDecode();
+        // $params = json_decode($params_decode, false);
+        // return var_dump($params);
+        $nombre_mes = strtoupper((new MesesService)->getNameMonth($params->mes));
+
+        $judicial = Judicial::find($params->id);
+        if ($judicial) {
+            $pdf = PDF::loadView('reporte.judicial', [
+                'judicial' => $judicial,
+                'nombre_mes' => $nombre_mes,
+                'anio' => $params->anio,
+                'user' => auth()->user(),
+            ]);
+            $pdf->getDomPDF()->set_option("enable_php", true);
+
+            $pdf->setPaper('a4');
+            return $pdf->stream();
+        } else {
+            return response()->json([
+                'msg' => 'El reporte judicial no ha sido encontrado',
+            ], 404);
         }
     }
 }

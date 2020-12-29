@@ -132,6 +132,14 @@ export default new Router({
                                 )
                         },
                         {
+                            path: "personas-judiciales",
+                            name: "importar.personas-judiciales",
+                            component: () =>
+                                import(
+                                    "./views/admin/importar/ImportarPersonasJudiciales.vue"
+                                )
+                        },
+                        {
                             path: "actualizar-personas",
                             name: "importar.update-personas",
                             component: () =>
@@ -162,6 +170,12 @@ export default new Router({
                             name: "reporte.mensual",
                             component: () =>
                                 import("./views/admin/reportes/Mensual.vue")
+                        },
+                        {
+                            path: "judicial",
+                            name: "reporte.judicial",
+                            component: () =>
+                                import("./views/admin/reportes/Judicial.vue")
                         }
                     ]
                 },

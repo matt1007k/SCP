@@ -3,17 +3,6 @@
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
- */
-
 Auth::routes();
 
 Route::get('/', function () {
@@ -65,14 +54,17 @@ Route::namespace ('Admin')->group(function () {
         Route::post('/importar/update-people', 'ImportarController@updateDataPersonas')->name('admin.importar.update-personas');
 
         Route::post('/importar/descuentos', 'ImportarController@descuentos')->name('admin.importar.descuentos');
+        Route::post('/importar/judiciales', 'ImportarController@judiciales')->name('admin.importar.judiciales');
 
         Route::get('/search/por-anios', 'ReporteController@searchByYears')->name('admin.search.poranios');
         Route::get('/search/por-anio', 'ReporteController@searchByYear')->name('admin.search.poranio');
         Route::get('/search/por-mes', 'ReporteController@searchByYearAndMonth')->name('admin.search.poranio');
+        Route::get('/search/por-judicial', 'ReporteController@searchByJudicial')->name('admin.search.porjudicial');
 
         Route::get('/reporte/por-anios/{params_code}', 'ReporteController@porAnios')->name('admin.reporte.poranios');
         Route::get('/reporte/por-anio/{params_code}', 'ReporteController@porAnio')->name('admin.reporte.poranio');
         Route::get('/reporte/por-mes/{params_code}', 'ReporteController@porMes')->name('admin.reporte.pormes');
+        Route::get('/reporte/judicial/{params_code}', 'ReporteController@byJudicial')->name('admin.reporte.porjudicial');
 
         Route::get('/unread-notifications', 'DashboardController@getUnReadNotifications');
         Route::get('/mark-all-read', 'DashboardController@markAllNotifications');
