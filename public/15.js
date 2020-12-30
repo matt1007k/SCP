@@ -175,6 +175,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -481,7 +482,9 @@ var render = function() {
                                   [
                                     _vm._v(
                                       "\n                                " +
-                                        _vm._s(lista.periodo) +
+                                        _vm._s(_vm.getNameMonth(_vm.form.mes)) +
+                                        ",\n                                " +
+                                        _vm._s(_vm.form.anio) +
                                         "\n                            "
                                     )
                                   ]
@@ -505,7 +508,7 @@ var render = function() {
                                 ])
                               ]),
                               _vm._v(" "),
-                              _c("div", [
+                              _c("div", { staticStyle: { width: "30%" } }, [
                                 _c(
                                   "div",
                                   {
@@ -657,6 +660,7 @@ var render = function() {
                 ? [
                     _c(
                       "card",
+                      { staticClass: "mt-4" },
                       [
                         _c("v-card-text", [
                           _c(
@@ -678,6 +682,7 @@ var render = function() {
                 ? [
                     _c(
                       "card",
+                      { staticClass: "mt-4" },
                       [
                         _c("v-card-text", [
                           _c("div", { staticClass: "text-xs-center body-2" }, [

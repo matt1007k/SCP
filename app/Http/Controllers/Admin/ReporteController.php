@@ -166,7 +166,7 @@ class ReporteController extends Controller
             ->where('persona_id', $request->persona_id)
             ->get();
 
-        if ($judiciales) {
+        if ($judiciales->count()) {
             return response()->json([
                 'judiciales' => $judiciales,
                 'status' => true,
@@ -413,7 +413,7 @@ class ReporteController extends Controller
             return $pdf->stream();
         } else {
             return response()->json([
-                'msg' => 'El reporte judicial no ha sido encontrado',
+                'msg' => 'Sin reportes judiciales para este periodo.',
             ], 404);
         }
     }

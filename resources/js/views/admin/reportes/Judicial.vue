@@ -80,7 +80,8 @@
                                         }`
                                     "
                                 >
-                                    {{ lista.periodo }}
+                                    {{ getNameMonth(form.mes) }},
+                                    {{ form.anio }}
                                 </div>
                                 <div
                                     class="body-1  font-weight-bold text--secondary"
@@ -89,7 +90,7 @@
                                 </div>
                                 <div class="body-2">{{ getName() }}</div>
                             </div>
-                            <div>
+                            <div style="width: 30%">
                                 <div
                                     class="body-1  font-weight-bold text--secondary"
                                 >
@@ -137,7 +138,7 @@
                     </card>
                 </template>
                 <template v-else-if="loading">
-                    <card>
+                    <card class="mt-4">
                         <v-card-text>
                             <div class="text-xs-center">
                                 <v-progress-circular
@@ -149,7 +150,7 @@
                     </card>
                 </template>
                 <template v-else-if="notFound">
-                    <card>
+                    <card class="mt-4">
                         <v-card-text>
                             <div class="text-xs-center body-2">
                                 {{ this.msg }}
