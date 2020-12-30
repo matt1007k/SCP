@@ -1,9 +1,9 @@
 (window["webpackJsonp"] = window["webpackJsonp"] || []).push([[15],{
 
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/admin/reportes/Mensual.vue?vue&type=script&lang=js&":
-/*!****************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/admin/reportes/Mensual.vue?vue&type=script&lang=js& ***!
-  \****************************************************************************************************************************************************************************/
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/admin/reportes/Judicial.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/admin/reportes/Judicial.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************************************************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -11,6 +11,13 @@
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _services_listMonthsOfTheYear__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../services/listMonthsOfTheYear */ "./resources/js/services/listMonthsOfTheYear.js");
 /* harmony import */ var _components_personas_SearchPerson__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../components/personas/SearchPerson */ "./resources/js/components/personas/SearchPerson.vue");
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -222,7 +229,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this2 = this;
 
       this.loading = true;
-      axios.get("/search/por-mes", {
+      axios.get("/search/por-judicial", {
         params: {
           anio: this.form.anio,
           mes: this.form.mes,
@@ -232,7 +239,7 @@ __webpack_require__.r(__webpack_exports__);
       }).then(function (res) {
         _this2.loading = false;
         _this2.errors = {};
-        _this2.lista_resultado = res.data.pagos;
+        _this2.lista_resultado = res.data.judiciales;
         var msg = res.data.msg;
 
         if (msg) {
@@ -246,10 +253,11 @@ __webpack_require__.r(__webpack_exports__);
         _this2.errors = err.response.data.errors;
       });
     },
-    downloadPDF: function downloadPDF(anio, mes, persona_id) {
+    downloadPDF: function downloadPDF(id) {
       var _this3 = this;
 
       var params = {
+        id: id,
         anio: this.form.anio,
         mes: this.form.mes,
         persona_id: this.form.persona.id,
@@ -258,7 +266,7 @@ __webpack_require__.r(__webpack_exports__);
       };
       var params_code = window.btoa(JSON.stringify(params));
       axios({
-        url: "/boleta/por-mes/".concat(params_code),
+        url: "/reporte/judicial/".concat(params_code),
         method: "GET",
         responseType: "blob" // important
 
@@ -273,8 +281,9 @@ __webpack_require__.r(__webpack_exports__);
         link.click();
       });
     },
-    viewPDF: function viewPDF(anio, mes, persona_id) {
+    viewPDF: function viewPDF(id) {
       var params = {
+        id: id,
         anio: this.form.anio,
         mes: this.form.mes,
         persona_id: this.form.persona.id,
@@ -282,20 +291,23 @@ __webpack_require__.r(__webpack_exports__);
         ver: 0
       };
       var params_code = window.btoa(JSON.stringify(params));
-      window.open("/boleta/por-mes/".concat(params_code), "_blank");
+      window.open("/reporte/judicial/".concat(params_code), "_blank");
     },
     getName: function getName() {
       return "".concat(this.form.persona.apellido_paterno, " ").concat(this.form.persona.apellido_materno, ", ").concat(this.form.persona.nombre, " ");
+    },
+    getNameB: function getNameB(persona) {
+      return "".concat(persona.b_apellido_paterno, " ").concat(persona.b_apellido_materno, " ,\n                                    ").concat(persona.b_nombre);
     }
   }
 });
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/admin/reportes/Mensual.vue?vue&type=template&id=7838efd6&":
-/*!********************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/admin/reportes/Mensual.vue?vue&type=template&id=7838efd6& ***!
-  \********************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/admin/reportes/Judicial.vue?vue&type=template&id=37cd5542&":
+/*!*********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/admin/reportes/Judicial.vue?vue&type=template&id=37cd5542& ***!
+  \*********************************************************************************************************************************************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -312,8 +324,8 @@ var render = function() {
     [
       _c("page-header", {
         attrs: {
-          title: "Boleta de Pago",
-          subtitle: "Consultar los pagos de una persona por periodo y mes.",
+          title: "Reporte Judicial",
+          subtitle: "Consultar los beneficiarios judiciales de una persona.",
           img: "/img/clip-web-security.png"
         }
       }),
@@ -441,174 +453,205 @@ var render = function() {
                       _vm._v(" "),
                       _c("div", { staticClass: "caption text--secondary" }, [
                         _vm._v(
-                          "\n                        Descargar o imprimir la boleta de pago\n                    "
+                          "\n                        Descargar o imprimir el reporte judicial\n                    "
                         )
                       ])
                     ]),
                     _vm._v(" "),
-                    _c(
-                      "card",
-                      [
-                        _c(
-                          "v-card-text",
-                          { staticClass: "d-flex justify-between" },
-                          [
-                            _c("div", { staticClass: "details-info" }, [
-                              _c(
-                                "div",
-                                {
-                                  staticClass: "display-1 font-weight-bold ",
-                                  class:
-                                    "" +
-                                    (_vm.$vuetify.theme.dark
-                                      ? "white--text"
-                                      : "black--text")
-                                },
-                                [
-                                  _vm._v(
-                                    "\n                                " +
-                                      _vm._s(
-                                        _vm.getNameMonth(
-                                          _vm.lista_resultado.mes
-                                        )
-                                      ) +
-                                      ",\n                                " +
-                                      _vm._s(_vm.lista_resultado.anio) +
-                                      "\n                            "
-                                  )
-                                ]
-                              ),
-                              _vm._v(" "),
-                              _c("div", { staticClass: "body-2" }, [
-                                _vm._v(_vm._s(_vm.getName()))
-                              ])
-                            ]),
-                            _vm._v(" "),
-                            _c(
-                              "div",
-                              { staticClass: "actions" },
-                              [
+                    _vm._l(_vm.lista_resultado, function(lista) {
+                      return _c(
+                        "card",
+                        { key: lista.id, staticClass: "mb-4" },
+                        [
+                          _c(
+                            "v-card-text",
+                            { staticClass: "d-flex justify-between" },
+                            [
+                              _c("div", { staticClass: "details-info" }, [
                                 _c(
-                                  "v-tooltip",
+                                  "div",
                                   {
-                                    attrs: { bottom: "" },
-                                    scopedSlots: _vm._u(
-                                      [
-                                        {
-                                          key: "activator",
-                                          fn: function(ref) {
-                                            var on = ref.on
-                                            return [
-                                              _c(
-                                                "v-btn",
-                                                _vm._g(
-                                                  {
-                                                    staticClass: "rounded-lg",
-                                                    attrs: {
-                                                      color: "dark",
-                                                      text: ""
-                                                    },
-                                                    on: {
-                                                      click: function($event) {
-                                                        return _vm.downloadPDF(
-                                                          _vm.lista_resultado
-                                                            .anio,
-                                                          _vm.lista_resultado
-                                                            .mes,
-                                                          _vm.form.persona.dni
-                                                        )
-                                                      }
-                                                    }
-                                                  },
-                                                  on
-                                                ),
-                                                [
-                                                  _c("v-icon", [
-                                                    _vm._v(
-                                                      "mdi\n                                            mdi-cloud-download-outline"
-                                                    )
-                                                  ])
-                                                ],
-                                                1
-                                              )
-                                            ]
-                                          }
-                                        }
-                                      ],
-                                      null,
-                                      false,
-                                      3059866786
-                                    )
+                                    staticClass: "display-1 font-weight-bold ",
+                                    class:
+                                      "" +
+                                      (_vm.$vuetify.theme.dark
+                                        ? "white--text"
+                                        : "black--text")
                                   },
                                   [
-                                    _vm._v(" "),
-                                    _c("span", [_vm._v("Descargar")])
+                                    _vm._v(
+                                      "\n                                " +
+                                        _vm._s(lista.periodo) +
+                                        "\n                            "
+                                    )
                                   ]
                                 ),
                                 _vm._v(" "),
                                 _c(
-                                  "v-tooltip",
+                                  "div",
                                   {
-                                    attrs: { bottom: "" },
-                                    scopedSlots: _vm._u(
-                                      [
-                                        {
-                                          key: "activator",
-                                          fn: function(ref) {
-                                            var on = ref.on
-                                            return [
-                                              _c(
-                                                "v-btn",
-                                                _vm._g(
-                                                  {
-                                                    staticClass: "rounded-lg",
-                                                    attrs: {
-                                                      color: "dark",
-                                                      text: ""
-                                                    },
-                                                    on: {
-                                                      click: function($event) {
-                                                        return _vm.viewPDF(
-                                                          _vm.lista_resultado
-                                                            .anio,
-                                                          _vm.lista_resultado
-                                                            .mes,
-                                                          _vm.form.persona.dni
-                                                        )
-                                                      }
-                                                    }
-                                                  },
-                                                  on
-                                                ),
-                                                [
-                                                  _c("v-icon", [
-                                                    _vm._v("mdi mdi-printer")
-                                                  ])
-                                                ],
-                                                1
-                                              )
-                                            ]
-                                          }
-                                        }
-                                      ],
-                                      null,
-                                      false,
-                                      3764336714
-                                    )
+                                    staticClass:
+                                      "body-1  font-weight-bold text--secondary"
                                   },
                                   [
-                                    _vm._v(" "),
-                                    _c("span", [_vm._v("Imprimir")])
+                                    _vm._v(
+                                      "\n                                Titular\n                            "
+                                    )
                                   ]
-                                )
-                              ],
-                              1
-                            )
-                          ]
-                        )
-                      ],
-                      1
-                    )
+                                ),
+                                _vm._v(" "),
+                                _c("div", { staticClass: "body-2" }, [
+                                  _vm._v(_vm._s(_vm.getName()))
+                                ])
+                              ]),
+                              _vm._v(" "),
+                              _c("div", [
+                                _c(
+                                  "div",
+                                  {
+                                    staticClass:
+                                      "body-1  font-weight-bold text--secondary"
+                                  },
+                                  [
+                                    _vm._v(
+                                      "\n                                Beneficiario\n                            "
+                                    )
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _c("div", { staticClass: "heading-1" }, [
+                                  _vm._v(
+                                    "\n                                " +
+                                      _vm._s(_vm.getNameB(lista)) +
+                                      "\n                            "
+                                  )
+                                ]),
+                                _vm._v(" "),
+                                _c("div", { staticClass: "body-2" }, [
+                                  _vm._v("DNI " + _vm._s(lista.b_dni))
+                                ])
+                              ]),
+                              _vm._v(" "),
+                              _c(
+                                "div",
+                                { staticClass: "actions" },
+                                [
+                                  _c(
+                                    "v-tooltip",
+                                    {
+                                      attrs: { bottom: "" },
+                                      scopedSlots: _vm._u(
+                                        [
+                                          {
+                                            key: "activator",
+                                            fn: function(ref) {
+                                              var on = ref.on
+                                              return [
+                                                _c(
+                                                  "v-btn",
+                                                  _vm._g(
+                                                    {
+                                                      staticClass: "rounded-lg",
+                                                      attrs: {
+                                                        color: "dark",
+                                                        text: ""
+                                                      },
+                                                      on: {
+                                                        click: function(
+                                                          $event
+                                                        ) {
+                                                          return _vm.downloadPDF(
+                                                            lista.id
+                                                          )
+                                                        }
+                                                      }
+                                                    },
+                                                    on
+                                                  ),
+                                                  [
+                                                    _c("v-icon", [
+                                                      _vm._v(
+                                                        "mdi\n                                            mdi-cloud-download-outline"
+                                                      )
+                                                    ])
+                                                  ],
+                                                  1
+                                                )
+                                              ]
+                                            }
+                                          }
+                                        ],
+                                        null,
+                                        true
+                                      )
+                                    },
+                                    [
+                                      _vm._v(" "),
+                                      _c("span", [_vm._v("Descargar")])
+                                    ]
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "v-tooltip",
+                                    {
+                                      attrs: { bottom: "" },
+                                      scopedSlots: _vm._u(
+                                        [
+                                          {
+                                            key: "activator",
+                                            fn: function(ref) {
+                                              var on = ref.on
+                                              return [
+                                                _c(
+                                                  "v-btn",
+                                                  _vm._g(
+                                                    {
+                                                      staticClass: "rounded-lg",
+                                                      attrs: {
+                                                        color: "dark",
+                                                        text: ""
+                                                      },
+                                                      on: {
+                                                        click: function(
+                                                          $event
+                                                        ) {
+                                                          return _vm.viewPDF(
+                                                            lista.id
+                                                          )
+                                                        }
+                                                      }
+                                                    },
+                                                    on
+                                                  ),
+                                                  [
+                                                    _c("v-icon", [
+                                                      _vm._v("mdi mdi-printer")
+                                                    ])
+                                                  ],
+                                                  1
+                                                )
+                                              ]
+                                            }
+                                          }
+                                        ],
+                                        null,
+                                        true
+                                      )
+                                    },
+                                    [
+                                      _vm._v(" "),
+                                      _c("span", [_vm._v("Imprimir")])
+                                    ]
+                                  )
+                                ],
+                                1
+                              )
+                            ]
+                          )
+                        ],
+                        1
+                      )
+                    })
                   ]
                 : _vm.loading
                 ? [
@@ -717,17 +760,17 @@ var months = [{
 
 /***/ }),
 
-/***/ "./resources/js/views/admin/reportes/Mensual.vue":
-/*!*******************************************************!*\
-  !*** ./resources/js/views/admin/reportes/Mensual.vue ***!
-  \*******************************************************/
+/***/ "./resources/js/views/admin/reportes/Judicial.vue":
+/*!********************************************************!*\
+  !*** ./resources/js/views/admin/reportes/Judicial.vue ***!
+  \********************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _Mensual_vue_vue_type_template_id_7838efd6___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Mensual.vue?vue&type=template&id=7838efd6& */ "./resources/js/views/admin/reportes/Mensual.vue?vue&type=template&id=7838efd6&");
-/* harmony import */ var _Mensual_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Mensual.vue?vue&type=script&lang=js& */ "./resources/js/views/admin/reportes/Mensual.vue?vue&type=script&lang=js&");
+/* harmony import */ var _Judicial_vue_vue_type_template_id_37cd5542___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Judicial.vue?vue&type=template&id=37cd5542& */ "./resources/js/views/admin/reportes/Judicial.vue?vue&type=template&id=37cd5542&");
+/* harmony import */ var _Judicial_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Judicial.vue?vue&type=script&lang=js& */ "./resources/js/views/admin/reportes/Judicial.vue?vue&type=script&lang=js&");
 /* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
@@ -737,9 +780,9 @@ __webpack_require__.r(__webpack_exports__);
 /* normalize component */
 
 var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
-  _Mensual_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _Mensual_vue_vue_type_template_id_7838efd6___WEBPACK_IMPORTED_MODULE_0__["render"],
-  _Mensual_vue_vue_type_template_id_7838efd6___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  _Judicial_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _Judicial_vue_vue_type_template_id_37cd5542___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _Judicial_vue_vue_type_template_id_37cd5542___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
   false,
   null,
   null,
@@ -749,38 +792,38 @@ var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_
 
 /* hot reload */
 if (false) { var api; }
-component.options.__file = "resources/js/views/admin/reportes/Mensual.vue"
+component.options.__file = "resources/js/views/admin/reportes/Judicial.vue"
 /* harmony default export */ __webpack_exports__["default"] = (component.exports);
 
 /***/ }),
 
-/***/ "./resources/js/views/admin/reportes/Mensual.vue?vue&type=script&lang=js&":
-/*!********************************************************************************!*\
-  !*** ./resources/js/views/admin/reportes/Mensual.vue?vue&type=script&lang=js& ***!
-  \********************************************************************************/
+/***/ "./resources/js/views/admin/reportes/Judicial.vue?vue&type=script&lang=js&":
+/*!*********************************************************************************!*\
+  !*** ./resources/js/views/admin/reportes/Judicial.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Mensual_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../node_modules/vue-loader/lib??vue-loader-options!./Mensual.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/admin/reportes/Mensual.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Mensual_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Judicial_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../node_modules/vue-loader/lib??vue-loader-options!./Judicial.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/admin/reportes/Judicial.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Judicial_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 
-/***/ "./resources/js/views/admin/reportes/Mensual.vue?vue&type=template&id=7838efd6&":
-/*!**************************************************************************************!*\
-  !*** ./resources/js/views/admin/reportes/Mensual.vue?vue&type=template&id=7838efd6& ***!
-  \**************************************************************************************/
+/***/ "./resources/js/views/admin/reportes/Judicial.vue?vue&type=template&id=37cd5542&":
+/*!***************************************************************************************!*\
+  !*** ./resources/js/views/admin/reportes/Judicial.vue?vue&type=template&id=37cd5542& ***!
+  \***************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Mensual_vue_vue_type_template_id_7838efd6___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib??vue-loader-options!./Mensual.vue?vue&type=template&id=7838efd6& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/admin/reportes/Mensual.vue?vue&type=template&id=7838efd6&");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Mensual_vue_vue_type_template_id_7838efd6___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Judicial_vue_vue_type_template_id_37cd5542___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib??vue-loader-options!./Judicial.vue?vue&type=template&id=37cd5542& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/admin/reportes/Judicial.vue?vue&type=template&id=37cd5542&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Judicial_vue_vue_type_template_id_37cd5542___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Mensual_vue_vue_type_template_id_7838efd6___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Judicial_vue_vue_type_template_id_37cd5542___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

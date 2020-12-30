@@ -399,30 +399,28 @@
             <td class="text-lg fw-bold text-center border">S/. {{ $judicial->total }}</td>     
         </tr>     
     </table>
-    
-
 
     <footer>
-    <table class="w-100">
-        <tbody>
-            <tr>                 
-                <td class="text-right">
-                    <img class="position-absolute" style=" right: 0; border: 1px solid #000" src="data:image/png;base64, {!! base64_encode(QrCode::format('png')->size(74)->generate('periodo:'.$nombre_mes.' '.$judicial->anio.'|'.$judicial->persona->dni.'|'.date('d/m/Y H:i:s'))) !!} ">
-                </td>
-                <td>
-                    <tr>
-                        <td class="fs-header">
-                            {{-- <span class="position-absolute" style="width: 200px; margin-top: -20px; right: 60">{{date('d/m/Y H:i')}} &nbsp;</span> --}}
-                            <h4 style="margin: 0">Mensaje:</h4>
-                            Para mayor información puede contactarse con nosotros a través de: www.dreayacucho.gob.pe .
-                        </td>
-                    </tr>
-                    
-                </td>
-            </tr>
-        </tbody>
-    </table>
-</footer>
+        <table class="w-100">
+            <tbody>
+                <tr>                 
+                    <td class="text-right">
+                        <img class="position-absolute" style=" right: 0; border: 1px solid #000" src="data:image/png;base64, {!! base64_encode(QrCode::format('png')->size(74)->generate('periodo:'.$nombre_mes.' '.$judicial->anio.'|'.$judicial->persona->dni.'|'.date('d/m/Y H:i:s'))) !!} ">
+                    </td>
+                    <td>
+                        <tr>
+                            <td class="fs-header">
+                                {{-- <span class="position-absolute" style="width: 200px; margin-top: -20px; right: 60">{{date('d/m/Y H:i')}} &nbsp;</span> --}}
+                                <h4 style="margin: 0">Mensaje:</h4>
+                                Para mayor información puede contactarse con nosotros a través de: www.dreayacucho.gob.pe .
+                            </td>
+                        </tr>
+                        
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </footer>
     <script type="text/php">
         if (isset($pdf)) {
             $x = 540;
