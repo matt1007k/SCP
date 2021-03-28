@@ -4,15 +4,16 @@ namespace App\Services;
 use App\Models\Persona;
 use Illuminate\Support\Facades\Auth;
 
-class PersonasService{
+class PersonasService
+{
     protected $datetimeService;
     protected $importElementsService;
     protected $estado = '';
 
     public function __construct()
     {
-       $this->datetimeService = new DateTimeService(); 
-       $this->importElementsService = new ImportElementsService(); 
+        $this->datetimeService = new DateTimeService();
+        $this->importElementsService = new ImportElementsService();
     }
 
     public const FIELDS_EXCEL = [
@@ -20,10 +21,8 @@ class PersonasService{
         'apellido_paterno' => 'apepat',
         'apellido_materno' => 'apemat',
         'dni' => 'dni',
-        // 'user_id' => Auth::id(),
         'codigo_modular' => 'codmod',
         'cargo' => 'cargo',
-        // 'estado' => $this->estado,
         'fecha_nacimiento' => 'fec_nac',
         'establecimiento' => 'institucion_educativa',
         'tipo_servidor' => 'tipser', // cae_tiposervidor solo es id
@@ -32,8 +31,8 @@ class PersonasService{
         'grupo_ocupacion' => 'grupo', // grado
         'horas' => 'horas',
         'tiempo_servicio' => 'cae_tiemposerv',
-        'fecha_inicio' =>  'inicio',
-        'fecha_fin' =>  'fin',
+        'fecha_inicio' => 'inicio',
+        'fecha_fin' => 'fin',
         'numero_cuenta' => 'cuenta',
         'leyenda_permanente' => 'leyenda',
         'leyenda_mensual' => 'leymes',
@@ -43,27 +42,28 @@ class PersonasService{
         'codigo_afp' => 'cod_afp',
         'fafiliacion' => 'fec_afil_afp',
         'fdevengue' => 'fdevengue', // falta
-        // 'cvariable' => 'rlq_mpension', // rlq_mpension
-        // 'cfija' => 'rlq_comisionmtofijafp',
-        // 'seguro' => 'rlq_mtoseguro',
         'codigo_establecimiento' => 'cae_codunidad',
         'numero_cargo' => 'cae_numcarg',
         'situacion' => 'cae_situacion',
+        'tipo_pension' => 'cae_tipopension',
     ];
 
-    public function createPersona($row): Persona{
+    public function createPersona($row): Persona
+    {
         $persona = Persona::create($this->getItemPersona($row));
 
         return $persona;
     }
 
-    public function updatePersona(Persona $persona, $row): Persona{
+    public function updatePersona(Persona $persona, $row): Persona
+    {
         $persona->update($this->getItemPersona($row));
 
         return $persona;
     }
 
-    public function getItemPersona($row): array{
+    public function getItemPersona($row): array
+    {
         return [
             'nombre' => $row[self::FIELDS_EXCEL['nombre']],
             'apellido_paterno' => $row[self::FIELDS_EXCEL['apellido_paterno']],
@@ -75,28 +75,29 @@ class PersonasService{
             'estado' => $this->estado,
             'fecha_nacimiento' => trim($row[self::FIELDS_EXCEL['fecha_nacimiento']]) ? $this->datetimeService->convertIntToDate($row[self::FIELDS_EXCEL['fecha_nacimiento']]) : null,
             'establecimiento' => $row[self::FIELDS_EXCEL['establecimiento']],
-            'tipo_servidor' => trim($row[self::FIELDS_EXCEL['tipo_servidor']]) ? $this->importElementsService->getTitleServidor((int)$row[self::FIELDS_EXCEL['tipo_servidor']]) : '',
+            'tipo_servidor' => trim($row[self::FIELDS_EXCEL['tipo_servidor']]) ? $this->importElementsService->getTitleServidor((int) $row[self::FIELDS_EXCEL['tipo_servidor']]) : '',
             'regimen_laboral' => $this->importElementsService->getTitleRegimenLaboral($row[self::FIELDS_EXCEL['regimen_laboral']]),
             'nivel_magisterial' => $row[self::FIELDS_EXCEL['nivel_magisterial']],
             'grupo_ocupacion' => $row[self::FIELDS_EXCEL['grupo_ocupacion']],
             'horas' => $row[self::FIELDS_EXCEL['horas']],
-            'tiempo_servicio' => isset($row[self::FIELDS_EXCEL['tiempo_servicio']]) ? $this->formatTiempoServicio((string)$row[self::FIELDS_EXCEL['tiempo_servicio']]) : null,
+            'tiempo_servicio' => isset($row[self::FIELDS_EXCEL['tiempo_servicio']]) ? $this->formatTiempoServicio((string) $row[self::FIELDS_EXCEL['tiempo_servicio']]) : null,
             'fecha_inicio' => trim($row[self::FIELDS_EXCEL['fecha_inicio']]) ? $this->datetimeService->convertStringToDate($row[self::FIELDS_EXCEL['fecha_inicio']]) : null,
-            'fecha_fin' =>  trim($row[self::FIELDS_EXCEL['fecha_inicio']]) ? $this->datetimeService->convertStringToDate($row[self::FIELDS_EXCEL['fecha_fin']]) : null,
+            'fecha_fin' => trim($row[self::FIELDS_EXCEL['fecha_inicio']]) ? $this->datetimeService->convertStringToDate($row[self::FIELDS_EXCEL['fecha_fin']]) : null,
             'numero_cuenta' => $row[self::FIELDS_EXCEL['numero_cuenta']],
             'leyenda_permanente' => $row[self::FIELDS_EXCEL['leyenda_permanente']],
             'leyenda_mensual' => $row[self::FIELDS_EXCEL['leyenda_mensual']],
-            'codigo_fiscal' => trim($row[self::FIELDS_EXCEL['codigo_fiscal']]) ? $this->importElementsService->getTitleCodeFiscal((int)$row[self::FIELDS_EXCEL['codigo_fiscal']]) : '',
+            'codigo_fiscal' => trim($row[self::FIELDS_EXCEL['codigo_fiscal']]) ? $this->importElementsService->getTitleCodeFiscal((int) $row[self::FIELDS_EXCEL['codigo_fiscal']]) : '',
             'codigo_essalud' => $row[self::FIELDS_EXCEL['codigo_essalud']],
-            'afp_boleta' => $this->importElementsService->getTitleAfpBoleta((int)$row[self::FIELDS_EXCEL['afp_boleta']]),
+            'afp_boleta' => $this->importElementsService->getTitleAfpBoleta((int) $row[self::FIELDS_EXCEL['afp_boleta']]),
             'codigo_afp' => $row[self::FIELDS_EXCEL['codigo_afp']],
             'fafiliacion' => trim($row[self::FIELDS_EXCEL['fafiliacion']]) ? $this->datetimeService->convertIntToDate($row[self::FIELDS_EXCEL['fafiliacion']]) : null,
             'fdevengue' => trim($row[self::FIELDS_EXCEL['fdevengue']]) ? $this->datetimeService->convertIntToDate($row[self::FIELDS_EXCEL['fdevengue']]) : null,
             'codigo_establecimiento' => $row[self::FIELDS_EXCEL['codigo_establecimiento']],
             'numero_cargo' => $row[self::FIELDS_EXCEL['numero_cargo']],
-            'situacion' => $this->importElementsService->getTitleSituacion($row[self::FIELDS_EXCEL['situacion']])
+            'situacion' => $this->importElementsService->getTitleSituacion($row[self::FIELDS_EXCEL['situacion']]),
+            'tipo_pension' => $this->importElementsService->getTipoPension($row[self::FIELDS_EXCEL['tipo_pension']]),
         ];
-    } 
+    }
 
     public function getEstado($estadoExcelNombre)
     {
@@ -114,9 +115,10 @@ class PersonasService{
         }
     }
 
-    public function formatTiempoServicio(string $tiempo_servicio): string{
+    public function formatTiempoServicio(string $tiempo_servicio): string
+    {
         $new_format = '';
-        if($tiempo_servicio){
+        if ($tiempo_servicio) {
             $anios = substr($tiempo_servicio, 0, 2);
             $meses = substr($tiempo_servicio, 2, 2);
             $dias = substr($tiempo_servicio, 4, 2);
@@ -126,7 +128,8 @@ class PersonasService{
         return $new_format;
     }
 
-    public function validateRowExcel($row){
+    public function validateRowExcel($row)
+    {
         if ($row[self::FIELDS_EXCEL['nombre']] == null ||
             $row[self::FIELDS_EXCEL['apellido_paterno']] == null ||
             $row[self::FIELDS_EXCEL['apellido_materno']] == null) {
@@ -137,7 +140,8 @@ class PersonasService{
         }
     }
 
-    public function getFileNameElements($filename){
+    public function getFileNameElements($filename)
+    {
         $anio = substr($filename, 0, 4);
         $mes_estado = substr($filename, -3);
         $mes_numero = substr($mes_estado, 0, 2);

@@ -1,9 +1,11 @@
 <?php
 namespace App\Services;
 
-class ImportElementsService{
+class ImportElementsService
+{
 
-    public function getTipoServicios(){
+    public function getTipoServicios()
+    {
         return [
             [
                 'id' => 0,
@@ -60,7 +62,8 @@ class ImportElementsService{
         ];
     }
 
-    public function getRegimenLaborales(){
+    public function getRegimenLaborales()
+    {
         return [
             [
                 'id' => 0,
@@ -129,7 +132,8 @@ class ImportElementsService{
         ];
     }
 
-    public function getSituaciones(){
+    public function getSituaciones()
+    {
         return [
             [
                 'id' => 0,
@@ -190,7 +194,8 @@ class ImportElementsService{
         ];
     }
 
-    public function getCodeFiscales(){
+    public function getCodeFiscales()
+    {
         return [
             [
                 'id' => 0,
@@ -223,7 +228,8 @@ class ImportElementsService{
         ];
     }
 
-    public function getAfpBoletas(){
+    public function getAfpBoletas()
+    {
         return [
             [
                 'id' => 0,
@@ -276,51 +282,139 @@ class ImportElementsService{
         ];
     }
 
-    public function getTitleServidor($id): string{
-        if(gettype($id) != 'integer') return "";
+    public function getTipoPensiones()
+    {
+        return [
+            [
+                'id' => 11,
+                'title' => 'Cesante Doc. Nivelable',
+            ],
+            [
+                'id' => 12,
+                'title' => 'Cesante Doc. No Nivelable',
+            ],
+            [
+                'id' => 21,
+                'title' => 'Cesante Adm. Nivelable',
+            ],
+            [
+                'id' => 22,
+                'title' => 'Cesante Adm. No Nivelable',
+            ],
+            [
+                'id' => 31,
+                'title' => 'Sobrev. Docente Nivelable',
+            ],
+            [
+                'id' => 32,
+                'title' => 'Sobrev. Docente No Nivelable',
+            ],
+            [
+                'id' => 33,
+                'title' => 'Sobrev. Adm. Nivelable',
+            ],
+            [
+                'id' => 34,
+                'title' => 'Sobrev. Adm. No Nivelable',
+            ],
+            [
+                'id' => 41,
+                'title' => 'Pensión Cesantia Docente',
+            ],
+            [
+                'id' => 42,
+                'title' => 'Pensión Cesantia Adminis',
+            ],
+            [
+                'id' => 43,
+                'title' => 'Pensión por Invalidez',
+            ],
+        ];
+    }
+
+    public function getTitleServidor($id): string
+    {
+        if (gettype($id) != 'integer') {
+            return "";
+        }
+
         $servidor = collect($this->getTipoServicios())
-                        ->firstWhere('id', $id);
-        
+            ->firstWhere('id', $id);
+
         return collect($servidor)
             ->get('title');
     }
 
-    public function getTitleRegimenLaboral($id): string{
-        if(gettype($id) != 'integer') return "";
+    public function getTitleRegimenLaboral($id): string
+    {
+        if (gettype($id) != 'integer') {
+            return "";
+        }
 
         $regimen = collect($this->getRegimenLaborales())
-                        ->firstWhere('id', $id);
-        
+            ->firstWhere('id', $id);
+
         return collect($regimen)
             ->get('title');
     }
 
-    public function getTitleCodeFiscal($id): string{
-        if(gettype($id) != 'integer') return "";
+    public function getTitleCodeFiscal($id): string
+    {
+        if (gettype($id) != 'integer') {
+            return "";
+        }
+
         $code_fiscal = collect($this->getCodeFiscales())
-                        ->firstWhere('id', $id);
-        
+            ->firstWhere('id', $id);
+
         return collect($code_fiscal)
             ->get('title');
     }
 
-    public function getTitleAfpBoleta($id): string{
-        if(gettype($id) != 'integer') return "";
+    public function getTitleAfpBoleta($id): string
+    {
+        if (gettype($id) != 'integer') {
+            return "";
+        }
+
         $afp_boleta = collect($this->getAfpBoletas())
-                        ->firstWhere('id', $id);
-        
+            ->firstWhere('id', $id);
+
         return collect($afp_boleta)
             ->get('title');
     }
 
-    public function getTitleSituacion($id): string{
-        if(gettype($id) != 'integer') return "";
+    public function getTitleSituacion($id): string
+    {
+        if (gettype($id) != 'integer') {
+            return "";
+        }
+
         $situacion = collect($this->getSituaciones())
-                        ->firstWhere('id', $id);
+            ->firstWhere('id', $id);
 
         $title = collect($situacion)
             ->get('title');
-        
+
+        return "({$id}) {$title}";
+    }
+
+    public function getTipoPension($id): string
+    {
+        if ($id == "") {
+            return 'Sin información';
+        }
+
+        if (gettype($id) != 'integer') {
+            return "";
+        }
+
+        $situacion = collect($this->getTipoPensiones())
+            ->firstWhere('id', $id);
+
+        $title = collect($situacion)
+            ->get('title');
+
         return "({$id}) {$title}";
     }
 }

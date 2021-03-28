@@ -38,6 +38,7 @@ class Persona extends Model
         'codigo_establecimiento',
         'numero_cargo',
         'situacion',
+        'tipo_pension',
     ];
 
     protected $appends = ['full_name', 'fecha_nac'];

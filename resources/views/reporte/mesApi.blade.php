@@ -361,6 +361,12 @@
                         </p>
                     </td>
                 </tr>                
+                <tr>
+                    <td class="text-left fs-header-sm border-sm">
+                        <b>TIPO PENSION</b>
+                        <p class="text-uppercase">{{ $pago->persona->tipo_pension }}</p>
+                    </td> 
+                </tr>
             </tbody>
         </table>
     </header>
