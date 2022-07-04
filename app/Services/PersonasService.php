@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Services;
 
 use App\Models\Persona;
@@ -23,29 +24,7 @@ class PersonasService
         'dni' => 'dni',
         'codigo_modular' => 'codmod',
         'cargo' => 'cargo',
-        'fecha_nacimiento' => 'fec_nac',
-        'establecimiento' => 'institucion_educativa',
-        'tipo_servidor' => 'tipser', // cae_tiposervidor solo es id
-        'regimen_laboral' => 'reglab', // falta valor solo es id
-        'nivel_magisterial' => 'nivmag',
-        'grupo_ocupacion' => 'grupo', // grado
-        'horas' => 'horas',
-        'tiempo_servicio' => 'cae_tiemposerv',
-        'fecha_inicio' => 'inicio',
-        'fecha_fin' => 'fin',
-        'numero_cuenta' => 'cuenta',
-        'leyenda_permanente' => 'leyenda',
-        'leyenda_mensual' => 'leymes',
-        'codigo_fiscal' => 'cae_codfiscal',
-        'codigo_essalud' => 'codessalud',
-        'afp_boleta' => 'afp_boleta',
-        'codigo_afp' => 'cod_afp',
-        'fafiliacion' => 'fec_afil_afp',
-        'fdevengue' => 'fdevengue', // falta
-        'codigo_establecimiento' => 'cae_codunidad',
-        'numero_cargo' => 'cae_numcarg',
-        'situacion' => 'cae_situacion',
-        'tipo_pension' => 'cae_tipopension',
+        
     ];
 
     public function createPersona($row): Persona
@@ -73,29 +52,8 @@ class PersonasService
             'codigo_modular' => $row[self::FIELDS_EXCEL['codigo_modular']],
             'cargo' => $row[self::FIELDS_EXCEL['cargo']],
             'estado' => $this->estado,
-            'fecha_nacimiento' => trim($row[self::FIELDS_EXCEL['fecha_nacimiento']]) ? $this->datetimeService->convertIntToDate($row[self::FIELDS_EXCEL['fecha_nacimiento']]) : null,
-            'establecimiento' => $row[self::FIELDS_EXCEL['establecimiento']],
-            'tipo_servidor' => trim($row[self::FIELDS_EXCEL['tipo_servidor']]) ? $this->importElementsService->getTitleServidor((int) $row[self::FIELDS_EXCEL['tipo_servidor']]) : '',
-            'regimen_laboral' => $this->importElementsService->getTitleRegimenLaboral($row[self::FIELDS_EXCEL['regimen_laboral']]),
-            'nivel_magisterial' => $row[self::FIELDS_EXCEL['nivel_magisterial']],
-            'grupo_ocupacion' => $row[self::FIELDS_EXCEL['grupo_ocupacion']],
-            'horas' => $row[self::FIELDS_EXCEL['horas']],
-            'tiempo_servicio' => isset($row[self::FIELDS_EXCEL['tiempo_servicio']]) ? $this->formatTiempoServicio((string) $row[self::FIELDS_EXCEL['tiempo_servicio']]) : null,
-            'fecha_inicio' => trim($row[self::FIELDS_EXCEL['fecha_inicio']]) ? $this->datetimeService->convertStringToDate($row[self::FIELDS_EXCEL['fecha_inicio']]) : null,
-            'fecha_fin' => trim($row[self::FIELDS_EXCEL['fecha_inicio']]) ? $this->datetimeService->convertStringToDate($row[self::FIELDS_EXCEL['fecha_fin']]) : null,
-            'numero_cuenta' => $row[self::FIELDS_EXCEL['numero_cuenta']],
-            'leyenda_permanente' => $row[self::FIELDS_EXCEL['leyenda_permanente']],
-            'leyenda_mensual' => $row[self::FIELDS_EXCEL['leyenda_mensual']],
-            'codigo_fiscal' => trim($row[self::FIELDS_EXCEL['codigo_fiscal']]) ? $this->importElementsService->getTitleCodeFiscal((int) $row[self::FIELDS_EXCEL['codigo_fiscal']]) : '',
-            'codigo_essalud' => $row[self::FIELDS_EXCEL['codigo_essalud']],
-            'afp_boleta' => $this->importElementsService->getTitleAfpBoleta((int) $row[self::FIELDS_EXCEL['afp_boleta']]),
-            'codigo_afp' => $row[self::FIELDS_EXCEL['codigo_afp']],
-            'fafiliacion' => trim($row[self::FIELDS_EXCEL['fafiliacion']]) ? $this->datetimeService->convertIntToDate($row[self::FIELDS_EXCEL['fafiliacion']]) : null,
-            'fdevengue' => trim($row[self::FIELDS_EXCEL['fdevengue']]) ? $this->datetimeService->convertIntToDate($row[self::FIELDS_EXCEL['fdevengue']]) : null,
-            'codigo_establecimiento' => $row[self::FIELDS_EXCEL['codigo_establecimiento']],
-            'numero_cargo' => $row[self::FIELDS_EXCEL['numero_cargo']],
-            'situacion' => $this->importElementsService->getTitleSituacion($row[self::FIELDS_EXCEL['situacion']]),
-            'tipo_pension' => $this->importElementsService->getTipoPension($row[self::FIELDS_EXCEL['tipo_pension']]),
+            /* DETALLES DE BOLETA */
+
         ];
     }
 
@@ -130,9 +88,11 @@ class PersonasService
 
     public function validateRowExcel($row)
     {
-        if ($row[self::FIELDS_EXCEL['nombre']] == null ||
+        if (
+            $row[self::FIELDS_EXCEL['nombre']] == null ||
             $row[self::FIELDS_EXCEL['apellido_paterno']] == null ||
-            $row[self::FIELDS_EXCEL['apellido_materno']] == null) {
+            $row[self::FIELDS_EXCEL['apellido_materno']] == null
+        ) {
             return response()->json([
                 'import' => true,
                 'msg' => 'El archivo excel no tiene datos.',

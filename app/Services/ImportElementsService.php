@@ -286,6 +286,10 @@ class ImportElementsService
     {
         return [
             [
+                'id' => 0,
+                'title' => 'Sin Información',
+            ],
+            [
                 'id' => 11,
                 'title' => 'Cesante Doc. Nivelable',
             ],

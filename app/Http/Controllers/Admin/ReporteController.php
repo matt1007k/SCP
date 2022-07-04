@@ -2,17 +2,18 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
-use App\Models\Judicial;
+use PDF;
 use App\Models\Pago;
+use App\Models\Detalle;
 use App\Models\Persona;
+use App\Models\Judicial;
+use Illuminate\Http\Request;
+use App\Services\MesesService;
+use App\Services\YearsService;
+use App\Services\ReportService;
 use App\Services\EncryptService;
 use App\Services\JsonParseService;
-use App\Services\MesesService;
-use App\Services\ReportService;
-use App\Services\YearsService;
-use Illuminate\Http\Request;
-use PDF;
+use App\Http\Controllers\Controller;
 
 class ReporteController extends Controller
 {
@@ -234,7 +235,6 @@ class ReporteController extends Controller
                 $pdf->setPaper('a4', 'landscape');
 
                 return $pdf->stream();
-
             } else {
                 return response()->json([
                     'msg' => 'Pago no ha sido encontrado',
@@ -340,6 +340,30 @@ class ReporteController extends Controller
                 $order_haberes = collect($haberes)->sortBy('nombre');
                 $order_descuentos = collect($descuentos)->sortBy('nombre');
 
+
+                $haberesOk = Detalle::query()
+                    ->where('pago_id', $pago->id)
+                    ->whereHas('haber_descuento', function ($query) {
+                        return $query->where('codigo', 'like', 'H%');
+                    })
+
+                    ->get();
+
+                $descuentosOk = Detalle::query()
+                    ->where('pago_id', $pago->id)
+                    ->whereHas('haber_descuento', function ($query) {
+                        return $query->where('codigo', 'like', 'D%');
+                    })
+                    ->get();
+
+                /* if ($haberesOk->count() > 1) {
+                    dd('xd');
+                } */
+
+                $haberes_count = count($haberes);
+                $haberes_chunk_count = $haberesOk->chunk(15)->count();
+                /* dd($haberes_chunk_count); */
+
                 $pdf = PDF::loadView('reporte.mesApi', [
                     'pago' => $pago,
                     'nombre_mes' => $nombre_mes,
@@ -353,6 +377,10 @@ class ReporteController extends Controller
                     'certificado' => $params->certificado,
                     'meses' => (new MesesService)->getMeses(),
                     'user' => auth()->user(),
+                    'haberesOk' => $haberesOk,
+                    'descuentosOk' => $descuentosOk,
+                    'haberes_chunk_count' => $haberes_chunk_count,
+                    'haberes_count' => $haberes_count,
                 ]);
                 $pdf->getDomPDF()->set_option("enable_php", true);
 

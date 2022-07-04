@@ -133,6 +133,12 @@ class HaberesImponiblesService
             ['descripcion' => "Plan_recup_afec"],
             ['descripcion' => "Ley30693_RMV"],
             ['descripcion' => "10 RMV"],
+
+            ['descripcion' => "ds009-2019-EF"],
+            ['descripcion' => "ds006-2020-EF"],
+            ['descripcion' => "ds006-2021-EF"],
+            ['descripcion' => "ds014-2022-EF"],
+
         ];
     }
 }

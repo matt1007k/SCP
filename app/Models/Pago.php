@@ -24,7 +24,33 @@ class Pago extends Model
         'cvariable',
         'cfija',
         'seguro',
+        /* BOLETAS */
+        'fecha_nacimiento',
+        'establecimiento',
+        'tipo_servidor',
+        'regimen_laboral',
+        'nivel_magisterial',
+        'grupo_ocupacion',
+        'horas',
+        'tiempo_servicio',
+        'fecha_inicio',
+        'fecha_fin',
+        'numero_cuenta',
+        'leyenda_permanente',
+        'leyenda_mensual',
+        'codigo_fiscal',
+        'codigo_essalud',
+        'afp_boleta',
+        'codigo_afp',
+        'fafiliacion',
+        'fdevengue',
+        'codigo_establecimiento',
+        'numero_cargo',
+        'situacion',
+        'tipo_pension',
     ];
+    protected $dates = ['fecha_nacimiento', 'fecha_inicio', 'fecha_fin', 'fafiliacion', 'fdevengue'];
+
 
     public function persona()
     {
@@ -44,6 +70,40 @@ class Pago extends Model
     public function scopeMes($query, $mes)
     {
         return $query->where('mes', $mes);
+    }
+
+    public function getFechaNacAttribute()
+    {
+        return $this->fecha_nacimiento
+            ? $this->fecha_nacimiento->format('d/m/Y')
+            : null;
+    }
+    public function getFechaInAttribute()
+    {
+        return $this->fecha_inicio
+            ? $this->fecha_inicio->format('d/m/Y')
+            : null;
+    }
+
+    public function getFechaFiAttribute()
+    {
+        return $this->fecha_fin
+            ? $this->fecha_fin->format('d/m/Y')
+            : null;
+    }
+
+    public function getFAfilAttribute()
+    {
+        return $this->fafiliacion
+            ? $this->fafiliacion->format('d/m/Y')
+            : null;
+    }
+
+    public function getFDevAttribute()
+    {
+        return $this->fdevengue
+            ? $this->fdevengue->format('d/m/Y')
+            : null;
     }
 
     public function scopeSearch(Builder $query, $value)

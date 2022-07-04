@@ -1740,6 +1740,29 @@ var listItemsSidebar = [{
   permission: "admin.index",
   exact: true
 }, {
+  title: "Reportes",
+  icon: "mdi mdi-file-chart",
+  url: "/admin/reporte",
+  group: true,
+  permission: "pagos.consultar",
+  submenu: [{
+    title: "Por años",
+    url: "/admin/reporte/rango-anual",
+    permission: "pagos.consultar"
+  }, {
+    title: "Por año",
+    url: "/admin/reporte/anual",
+    permission: "pagos.consultar"
+  }, {
+    title: "Boleta de Pago",
+    url: "/admin/reporte/mensual",
+    permission: "pagos.consultar"
+  }, {
+    title: "Judicial",
+    url: "/admin/reporte/judicial",
+    permission: "pagos.consultar"
+  }]
+}, {
   title: "Usuarios",
   url: "/admin/usuarios",
   icon: "mdi mdi-account-multiple",
@@ -1817,29 +1840,6 @@ var listItemsSidebar = [{
     title: "Personas Judiciales",
     url: "/admin/importar/personas-judiciales",
     permission: "importar.personas"
-  }]
-}, {
-  title: "Reportes",
-  icon: "mdi mdi-file-chart",
-  url: "/admin/reporte",
-  group: true,
-  permission: "pagos.consultar",
-  submenu: [{
-    title: "Por años",
-    url: "/admin/reporte/rango-anual",
-    permission: "pagos.consultar"
-  }, {
-    title: "Por año",
-    url: "/admin/reporte/anual",
-    permission: "pagos.consultar"
-  }, {
-    title: "Boleta de Pago",
-    url: "/admin/reporte/mensual",
-    permission: "pagos.consultar"
-  }, {
-    title: "Judicial",
-    url: "/admin/reporte/judicial",
-    permission: "pagos.consultar"
   }]
 }];
 

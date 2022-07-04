@@ -16,7 +16,7 @@ class Persona extends Model
         'cargo',
         'estado',
         'user_id',
-        'fecha_nacimiento',
+        /*         'fecha_nacimiento',
         'establecimiento',
         'tipo_servidor',
         'regimen_laboral',
@@ -38,7 +38,7 @@ class Persona extends Model
         'codigo_establecimiento',
         'numero_cargo',
         'situacion',
-        'tipo_pension',
+        'tipo_pension', */
     ];
 
     protected $appends = ['full_name', 'fecha_nac'];
@@ -47,36 +47,36 @@ class Persona extends Model
     public function getFechaNacAttribute()
     {
         return $this->fecha_nacimiento
-        ? $this->fecha_nacimiento->format('d/m/Y')
-        : null;
+            ? $this->fecha_nacimiento->format('d/m/Y')
+            : null;
     }
 
     public function getFechaInAttribute()
     {
         return $this->fecha_inicio
-        ? $this->fecha_inicio->format('d/m/Y')
-        : null;
+            ? $this->fecha_inicio->format('d/m/Y')
+            : null;
     }
 
     public function getFechaFiAttribute()
     {
         return $this->fecha_fin
-        ? $this->fecha_fin->format('d/m/Y')
-        : null;
+            ? $this->fecha_fin->format('d/m/Y')
+            : null;
     }
 
     public function getFAfilAttribute()
     {
         return $this->fafiliacion
-        ? $this->fafiliacion->format('d/m/Y')
-        : null;
+            ? $this->fafiliacion->format('d/m/Y')
+            : null;
     }
 
     public function getFDevAttribute()
     {
         return $this->fdevengue
-        ? $this->fdevengue->format('d/m/Y')
-        : null;
+            ? $this->fdevengue->format('d/m/Y')
+            : null;
     }
 
     public function getFullNameAttribute()
