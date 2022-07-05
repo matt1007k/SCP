@@ -1257,14 +1257,7 @@
                         @if(isset($total['monto_imponible_diciembre4']))
                         <td class="text-center text-w-bold">{{$total['monto_imponible_diciembre4']}}</td>
                         @endif
-                    @endforeach
-                </tr>
-               
-                
-            </tbody>
-        </table>
-    </div>
-    <script type="text/php">
+                    @endforeach</tr></tbody></table></div><script type="text/php">
         if (isset($pdf)) {
             $x = 10;
             $y = 10;
@@ -1277,6 +1270,4 @@
             $angle = 0.0;   //  default
             $pdf->page_text($x, $y, $text, $font, $size, $color, $word_space, $char_space, $angle);
         }
-    </script>
-</body>
-</html>
+</script></body></html>

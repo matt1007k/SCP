@@ -93,70 +93,77 @@
         @foreach ($pagos as $pago)
         <div class="page">
             <header>
-                <h5 class="text-center" style="margin-top: -20px;text-decoration: underline">CONSTANCIA DE PAGOS DE HABERES Y DESCUENTOS</h5>
-                <img style="margin-top: -15px; margin-bottom: 0" src="{{public_path().'/img/LogoDREA.png'}}" width="65" alt="">    
-                
+                <h5 class="text-center" style="margin-top: -20px;text-decoration: underline">CONSTANCIA DE PAGOS DE
+                    HABERES Y DESCUENTOS</h5>
+                <img style="margin-top: -15px; margin-bottom: 0" src="{{public_path().'/img/LogoDREA.png'}}" width="65"
+                    alt="">
+
                 @if ($pago['certificado'] != null)
-                    <div class="header-cert" >
-                        <span class="fs-header2"><b>CERTIFICADO N°:</b></span>
-                        <span class="fs-header2 bb-1" style="margin-left:5px">{{$pago['certificado'].'-'.date('Y').'-GRA/GG-GRDS-DREA-OA-AT'}}</span>
-                    </div>
+                <div class="header-cert">
+                    <span class="fs-header2"><b>CERTIFICADO N°:</b></span>
+                    <span class="fs-header2 bb-1"
+                        style="margin-left:5px">{{$pago['certificado'].'-'.date('Y').'-GRA/GG-GRDS-DREA-OA-AT'}}</span>
+                </div>
                 @else
-                    <div class="header-cert" >
-                        <span class="fs-header2"><b>CERTIFICADO N°:</b></span>
-                        <span class="fs-header2 bb-1" style="margin-left:5px;padding-left:40px">{{'-'.date('Y').'-GRA/GG-GRDS-DREA-OA-AT'}}</span>
-                    </div> 
+                <div class="header-cert">
+                    <span class="fs-header2"><b>CERTIFICADO N°:</b></span>
+                    <span class="fs-header2 bb-1"
+                        style="margin-left:5px;padding-left:40px">{{'-'.date('Y').'-GRA/GG-GRDS-DREA-OA-AT'}}</span>
+                </div>
                 @endif
-                
+
                 <table class="w-80" style="margin-top: -40%">
                     <tbody>
-                        <tr>                                           
-                            <td class="text-right" >
-                                <img class="position-absolute" style="top:0; right: 0; border: 1px solid #000" src="data:image/png;base64, {!! base64_encode(QrCode::format('png')->size(74)->generate('Cert:'.$pago['certificado'].'|'.$pago['pago']->persona->dni.'|'.date('d/m/Y H:i:s').'|Resp:'.$pago['user']->dni)) !!} ">
+                        <tr>
+                            <td class="text-right">
+                                <img class="position-absolute" style="top:0; right: 0; border: 1px solid #000"
+                                    src="data:image/png;base64, {!! base64_encode(QrCode::format('png')->size(74)->generate('Cert:'.$pago['certificado'].'|'.$pago['pago']->persona->dni.'|'.date('d/m/Y H:i:s').'|Resp:'.$pago['user']->dni)) !!} ">
                             </td>
                             <td>
-                                <tr>
-                                    <td class="fs-header text-right">
-                                        <span class="position-absolute" style="top:-10; right: 0; width: 200px">{{date('d/m/Y H:i')}}</span>
-                                    </td>
-                                </tr>
-                                
+                        <tr>
+                            <td class="fs-header text-right">
+                                <span class="position-absolute" style="top:-10; right: 0; width: 200px">{{date('d/m/Y
+                                    H:i')}}</span>
                             </td>
+                        </tr>
+
+                        </td>
                         </tr>
                     </tbody>
                 </table>
                 <table class="w-80">
                     <tbody>
-                    <tr>
-                                    <td class="text-right fs-header">
-                                        <b>DNI:</b>
-                                    </td>
-                                    <td class="fs-header">{{$pago['pago']->persona->dni}}</td>
-                                    <td class="text-right fs-header">
-                                        <b>APELLIDOS Y NOMBRES:</b>
-                                    </td>
-                                    <td class="fs-header" colspan="2">{{$pago['pago']->persona->apellido_paterno}} {{$pago['pago']->persona->apellido_materno}}, {{$pago['pago']->persona->nombre}}</td>
-                                    
-                                    
-                                    <td class="text-right fs-header">
-                                        <b>REPORTE DEL AÑO:</b>
-                                    </td>
-                                    <td class="fs-header">{{$pago['pago']->anio}}</td>
-        
-                                    
-                                    
-                                    <!-- <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>  -->
-                                    <td class="text-right fs-header">
-                                        <b>COD. MODULAR:</b>
-                                    </td>
-                                    <td class="fs-header">{{$pago['pago']->persona->codigo_modular}}</td>
-                                
-                                </tr>
+                        <tr>
+                            <td class="text-right fs-header">
+                                <b>DNI:</b>
+                            </td>
+                            <td class="fs-header">{{$pago['pago']->persona->dni}}</td>
+                            <td class="text-right fs-header">
+                                <b>APELLIDOS Y NOMBRES:</b>
+                            </td>
+                            <td class="fs-header" colspan="2">{{$pago['pago']->persona->apellido_paterno}}
+                                {{$pago['pago']->persona->apellido_materno}}, {{$pago['pago']->persona->nombre}}</td>
+
+
+                            <td class="text-right fs-header">
+                                <b>REPORTE DEL AÑO:</b>
+                            </td>
+                            <td class="fs-header">{{$pago['pago']->anio}}</td>
+
+
+
+                            <!-- <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>  -->
+                            <td class="text-right fs-header">
+                                <b>COD. MODULAR:</b>
+                            </td>
+                            <td class="fs-header">{{$pago['pago']->persona->codigo_modular}}</td>
+
+                        </tr>
                     </tbody>
                 </table>
-                
+
             </header>
- 
+
             <div class="spacer"></div>
             <div class="body">
                 <table class="w-100">
@@ -182,200 +189,324 @@
                         <?php foreach ($pago['haberes'] as $key => $haber) :?>
                         <tr class="body-row">
                             @if(isset($haber['nombre']))
-                            <td class="text-left"><?php echo $haber['nombre']?></td>
+                            <td class="text-left">
+                                <?php echo $haber['nombre']?>
+                            </td>
                             @else
-                            <td class="text-left"><?php echo ''?></td>
+                            <td class="text-left">
+                                <?php echo ''?>
+                            </td>
                             @endif
                             {{-- Monto enero --}}
                             @if(isset($haber['enero']['monto_enero1']))
-                            <td class="text-center"><?php echo $haber['enero']['monto_enero1']?></td>
+                            <td class="text-center">
+                                <?php echo $haber['enero']['monto_enero1']?>
+                            </td>
                             @else
-                            <td class="text-center"><?php echo '0.00'?></td>
+                            <td class="text-center">
+                                <?php echo '0.00'?>
+                            </td>
                             @endif
                             @if(isset($haber['enero']['monto_enero2']))
-                            <td class="text-center"><?php echo $haber['enero']['monto_enero2']?></td>
+                            <td class="text-center">
+                                <?php echo $haber['enero']['monto_enero2']?>
+                            </td>
                             @endif
                             @if(isset($haber['enero']['monto_enero3']))
-                            <td class="text-center"><?php echo $haber['enero']['monto_enero3']?></td>
+                            <td class="text-center">
+                                <?php echo $haber['enero']['monto_enero3']?>
+                            </td>
                             @endif
                             @if(isset($haber['enero']['monto_enero4']))
-                            <td class="text-center"><?php echo $haber['enero']['monto_enero4']?></td>
+                            <td class="text-center">
+                                <?php echo $haber['enero']['monto_enero4']?>
+                            </td>
                             @endif
 
                             {{-- Monto febrero --}}
                             @if(isset($haber['febrero']['monto_febrero1']))
-                            <td class="text-center"><?php echo $haber['febrero']['monto_febrero1']?></td>
+                            <td class="text-center">
+                                <?php echo $haber['febrero']['monto_febrero1']?>
+                            </td>
                             @else
-                            <td class="text-center"><?php echo '0.00'?></td>
+                            <td class="text-center">
+                                <?php echo '0.00'?>
+                            </td>
                             @endif
                             @if(isset($haber['febrero']['monto_febrero2']))
-                            <td class="text-center"><?php echo $haber['febrero']['monto_febrero2']?></td>
+                            <td class="text-center">
+                                <?php echo $haber['febrero']['monto_febrero2']?>
+                            </td>
                             @endif
                             @if(isset($haber['febrero']['monto_febrero3']))
-                            <td class="text-center"><?php echo $haber['febrero']['monto_febrero3']?></td>
+                            <td class="text-center">
+                                <?php echo $haber['febrero']['monto_febrero3']?>
+                            </td>
                             @endif
                             @if(isset($haber['febrero']['monto_febrero4']))
-                            <td class="text-center"><?php echo $haber['febrero']['monto_febrero4']?></td>
+                            <td class="text-center">
+                                <?php echo $haber['febrero']['monto_febrero4']?>
+                            </td>
                             @endif
 
                             {{-- Monto marzo --}}
                             @if(isset($haber['marzo']['monto_marzo1']))
-                            <td class="text-center"><?php echo $haber['marzo']['monto_marzo1']?></td>
+                            <td class="text-center">
+                                <?php echo $haber['marzo']['monto_marzo1']?>
+                            </td>
                             @else
-                            <td class="text-center"><?php echo '0.00'?></td>
+                            <td class="text-center">
+                                <?php echo '0.00'?>
+                            </td>
                             @endif
                             @if(isset($haber['marzo']['monto_marzo2']))
-                            <td class="text-center"><?php echo $haber['marzo']['monto_marzo2']?></td>
+                            <td class="text-center">
+                                <?php echo $haber['marzo']['monto_marzo2']?>
+                            </td>
                             @endif
                             @if(isset($haber['marzo']['monto_marzo3']))
-                            <td class="text-center"><?php echo $haber['marzo']['monto_marzo3']?></td>
+                            <td class="text-center">
+                                <?php echo $haber['marzo']['monto_marzo3']?>
+                            </td>
                             @endif
                             @if(isset($haber['marzo']['monto_marzo4']))
-                            <td class="text-center"><?php echo $haber['marzo']['monto_marzo4']?></td>
+                            <td class="text-center">
+                                <?php echo $haber['marzo']['monto_marzo4']?>
+                            </td>
                             @endif
 
                             {{-- Monto abril --}}
                             @if(isset($haber['abril']['monto_abril1']))
-                            <td class="text-center"><?php echo $haber['abril']['monto_abril1']?></td>
+                            <td class="text-center">
+                                <?php echo $haber['abril']['monto_abril1']?>
+                            </td>
                             @else
-                            <td class="text-center"><?php echo '0.00'?></td>
+                            <td class="text-center">
+                                <?php echo '0.00'?>
+                            </td>
                             @endif
                             @if(isset($haber['abril']['monto_abril2']))
-                            <td class="text-center"><?php echo $haber['abril']['monto_abril2']?></td>
+                            <td class="text-center">
+                                <?php echo $haber['abril']['monto_abril2']?>
+                            </td>
                             @endif
                             @if(isset($haber['abril']['monto_abril3']))
-                            <td class="text-center"><?php echo $haber['abril']['monto_abril3']?></td>
+                            <td class="text-center">
+                                <?php echo $haber['abril']['monto_abril3']?>
+                            </td>
                             @endif
                             @if(isset($haber['abril']['monto_abril4']))
-                            <td class="text-center"><?php echo $haber['abril']['monto_abril4']?></td>
+                            <td class="text-center">
+                                <?php echo $haber['abril']['monto_abril4']?>
+                            </td>
                             @endif
 
                             {{-- Monto mayo --}}
                             @if(isset($haber['mayo']['monto_mayo1']))
-                            <td class="text-center"><?php echo $haber['mayo']['monto_mayo1']?></td>
+                            <td class="text-center">
+                                <?php echo $haber['mayo']['monto_mayo1']?>
+                            </td>
                             @else
-                            <td class="text-center"><?php echo '0.00'?></td>
+                            <td class="text-center">
+                                <?php echo '0.00'?>
+                            </td>
                             @endif
                             @if(isset($haber['mayo']['monto_mayo2']))
-                            <td class="text-center"><?php echo $haber['mayo']['monto_mayo2']?></td>
+                            <td class="text-center">
+                                <?php echo $haber['mayo']['monto_mayo2']?>
+                            </td>
                             @endif
                             @if(isset($haber['mayo']['monto_mayo3']))
-                            <td class="text-center"><?php echo $haber['mayo']['monto_mayo3']?></td>
+                            <td class="text-center">
+                                <?php echo $haber['mayo']['monto_mayo3']?>
+                            </td>
                             @endif
                             @if(isset($haber['mayo']['monto_mayo4']))
-                            <td class="text-center"><?php echo $haber['mayo']['monto_mayo4']?></td>
+                            <td class="text-center">
+                                <?php echo $haber['mayo']['monto_mayo4']?>
+                            </td>
                             @endif
 
                             {{-- Monto junio --}}
                             @if(isset($haber['junio']['monto_junio1']))
-                            <td class="text-center"><?php echo $haber['junio']['monto_junio1']?></td>
+                            <td class="text-center">
+                                <?php echo $haber['junio']['monto_junio1']?>
+                            </td>
                             @else
-                            <td class="text-center"><?php echo '0.00'?></td>
+                            <td class="text-center">
+                                <?php echo '0.00'?>
+                            </td>
                             @endif
                             @if(isset($haber['junio']['monto_junio2']))
-                            <td class="text-center"><?php echo $haber['junio']['monto_junio2']?></td>
+                            <td class="text-center">
+                                <?php echo $haber['junio']['monto_junio2']?>
+                            </td>
                             @endif
                             @if(isset($haber['junio']['monto_junio3']))
-                            <td class="text-center"><?php echo $haber['junio']['monto_junio3']?></td>
+                            <td class="text-center">
+                                <?php echo $haber['junio']['monto_junio3']?>
+                            </td>
                             @endif
                             @if(isset($haber['junio']['monto_junio4']))
-                            <td class="text-center"><?php echo $haber['junio']['monto_junio4']?></td>
+                            <td class="text-center">
+                                <?php echo $haber['junio']['monto_junio4']?>
+                            </td>
                             @endif
 
                             {{-- Monto julio --}}
                             @if(isset($haber['julio']['monto_julio1']))
-                            <td class="text-center"><?php echo $haber['julio']['monto_julio1']?></td>
+                            <td class="text-center">
+                                <?php echo $haber['julio']['monto_julio1']?>
+                            </td>
                             @else
-                            <td class="text-center"><?php echo '0.00'?></td>
+                            <td class="text-center">
+                                <?php echo '0.00'?>
+                            </td>
                             @endif
                             @if(isset($haber['julio']['monto_julio2']))
-                            <td class="text-center"><?php echo $haber['julio']['monto_julio2']?></td>
+                            <td class="text-center">
+                                <?php echo $haber['julio']['monto_julio2']?>
+                            </td>
                             @endif
                             @if(isset($haber['julio']['monto_julio3']))
-                            <td class="text-center"><?php echo $haber['julio']['monto_julio3']?></td>
+                            <td class="text-center">
+                                <?php echo $haber['julio']['monto_julio3']?>
+                            </td>
                             @endif
                             @if(isset($haber['julio']['monto_julio4']))
-                            <td class="text-center"><?php echo $haber['julio']['monto_julio4']?></td>
+                            <td class="text-center">
+                                <?php echo $haber['julio']['monto_julio4']?>
+                            </td>
                             @endif
 
                             {{-- Monto agosto --}}
                             @if(isset($haber['agosto']['monto_agosto1']))
-                            <td class="text-center"><?php echo $haber['agosto']['monto_agosto1']?></td>
+                            <td class="text-center">
+                                <?php echo $haber['agosto']['monto_agosto1']?>
+                            </td>
                             @else
-                            <td class="text-center"><?php echo '0.00'?></td>
+                            <td class="text-center">
+                                <?php echo '0.00'?>
+                            </td>
                             @endif
                             @if(isset($haber['agosto']['monto_agosto2']))
-                            <td class="text-center"><?php echo $haber['agosto']['monto_agosto2']?></td>
+                            <td class="text-center">
+                                <?php echo $haber['agosto']['monto_agosto2']?>
+                            </td>
                             @endif
                             @if(isset($haber['agosto']['monto_agosto3']))
-                            <td class="text-center"><?php echo $haber['agosto']['monto_agosto3']?></td>
+                            <td class="text-center">
+                                <?php echo $haber['agosto']['monto_agosto3']?>
+                            </td>
                             @endif
                             @if(isset($haber['agosto']['monto_agosto4']))
-                            <td class="text-center"><?php echo $haber['agosto']['monto_agosto4']?></td>
+                            <td class="text-center">
+                                <?php echo $haber['agosto']['monto_agosto4']?>
+                            </td>
                             @endif
 
                             {{-- Monto septiembre --}}
                             @if(isset($haber['septiembre']['monto_septiembre1']))
-                            <td class="text-center"><?php echo $haber['septiembre']['monto_septiembre1']?></td>
+                            <td class="text-center">
+                                <?php echo $haber['septiembre']['monto_septiembre1']?>
+                            </td>
                             @else
-                            <td class="text-center"><?php echo '0.00'?></td>
+                            <td class="text-center">
+                                <?php echo '0.00'?>
+                            </td>
                             @endif
                             @if(isset($haber['septiembre']['monto_septiembre2']))
-                            <td class="text-center"><?php echo $haber['septiembre']['monto_septiembre2']?></td>
+                            <td class="text-center">
+                                <?php echo $haber['septiembre']['monto_septiembre2']?>
+                            </td>
                             @endif
                             @if(isset($haber['septiembre']['monto_septiembre3']))
-                            <td class="text-center"><?php echo $haber['septiembre']['monto_septiembre3']?></td>
+                            <td class="text-center">
+                                <?php echo $haber['septiembre']['monto_septiembre3']?>
+                            </td>
                             @endif
                             @if(isset($haber['septiembre']['monto_septiembre4']))
-                            <td class="text-center"><?php echo $haber['septiembre']['monto_septiembre4']?></td>
+                            <td class="text-center">
+                                <?php echo $haber['septiembre']['monto_septiembre4']?>
+                            </td>
                             @endif
 
                             {{-- Monto octubre --}}
                             @if(isset($haber['octubre']['monto_octubre1']))
-                            <td class="text-center"><?php echo $haber['octubre']['monto_octubre1']?></td>
+                            <td class="text-center">
+                                <?php echo $haber['octubre']['monto_octubre1']?>
+                            </td>
                             @else
-                            <td class="text-center"><?php echo '0.00'?></td>
+                            <td class="text-center">
+                                <?php echo '0.00'?>
+                            </td>
                             @endif
                             @if(isset($haber['octubre']['monto_octubre2']))
-                            <td class="text-center"><?php echo $haber['octubre']['monto_octubre2']?></td>
+                            <td class="text-center">
+                                <?php echo $haber['octubre']['monto_octubre2']?>
+                            </td>
                             @endif
                             @if(isset($haber['octubre']['monto_octubre3']))
-                            <td class="text-center"><?php echo $haber['octubre']['monto_octubre3']?></td>
+                            <td class="text-center">
+                                <?php echo $haber['octubre']['monto_octubre3']?>
+                            </td>
                             @endif
                             @if(isset($haber['octubre']['monto_octubre4']))
-                            <td class="text-center"><?php echo $haber['octubre']['monto_octubre4']?></td>
+                            <td class="text-center">
+                                <?php echo $haber['octubre']['monto_octubre4']?>
+                            </td>
                             @endif
 
                             {{-- Monto noviembre --}}
                             @if(isset($haber['noviembre']['monto_noviembre1']))
-                            <td class="text-center"><?php echo $haber['noviembre']['monto_noviembre1']?></td>
+                            <td class="text-center">
+                                <?php echo $haber['noviembre']['monto_noviembre1']?>
+                            </td>
                             @else
-                            <td class="text-center"><?php echo '0.00'?></td>
+                            <td class="text-center">
+                                <?php echo '0.00'?>
+                            </td>
                             @endif
                             @if(isset($haber['noviembre']['monto_noviembre2']))
-                            <td class="text-center"><?php echo $haber['noviembre']['monto_noviembre2']?></td>
+                            <td class="text-center">
+                                <?php echo $haber['noviembre']['monto_noviembre2']?>
+                            </td>
                             @endif
                             @if(isset($haber['noviembre']['monto_noviembre3']))
-                            <td class="text-center"><?php echo $haber['noviembre']['monto_noviembre3']?></td>
+                            <td class="text-center">
+                                <?php echo $haber['noviembre']['monto_noviembre3']?>
+                            </td>
                             @endif
                             @if(isset($haber['noviembre']['monto_noviembre4']))
-                            <td class="text-center"><?php echo $haber['noviembre']['monto_noviembre4']?></td>
+                            <td class="text-center">
+                                <?php echo $haber['noviembre']['monto_noviembre4']?>
+                            </td>
                             @endif
 
                             {{-- Monto diciembre --}}
                             @if(isset($haber['diciembre']['monto_diciembre1']))
-                            <td class="text-center"><?php echo $haber['diciembre']['monto_diciembre1']?></td>
+                            <td class="text-center">
+                                <?php echo $haber['diciembre']['monto_diciembre1']?>
+                            </td>
                             @else
-                            <td class="text-center"><?php echo '0.00'?></td>
+                            <td class="text-center">
+                                <?php echo '0.00'?>
+                            </td>
                             @endif
                             @if(isset($haber['diciembre']['monto_diciembre2']))
-                            <td class="text-center"><?php echo $haber['diciembre']['monto_diciembre2']?></td>
+                            <td class="text-center">
+                                <?php echo $haber['diciembre']['monto_diciembre2']?>
+                            </td>
                             @endif
                             @if(isset($haber['diciembre']['monto_diciembre3']))
-                            <td class="text-center"><?php echo $haber['diciembre']['monto_diciembre3']?></td>
+                            <td class="text-center">
+                                <?php echo $haber['diciembre']['monto_diciembre3']?>
+                            </td>
                             @endif
                             @if(isset($haber['diciembre']['monto_diciembre4']))
-                            <td class="text-center"><?php echo $haber['diciembre']['monto_diciembre4']?></td>
+                            <td class="text-center">
+                                <?php echo $haber['diciembre']['monto_diciembre4']?>
+                            </td>
                             @endif
                         </tr>
                         <?php endforeach;?>
@@ -395,201 +526,325 @@
                         <?php foreach ($pago['descuentos'] as $key => $descuento) :?>
                         <tr class="body-row">
                             @if(isset($descuento['nombre']))
-                            <td class="text-left"><?php echo $descuento['nombre']?></td>
+                            <td class="text-left">
+                                <?php echo $descuento['nombre']?>
+                            </td>
                             @else
-                            <td class="text-left"><?php echo ''?></td>
+                            <td class="text-left">
+                                <?php echo ''?>
+                            </td>
                             @endif
 
                             {{-- Monto enero --}}
                             @if(isset($descuento['enero']['monto_enero1']))
-                            <td class="text-center"><?php echo $descuento['enero']['monto_enero1']?></td>
+                            <td class="text-center">
+                                <?php echo $descuento['enero']['monto_enero1']?>
+                            </td>
                             @else
-                            <td class="text-center"><?php echo '0.00'?></td>
+                            <td class="text-center">
+                                <?php echo '0.00'?>
+                            </td>
                             @endif
                             @if(isset($descuento['enero']['monto_enero2']))
-                            <td class="text-center"><?php echo $descuento['enero']['monto_enero2']?></td>
+                            <td class="text-center">
+                                <?php echo $descuento['enero']['monto_enero2']?>
+                            </td>
                             @endif
                             @if(isset($descuento['enero']['monto_enero3']))
-                            <td class="text-center"><?php echo $descuento['enero']['monto_enero3']?></td>
+                            <td class="text-center">
+                                <?php echo $descuento['enero']['monto_enero3']?>
+                            </td>
                             @endif
                             @if(isset($descuento['enero']['monto_enero4']))
-                            <td class="text-center"><?php echo $descuento['enero']['monto_enero4']?></td>
+                            <td class="text-center">
+                                <?php echo $descuento['enero']['monto_enero4']?>
+                            </td>
                             @endif
 
                             {{-- Monto febrero --}}
                             @if(isset($descuento['febrero']['monto_febrero1']))
-                            <td class="text-center"><?php echo $descuento['febrero']['monto_febrero1']?></td>
+                            <td class="text-center">
+                                <?php echo $descuento['febrero']['monto_febrero1']?>
+                            </td>
                             @else
-                            <td class="text-center"><?php echo '0.00'?></td>
+                            <td class="text-center">
+                                <?php echo '0.00'?>
+                            </td>
                             @endif
                             @if(isset($descuento['febrero']['monto_febrero2']))
-                            <td class="text-center"><?php echo $descuento['febrero']['monto_febrero2']?></td>
+                            <td class="text-center">
+                                <?php echo $descuento['febrero']['monto_febrero2']?>
+                            </td>
                             @endif
                             @if(isset($descuento['febrero']['monto_febrero3']))
-                            <td class="text-center"><?php echo $descuento['febrero']['monto_febrero3']?></td>
+                            <td class="text-center">
+                                <?php echo $descuento['febrero']['monto_febrero3']?>
+                            </td>
                             @endif
                             @if(isset($descuento['febrero']['monto_febrero4']))
-                            <td class="text-center"><?php echo $descuento['febrero']['monto_febrero4']?></td>
+                            <td class="text-center">
+                                <?php echo $descuento['febrero']['monto_febrero4']?>
+                            </td>
                             @endif
 
                             {{-- Monto marzo --}}
                             @if(isset($descuento['marzo']['monto_marzo1']))
-                            <td class="text-center"><?php echo $descuento['marzo']['monto_marzo1']?></td>
+                            <td class="text-center">
+                                <?php echo $descuento['marzo']['monto_marzo1']?>
+                            </td>
                             @else
-                            <td class="text-center"><?php echo '0.00'?></td>
+                            <td class="text-center">
+                                <?php echo '0.00'?>
+                            </td>
                             @endif
                             @if(isset($descuento['marzo']['monto_marzo2']))
-                            <td class="text-center"><?php echo $descuento['marzo']['monto_marzo2']?></td>
+                            <td class="text-center">
+                                <?php echo $descuento['marzo']['monto_marzo2']?>
+                            </td>
                             @endif
                             @if(isset($descuento['marzo']['monto_marzo3']))
-                            <td class="text-center"><?php echo $descuento['marzo']['monto_marzo3']?></td>
+                            <td class="text-center">
+                                <?php echo $descuento['marzo']['monto_marzo3']?>
+                            </td>
                             @endif
                             @if(isset($descuento['marzo']['monto_marzo4']))
-                            <td class="text-center"><?php echo $descuento['marzo']['monto_marzo4']?></td>
+                            <td class="text-center">
+                                <?php echo $descuento['marzo']['monto_marzo4']?>
+                            </td>
                             @endif
 
                             {{-- Monto abril --}}
                             @if(isset($descuento['abril']['monto_abril1']))
-                            <td class="text-center"><?php echo $descuento['abril']['monto_abril1']?></td>
+                            <td class="text-center">
+                                <?php echo $descuento['abril']['monto_abril1']?>
+                            </td>
                             @else
-                            <td class="text-center"><?php echo '0.00'?></td>
+                            <td class="text-center">
+                                <?php echo '0.00'?>
+                            </td>
                             @endif
                             @if(isset($descuento['abril']['monto_abril2']))
-                            <td class="text-center"><?php echo $descuento['abril']['monto_abril2']?></td>
+                            <td class="text-center">
+                                <?php echo $descuento['abril']['monto_abril2']?>
+                            </td>
                             @endif
                             @if(isset($descuento['abril']['monto_abril3']))
-                            <td class="text-center"><?php echo $descuento['abril']['monto_abril3']?></td>
+                            <td class="text-center">
+                                <?php echo $descuento['abril']['monto_abril3']?>
+                            </td>
                             @endif
                             @if(isset($descuento['abril']['monto_abril4']))
-                            <td class="text-center"><?php echo $descuento['abril']['monto_abril4']?></td>
+                            <td class="text-center">
+                                <?php echo $descuento['abril']['monto_abril4']?>
+                            </td>
                             @endif
 
                             {{-- Monto mayo --}}
                             @if(isset($descuento['mayo']['monto_mayo1']))
-                            <td class="text-center"><?php echo $descuento['mayo']['monto_mayo1']?></td>
+                            <td class="text-center">
+                                <?php echo $descuento['mayo']['monto_mayo1']?>
+                            </td>
                             @else
-                            <td class="text-center"><?php echo '0.00'?></td>
+                            <td class="text-center">
+                                <?php echo '0.00'?>
+                            </td>
                             @endif
                             @if(isset($descuento['mayo']['monto_mayo2']))
-                            <td class="text-center"><?php echo $descuento['mayo']['monto_mayo2']?></td>
+                            <td class="text-center">
+                                <?php echo $descuento['mayo']['monto_mayo2']?>
+                            </td>
                             @endif
                             @if(isset($descuento['mayo']['monto_mayo3']))
-                            <td class="text-center"><?php echo $descuento['mayo']['monto_mayo3']?></td>
+                            <td class="text-center">
+                                <?php echo $descuento['mayo']['monto_mayo3']?>
+                            </td>
                             @endif
                             @if(isset($descuento['mayo']['monto_mayo4']))
-                            <td class="text-center"><?php echo $descuento['mayo']['monto_mayo4']?></td>
+                            <td class="text-center">
+                                <?php echo $descuento['mayo']['monto_mayo4']?>
+                            </td>
                             @endif
 
                             {{-- Monto junio --}}
                             @if(isset($descuento['junio']['monto_junio1']))
-                            <td class="text-center"><?php echo $descuento['junio']['monto_junio1']?></td>
+                            <td class="text-center">
+                                <?php echo $descuento['junio']['monto_junio1']?>
+                            </td>
                             @else
-                            <td class="text-center"><?php echo '0.00'?></td>
+                            <td class="text-center">
+                                <?php echo '0.00'?>
+                            </td>
                             @endif
                             @if(isset($descuento['junio']['monto_junio2']))
-                            <td class="text-center"><?php echo $descuento['junio']['monto_junio2']?></td>
+                            <td class="text-center">
+                                <?php echo $descuento['junio']['monto_junio2']?>
+                            </td>
                             @endif
                             @if(isset($descuento['junio']['monto_junio3']))
-                            <td class="text-center"><?php echo $descuento['junio']['monto_junio3']?></td>
+                            <td class="text-center">
+                                <?php echo $descuento['junio']['monto_junio3']?>
+                            </td>
                             @endif
                             @if(isset($descuento['junio']['monto_junio4']))
-                            <td class="text-center"><?php echo $descuento['junio']['monto_junio4']?></td>
+                            <td class="text-center">
+                                <?php echo $descuento['junio']['monto_junio4']?>
+                            </td>
                             @endif
 
                             {{-- Monto julio --}}
                             @if(isset($descuento['julio']['monto_julio1']))
-                            <td class="text-center"><?php echo $descuento['julio']['monto_julio1']?></td>
+                            <td class="text-center">
+                                <?php echo $descuento['julio']['monto_julio1']?>
+                            </td>
                             @else
-                            <td class="text-center"><?php echo '0.00'?></td>
+                            <td class="text-center">
+                                <?php echo '0.00'?>
+                            </td>
                             @endif
                             @if(isset($descuento['julio']['monto_julio2']))
-                            <td class="text-center"><?php echo $descuento['julio']['monto_julio2']?></td>
+                            <td class="text-center">
+                                <?php echo $descuento['julio']['monto_julio2']?>
+                            </td>
                             @endif
                             @if(isset($descuento['julio']['monto_julio3']))
-                            <td class="text-center"><?php echo $descuento['julio']['monto_julio3']?></td>
+                            <td class="text-center">
+                                <?php echo $descuento['julio']['monto_julio3']?>
+                            </td>
                             @endif
                             @if(isset($descuento['julio']['monto_julio4']))
-                            <td class="text-center"><?php echo $descuento['julio']['monto_julio4']?></td>
+                            <td class="text-center">
+                                <?php echo $descuento['julio']['monto_julio4']?>
+                            </td>
                             @endif
 
                             {{-- Monto agosto --}}
                             @if(isset($descuento['agosto']['monto_agosto1']))
-                            <td class="text-center"><?php echo $descuento['agosto']['monto_agosto1']?></td>
+                            <td class="text-center">
+                                <?php echo $descuento['agosto']['monto_agosto1']?>
+                            </td>
                             @else
-                            <td class="text-center"><?php echo '0.00'?></td>
+                            <td class="text-center">
+                                <?php echo '0.00'?>
+                            </td>
                             @endif
                             @if(isset($descuento['agosto']['monto_agosto2']))
-                            <td class="text-center"><?php echo $descuento['agosto']['monto_agosto2']?></td>
+                            <td class="text-center">
+                                <?php echo $descuento['agosto']['monto_agosto2']?>
+                            </td>
                             @endif
                             @if(isset($descuento['agosto']['monto_agosto3']))
-                            <td class="text-center"><?php echo $descuento['agosto']['monto_agosto3']?></td>
+                            <td class="text-center">
+                                <?php echo $descuento['agosto']['monto_agosto3']?>
+                            </td>
                             @endif
                             @if(isset($descuento['agosto']['monto_agosto4']))
-                            <td class="text-center"><?php echo $descuento['agosto']['monto_agosto4']?></td>
+                            <td class="text-center">
+                                <?php echo $descuento['agosto']['monto_agosto4']?>
+                            </td>
                             @endif
 
                             {{-- Monto septiembre --}}
                             @if(isset($descuento['septiembre']['monto_septiembre1']))
-                            <td class="text-center"><?php echo $descuento['septiembre']['monto_septiembre1']?></td>
+                            <td class="text-center">
+                                <?php echo $descuento['septiembre']['monto_septiembre1']?>
+                            </td>
                             @else
-                            <td class="text-center"><?php echo '0.00'?></td>
+                            <td class="text-center">
+                                <?php echo '0.00'?>
+                            </td>
                             @endif
                             @if(isset($descuento['septiembre']['monto_septiembre2']))
-                            <td class="text-center"><?php echo $descuento['septiembre']['monto_septiembre2']?></td>
+                            <td class="text-center">
+                                <?php echo $descuento['septiembre']['monto_septiembre2']?>
+                            </td>
                             @endif
                             @if(isset($descuento['septiembre']['monto_septiembre3']))
-                            <td class="text-center"><?php echo $descuento['septiembre']['monto_septiembre3']?></td>
+                            <td class="text-center">
+                                <?php echo $descuento['septiembre']['monto_septiembre3']?>
+                            </td>
                             @endif
                             @if(isset($descuento['septiembre']['monto_septiembre4']))
-                            <td class="text-center"><?php echo $descuento['septiembre']['monto_septiembre4']?></td>
+                            <td class="text-center">
+                                <?php echo $descuento['septiembre']['monto_septiembre4']?>
+                            </td>
                             @endif
 
                             {{-- Monto octubre --}}
                             @if(isset($descuento['octubre']['monto_octubre1']))
-                            <td class="text-center"><?php echo $descuento['octubre']['monto_octubre1']?></td>
+                            <td class="text-center">
+                                <?php echo $descuento['octubre']['monto_octubre1']?>
+                            </td>
                             @else
-                            <td class="text-center"><?php echo '0.00'?></td>
+                            <td class="text-center">
+                                <?php echo '0.00'?>
+                            </td>
                             @endif
                             @if(isset($descuento['octubre']['monto_octubre2']))
-                            <td class="text-center"><?php echo $descuento['octubre']['monto_octubre2']?></td>
+                            <td class="text-center">
+                                <?php echo $descuento['octubre']['monto_octubre2']?>
+                            </td>
                             @endif
                             @if(isset($descuento['octubre']['monto_octubre3']))
-                            <td class="text-center"><?php echo $descuento['octubre']['monto_octubre3']?></td>
+                            <td class="text-center">
+                                <?php echo $descuento['octubre']['monto_octubre3']?>
+                            </td>
                             @endif
                             @if(isset($descuento['octubre']['monto_octubre4']))
-                            <td class="text-center"><?php echo $descuento['octubre']['monto_octubre4']?></td>
+                            <td class="text-center">
+                                <?php echo $descuento['octubre']['monto_octubre4']?>
+                            </td>
                             @endif
 
                             {{-- Monto noviembre --}}
                             @if(isset($descuento['noviembre']['monto_noviembre1']))
-                            <td class="text-center"><?php echo $descuento['noviembre']['monto_noviembre1']?></td>
+                            <td class="text-center">
+                                <?php echo $descuento['noviembre']['monto_noviembre1']?>
+                            </td>
                             @else
-                            <td class="text-center"><?php echo '0.00'?></td>
+                            <td class="text-center">
+                                <?php echo '0.00'?>
+                            </td>
                             @endif
                             @if(isset($descuento['noviembre']['monto_noviembre2']))
-                            <td class="text-center"><?php echo $descuento['noviembre']['monto_noviembre2']?></td>
+                            <td class="text-center">
+                                <?php echo $descuento['noviembre']['monto_noviembre2']?>
+                            </td>
                             @endif
                             @if(isset($descuento['noviembre']['monto_noviembre3']))
-                            <td class="text-center"><?php echo $descuento['noviembre']['monto_noviembre3']?></td>
+                            <td class="text-center">
+                                <?php echo $descuento['noviembre']['monto_noviembre3']?>
+                            </td>
                             @endif
                             @if(isset($descuento['noviembre']['monto_noviembre4']))
-                            <td class="text-center"><?php echo $descuento['noviembre']['monto_noviembre4']?></td>
+                            <td class="text-center">
+                                <?php echo $descuento['noviembre']['monto_noviembre4']?>
+                            </td>
                             @endif
 
                             {{-- Monto diciembre --}}
                             @if(isset($descuento['diciembre']['monto_diciembre1']))
-                            <td class="text-center"><?php echo $descuento['diciembre']['monto_diciembre1']?></td>
+                            <td class="text-center">
+                                <?php echo $descuento['diciembre']['monto_diciembre1']?>
+                            </td>
                             @else
-                            <td class="text-center"><?php echo '0.00'?></td>
+                            <td class="text-center">
+                                <?php echo '0.00'?>
+                            </td>
                             @endif
                             @if(isset($descuento['diciembre']['monto_diciembre2']))
-                            <td class="text-center"><?php echo $descuento['diciembre']['monto_diciembre2']?></td>
+                            <td class="text-center">
+                                <?php echo $descuento['diciembre']['monto_diciembre2']?>
+                            </td>
                             @endif
                             @if(isset($descuento['diciembre']['monto_diciembre3']))
-                            <td class="text-center"><?php echo $descuento['diciembre']['monto_diciembre3']?></td>
+                            <td class="text-center">
+                                <?php echo $descuento['diciembre']['monto_diciembre3']?>
+                            </td>
                             @endif
                             @if(isset($descuento['diciembre']['monto_diciembre4']))
-                            <td class="text-center"><?php echo $descuento['diciembre']['monto_diciembre4']?></td>
+                            <td class="text-center">
+                                <?php echo $descuento['diciembre']['monto_diciembre4']?>
+                            </td>
                             @endif
 
                         </tr>
@@ -1288,10 +1543,7 @@
                     </tbody>
                 </table>
             </div>
-        </div>
-        @endforeach
-    </div>
-    <script type="text/php">
+        </div>@endforeach</div><script type="text/php">
         if (isset($pdf)) {
                 $x = 10;
                 $y = 10;
@@ -1304,7 +1556,4 @@
                 $angle = 0.0;   //  default
                 $pdf->page_text($x, $y, $text, $font, $size, $color, $word_space, $char_space, $angle);
             }
-        </script>
-</body>
-
-</html>
+</script></body></html>
