@@ -29,7 +29,7 @@
         "@mdi/font": "^5.8.55",
         "chart.js": "^2.9.4",
         "ioredis": "^4.19.4",
-        "moment": "^2.29.1",
+        "moment": "^2.29.4",
         "push.js": "^1.0.12",
         "redis": "^3.0.2",
         "roboto-fontface": "^0.10.0",
