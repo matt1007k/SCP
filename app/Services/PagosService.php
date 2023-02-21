@@ -154,10 +154,13 @@ class PagosService
     {
         $total = 0;
 
-        foreach ($detalles as $key => $value) {
+/*         foreach ($detalles as $key => $value) {
             $total += $value[$montoItem];
-        }
-
+        } */
+        foreach ($detalles as $key => $value) {
+            $initialValue = $value[$montoItem] == 'NULL' ? 0 : $value[$montoItem]; 
+              $total += $initialValue;
+          }
         return $total;
     }
 

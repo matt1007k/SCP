@@ -138,6 +138,7 @@ class HaberesImponiblesService
             ['descripcion' => "ds006-2020-EF"],
             ['descripcion' => "ds006-2021-EF"],
             ['descripcion' => "ds014-2022-EF"],
+            ['descripcion' => "ds007-2023-EF"],
 
         ];
     }
